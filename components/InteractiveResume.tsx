@@ -2,7 +2,7 @@
 //import the following modules
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Download, ExternalLink, Github, Linkedin, Mail, MousePointer2, X } from "lucide-react";
+import { BriefcaseBusiness, Code, Download, ExternalLink, Mail, MousePointer2, X } from "lucide-react";
 import type { CaseStudy, ProofPoint, ResumeBullet, ResumeData } from "@/types/resume";
 
 type InteractiveResumeProps = {
@@ -32,8 +32,8 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     const rect = element.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
-    const rotateX = (0.5 - y) * 5;
-    const rotateY = (x - 0.5) * 7;
+    const rotateX = (0.5 - y) * 1;
+    const rotateY = (x - 0.5) * 2;
 
     element.style.setProperty("--pointer-x", `${x * 100}%`);
     element.style.setProperty("--pointer-y", `${y * 100}%`);
@@ -179,8 +179,8 @@ function ResumeHeader({ data, proofMode, setProofMode }: HeaderProps) {
         <div className="contact-row">
           <span>{data.person.location}</span>
           <a href={`mailto:${data.person.email}`}><Mail size={14} /> Email</a>
-          <a href={data.person.linkedin}><Linkedin size={14} /> LinkedIn</a>
-          <a href={data.person.github}><Github size={14} /> GitHub</a>
+          <a href={data.person.linkedin}><BriefcaseBusiness size={14} /> LinkedIn</a>
+          <a href={data.person.github}><Code size={14} /> GitHub</a>
         </div>
       </div>
       <div className="hero-actions">
