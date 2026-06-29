@@ -1,0 +1,36 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" fill="#08111F"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1200" y2="700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#58A6FF" stop-opacity="0.52"/>
+      <stop offset="0.55" stop-color="#7DD3FC" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0.36"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+  </defs>
+  <g opacity="0.18">
+    <path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200M0 600H1200" stroke="#E2E8F0"/>
+    <path d="M120 0V700M240 0V700M360 0V700M480 0V700M600 0V700M720 0V700M840 0V700M960 0V700M1080 0V700" stroke="#E2E8F0"/>
+  </g>
+  <circle cx="250" cy="190" r="150" fill="#58A6FF" opacity="0.18" filter="url(#blur)"/>
+  <circle cx="930" cy="520" r="170" fill="#F59E0B" opacity="0.14" filter="url(#blur)"/>
+  <rect x="92" y="92" width="1016" height="516" rx="42" fill="url(#g)" opacity="0.22" stroke="#93C5FD" stroke-opacity="0.28"/>
+  <text x="120" y="155" fill="#F8FAFC" font-size="48" font-family="Inter, Arial, sans-serif" font-weight="800">Northstar Infrastructure</text>
+  <g transform="translate(140 260)">
+    <rect width="220" height="116" rx="20" fill="#F8FAFC" fill-opacity="0.92"/>
+    <text x="28" y="66" fill="#0F172A" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">DNS</text>
+  </g>
+  <g transform="translate(490 260)">
+    <rect width="220" height="116" rx="20" fill="#F8FAFC" fill-opacity="0.92"/>
+    <text x="28" y="66" fill="#0F172A" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">Proxy</text>
+  </g>
+  <g transform="translate(840 260)">
+    <rect width="220" height="116" rx="20" fill="#F8FAFC" fill-opacity="0.92"/>
+    <text x="28" y="66" fill="#0F172A" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">Services</text>
+  </g>
+  <path d="M360 318H490M710 318H840" stroke="#7DD3FC" stroke-width="8" stroke-linecap="round"/>
+  <path d="M462 296L492 318L462 340M812 296L842 318L812 340" stroke="#7DD3FC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="120" y="540" fill="#CBD5E1" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="600">Replace this placeholder with sanitized screenshots, diagrams, CAD renders, or project photos.</text>
+</svg>
