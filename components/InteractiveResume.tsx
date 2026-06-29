@@ -1,5 +1,5 @@
 "use client";
-
+//import the following modules
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Download, ExternalLink, Github, Linkedin, Mail, MousePointer2, X } from "lucide-react";
