@@ -1,0 +1,567 @@
+{
+  "person": {
+    "name": "Riley Beenders",
+    "title": "R&D Engineer | Additive Manufacturing | Product Development | Manufacturing Systems",
+    "location": "Bethlehem, PA",
+    "email": "you@example.com",
+    "phone": "(000) 000-0000",
+    "website": "https://yourdomain.com/resume",
+    "linkedin": "https://linkedin.com/in/your-profile",
+    "github": "https://github.com/your-username"
+  },
+  "summary": "Engineer focused on additive manufacturing, product development, manufacturing systems, automation, and practical engineering tools that improve production visibility and execution. This starter copy is intentionally sanitized. Replace with final resume language before publishing.",
+  "resumePdfPath": "/resume.pdf",
+  "proofModeLabel": "Proof Mode",
+  "skills": [
+    {
+      "category": "Engineering",
+      "items": [
+        "Product development",
+        "R&D testing",
+        "Manufacturing process ownership",
+        "BOM development",
+        "Supplier coordination",
+        "Technical documentation"
+      ]
+    },
+    {
+      "category": "Design & CAD",
+      "items": [
+        "SolidWorks",
+        "Fusion 360",
+        "DFM",
+        "Rapid prototyping",
+        "MJF / SLS design considerations",
+        "Fixture design"
+      ]
+    },
+    {
+      "category": "Controls & Software",
+      "items": [
+        "LabVIEW",
+        "Printer control macros",
+        "Internal production tools",
+        "Data logging",
+        "Automation workflows",
+        "GitHub"
+      ]
+    },
+    {
+      "category": "Infrastructure",
+      "items": [
+        "Proxmox",
+        "Linux",
+        "Self-hosting",
+        "Reverse proxy concepts",
+        "Domain-based access",
+        "Homelab systems"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "PROTEOR Printing Solutions / PROTEOR Digital",
+      "role": "R&D Engineer",
+      "location": "United States / Global Collaboration",
+      "start": "2025",
+      "end": "Present",
+      "context": "Company transition followed an acquisition. Title and operating scope should be adjusted to match the final resume.",
+      "bullets": [
+        {
+          "text": "Led development and production release support for a new additive manufacturing product line, connecting design, testing, supplier coordination, documentation, and manufacturing execution.",
+          "proofId": "product-line"
+        },
+        {
+          "text": "Built practical shop-floor tools and workflows to improve production visibility, reduce ambiguity, and support repeatable manufacturing processes.",
+          "proofId": "production-visibility"
+        },
+        {
+          "text": "Owned technical problem-solving across printer systems, control logic, documentation, production feedback, and cross-functional implementation.",
+          "proofId": "printer-controls"
+        },
+        {
+          "text": "Collaborated across U.S. and European stakeholders to support product rollout, training, and manufacturing process alignment.",
+          "proofId": "global-rollout"
+        }
+      ]
+    },
+    {
+      "company": "Original Company Name Before Acquisition",
+      "role": "Engineering / Product Development Role",
+      "location": "United States",
+      "start": "2020",
+      "end": "2025",
+      "context": "Use this slot to show continuity before acquisition without making the resume feel like two unrelated roles.",
+      "bullets": [
+        {
+          "text": "Contributed to early-stage product development, manufacturing support, customer-driven engineering changes, and practical engineering execution in a small-company environment.",
+          "proofId": "early-stage"
+        },
+        {
+          "text": "Created technical documentation, supported product improvements, and helped bridge hands-on production needs with engineering design decisions.",
+          "proofId": "documentation"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Interactive Resume Platform",
+      "type": "Personal Portfolio System",
+      "summary": "A resume-shaped website that stays readable at rest and reveals proof-of-work artifacts through hover, motion, and expandable case studies.",
+      "proofId": "interactive-resume",
+      "bullets": [
+        {
+          "text": "Stores resume content in structured JSON so the site can eventually share a single content source with PDF generation.",
+          "proofId": "interactive-resume"
+        },
+        {
+          "text": "Uses progressive disclosure so recruiters can scan the resume quickly or inspect deeper evidence when interested.",
+          "proofId": "interactive-resume"
+        }
+      ]
+    },
+    {
+      "name": "Northstar Homelab / Local Infrastructure",
+      "type": "Infrastructure Project",
+      "summary": "Local server environment used for experimentation with hosting, orchestration, storage, and domain-access workflows.",
+      "proofId": "northstar",
+      "bullets": [
+        {
+          "text": "Designed as a practical engineering sandbox for self-hosted services, server infrastructure, and production-style deployment experiments.",
+          "proofId": "northstar"
+        }
+      ]
+    },
+    {
+      "name": "LabVIEW Control Utility",
+      "type": "Software / Controls Project",
+      "summary": "A LabVIEW-based program used to support testing, control, or engineering workflow execution. Replace with final non-proprietary details.",
+      "proofId": "labview",
+      "bullets": [
+        {
+          "text": "A LabVIEW-based program used to support testing, control, or engineering workflow execution. Replace with final non-proprietary details.",
+          "proofId": "labview"
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "Penn State University",
+      "degree": "Electro-Mechanical Engineering background",
+      "graduation": "2024"
+    }
+  ],
+  "proofs": [
+    {
+      "id": "product-line",
+      "title": "Product Development Evidence",
+      "summary": "Prototype-to-production story with visuals for system architecture, test planning, design constraints, and manufacturing handoff.",
+      "tags": [
+        "Product Development",
+        "R&D",
+        "Manufacturing"
+      ],
+      "caseStudyId": "product-development",
+      "assets": [
+        {
+          "label": "System Flow",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract product development system diagram"
+        }
+      ]
+    },
+    {
+      "id": "production-visibility",
+      "title": "Production Visibility Evidence",
+      "summary": "Example of how internal tools can make production status, ownership, and next actions easier to see.",
+      "tags": [
+        "Operations",
+        "Software",
+        "Process"
+      ],
+      "caseStudyId": "production-systems",
+      "assets": [
+        {
+          "label": "Workflow Map",
+          "src": "/project-artifacts/manufacturing-systems.svg",
+          "alt": "Abstract manufacturing visibility workflow diagram"
+        }
+      ]
+    },
+    {
+      "id": "printer-controls",
+      "title": "Controls / Automation Evidence",
+      "summary": "Representative control logic, logging, repeatability checks, and automation workflows for printer systems.",
+      "tags": [
+        "Controls",
+        "Automation",
+        "Testing"
+      ],
+      "caseStudyId": "printer-controls",
+      "assets": [
+        {
+          "label": "Control Stack",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract automation and control stack diagram"
+        }
+      ]
+    },
+    {
+      "id": "global-rollout",
+      "title": "Rollout / Training Evidence",
+      "summary": "Use this for sanitized training materials, implementation timelines, and stakeholder communication examples.",
+      "tags": [
+        "Training",
+        "Rollout",
+        "Documentation"
+      ],
+      "caseStudyId": "global-rollout",
+      "assets": [
+        {
+          "label": "Rollout Timeline",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract rollout timeline"
+        }
+      ]
+    },
+    {
+      "id": "early-stage",
+      "title": "Early-Stage Engineering Evidence",
+      "summary": "Small-team engineering execution, broad ownership, and rapid problem-solving examples.",
+      "tags": [
+        "Startup Environment",
+        "Engineering",
+        "Ownership"
+      ],
+      "assets": [
+        {
+          "label": "Build Cycle",
+          "src": "/project-artifacts/portfolio.svg",
+          "alt": "Abstract build cycle graphic"
+        }
+      ]
+    },
+    {
+      "id": "documentation",
+      "title": "Documentation Evidence",
+      "summary": "Examples of manuals, test reports, setup guides, SOPs, or technical instructions. Keep employer-sensitive material sanitized.",
+      "tags": [
+        "Documentation",
+        "SOP",
+        "Training"
+      ],
+      "assets": [
+        {
+          "label": "Document System",
+          "src": "/project-artifacts/portfolio.svg",
+          "alt": "Abstract documentation system graphic"
+        }
+      ]
+    },
+    {
+      "id": "interactive-resume",
+      "title": "Interactive Resume Platform",
+      "summary": "A site that looks like a resume at rest, then reveals visual depth through proof cards, 3D motion, and case-study drawers.",
+      "tags": [
+        "Next.js",
+        "Portfolio",
+        "Motion"
+      ],
+      "caseStudyId": "interactive-resume",
+      "assets": [
+        {
+          "label": "Portfolio System",
+          "src": "/project-artifacts/portfolio.svg",
+          "alt": "Abstract interactive resume architecture"
+        }
+      ]
+    },
+    {
+      "id": "northstar",
+      "title": "Northstar Infrastructure Evidence",
+      "summary": "Homelab architecture, service layout, networking decisions, and self-hosting experiments.",
+      "tags": [
+        "Proxmox",
+        "Linux",
+        "Hosting"
+      ],
+      "caseStudyId": "northstar",
+      "assets": [
+        {
+          "label": "Infrastructure Map",
+          "src": "/project-artifacts/northstar-infra.svg",
+          "alt": "Abstract homelab infrastructure diagram"
+        }
+      ]
+    },
+    {
+      "id": "labview",
+      "title": "LabVIEW Utility Evidence",
+      "summary": "Show screenshots, architecture notes, user flow, and technical purpose without exposing private company data.",
+      "tags": [
+        "LabVIEW",
+        "Controls",
+        "Software"
+      ],
+      "caseStudyId": "labview",
+      "assets": [
+        {
+          "label": "LabVIEW System",
+          "src": "/project-artifacts/labview-control.svg",
+          "alt": "Abstract LabVIEW control utility diagram"
+        }
+      ]
+    }
+  ],
+  "caseStudies": [
+    {
+      "id": "product-development",
+      "title": "Product Development Case Study",
+      "subtitle": "From prototype to repeatable production release",
+      "problem": "Translate a technical product concept into a manufacturable, supportable, and documented product line while balancing engineering constraints, supplier coordination, and production feedback.",
+      "constraints": [
+        "Protect proprietary visuals and data",
+        "Support repeatable manufacturing",
+        "Keep documentation usable by technicians",
+        "Balance cost, performance, and serviceability"
+      ],
+      "approach": [
+        "Mapped the product architecture and key design interfaces",
+        "Converted test findings into design and process changes",
+        "Built documentation around technician workflows",
+        "Coordinated feedback loops between engineering, suppliers, and production"
+      ],
+      "impact": [
+        "Created a clearer path from prototype work to production execution",
+        "Improved consistency of manufacturing handoff",
+        "Established a story that can be safely shown as sanitized portfolio evidence"
+      ],
+      "tools": [
+        "CAD",
+        "BOM",
+        "Test planning",
+        "Documentation",
+        "Supplier coordination"
+      ],
+      "assets": [
+        {
+          "label": "System Flow",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract product development system diagram"
+        }
+      ]
+    },
+    {
+      "id": "production-systems",
+      "title": "Manufacturing Systems Case Study",
+      "subtitle": "Production visibility and repeatable execution",
+      "problem": "Production teams need clear status, ownership, and next-action visibility without adding unnecessary administrative drag.",
+      "constraints": [
+        "Must be simple enough for daily use",
+        "Should support real shop-floor behavior",
+        "Must avoid becoming another unused dashboard"
+      ],
+      "approach": [
+        "Identified the decisions that caused delay or ambiguity",
+        "Designed lightweight tracking around production flow",
+        "Connected visual status to specific actions and owners"
+      ],
+      "impact": [
+        "Improved visibility into work state",
+        "Reduced ambiguity around next steps",
+        "Created a scalable foundation for more structured production systems"
+      ],
+      "tools": [
+        "Internal software",
+        "Workflow mapping",
+        "Manufacturing process design"
+      ],
+      "assets": [
+        {
+          "label": "Workflow Map",
+          "src": "/project-artifacts/manufacturing-systems.svg",
+          "alt": "Abstract manufacturing workflow map"
+        }
+      ]
+    },
+    {
+      "id": "printer-controls",
+      "title": "Printer Controls / Automation Case Study",
+      "subtitle": "Control logic, logging, and repeatability workflows",
+      "problem": "Printer systems require practical control workflows, repeatability checks, logging, and technician-friendly procedures to support reliable operation.",
+      "constraints": [
+        "Must work with real machine behavior",
+        "Must be diagnosable",
+        "Should be documented for future users",
+        "Needs to support testing without excessive manual overhead"
+      ],
+      "approach": [
+        "Created representative macro and logging workflows",
+        "Documented expected behavior and failure states",
+        "Connected testing outputs to actionable engineering decisions"
+      ],
+      "impact": [
+        "Improved technical clarity",
+        "Reduced repeat manual work",
+        "Created reusable engineering artifacts"
+      ],
+      "tools": [
+        "Printer firmware",
+        "Macros",
+        "Data logging",
+        "Test procedures"
+      ],
+      "assets": [
+        {
+          "label": "Control Stack",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract automation stack"
+        }
+      ]
+    },
+    {
+      "id": "global-rollout",
+      "title": "Rollout / Training Case Study",
+      "subtitle": "Cross-site implementation support",
+      "problem": "A product or process is only useful if it can be implemented, trained, and supported across teams with different contexts.",
+      "constraints": [
+        "Multiple stakeholders",
+        "Different regional practices",
+        "Need for clear documentation",
+        "Need for practical support paths"
+      ],
+      "approach": [
+        "Converted technical detail into role-specific training material",
+        "Used implementation feedback to refine documentation",
+        "Maintained alignment between engineering intent and production reality"
+      ],
+      "impact": [
+        "Improved adoption readiness",
+        "Reduced knowledge gaps",
+        "Supported a cleaner implementation path"
+      ],
+      "tools": [
+        "Training material",
+        "Documentation",
+        "Stakeholder management"
+      ],
+      "assets": [
+        {
+          "label": "Rollout Timeline",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract rollout timeline"
+        }
+      ]
+    },
+    {
+      "id": "interactive-resume",
+      "title": "Interactive Resume Platform Case Study",
+      "subtitle": "Flat resume at rest, dimensional proof layer on interaction",
+      "problem": "A standard resume is useful for screening, but it does not show proof, process, visuals, or systems thinking unless someone already knows to ask for it.",
+      "constraints": [
+        "Must stay readable",
+        "Must not feel gimmicky",
+        "Must be fast",
+        "Must work on desktop and mobile",
+        "Should preserve ATS resume as the source of truth"
+      ],
+      "approach": [
+        "Stored content in structured JSON",
+        "Mirrored the PDF resume layout",
+        "Added proof cards, case-study drawers, and subtle 3D movement",
+        "Kept major interactions optional"
+      ],
+      "impact": [
+        "Creates a strong launchpad for a personal engineering portfolio",
+        "Lets recruiters inspect evidence at their chosen depth",
+        "Maintains professional readability"
+      ],
+      "tools": [
+        "Next.js",
+        "React",
+        "Framer Motion",
+        "Structured JSON"
+      ],
+      "assets": [
+        {
+          "label": "Portfolio Architecture",
+          "src": "/project-artifacts/portfolio.svg",
+          "alt": "Interactive resume architecture graphic"
+        }
+      ]
+    },
+    {
+      "id": "northstar",
+      "title": "Northstar Infrastructure Case Study",
+      "subtitle": "Self-hosted systems and infrastructure experimentation",
+      "problem": "Hands-on infrastructure projects provide a place to test deployment, hosting, networking, storage, and service-management decisions outside of employer systems.",
+      "constraints": [
+        "Must be maintainable",
+        "Should support multiple services",
+        "Needs clean domain routing",
+        "Should document lessons learned"
+      ],
+      "approach": [
+        "Mapped services and nodes",
+        "Separated public-facing access from internal infrastructure",
+        "Documented design decisions and tradeoffs"
+      ],
+      "impact": [
+        "Demonstrates infrastructure ownership",
+        "Shows practical Linux/server experience",
+        "Supports future portfolio hosting and experiments"
+      ],
+      "tools": [
+        "Proxmox",
+        "Linux",
+        "DNS",
+        "Reverse proxy",
+        "Self-hosted services"
+      ],
+      "assets": [
+        {
+          "label": "Infrastructure Map",
+          "src": "/project-artifacts/northstar-infra.svg",
+          "alt": "Northstar infrastructure diagram"
+        }
+      ]
+    },
+    {
+      "id": "labview",
+      "title": "LabVIEW Control Utility Case Study",
+      "subtitle": "Engineering utility with controls-oriented workflow",
+      "problem": "Engineering teams often need focused internal utilities that solve a specific workflow problem faster than a large enterprise software process can.",
+      "constraints": [
+        "Must be easy to use",
+        "Should support repeatable testing",
+        "Needs clean operator flow",
+        "Cannot expose confidential details publicly"
+      ],
+      "approach": [
+        "Mapped the operator/user flow",
+        "Defined inputs, outputs, and failure states",
+        "Documented how the program supports engineering decisions"
+      ],
+      "impact": [
+        "Shows software initiative in an engineering context",
+        "Demonstrates controls-adjacent thinking",
+        "Creates a portfolio-safe case study once screenshots are sanitized"
+      ],
+      "tools": [
+        "LabVIEW",
+        "Controls",
+        "Test workflow",
+        "Documentation"
+      ],
+      "assets": [
+        {
+          "label": "LabVIEW System",
+          "src": "/project-artifacts/labview-control.svg",
+          "alt": "LabVIEW control utility diagram"
+        }
+      ]
+    }
+  ]
+}
