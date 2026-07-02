@@ -16,53 +16,63 @@
     {
       "category": "Engineering",
       "items": [
-        "Product development",
-        "R&D testing",
-        "Manufacturing process ownership",
-        "BOM development",
-        "Supplier coordination",
-        "Technical documentation"
+        "Product Development and Commercialization",
+        "Product Safety and Regulatory Compliance",
+        "R&D Prototyping & Validation",
+        "Production Workflow Optimization",
+        "Engineering Documentation and BOM Control",
+        "Vendor Communication and Cost Negotiation",
+        "Technical Writing and Documentation",
+        "Electrical Layout and Schematic Design"
       ]
     },
     {
       "category": "Design & CAD",
       "items": [
         "SolidWorks",
+        "CATIA",
+        "Siemens NX",
+        "Autodesk Inventor",
         "Fusion 360",
-        "DFM",
-        "Rapid prototyping",
-        "MJF / SLS design considerations",
-        "Fixture design"
+        "Design for Manufacturing",
+        "FDM, FGF, MJF, and SLS Design",
+        "Rapid Prototyping",
+        "Fixture and Tooling Design"
       ]
     },
     {
-      "category": "Controls & Software",
+      "category": "Controls, Automation & Software",
       "items": [
-        "LabVIEW",
-        "Printer control macros",
-        "Internal production tools",
-        "Data logging",
-        "Automation workflows",
-        "GitHub"
+        "LabVIEW Development",
+        "MATLAB",
+        "Python",
+        "Data Logging and Process Analysis",
+        "Machine Control Macros",
+        "Manufacturing Software Tools",
+        "Workflow Automation",
+        "Git/GitHub Version Control"
       ]
     },
     {
-      "category": "Infrastructure",
+      "category": "Infrastructure & Systems",
       "items": [
-        "Proxmox",
-        "Linux",
-        "Self-hosting",
-        "Reverse proxy concepts",
-        "Domain-based access",
-        "Homelab systems"
+        "Self-Hosted Infrastructure",
+        "Windows/Linux Systems Administration",
+        "Proxmox Virtualization",
+        "Virtual Machine and Container Management",
+        "Server and Network Configuration",
+        "Reverse Proxy and Routing Concepts",
+        "Domain-Based Application Access",
+        "DNS and Subdomain Configuration",
+        "Docker and Containerized Applications"
       ]
     }
   ],
   "experience": [
     {
-      "company": "PROTEOR Printing Solutions / PROTEOR Digital",
+      "company": "PROTEOR Digital",
       "role": "Lead, Research & Developer Engineer",
-      "location": "PA Based / Global Operations",
+      "location": "Pennsylvania-Based | Global Operations",
       "start": "January 2025",
       "end": "Present",
       "context": "Company transition followed an acquisition. Title and operating scope should be adjusted to match the final resume.",
