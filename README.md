@@ -41,6 +41,19 @@ npm install
 npm run dev
 ```
 
+If you are running these commands in Windows PowerShell and see `running scripts is disabled on this system`, use the command shim instead:
+
+```bash
+npm.cmd install
+npm.cmd run dev
+```
+
+If you want to keep using `npm` directly in PowerShell, run this once in an elevated terminal:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
 Then open:
 
 ```txt
