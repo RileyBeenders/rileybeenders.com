@@ -3,13 +3,13 @@
     "name": "Riley Beenders",
     "title": "R&D Engineer | Additive Manufacturing | Product Development | Manufacturing Systems",
     "location": "Bethlehem, PA",
-    "email": "you@example.com",
-    "phone": "(000) 000-0000",
-    "website": "https://yourdomain.com/resume",
-    "linkedin": "https://linkedin.com/in/your-profile",
-    "github": "https://github.com/your-username"
+    "email": "rileybeenders@gmail.com",
+    "phone": "(484)-523-4431",
+    "website": "https://rileybeenders.com",
+    "linkedin": "https://linkedin.com/in/riley-beenders",
+    "github": "https://github.com/RileyBeenders"
   },
-  "summary": "Engineer focused on additive manufacturing, product development, manufacturing systems, automation, and practical engineering tools that improve production visibility and execution. This starter copy is intentionally sanitized. Replace with final resume language before publishing.",
+  "summary": "Engineer focused on product development, manufacturing systems, automation, and practical engineering tools that improve production visibility and execution. This starter copy is intentionally sanitized. Replace with final resume language before publishing.",
   "resumePdfPath": "/resume.pdf",
   "proofModeLabel": "Proof Mode",
   "skills": [
@@ -61,9 +61,9 @@
   "experience": [
     {
       "company": "PROTEOR Printing Solutions / PROTEOR Digital",
-      "role": "R&D Engineer",
-      "location": "United States / Global Collaboration",
-      "start": "2025",
+      "role": "Lead, Research & Developer Engineer",
+      "location": "PA Based / Global Operations",
+      "start": "January 2025",
       "end": "Present",
       "context": "Company transition followed an acquisition. Title and operating scope should be adjusted to match the final resume.",
       "bullets": [
