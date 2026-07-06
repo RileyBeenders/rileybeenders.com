@@ -9,7 +9,7 @@
     "linkedin": "https://linkedin.com/in/riley-beenders",
     "github": "https://github.com/RileyBeenders"
   },
-  "summary": "Engineer focused on product development, manufacturing systems, automation, and practical engineering tools that improve production visibility and execution. This starter copy is intentionally sanitized. Replace with final resume language before publishing.",
+  "summary": "Engineering professional with a track record of developing market-ready products, improving manufacturing systems, and leading technical initiatives across global teams. Skilled in bridging design, production, software, and operations to deliver practical engineering results.",
   "resumePdfPath": "/resume.pdf",
   "proofModeLabel": "Proof Mode",
   "skills": [
@@ -34,6 +34,7 @@
         "Siemens NX",
         "Autodesk Inventor",
         "Fusion 360",
+        "Visual Studio Code",
         "Design for Manufacturing",
         "FDM, FGF, MJF, and SLS Design",
         "Rapid Prototyping",
@@ -70,19 +71,18 @@
   ],
   "experience": [
     {
-      "company": "PROTEOR Digital",
+      "company": "PROTEOR Digital, formerly Filament Innovations",
       "role": "Lead, Research & Developer Engineer",
-      "location": "Pennsylvania-Based | Global Operations",
+      "location": "Whitehall, PA | Global Operations",
       "start": "January 2025",
       "end": "Present",
-      "context": "Company transition followed an acquisition. Title and operating scope should be adjusted to match the final resume.",
       "bullets": [
         {
-          "text": "Led development and production release support for a new additive manufacturing product line, connecting design, testing, supplier coordination, documentation, and manufacturing execution.",
-          "proofId": "product-line"
+          "text": "Designed and brought a market-ready manufacturing product from concept to production. Supporting mechanical design, global supplier coordination, prototyping, testing, documentation, and post-release technical support.",
+          "proofId": "ICARUS-Lite"
         },
         {
-          "text": "Built practical shop-floor tools and workflows to improve production visibility, reduce ambiguity, and support repeatable manufacturing processes.",
+          "text": "Developed an automated LabVIEW data collection system that gathers high-speed process data from multiple Modbus-connected devices, generates real-time tolerance charts, and displays live production insights for operators and management in a manufacturing environment.",
           "proofId": "production-visibility"
         },
         {
@@ -165,7 +165,7 @@
   ],
   "proofs": [
     {
-      "id": "product-line",
+      "id": "ICARUS-Lite",
       "title": "Product Development Evidence",
       "summary": "Prototype-to-production story with visuals for system architecture, test planning, design constraints, and manufacturing handoff.",
       "tags": [
