@@ -48,7 +48,51 @@ export type CaseStudy = {
   assets: ProofAsset[];
 };
 
+export type ComingSoonAction = {
+  label: string;
+  href: string;
+};
+
+export type ComingSoonStatus = {
+  label: string;
+  value: string;
+  note: string;
+};
+
+export type ComingSoonTeaser = {
+  eyebrow: string;
+  title: string;
+  summary: string;
+};
+
+export type ComingSoonChecklistItem = {
+  label: string;
+  detail: string;
+};
+
+export type ComingSoonLaunchSignal = {
+  charge: number;
+  currentTask: string;
+  targetLaunchDate: string;
+};
+
+export type ComingSoonContent = {
+  badge: string;
+  headline: string;
+  subheadline: string;
+  summary: string;
+  availability: string;
+  launchSignal: ComingSoonLaunchSignal;
+  primaryAction?: ComingSoonAction;
+  secondaryAction?: ComingSoonAction;
+  statusBoard: ComingSoonStatus[];
+  teasers: ComingSoonTeaser[];
+  checklist: ComingSoonChecklistItem[];
+  signals: string[];
+};
+
 export type ResumeData = {
+  siteMode?: "resume" | "coming-soon";
   person: {
     name: string;
     title: string;
@@ -62,6 +106,7 @@ export type ResumeData = {
   summary: string;
   resumePdfPath: string;
   proofModeLabel: string;
+  comingSoon?: ComingSoonContent;
   skills: {
     category: string;
     items: string[];
