@@ -18,6 +18,13 @@ export type ResumeBullet = {
   proofId?: string;
 };
 
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+  fit?: "cover" | "contain";
+};
+
 export type Experience = {
   company: string;
   role: string;
@@ -33,7 +40,9 @@ export type Project = {
   type: string;
   summary: string;
   bullets: ResumeBullet[];
+  order?: number;
   proofId?: string;
+  images?: ProjectImage[];
 };
 
 export type CaseStudy = {

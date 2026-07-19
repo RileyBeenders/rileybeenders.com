@@ -384,8 +384,166 @@ img {
 }
 
 .project-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #2563eb;
   margin-bottom: 10px;
+}
+
+.project-order {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  min-height: 24px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: white;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .03em;
+}
+
+.project-gallery {
+  position: relative;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #dbe4ee;
+}
+
+.project-gallery-carousel {
+  aspect-ratio: 4 / 3;
+}
+
+.project-gallery-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(15, 23, 42, .12);
+  background: #dbe4ee;
+  color: white;
+  cursor: zoom-in;
+  isolation: isolate;
+}
+
+.project-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.project-gallery-item-contain img {
+  object-fit: contain;
+  background: #f8fafc;
+}
+
+.project-gallery-item:hover img {
+  transform: scale(1.035);
+}
+
+.project-gallery-item:focus-visible,
+.image-lightbox button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.project-gallery-caption {
+  position: absolute;
+  right: 72px;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  padding: 28px 12px 10px;
+  background: linear-gradient(to top, rgba(2, 6, 23, .82), transparent);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.project-gallery-caption > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-gallery-expand {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 999px;
+  background: rgba(2, 6, 23, .62);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+
+.project-gallery-progress {
+  position: absolute;
+  right: 11px;
+  bottom: 11px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, .78);
+  color: white;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, .32);
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+}
+
+.project-gallery-progress svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.project-gallery-progress circle {
+  fill: none;
+  stroke-width: 3;
+}
+
+.project-gallery-progress-track {
+  stroke: rgba(255, 255, 255, .24);
+}
+
+.project-gallery-progress-indicator {
+  stroke: var(--accent-2);
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation-name: project-gallery-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.project-gallery-progress > span {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+@keyframes project-gallery-progress {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .text-button {
@@ -592,6 +750,156 @@ img {
   margin-top: 0;
 }
 
+.image-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(2, 6, 23, .86);
+  backdrop-filter: blur(14px);
+}
+
+.image-lightbox {
+  width: min(1100px, 100%);
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 24px;
+  background: #071019;
+  color: var(--white);
+  box-shadow: 0 30px 110px rgba(0, 0, 0, .62);
+}
+
+.image-lightbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(148, 163, 184, .18);
+}
+
+.image-lightbox-header h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -.04em;
+}
+
+.image-lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.image-lightbox-actions button,
+.image-lightbox-nav {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, .24);
+  background: rgba(15, 23, 42, .78);
+  color: white;
+  cursor: pointer;
+}
+
+.image-lightbox-actions button {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+}
+
+.image-lightbox-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: min(68vh, 720px);
+  padding: 22px 76px;
+}
+
+.image-lightbox-stage figure {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+}
+
+.image-lightbox-stage img {
+  width: auto;
+  max-width: 100%;
+  max-height: min(62vh, 660px);
+  object-fit: contain;
+  border-radius: 16px;
+  background: #f8fafc;
+  box-shadow: 0 16px 55px rgba(0, 0, 0, .30);
+}
+
+.image-lightbox-stage figcaption {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.image-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.image-lightbox-nav:hover,
+.image-lightbox-actions button:hover {
+  background: rgba(37, 99, 235, .90);
+}
+
+.image-lightbox-nav-previous {
+  left: 18px;
+}
+
+.image-lightbox-nav-next {
+  right: 18px;
+}
+
+.image-lightbox-thumbnails {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 14px 22px 20px;
+  border-top: 1px solid rgba(148, 163, 184, .18);
+}
+
+.image-lightbox-thumbnails button {
+  flex: 0 0 82px;
+  width: 82px;
+  height: 62px;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: #f8fafc;
+  opacity: .58;
+  cursor: pointer;
+}
+
+.image-lightbox-thumbnails button.is-active {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.image-lightbox-thumbnails img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @media (max-width: 1000px) {
   .resume-paper,
   .hero-card {
@@ -636,5 +944,33 @@ img {
 
   .hero-card h1 {
     letter-spacing: -.05em;
+  }
+
+  .image-lightbox-backdrop {
+    padding: 0;
+  }
+
+  .image-lightbox {
+    min-height: 100vh;
+    max-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .image-lightbox-header {
+    padding: 16px;
+  }
+
+  .image-lightbox-stage {
+    min-height: 70vh;
+    padding: 18px 52px;
+  }
+
+  .image-lightbox-nav-previous {
+    left: 8px;
+  }
+
+  .image-lightbox-nav-next {
+    right: 8px;
   }
 }

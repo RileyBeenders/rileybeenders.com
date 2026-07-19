@@ -1,7 +1,8 @@
 {
+  "siteMode": "coming-soon",
   "person": {
     "name": "Riley Beenders",
-    "title": "R&D Engineer | Additive Manufacturing | Product Development | Manufacturing Systems",
+    "title": "Engineering portfolio under development",
     "location": "Bethlehem, PA",
     "email": "rileybeenders@gmail.com",
     "phone": "(484)-523-4431",
@@ -9,567 +10,973 @@
     "linkedin": "https://linkedin.com/in/riley-beenders",
     "github": "https://github.com/RileyBeenders"
   },
-  "summary": "Engineering professional with a track record of developing market-ready products, improving manufacturing systems, and leading technical initiatives across global teams. Skilled in bridging design, production, software, and operations to deliver practical engineering results.",
+  "summary": "RileyBeenders.com is under development and a fuller portfolio is on the way.",
   "resumePdfPath": "/resume.pdf",
   "proofModeLabel": "Proof Mode",
-  "skills": [
-    {
-      "category": "Engineering",
-      "items": [
-        "Product Development and Commercialization",
-        "Product Safety and Regulatory Compliance",
-        "R&D Prototyping & Validation",
-        "Production Workflow Optimization",
-        "Engineering Documentation and BOM Control",
-        "Vendor Communication and Cost Negotiation",
-        "Technical Writing and Documentation",
-        "Electrical Layout and Schematic Design"
-      ]
+  "comingSoon": {
+    "badge": "Under development",
+    "headline": "RileyBeenders.com",
+    "subheadline": "Is under development and coming soon.",
+    "summary": "A sharper portfolio is being assembled with project case studies, engineering writeups, homelab experiments, and a homepage that feels less like a placeholder.",
+    "availability": "While the full build is still on the bench, the controls below will at least give your mouse something useful to do.",
+    "launchSignal": {
+      "charge": 100,
+      "currentTask": "Building out the first pass of the homepage structure and refining the coming-soon experience.",
+      "targetLaunchDate": "Launch Date: July 12, 2026"
     },
-    {
-      "category": "Design & CAD",
-      "items": [
-        "SolidWorks",
-        "CATIA",
-        "Siemens NX",
-        "Autodesk Inventor",
-        "Fusion 360",
-        "Visual Studio Code",
-        "Design for Manufacturing",
-        "FDM, FGF, MJF, and SLS Design",
-        "Rapid Prototyping",
-        "Fixture and Tooling Design"
-      ]
-    },
-    {
-      "category": "Controls, Automation & Software",
-      "items": [
-        "LabVIEW Development",
-        "MATLAB",
-        "Python",
-        "Data Logging and Process Analysis",
-        "Machine Control Macros",
-        "Manufacturing Software Tools",
-        "Workflow Automation",
-        "Git/GitHub Version Control"
-      ]
-    },
-    {
-      "category": "Infrastructure & Systems",
-      "items": [
-        "Self-Hosted Infrastructure",
-        "Windows/Linux Systems Administration",
-        "Proxmox Virtualization",
-        "Virtual Machine and Container Management",
-        "Server and Network Configuration",
-        "Reverse Proxy and Routing Concepts",
-        "Domain-Based Application Access",
-        "DNS and Subdomain Configuration",
-        "Docker and Containerized Applications"
-      ]
-    }
-  ],
+    "statusBoard": [
+      {
+        "label": "Homepage shell",
+        "value": "Live",
+        "note": "Temporary signal page is online."
+      },
+      {
+        "label": "Project case studies",
+        "value": "Welding",
+        "note": "Real writeups are being assembled."
+      },
+      {
+        "label": "Homelab section",
+        "value": "Queued",
+        "note": "Infra notes and diagrams are next in line."
+      },
+      {
+        "label": "Resume refresh",
+        "value": "Polishing",
+        "note": "A cleaner public-facing version is in progress."
+      }
+    ],
+    "teasers": [
+      {
+        "eyebrow": "Preview 01",
+        "title": "Engineering case studies with actual substance",
+        "summary": "The next version will break down product development, manufacturing systems, controls work, and the decisions behind them instead of dumping a generic resume on the page."
+      },
+      {
+        "eyebrow": "Preview 02",
+        "title": "Homelab and infrastructure experiments",
+        "summary": "Expect service maps, hosting notes, self-hosted tooling, and the infrastructure behind the projects that deserve their own corner of the site."
+      },
+      {
+        "eyebrow": "Preview 03",
+        "title": "Interactive project pages",
+        "summary": "The permanent site will keep some motion and exploration, but with a clearer purpose: better storytelling, cleaner navigation, and less placeholder energy."
+      },
+      {
+        "eyebrow": "Preview 04",
+        "title": "Resume refresh and launch polish",
+        "summary": "A cleaner public-facing resume path is being tuned up so the site feels intentional when the full version goes live."
+      }
+    ],
+    "checklist": [
+      {
+        "label": "Inspect the launch board",
+        "detail": "Each status tile shifts the preview panel."
+      },
+      {
+        "label": "Boost the signal",
+        "detail": "The meter climbs and rotates the live note."
+      },
+      {
+        "label": "Tap through the previews",
+        "detail": "Three hints at what the full site is heading toward."
+      }
+    ],
+    "signals": [
+      "Signal stable. The real homepage is still in fabrication.",
+      "Static reduced. Another piece of the portfolio just snapped into place.",
+      "Preview channel open. Case studies are closer than they were a second ago.",
+      "Build bench still active. More structure, fewer placeholders."
+    ]
+  },
+  "skills": [],
   "experience": [
     {
-      "company": "PROTEOR Digital, formerly Filament Innovations",
-      "role": "Lead, Research & Developer Engineer",
-      "location": "Whitehall, PA | Global Operations",
+      "company": "PROTEOR",
+      "role": "Research & Development Engineer",
+      "location": "Coplay, PA",
       "start": "January 2025",
       "end": "Present",
+      "context": "Following PROTEOR's acquisition of Filament Innovations, expanded additive-manufacturing engineering work to global product innovation, automation, and standardization.",
       "bullets": [
         {
-          "text": "Designed and brought a market-ready manufacturing product from concept to production. Supporting mechanical design, global supplier coordination, prototyping, testing, documentation, and post-release technical support.",
-          "proofId": "ICARUS-Lite"
+          "text": "Serve as the sole engineer in the additive manufacturing department, responsible for the hardware, electronics, motion-control systems, and software used across the product line.",
+          "proofId": "linear-motion-platform"
         },
         {
-          "text": "Developed an automated LabVIEW data collection system that gathers high-speed process data from multiple Modbus-connected devices, generates real-time tolerance charts, and displays live production insights for operators and management in a manufacturing environment.",
-          "proofId": "production-visibility"
+          "text": "Converted the POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving 4-micron precision while moving a 30 kg assembly at 4 m/s.",
+          "proofId": "linear-motion-platform"
         },
         {
-          "text": "Owned technical problem-solving across printer systems, control logic, documentation, production feedback, and cross-functional implementation.",
-          "proofId": "printer-controls"
+          "text": "Designed and released ICARUS-Lite, a compact, purpose-built printer for prosthetic and orthotic manufacturing, including a 120/240 VAC electrical design and changes supporting CE machinery-directive conformity.",
+          "proofId": "icarus-lite"
         },
         {
-          "text": "Collaborated across U.S. and European stakeholders to support product rollout, training, and manufacturing process alignment.",
-          "proofId": "global-rollout"
+          "text": "Developed an automated LabVIEW system that collects nine data points every 100 ms from multiple laser sensors over Modbus and charts tolerance data for end-customer use.",
+          "proofId": "labview-metrology"
+        },
+        {
+          "text": "Integrated a strain-gauge Z-probing system that automates first-layer calibration through the machine's print head with enough sensitivity to detect contact with an egg without cracking it.",
+          "proofId": "strain-gauge-probing"
+        },
+        {
+          "text": "Contributed to PROTEOR Print, a network-accessible remote operation and diagnostics interface with live video, AI-assisted print-failure alerts, and material, waste, and outcome metrics.",
+          "proofId": "proteor-print"
         }
       ]
     },
     {
-      "company": "Original Company Name Before Acquisition",
-      "role": "Engineering / Product Development Role",
-      "location": "United States",
-      "start": "2020",
-      "end": "2025",
-      "context": "Use this slot to show continuity before acquisition without making the resume feel like two unrelated roles.",
+      "company": "Filament Innovations",
+      "role": "Chief Technology Officer",
+      "location": "Whitehall, PA",
+      "start": "January 2023",
+      "end": "January 2025",
       "bullets": [
         {
-          "text": "Contributed to early-stage product development, manufacturing support, customer-driven engineering changes, and practical engineering execution in a small-company environment.",
-          "proofId": "early-stage"
+          "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
+          "proofId": "gen3-poseidon"
         },
         {
-          "text": "Created technical documentation, supported product improvements, and helped bridge hands-on production needs with engineering design decisions.",
-          "proofId": "documentation"
+          "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
+          "proofId": "gen3-poseidon"
+        },
+        {
+          "text": "Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM for orders, inventory, tasks, projects, and customer interactions, with dynamic BOM generation linked to purchasing.",
+          "proofId": "internal-erp"
+        },
+        {
+          "text": "Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.",
+          "proofId": "nonplanar-research"
+        }
+      ]
+    },
+    {
+      "company": "Filament Innovations",
+      "role": "Lead Electro-Mechanical Engineer",
+      "location": "Whitehall, PA",
+      "start": "June 2022",
+      "end": "January 2023",
+      "bullets": [
+        {
+          "text": "Improved thermal and acoustic performance through enclosure redesign and component placement, including custom tooling with local fabricators for large-radius aluminum-panel bends.",
+          "proofId": "modular-controls"
+        },
+        {
+          "text": "Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging while supporting larger, modular machines.",
+          "proofId": "modular-controls"
+        },
+        {
+          "text": "Developed independently testable electronics enclosures that could be installed in minutes and coordinated custom harnesses, panel designs, and hardware improvements with vendors.",
+          "proofId": "modular-controls"
+        }
+      ]
+    },
+    {
+      "company": "Filament Innovations",
+      "role": "Industrial Engineer",
+      "location": "Whitehall, PA",
+      "start": "April 2021",
+      "end": "June 2022",
+      "bullets": [
+        {
+          "text": "Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.",
+          "proofId": "kratos"
+        },
+        {
+          "text": "Developed next-generation ICARUS and POSEIDON models with higher-performance components and expanded motion safety through NEMA 34 motors, planetary gearboxes, and power-failure brakes.",
+          "proofId": "gen3-poseidon"
+        },
+        {
+          "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
+          "proofId": "kraken"
+        }
+      ]
+    },
+    {
+      "company": "Filament Innovations",
+      "role": "Engineering Technician",
+      "location": "Whitehall, PA",
+      "start": "May 2020",
+      "end": "April 2021",
+      "bullets": [
+        {
+          "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.",
+          "proofId": "product-reliability"
+        },
+        {
+          "text": "Tuned, calibrated, and optimized print parameters while documenting design limitations and opportunities for product improvement.",
+          "proofId": "product-reliability"
+        }
+      ]
+    },
+    {
+      "company": "RJB.Engineering",
+      "role": "Owner & Engineering Consultant",
+      "location": "Pennsylvania",
+      "start": "2015",
+      "end": "Present",
+      "bullets": [
+        {
+          "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",
+          "proofId": "rjb-engineering"
+        },
+        {
+          "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
+          "proofId": "rjb-engineering"
+        }
+      ]
+    },
+    {
+      "company": "Blue Mountain Ski Resort",
+      "role": "Ski Lift Operator",
+      "location": "Palmerton, PA",
+      "start": "November 2019",
+      "end": "January 2021",
+      "bullets": [
+        {
+          "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information.",
+          "proofId": "ski-lift-systems"
+        },
+        {
+          "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns.",
+          "proofId": "ski-lift-systems"
+        }
+      ]
+    },
+    {
+      "company": "Northampton Area School District",
+      "role": "Computer / Network Technician",
+      "location": "Northampton, PA",
+      "start": "June 2016",
+      "end": "August 2019",
+      "bullets": [
+        {
+          "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings.",
+          "proofId": "school-network"
+        },
+        {
+          "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry.",
+          "proofId": "school-network"
+        },
+        {
+          "text": "Coordinated final device distribution with school administrators.",
+          "proofId": "school-network"
         }
       ]
     }
   ],
   "projects": [
     {
-      "name": "Interactive Resume Platform",
-      "type": "Personal Portfolio System",
-      "summary": "A resume-shaped website that stays readable at rest and reveals proof-of-work artifacts through hover, motion, and expandable case studies.",
-      "proofId": "interactive-resume",
+      "name": "Linear Motor Platform Standardization",
+      "order": 1,
+      "type": "Motion Control / Product Platform",
+      "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
+      "proofId": "linear-motion-platform",
       "bullets": [
         {
-          "text": "Stores resume content in structured JSON so the site can eventually share a single content source with PDF generation.",
-          "proofId": "interactive-resume"
+          "text": "Replaced servo-driven ballscrew assemblies and demonstrated 4-micron precision with a 30 kg moving mass at 4 m/s.",
+          "proofId": "linear-motion-platform"
         },
         {
-          "text": "Uses progressive disclosure so recruiters can scan the resume quickly or inspect deeper evidence when interested.",
-          "proofId": "interactive-resume"
+          "text": "Unified product architecture and created swappable mounts to reduce support complexity and make future scaling easier.",
+          "proofId": "linear-motion-platform"
         }
       ]
     },
     {
-      "name": "Northstar Homelab / Local Infrastructure",
-      "type": "Infrastructure Project",
-      "summary": "Local server environment used for experimentation with hosting, orchestration, storage, and domain-access workflows.",
-      "proofId": "northstar",
+      "name": "ICARUS-Lite",
+      "order": 2,
+      "type": "Additive Manufacturing Product",
+      "summary": "A compact, purpose-built professional printer designed to automate prosthetic and orthotic production with minimal customer setup.",
+      "images": [
+        {
+          "src": "/project-images/IcarusLiteRender.png",
+          "alt": "Three-quarter product render of the compact gray ICARUS-Lite additive manufacturing system",
+          "caption": "ICARUS-Lite product render",
+          "fit": "contain"
+        },
+        {
+          "src": "/project-images/IcarusLiteRender.png",
+          "alt": "Three-quarter product render of the compact gray ICARUS-Lite additive manufacturing system",
+          "caption": "ICARUS-Lite product render",
+          "fit": "contain"
+        }
+      ],
+      "proofId": "icarus-lite",
       "bullets": [
         {
-          "text": "Designed as a practical engineering sandbox for self-hosted services, server infrastructure, and production-style deployment experiments.",
-          "proofId": "northstar"
+          "text": "Designed a bolt-less shell with seamless chamfered geometry that carries the POSEIDON industrial-design language into a smaller platform.",
+          "proofId": "icarus-lite"
+        },
+        {
+          "text": "Created an IEEE-style electrical design adaptable to 120/240 VAC and completed product changes supporting conformity with the 2006/42/EC machinery directive.",
+          "proofId": "icarus-lite"
         }
       ]
     },
     {
-      "name": "LabVIEW Control Utility",
-      "type": "Software / Controls Project",
-      "summary": "A LabVIEW-based program used to support testing, control, or engineering workflow execution. Replace with final non-proprietary details.",
-      "proofId": "labview",
+      "name": "Automated LabVIEW Metrology System",
+      "order": 3,
+      "type": "Test Automation / Data Acquisition",
+      "summary": "An automated measurement utility that collects high-frequency laser-sensor data over Modbus and turns it into tolerance charts.",
+      "proofId": "labview-metrology",
       "bullets": [
         {
-          "text": "A LabVIEW-based program used to support testing, control, or engineering workflow execution. Replace with final non-proprietary details.",
-          "proofId": "labview"
+          "text": "Collected nine data points every 100 ms from multiple sensors without manual transcription.",
+          "proofId": "labview-metrology"
+        },
+        {
+          "text": "Generated charts that made dimensional tolerance results directly usable by the end customer.",
+          "proofId": "labview-metrology"
+        }
+      ]
+    },
+    {
+      "name": "PROTEOR Print",
+      "order": 4,
+      "type": "Remote Operations Software",
+      "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
+      "proofId": "proteor-print",
+      "bullets": [
+        {
+          "text": "Contributed engineering requirements and machine integration in collaboration with an external software partner.",
+          "proofId": "proteor-print"
+        },
+        {
+          "text": "Integrated live video, AI-assisted failure alerts, and tracking for material usage, waste, and print outcomes.",
+          "proofId": "proteor-print"
+        }
+      ]
+    },
+    {
+      "name": "Gen3 POSEIDON",
+      "order": 5,
+      "type": "Large-Format Additive Manufacturing System",
+      "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
+      "proofId": "gen3-poseidon",
+      "bullets": [
+        {
+          "text": "Combined a 1 m³ build volume with filament-and-pellet dual extrusion.",
+          "proofId": "gen3-poseidon"
+        },
+        {
+          "text": "Used braked NEMA 34 Z drives plus industrial-servo XY motion and a custom gantry.",
+          "proofId": "gen3-poseidon"
+        }
+      ]
+    },
+    {
+      "name": "THE KRAKEN",
+      "order": 6,
+      "type": "Custom Hybrid Additive Manufacturing System",
+      "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
+      "proofId": "kraken",
+      "bullets": [
+        {
+          "text": "Owned the lifecycle from CAD and scalable BOM development through sourcing, fabrication, assembly, and firmware tuning.",
+          "proofId": "kraken"
+        },
+        {
+          "text": "Extended delivery through customer support and operator training.",
+          "proofId": "kraken"
+        }
+      ]
+    },
+    {
+      "name": "Engineering Operations Platform",
+      "order": 7,
+      "type": "Internal Software / Infrastructure",
+      "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
+      "proofId": "internal-erp",
+      "bullets": [
+        {
+          "text": "Centralized orders, inventory, tasks, projects, and customer interactions in a self-developed system.",
+          "proofId": "internal-erp"
+        },
+        {
+          "text": "Automated dynamic BOM generation and linked design data directly to purchasing workflows.",
+          "proofId": "internal-erp"
+        }
+      ]
+    },
+    {
+      "name": "Modular CAN-Bus Controls Architecture",
+      "order": 8,
+      "type": "Electrical / Manufacturing System",
+      "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
+      "proofId": "modular-controls",
+      "bullets": [
+        {
+          "text": "Connected multiple control boards over CAN bus to support larger machines with cleaner wiring and easier debugging.",
+          "proofId": "modular-controls"
+        },
+        {
+          "text": "Packaged electronics into independently testable enclosures that could be installed in minutes.",
+          "proofId": "modular-controls"
         }
       ]
     }
   ],
-  "education": [
-    {
-      "school": "Penn State University",
-      "degree": "Electro-Mechanical Engineering background",
-      "graduation": "2024"
-    }
-  ],
+  "education": [],
   "proofs": [
     {
-      "id": "ICARUS-Lite",
-      "title": "Product Development Evidence",
-      "summary": "Prototype-to-production story with visuals for system architecture, test planning, design constraints, and manufacturing handoff.",
+      "id": "linear-motion-platform",
+      "title": "Linear Motion Platform",
+      "summary": "Converted two flagship large-format printers to a shared linear-motor architecture demonstrated at 4-micron precision, 4 m/s, and a 30 kg moving mass.",
+      "tags": [
+        "Linear Motors",
+        "Motion Control",
+        "Platform Standardization"
+      ],
+      "caseStudyId": "linear-motion-platform",
+      "assets": [
+        {
+          "label": "Motion Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a standardized motion-control architecture"
+        }
+      ]
+    },
+    {
+      "id": "icarus-lite",
+      "title": "ICARUS-Lite Product Development",
+      "summary": "Designed and released a compact professional printer for prosthetic and orthotic manufacturing, including industrial design, electrical architecture, and regulatory changes.",
       "tags": [
         "Product Development",
-        "R&D",
-        "Manufacturing"
+        "Additive Manufacturing",
+        "CE Conformity"
       ],
-      "caseStudyId": "product-development",
+      "caseStudyId": "icarus-lite",
       "assets": [
         {
-          "label": "System Flow",
+          "label": "Product Development Flow",
           "src": "/project-artifacts/product-development.svg",
-          "alt": "Abstract product development system diagram"
+          "alt": "Abstract product-development flow for the ICARUS-Lite printer"
         }
       ]
     },
     {
-      "id": "production-visibility",
-      "title": "Production Visibility Evidence",
-      "summary": "Example of how internal tools can make production status, ownership, and next actions easier to see.",
-      "tags": [
-        "Operations",
-        "Software",
-        "Process"
-      ],
-      "caseStudyId": "production-systems",
-      "assets": [
-        {
-          "label": "Workflow Map",
-          "src": "/project-artifacts/manufacturing-systems.svg",
-          "alt": "Abstract manufacturing visibility workflow diagram"
-        }
-      ]
-    },
-    {
-      "id": "printer-controls",
-      "title": "Controls / Automation Evidence",
-      "summary": "Representative control logic, logging, repeatability checks, and automation workflows for printer systems.",
-      "tags": [
-        "Controls",
-        "Automation",
-        "Testing"
-      ],
-      "caseStudyId": "printer-controls",
-      "assets": [
-        {
-          "label": "Control Stack",
-          "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract automation and control stack diagram"
-        }
-      ]
-    },
-    {
-      "id": "global-rollout",
-      "title": "Rollout / Training Evidence",
-      "summary": "Use this for sanitized training materials, implementation timelines, and stakeholder communication examples.",
-      "tags": [
-        "Training",
-        "Rollout",
-        "Documentation"
-      ],
-      "caseStudyId": "global-rollout",
-      "assets": [
-        {
-          "label": "Rollout Timeline",
-          "src": "/project-artifacts/product-development.svg",
-          "alt": "Abstract rollout timeline"
-        }
-      ]
-    },
-    {
-      "id": "early-stage",
-      "title": "Early-Stage Engineering Evidence",
-      "summary": "Small-team engineering execution, broad ownership, and rapid problem-solving examples.",
-      "tags": [
-        "Startup Environment",
-        "Engineering",
-        "Ownership"
-      ],
-      "assets": [
-        {
-          "label": "Build Cycle",
-          "src": "/project-artifacts/portfolio.svg",
-          "alt": "Abstract build cycle graphic"
-        }
-      ]
-    },
-    {
-      "id": "documentation",
-      "title": "Documentation Evidence",
-      "summary": "Examples of manuals, test reports, setup guides, SOPs, or technical instructions. Keep employer-sensitive material sanitized.",
-      "tags": [
-        "Documentation",
-        "SOP",
-        "Training"
-      ],
-      "assets": [
-        {
-          "label": "Document System",
-          "src": "/project-artifacts/portfolio.svg",
-          "alt": "Abstract documentation system graphic"
-        }
-      ]
-    },
-    {
-      "id": "interactive-resume",
-      "title": "Interactive Resume Platform",
-      "summary": "A site that looks like a resume at rest, then reveals visual depth through proof cards, 3D motion, and case-study drawers.",
-      "tags": [
-        "Next.js",
-        "Portfolio",
-        "Motion"
-      ],
-      "caseStudyId": "interactive-resume",
-      "assets": [
-        {
-          "label": "Portfolio System",
-          "src": "/project-artifacts/portfolio.svg",
-          "alt": "Abstract interactive resume architecture"
-        }
-      ]
-    },
-    {
-      "id": "northstar",
-      "title": "Northstar Infrastructure Evidence",
-      "summary": "Homelab architecture, service layout, networking decisions, and self-hosting experiments.",
-      "tags": [
-        "Proxmox",
-        "Linux",
-        "Hosting"
-      ],
-      "caseStudyId": "northstar",
-      "assets": [
-        {
-          "label": "Infrastructure Map",
-          "src": "/project-artifacts/northstar-infra.svg",
-          "alt": "Abstract homelab infrastructure diagram"
-        }
-      ]
-    },
-    {
-      "id": "labview",
-      "title": "LabVIEW Utility Evidence",
-      "summary": "Show screenshots, architecture notes, user flow, and technical purpose without exposing private company data.",
+      "id": "labview-metrology",
+      "title": "Automated LabVIEW Metrology",
+      "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
       "tags": [
         "LabVIEW",
-        "Controls",
-        "Software"
+        "Modbus",
+        "Data Acquisition"
       ],
-      "caseStudyId": "labview",
+      "caseStudyId": "labview-metrology",
       "assets": [
         {
-          "label": "LabVIEW System",
+          "label": "Measurement System",
           "src": "/project-artifacts/labview-control.svg",
-          "alt": "Abstract LabVIEW control utility diagram"
+          "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
+        }
+      ]
+    },
+    {
+      "id": "strain-gauge-probing",
+      "title": "Automated Z-Probing",
+      "summary": "Integrated a strain-gauge probing workflow through the print head for sensitive, intervention-free first-layer calibration.",
+      "tags": [
+        "Automation",
+        "Sensors",
+        "Calibration"
+      ],
+      "assets": [
+        {
+          "label": "Probe Control Loop",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract control-loop diagram for an automated probing system"
+        }
+      ]
+    },
+    {
+      "id": "proteor-print",
+      "title": "PROTEOR Print Integration",
+      "summary": "Contributed machine integration for a remote operations interface with diagnostics, live video, AI-assisted failure alerts, and production metrics.",
+      "tags": [
+        "Remote Operations",
+        "Machine Vision",
+        "Manufacturing Analytics"
+      ],
+      "caseStudyId": "proteor-print",
+      "assets": [
+        {
+          "label": "Remote Operations Flow",
+          "src": "/project-artifacts/manufacturing-systems.svg",
+          "alt": "Abstract workflow for remote machine operation and production analytics"
+        }
+      ]
+    },
+    {
+      "id": "gen3-poseidon",
+      "title": "Gen3 POSEIDON",
+      "summary": "Led the design and launch of a 1 m³ hybrid filament-and-pellet printer with braked Z drives, industrial-servo XY motion, and a custom gantry.",
+      "tags": [
+        "Machine Design",
+        "Hybrid Extrusion",
+        "Product Launch"
+      ],
+      "caseStudyId": "gen3-poseidon",
+      "assets": [
+        {
+          "label": "Machine Architecture",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract architecture diagram for a large-format hybrid printer"
+        }
+      ]
+    },
+    {
+      "id": "internal-erp",
+      "title": "Engineering Operations Platform",
+      "summary": "Built a redundant Kubernetes-hosted ERP/CRM and connected dynamic engineering BOMs to purchasing workflows.",
+      "tags": [
+        "Kubernetes",
+        "ERP / CRM",
+        "Workflow Automation"
+      ],
+      "caseStudyId": "internal-erp",
+      "assets": [
+        {
+          "label": "Platform Architecture",
+          "src": "/project-artifacts/northstar-infra.svg",
+          "alt": "Abstract infrastructure diagram for an internal engineering operations platform"
+        }
+      ]
+    },
+    {
+      "id": "nonplanar-research",
+      "title": "Advanced Motion Research",
+      "summary": "Evaluated high-speed linear motors and early 6-axis robotic non-planar printing, including motion trials and toolpath-generation work.",
+      "tags": [
+        "R&D",
+        "Robotics",
+        "Non-Planar Printing"
+      ],
+      "assets": [
+        {
+          "label": "Research Stack",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract research diagram for advanced robotic additive manufacturing"
+        }
+      ]
+    },
+    {
+      "id": "modular-controls",
+      "title": "Modular Controls Architecture",
+      "summary": "Combined CAN-bus controls, independently testable electronics enclosures, and supplier-coordinated harnesses to simplify machine assembly and diagnosis.",
+      "tags": [
+        "CAN Bus",
+        "Electrical Design",
+        "Design for Manufacturing"
+      ],
+      "caseStudyId": "modular-controls",
+      "assets": [
+        {
+          "label": "Controls Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
+        }
+      ]
+    },
+    {
+      "id": "kratos",
+      "title": "Kratos Prosthetic Printer",
+      "summary": "Designed and released a printer purpose-built for high-strength above-knee and below-knee prosthetic sockets.",
+      "tags": [
+        "Prosthetics",
+        "Product Design",
+        "Additive Manufacturing"
+      ],
+      "assets": [
+        {
+          "label": "Product Flow",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract product flow for a prosthetic-socket printing system"
+        }
+      ]
+    },
+    {
+      "id": "kraken",
+      "title": "THE KRAKEN",
+      "summary": "Delivered a 1 x 2 x 1.5 m hybrid pellet-and-filament printer through the complete lifecycle from CAD and sourcing to firmware, support, and training.",
+      "tags": [
+        "Large-Format Printing",
+        "Custom Machinery",
+        "Full-Lifecycle Delivery"
+      ],
+      "caseStudyId": "kraken",
+      "assets": [
+        {
+          "label": "Delivery Lifecycle",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract delivery lifecycle for a custom large-format printer"
+        }
+      ]
+    },
+    {
+      "id": "product-reliability",
+      "title": "Early Product Reliability Work",
+      "summary": "Diagnosed mechanical and electrical issues, tuned print behavior, and documented design limitations during the company's early product-development stage.",
+      "tags": [
+        "Troubleshooting",
+        "Calibration",
+        "Continuous Improvement"
+      ],
+      "assets": [
+        {
+          "label": "Reliability Loop",
+          "src": "/project-artifacts/manufacturing-systems.svg",
+          "alt": "Abstract feedback loop for machine reliability improvements"
+        }
+      ]
+    },
+    {
+      "id": "rjb-engineering",
+      "title": "Independent Engineering Work",
+      "summary": "Project-based automotive engineering support, 3D-printer accessory sales, and rapid production of 3D-printed face shields during the pandemic.",
+      "tags": [
+        "Consulting",
+        "Product Sales",
+        "Rapid Fabrication"
+      ],
+      "assets": [
+        {
+          "label": "Independent Work",
+          "src": "/project-artifacts/portfolio.svg",
+          "alt": "Abstract overview of independent engineering and fabrication work"
+        }
+      ]
+    },
+    {
+      "id": "ski-lift-systems",
+      "title": "Lift Operations & Safety",
+      "summary": "Combined high-volume guest operations with motor and control safety checks and hands-on maintenance support.",
+      "tags": [
+        "Safety",
+        "Controls",
+        "Field Support"
+      ],
+      "assets": [
+        {
+          "label": "Operations Flow",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract operations and safety-check workflow"
+        }
+      ]
+    },
+    {
+      "id": "school-network",
+      "title": "District Technology Deployment",
+      "summary": "Deployed more than 750 access points and accelerated setup of more than 2,500 Chromebooks with an Arduino-based automation tool.",
+      "tags": [
+        "Network Infrastructure",
+        "Deployment Automation",
+        "Arduino"
+      ],
+      "assets": [
+        {
+          "label": "Deployment Architecture",
+          "src": "/project-artifacts/northstar-infra.svg",
+          "alt": "Abstract network and device-deployment architecture"
         }
       ]
     }
   ],
   "caseStudies": [
     {
-      "id": "product-development",
-      "title": "Product Development Case Study",
-      "subtitle": "From prototype to repeatable production release",
-      "problem": "Translate a technical product concept into a manufacturable, supportable, and documented product line while balancing engineering constraints, supplier coordination, and production feedback.",
+      "id": "linear-motion-platform",
+      "title": "Linear Motor Platform Standardization",
+      "subtitle": "Higher-speed precision through a shared motion architecture",
+      "problem": "POSEIDON and ICARUS used servo-driven ballscrew assemblies that limited the opportunity to standardize service, mounts, and future performance across the product line.",
       "constraints": [
-        "Protect proprietary visuals and data",
-        "Support repeatable manufacturing",
-        "Keep documentation usable by technicians",
-        "Balance cost, performance, and serviceability"
+        "Move a 30 kg machine assembly",
+        "Support large-format printer geometries",
+        "Preserve precision at high travel speed",
+        "Keep mounts serviceable across products"
       ],
       "approach": [
-        "Mapped the product architecture and key design interfaces",
-        "Converted test findings into design and process changes",
-        "Built documentation around technician workflows",
-        "Coordinated feedback loops between engineering, suppliers, and production"
+        "Converted both flagship platforms to linear-motor assemblies",
+        "Unified the architecture between products",
+        "Designed easily swappable mounts",
+        "Validated speed and positional performance on the machine platforms"
       ],
       "impact": [
-        "Created a clearer path from prototype work to production execution",
-        "Improved consistency of manufacturing handoff",
-        "Established a story that can be safely shown as sanitized portfolio evidence"
+        "Achieved 4-micron precision at 4 m/s with a 30 kg moving mass",
+        "Reduced product-to-product architectural complexity",
+        "Created a more scalable foundation for support and future performance"
+      ],
+      "tools": [
+        "Linear motors",
+        "Motion control",
+        "Mechanical design",
+        "Precision testing"
+      ],
+      "assets": [
+        {
+          "label": "Motion Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a standardized motion-control architecture"
+        }
+      ]
+    },
+    {
+      "id": "icarus-lite",
+      "title": "ICARUS-Lite Product Development",
+      "subtitle": "Compact professional additive manufacturing for prosthetics and orthotics",
+      "problem": "Professional prosthetic and orthotic users needed a compact, purpose-built printer that retained industrial capability while being easier for a new customer to install and operate.",
+      "constraints": [
+        "Minimize setup and visual complexity",
+        "Preserve the POSEIDON product family's industrial-design language",
+        "Support 120 and 240 VAC supplies",
+        "Address CE machinery-directive requirements"
+      ],
+      "approach": [
+        "Designed a bolt-less shell with seamless chamfered geometry",
+        "Developed a plug-and-play customer workflow",
+        "Created a simplified IEEE-style electrical design",
+        "Implemented product changes supporting conformity with the 2006/42/EC machinery directive"
+      ],
+      "impact": [
+        "Released the company's most compact purpose-built printer at the time",
+        "Made professional-grade additive manufacturing accessible with minimal setup",
+        "Created a product focused on automating prosthetic and orthotic production"
       ],
       "tools": [
         "CAD",
-        "BOM",
-        "Test planning",
-        "Documentation",
+        "Industrial design",
+        "Electrical design",
+        "Design for manufacturing",
+        "Regulatory compliance"
+      ],
+      "assets": [
+        {
+          "label": "Product Development Flow",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract product-development flow for the ICARUS-Lite printer"
+        }
+      ]
+    },
+    {
+      "id": "labview-metrology",
+      "title": "Automated LabVIEW Metrology",
+      "subtitle": "High-frequency sensor collection translated into tolerance insight",
+      "problem": "Multiple laser-sensor readings needed to be collected consistently and transformed into a visual tolerance result that an end customer could use.",
+      "constraints": [
+        "Communicate with multiple sensors over Modbus",
+        "Collect nine data points every 100 ms",
+        "Remove manual data-collection steps",
+        "Present results as an understandable tolerance chart"
+      ],
+      "approach": [
+        "Built the acquisition workflow in LabVIEW",
+        "Connected and polled multiple laser sensors through Modbus",
+        "Structured the incoming readings for repeatable analysis",
+        "Generated charts showing the tolerance of the measured data"
+      ],
+      "impact": [
+        "Automated a previously manual measurement workflow",
+        "Delivered consistent high-frequency data collection",
+        "Made measurement tolerance visible to the end customer"
+      ],
+      "tools": [
+        "LabVIEW",
+        "Modbus",
+        "Laser sensors",
+        "Data acquisition",
+        "Tolerance analysis"
+      ],
+      "assets": [
+        {
+          "label": "Measurement System",
+          "src": "/project-artifacts/labview-control.svg",
+          "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
+        }
+      ]
+    },
+    {
+      "id": "proteor-print",
+      "title": "PROTEOR Print Integration",
+      "subtitle": "Remote machine operation, diagnosis, and production visibility",
+      "problem": "Users needed a single interface for remote printer operation and diagnosis, along with timely failure awareness and better visibility into manufacturing outcomes.",
+      "constraints": [
+        "Operate from any networked device",
+        "Coordinate development with an external software partner",
+        "Provide live machine visibility",
+        "Turn production events into usable metrics"
+      ],
+      "approach": [
+        "Contributed machine requirements and integration support",
+        "Enabled remote operation, diagnostics, and live video monitoring",
+        "Integrated machine vision with AI-assisted failure detection and alerts",
+        "Tracked material usage, waste, and print success or failure"
+      ],
+      "impact": [
+        "Extended machine access beyond a local control station",
+        "Improved awareness of print failures",
+        "Created data for analytics-driven operational decisions"
+      ],
+      "tools": [
+        "Machine integration",
+        "Remote interfaces",
+        "Machine vision",
+        "Manufacturing analytics",
+        "External partner collaboration"
+      ],
+      "assets": [
+        {
+          "label": "Remote Operations Flow",
+          "src": "/project-artifacts/manufacturing-systems.svg",
+          "alt": "Abstract workflow for remote machine operation and production analytics"
+        }
+      ]
+    },
+    {
+      "id": "gen3-poseidon",
+      "title": "Gen3 POSEIDON",
+      "subtitle": "Production-focused redesign of a large-format hybrid printer",
+      "problem": "The flagship large-format platform needed a new generation that combined hybrid extrusion capability, industrial motion hardware, safety, and a production-ready machine environment.",
+      "constraints": [
+        "Provide a 1 m³ build volume",
+        "Support both filament and pellet extrusion",
+        "Control a large custom gantry",
+        "Prevent uncontrolled Z-axis motion during power loss"
+      ],
+      "approach": [
+        "Led the mechanical, electrical, firmware, and system-level design",
+        "Specified NEMA 34 Z motors with mechanical brakes",
+        "Implemented industrial-servo XY motion",
+        "Integrated dual-extrusion capability into the custom gantry platform"
+      ],
+      "impact": [
+        "Launched the Gen3 version of the flagship POSEIDON platform",
+        "Combined a cubic-meter build volume with hybrid extrusion",
+        "Improved the system's production orientation and motion safety"
+      ],
+      "tools": [
+        "CAD",
+        "Servo motion",
+        "Machine design",
+        "Firmware",
+        "Hybrid extrusion"
+      ],
+      "assets": [
+        {
+          "label": "Machine Architecture",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract architecture diagram for a large-format hybrid printer"
+        }
+      ]
+    },
+    {
+      "id": "kraken",
+      "title": "THE KRAKEN",
+      "subtitle": "Full-lifecycle delivery of a custom hybrid gantry printer",
+      "problem": "A customer creating the world's largest 3D-printed statue needed a purpose-built machine with a 1 x 2 x 1.5 m working volume and both pellet and filament extrusion.",
+      "constraints": [
+        "Meet a customer-specific 1 x 2 x 1.5 m build envelope",
+        "Integrate pellet and filament extrusion on one gantry",
+        "Source and fabricate a one-off large machine",
+        "Prepare the customer to operate and support the delivered system"
+      ],
+      "approach": [
+        "Created the machine CAD and a scalable bill of materials",
+        "Sourced hardware and coordinated fabrication",
+        "Led assembly and firmware tuning",
+        "Provided customer support and training"
+      ],
+      "impact": [
+        "Delivered the custom hybrid gantry printer",
+        "Supported the customer's large-scale statue project",
+        "Carried ownership from concept through post-build customer enablement"
+      ],
+      "tools": [
+        "CAD",
+        "BOM management",
+        "Vendor sourcing",
+        "Fabrication",
+        "Firmware",
+        "Customer training"
+      ],
+      "assets": [
+        {
+          "label": "Delivery Lifecycle",
+          "src": "/project-artifacts/product-development.svg",
+          "alt": "Abstract delivery lifecycle for a custom large-format printer"
+        }
+      ]
+    },
+    {
+      "id": "internal-erp",
+      "title": "Engineering Operations Platform",
+      "subtitle": "Linking design data, business workflow, and resilient infrastructure",
+      "problem": "Orders, inventory, tasks, projects, customer interactions, engineering BOMs, and purchasing needed a connected internal system rather than separate manual workflows.",
+      "constraints": [
+        "Support several operational functions in one system",
+        "Keep the service available through redundant hosting",
+        "Generate bills of materials dynamically",
+        "Connect engineering output to purchasing activity"
+      ],
+      "approach": [
+        "Designed and hosted a redundant Kubernetes cluster",
+        "Developed an internal ERP/CRM around the company's workflows",
+        "Centralized operational records and project activity",
+        "Linked dynamic BOM generation directly to purchasing workflows"
+      ],
+      "impact": [
+        "Created a shared system for core business and engineering operations",
+        "Reduced separation between design decisions and purchasing execution",
+        "Established a more resilient foundation for internal software"
+      ],
+      "tools": [
+        "Kubernetes",
+        "ERP / CRM development",
+        "BOM automation",
+        "Infrastructure design",
+        "Workflow mapping"
+      ],
+      "assets": [
+        {
+          "label": "Platform Architecture",
+          "src": "/project-artifacts/northstar-infra.svg",
+          "alt": "Abstract infrastructure diagram for an internal engineering operations platform"
+        }
+      ]
+    },
+    {
+      "id": "modular-controls",
+      "title": "Modular CAN-Bus Controls Architecture",
+      "subtitle": "Simpler assembly and diagnosis through modular electrical design",
+      "problem": "Larger machine designs required cleaner wiring, easier debugging, faster assembly, and better separation between electrical build work and final machine integration.",
+      "constraints": [
+        "Support a larger modular machine architecture",
+        "Reduce wiring complexity",
+        "Allow electronics to be tested before machine installation",
+        "Coordinate custom components with external vendors"
+      ],
+      "approach": [
+        "Connected multiple control boards through CAN bus",
+        "Designed self-contained electronics enclosures",
+        "Made enclosures independently assemblable and testable",
+        "Worked with vendors on custom harnesses, cut panels, and hardware"
+      ],
+      "impact": [
+        "Made wiring and debugging more manageable",
+        "Reduced final installation of tested electronics to minutes",
+        "Addressed manufacturing bottlenecks through modular design and vendor coordination"
+      ],
+      "tools": [
+        "CAN bus",
+        "Electrical design",
+        "Modular enclosures",
+        "Wiring harnesses",
         "Supplier coordination"
       ],
       "assets": [
         {
-          "label": "System Flow",
-          "src": "/project-artifacts/product-development.svg",
-          "alt": "Abstract product development system diagram"
-        }
-      ]
-    },
-    {
-      "id": "production-systems",
-      "title": "Manufacturing Systems Case Study",
-      "subtitle": "Production visibility and repeatable execution",
-      "problem": "Production teams need clear status, ownership, and next-action visibility without adding unnecessary administrative drag.",
-      "constraints": [
-        "Must be simple enough for daily use",
-        "Should support real shop-floor behavior",
-        "Must avoid becoming another unused dashboard"
-      ],
-      "approach": [
-        "Identified the decisions that caused delay or ambiguity",
-        "Designed lightweight tracking around production flow",
-        "Connected visual status to specific actions and owners"
-      ],
-      "impact": [
-        "Improved visibility into work state",
-        "Reduced ambiguity around next steps",
-        "Created a scalable foundation for more structured production systems"
-      ],
-      "tools": [
-        "Internal software",
-        "Workflow mapping",
-        "Manufacturing process design"
-      ],
-      "assets": [
-        {
-          "label": "Workflow Map",
-          "src": "/project-artifacts/manufacturing-systems.svg",
-          "alt": "Abstract manufacturing workflow map"
-        }
-      ]
-    },
-    {
-      "id": "printer-controls",
-      "title": "Printer Controls / Automation Case Study",
-      "subtitle": "Control logic, logging, and repeatability workflows",
-      "problem": "Printer systems require practical control workflows, repeatability checks, logging, and technician-friendly procedures to support reliable operation.",
-      "constraints": [
-        "Must work with real machine behavior",
-        "Must be diagnosable",
-        "Should be documented for future users",
-        "Needs to support testing without excessive manual overhead"
-      ],
-      "approach": [
-        "Created representative macro and logging workflows",
-        "Documented expected behavior and failure states",
-        "Connected testing outputs to actionable engineering decisions"
-      ],
-      "impact": [
-        "Improved technical clarity",
-        "Reduced repeat manual work",
-        "Created reusable engineering artifacts"
-      ],
-      "tools": [
-        "Printer firmware",
-        "Macros",
-        "Data logging",
-        "Test procedures"
-      ],
-      "assets": [
-        {
-          "label": "Control Stack",
+          "label": "Controls Architecture",
           "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract automation stack"
-        }
-      ]
-    },
-    {
-      "id": "global-rollout",
-      "title": "Rollout / Training Case Study",
-      "subtitle": "Cross-site implementation support",
-      "problem": "A product or process is only useful if it can be implemented, trained, and supported across teams with different contexts.",
-      "constraints": [
-        "Multiple stakeholders",
-        "Different regional practices",
-        "Need for clear documentation",
-        "Need for practical support paths"
-      ],
-      "approach": [
-        "Converted technical detail into role-specific training material",
-        "Used implementation feedback to refine documentation",
-        "Maintained alignment between engineering intent and production reality"
-      ],
-      "impact": [
-        "Improved adoption readiness",
-        "Reduced knowledge gaps",
-        "Supported a cleaner implementation path"
-      ],
-      "tools": [
-        "Training material",
-        "Documentation",
-        "Stakeholder management"
-      ],
-      "assets": [
-        {
-          "label": "Rollout Timeline",
-          "src": "/project-artifacts/product-development.svg",
-          "alt": "Abstract rollout timeline"
-        }
-      ]
-    },
-    {
-      "id": "interactive-resume",
-      "title": "Interactive Resume Platform Case Study",
-      "subtitle": "Flat resume at rest, dimensional proof layer on interaction",
-      "problem": "A standard resume is useful for screening, but it does not show proof, process, visuals, or systems thinking unless someone already knows to ask for it.",
-      "constraints": [
-        "Must stay readable",
-        "Must not feel gimmicky",
-        "Must be fast",
-        "Must work on desktop and mobile",
-        "Should preserve ATS resume as the source of truth"
-      ],
-      "approach": [
-        "Stored content in structured JSON",
-        "Mirrored the PDF resume layout",
-        "Added proof cards, case-study drawers, and subtle 3D movement",
-        "Kept major interactions optional"
-      ],
-      "impact": [
-        "Creates a strong launchpad for a personal engineering portfolio",
-        "Lets recruiters inspect evidence at their chosen depth",
-        "Maintains professional readability"
-      ],
-      "tools": [
-        "Next.js",
-        "React",
-        "Framer Motion",
-        "Structured JSON"
-      ],
-      "assets": [
-        {
-          "label": "Portfolio Architecture",
-          "src": "/project-artifacts/portfolio.svg",
-          "alt": "Interactive resume architecture graphic"
-        }
-      ]
-    },
-    {
-      "id": "northstar",
-      "title": "Northstar Infrastructure Case Study",
-      "subtitle": "Self-hosted systems and infrastructure experimentation",
-      "problem": "Hands-on infrastructure projects provide a place to test deployment, hosting, networking, storage, and service-management decisions outside of employer systems.",
-      "constraints": [
-        "Must be maintainable",
-        "Should support multiple services",
-        "Needs clean domain routing",
-        "Should document lessons learned"
-      ],
-      "approach": [
-        "Mapped services and nodes",
-        "Separated public-facing access from internal infrastructure",
-        "Documented design decisions and tradeoffs"
-      ],
-      "impact": [
-        "Demonstrates infrastructure ownership",
-        "Shows practical Linux/server experience",
-        "Supports future portfolio hosting and experiments"
-      ],
-      "tools": [
-        "Proxmox",
-        "Linux",
-        "DNS",
-        "Reverse proxy",
-        "Self-hosted services"
-      ],
-      "assets": [
-        {
-          "label": "Infrastructure Map",
-          "src": "/project-artifacts/northstar-infra.svg",
-          "alt": "Northstar infrastructure diagram"
-        }
-      ]
-    },
-    {
-      "id": "labview",
-      "title": "LabVIEW Control Utility Case Study",
-      "subtitle": "Engineering utility with controls-oriented workflow",
-      "problem": "Engineering teams often need focused internal utilities that solve a specific workflow problem faster than a large enterprise software process can.",
-      "constraints": [
-        "Must be easy to use",
-        "Should support repeatable testing",
-        "Needs clean operator flow",
-        "Cannot expose confidential details publicly"
-      ],
-      "approach": [
-        "Mapped the operator/user flow",
-        "Defined inputs, outputs, and failure states",
-        "Documented how the program supports engineering decisions"
-      ],
-      "impact": [
-        "Shows software initiative in an engineering context",
-        "Demonstrates controls-adjacent thinking",
-        "Creates a portfolio-safe case study once screenshots are sanitized"
-      ],
-      "tools": [
-        "LabVIEW",
-        "Controls",
-        "Test workflow",
-        "Documentation"
-      ],
-      "assets": [
-        {
-          "label": "LabVIEW System",
-          "src": "/project-artifacts/labview-control.svg",
-          "alt": "LabVIEW control utility diagram"
+          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
         }
       ]
     }
