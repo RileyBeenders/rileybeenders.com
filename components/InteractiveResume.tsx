@@ -228,6 +228,46 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
           </div>
 
           <aside className="resume-column-side">
+            <ResumeBlock eyebrow="Education" title="Degrees">
+              <div className="education-list">
+                {data.education.degrees.map((item) => (
+                  <div className="education-card" key={`${item.school}-${item.degree}`}>
+                    <h3>{item.school}</h3>
+                    <p>{item.degree}</p>
+                    <span>{item.graduation}</span>
+                  </div>
+                ))}
+              </div>
+
+              {data.education.certificates.length > 0 && (
+                <div className="certificate-section">
+                  <h3 className="education-subheading">Certificates</h3>
+                  <div className="education-list">
+                    {data.education.certificates.map((certificate) => (
+                      <div
+                        className="education-card certificate-card"
+                        key={`${certificate.certificateName}-${certificate.issuer}`}
+                      >
+                        <h3>{certificate.certificateName}</h3>
+                        <p>{certificate.issuer}</p>
+                        <span>{certificate.date}</span>
+                        {certificate.credentialUrl && (
+                          <a
+                            className="certificate-link"
+                            href={certificate.credentialUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            View credential <ExternalLink size={13} />
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </ResumeBlock>
+
             <ResumeBlock eyebrow="Toolchain" title="Skills">
               <div className="skill-stack">
                 {data.skills.map((group) => (
@@ -241,16 +281,6 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                   </div>
                 ))}
               </div>
-            </ResumeBlock>
-
-            <ResumeBlock eyebrow="Education" title="Education">
-              {data.education.map((item) => (
-                <div className="education-card" key={item.school}>
-                  <h3>{item.school}</h3>
-                  <p>{item.degree}</p>
-                  <span>{item.graduation}</span>
-                </div>
-              ))}
             </ResumeBlock>
 
             <ProofPanel

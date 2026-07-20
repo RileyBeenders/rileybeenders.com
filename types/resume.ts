@@ -36,6 +36,24 @@ export type Experience = {
   bullets: ResumeBullet[];
 };
 
+export type EducationDegree = {
+  school: string;
+  degree: string;
+  graduation: string;
+};
+
+export type EducationCertificate = {
+  certificateName: string;
+  issuer: string;
+  date: string;
+  credentialUrl?: string;
+};
+
+export type Education = {
+  degrees: EducationDegree[];
+  certificates: EducationCertificate[];
+};
+
 export type Project = {
   id: string;
   name: string;
@@ -123,10 +141,6 @@ export type ResumeData = {
   }[];
   experience: Experience[];
   projects: Project[];
-  education: {
-    school: string;
-    degree: string;
-    graduation: string;
-  }[];
+  education: Education;
   proofs: ProofPoint[];
 };
