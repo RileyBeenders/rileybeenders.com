@@ -191,7 +191,8 @@ img {
 .primary-action:hover,
 .secondary-action:hover,
 .text-button:hover,
-.proof-chip:hover {
+.proof-chip:hover,
+.project-chip:hover {
   transform: translateY(-1px);
 }
 
@@ -371,6 +372,20 @@ img {
   border-radius: 999px;
   background: rgba(37, 99, 235, .08);
   color: #1d4ed8;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.project-chip {
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(245, 158, 11, .34);
+  border-radius: 999px;
+  background: rgba(245, 158, 11, .10);
+  color: #a16207;
   padding: 3px 8px;
   font-size: 11px;
   font-weight: 800;

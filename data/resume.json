@@ -89,7 +89,63 @@
       "Build bench still active. More structure, fewer placeholders."
     ]
   },
-  "skills": [],
+  "skills": [
+    {
+      "category": "Engineering",
+      "items": [
+        "Product Development and Commercialization",
+        "Product Safety and Regulatory Compliance",
+        "R&D Prototyping & Validation",
+        "Production Workflow Optimization",
+        "Engineering Documentation and BOM Control",
+        "Vendor Communication and Cost Negotiation",
+        "Technical Writing and Documentation",
+        "Electrical Layout and Schematic Design"
+      ]
+    },
+    {
+      "category": "Design & CAD",
+      "items": [
+        "SolidWorks",
+        "CATIA",
+        "Siemens NX",
+        "Autodesk Inventor",
+        "Fusion 360",
+        "Visual Studio Code",
+        "Design for Manufacturing",
+        "FDM, FGF, MJF, and SLS Design",
+        "Rapid Prototyping",
+        "Fixture and Tooling Design"
+      ]
+    },
+    {
+      "category": "Controls, Automation & Software",
+      "items": [
+        "LabVIEW Development",
+        "MATLAB",
+        "Python",
+        "Data Logging and Process Analysis",
+        "Machine Control Macros",
+        "Manufacturing Software Tools",
+        "Workflow Automation",
+        "Git/GitHub Version Control"
+      ]
+    },
+    {
+      "category": "Infrastructure & Systems",
+      "items": [
+        "Self-Hosted Infrastructure",
+        "Windows/Linux Systems Administration",
+        "Proxmox Virtualization",
+        "Virtual Machine and Container Management",
+        "Server and Network Configuration",
+        "Reverse Proxy and Routing Concepts",
+        "Domain-Based Application Access",
+        "DNS and Subdomain Configuration",
+        "Docker and Containerized Applications"
+      ]
+    }
+  ],
   "experience": [
     {
       "company": "PROTEOR",
@@ -109,7 +165,7 @@
         },
         {
           "text": "Designed and released ICARUS-Lite, a compact, purpose-built printer for prosthetic and orthotic manufacturing, including a 120/240 VAC electrical design and changes supporting CE machinery-directive conformity.",
-          "proofId": "icarus-lite"
+          "projectId": "icarus-lite"
         },
         {
           "text": "Developed an automated LabVIEW system that collects nine data points every 100 ms from multiple laser sensors over Modbus and charts tolerance data for end-customer use.",
@@ -268,6 +324,7 @@
   "projects": [
     {
       "name": "Linear Motor Platform Standardization",
+      "id": "linear-motion-platform",
       "order": 1,
       "type": "Motion Control / Product Platform",
       "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
@@ -285,6 +342,7 @@
     },
     {
       "name": "ICARUS-Lite",
+      "id": "icarus-lite",
       "order": 2,
       "type": "Additive Manufacturing Product",
       "summary": "A compact, purpose-built professional printer designed to automate prosthetic and orthotic production with minimal customer setup.",
@@ -316,6 +374,7 @@
     },
     {
       "name": "Automated LabVIEW Metrology System",
+      "id": "labview-metrology",
       "order": 3,
       "type": "Test Automation / Data Acquisition",
       "summary": "An automated measurement utility that collects high-frequency laser-sensor data over Modbus and turns it into tolerance charts.",
@@ -333,6 +392,7 @@
     },
     {
       "name": "PROTEOR Print",
+      "id": "proteor-print",
       "order": 4,
       "type": "Remote Operations Software",
       "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
@@ -350,6 +410,7 @@
     },
     {
       "name": "Gen3 POSEIDON",
+      "id": "gen3-poseidon",
       "order": 5,
       "type": "Large-Format Additive Manufacturing System",
       "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
@@ -367,6 +428,7 @@
     },
     {
       "name": "THE KRAKEN",
+      "id": "kraken",
       "order": 6,
       "type": "Custom Hybrid Additive Manufacturing System",
       "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
@@ -384,6 +446,7 @@
     },
     {
       "name": "Engineering Operations Platform",
+      "id": "internal-erp",
       "order": 7,
       "type": "Internal Software / Infrastructure",
       "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
@@ -401,6 +464,7 @@
     },
     {
       "name": "Modular CAN-Bus Controls Architecture",
+      "id": "modular-controls",
       "order": 8,
       "type": "Electrical / Manufacturing System",
       "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
@@ -417,7 +481,13 @@
       ]
     }
   ],
-  "education": [],
+  "education": [
+    {
+      "school": "Penn State University",
+      "degree": "BS, Electro-Mechanical Engineering",
+      "graduation": "Deccember 2024"
+    }
+  ],
   "proofs": [
     {
       "id": "linear-motion-platform",

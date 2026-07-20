@@ -16,6 +16,7 @@ export type ProofPoint = {
 export type ResumeBullet = {
   text: string;
   proofId?: string;
+  projectId?: string;
 };
 
 export type ProjectImage = {
@@ -36,6 +37,7 @@ export type Experience = {
 };
 
 export type Project = {
+  id: string;
   name: string;
   type: string;
   summary: string;
