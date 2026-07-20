@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import resumeData from "@/data/resume.json";
-import type { ResumeData } from "@/types/resume";
+import resumeData from "@/data/resumeData";
 import "./globals.css";
 
-const siteData = resumeData as ResumeData;
+const siteData = resumeData;
 const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.comingSoon);
 
 export const metadata: Metadata = {

@@ -10,7 +10,7 @@ export type ProofPoint = {
   summary: string;
   tags: string[];
   assets: ProofAsset[];
-  caseStudyId?: string;
+  projectId?: string;
 };
 
 export type ResumeBullet = {
@@ -45,10 +45,10 @@ export type Project = {
   order?: number;
   proofId?: string;
   images?: ProjectImage[];
+  additionalInfo?: ProjectAdditionalInfo;
 };
 
-export type CaseStudy = {
-  id: string;
+export type ProjectAdditionalInfo = {
   title: string;
   subtitle: string;
   problem: string;
@@ -116,7 +116,6 @@ export type ResumeData = {
   };
   summary: string;
   resumePdfPath: string;
-  proofModeLabel: string;
   comingSoon?: ComingSoonContent;
   skills: {
     category: string;
@@ -130,5 +129,4 @@ export type ResumeData = {
     graduation: string;
   }[];
   proofs: ProofPoint[];
-  caseStudies: CaseStudy[];
 };

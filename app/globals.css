@@ -219,22 +219,6 @@ img {
   background: rgba(255,255,255,.04);
 }
 
-.toggle-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #dbeafe;
-  font-size: 14px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255,255,255,.04);
-}
-
-.toggle-row input {
-  accent-color: var(--accent);
-}
-
 .coming-stage {
   display: grid;
   gap: 22px;
@@ -1100,7 +1084,7 @@ img {
   justify-content: flex-end;
 }
 
-.case-study-drawer {
+.additional-info-drawer {
   width: min(760px, 100vw);
   min-height: 100vh;
   overflow-y: auto;
@@ -1174,17 +1158,17 @@ img {
   font-weight: 700;
 }
 
-.case-section {
+.additional-info-section {
   border-top: 1px solid rgba(15, 23, 42, .10);
   padding: 22px 0;
 }
 
-.case-section h3 {
+.additional-info-section h3 {
   margin: 0 0 12px;
   font-size: 18px;
 }
 
-.case-section p,
+.additional-info-section p,
 .drawer-list {
   color: var(--ink-soft);
   line-height: 1.65;
@@ -1367,7 +1351,7 @@ img {
   }
 
   .hero-actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .proof-panel {
@@ -1387,7 +1371,7 @@ img {
   .hero-card,
   .resume-block,
   .proof-panel,
-  .case-study-drawer {
+  .additional-info-drawer {
     padding: 20px;
     border-radius: 20px;
   }

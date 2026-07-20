@@ -1,0 +1,57 @@
+[
+  {
+    "category": "Engineering",
+    "items": [
+      "Product Development and Commercialization",
+      "Product Safety and Regulatory Compliance",
+      "R&D Prototyping & Validation",
+      "Production Workflow Optimization",
+      "Engineering Documentation and BOM Control",
+      "Vendor Communication and Cost Negotiation",
+      "Technical Writing and Documentation",
+      "Electrical Layout and Schematic Design"
+    ]
+  },
+  {
+    "category": "Design & CAD",
+    "items": [
+      "SolidWorks",
+      "CATIA",
+      "Siemens NX",
+      "Autodesk Inventor",
+      "Fusion 360",
+      "Visual Studio Code",
+      "Design for Manufacturing",
+      "FDM, FGF, MJF, and SLS Design",
+      "Rapid Prototyping",
+      "Fixture and Tooling Design"
+    ]
+  },
+  {
+    "category": "Controls, Automation & Software",
+    "items": [
+      "LabVIEW Development",
+      "MATLAB",
+      "Python",
+      "Data Logging and Process Analysis",
+      "Machine Control Macros",
+      "Manufacturing Software Tools",
+      "Workflow Automation",
+      "Git/GitHub Version Control"
+    ]
+  },
+  {
+    "category": "Infrastructure & Systems",
+    "items": [
+      "Self-Hosted Infrastructure",
+      "Windows/Linux Systems Administration",
+      "Proxmox Virtualization",
+      "Virtual Machine and Container Management",
+      "Server and Network Configuration",
+      "Reverse Proxy and Routing Concepts",
+      "Domain-Based Application Access",
+      "DNS and Subdomain Configuration",
+      "Docker and Containerized Applications"
+    ]
+  }
+]
