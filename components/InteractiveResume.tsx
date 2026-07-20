@@ -14,7 +14,7 @@ import {
   MousePointer2,
   X
 } from "lucide-react";
-import type { CaseStudy, ProjectImage, ProofPoint, ResumeBullet, ResumeData } from "@/types/resume";
+import type { CaseStudy, Project, ProjectImage, ProofPoint, ResumeBullet, ResumeData } from "@/types/resume";
 
 type InteractiveResumeProps = {
   data: ResumeData;
@@ -36,6 +36,10 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
   const proofById = useMemo(() => {
     return new Map(data.proofs.map((proof) => [proof.id, proof]));
   }, [data.proofs]);
+
+  const projectById = useMemo(() => {
+    return new Map(data.projects.map((project) => [project.id, project]));
+  }, [data.projects]);
 
   const selectedCaseStudy = useMemo(() => {
     return data.caseStudies.find((caseStudy) => caseStudy.id === selectedCaseStudyId) ?? null;
@@ -106,6 +110,15 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     setSelectedCaseStudyId(proof.caseStudyId);
   }
 
+  function openProject(project?: Project) {
+    if (!project?.id) return;
+    const projectCard = document.getElementById(`project-${project.id}`);
+    if (!projectCard) return;
+
+    projectCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    projectCard.focus({ preventScroll: true });
+  }
+
   function stepProjectLightbox(direction: -1 | 1) {
     setProjectLightbox((current) => {
       if (!current) return current;
@@ -142,10 +155,12 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                     <BulletList
                       bullets={job.bullets}
                       proofById={proofById}
+                      projectById={projectById}
                       proofMode={proofMode}
                       onProofEnter={setActiveProofId}
                       onProofLeave={() => setActiveProofId(null)}
                       onOpenProof={openProofCaseStudy}
+                      onOpenProject={openProject}
                     />
                   </article>
                 ))}
@@ -157,7 +172,12 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                 {orderedProjects.map((project) => {
                   const proof = project.proofId ? proofById.get(project.proofId) : undefined;
                   return (
-                    <article className="project-card interactive-card" key={project.name}>
+                    <article
+                      className="project-card interactive-card"
+                      id={`project-${project.id}`}
+                      key={project.id}
+                      tabIndex={-1}
+                    >
                       <div className="project-type">
                         {project.order !== undefined && (
                           <span className="project-order">{String(project.order).padStart(2, "0")}</span>
@@ -183,10 +203,12 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                         <BulletList
                           bullets={project.bullets}
                           proofById={proofById}
+                          projectById={projectById}
                           proofMode={proofMode}
                           onProofEnter={setActiveProofId}
                           onProofLeave={() => setActiveProofId(null)}
                           onOpenProof={openProofCaseStudy}
+                          onOpenProject={openProject}
                           compact
                         />
                       )}
@@ -328,18 +350,31 @@ function ResumeBlock({ eyebrow, title, children }: ResumeBlockProps) {
 type BulletListProps = {
   bullets: ResumeBullet[];
   proofById: Map<string, ProofPoint>;
+  projectById: Map<string, Project>;
   proofMode: boolean;
   onProofEnter: (id: string) => void;
   onProofLeave: () => void;
   onOpenProof: (proof?: ProofPoint) => void;
+  onOpenProject: (project?: Project) => void;
   compact?: boolean;
 };
 
-function BulletList({ bullets, proofById, proofMode, onProofEnter, onProofLeave, onOpenProof, compact }: BulletListProps) {
+function BulletList({
+  bullets,
+  proofById,
+  projectById,
+  proofMode,
+  onProofEnter,
+  onProofLeave,
+  onOpenProof,
+  onOpenProject,
+  compact
+}: BulletListProps) {
   return (
     <ul className={compact ? "bullet-list compact" : "bullet-list"}>
       {bullets.map((bullet) => {
         const proof = bullet.proofId ? proofById.get(bullet.proofId) : undefined;
+        const project = bullet.projectId ? projectById.get(bullet.projectId) : undefined;
         return (
           <li key={bullet.text}>
             <span>{bullet.text}</span>
@@ -353,6 +388,14 @@ function BulletList({ bullets, proofById, proofMode, onProofEnter, onProofLeave,
                 onClick={() => onOpenProof(proof)}
               >
                 proof
+              </button>
+            )}
+            {proofMode && !proof && project && (
+              <button
+                className="project-chip"
+                onClick={() => onOpenProject(project)}
+              >
+                project
               </button>
             )}
           </li>
