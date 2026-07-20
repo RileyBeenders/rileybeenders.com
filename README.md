@@ -8,7 +8,7 @@ This is designed to sit next to a normal ATS resume PDF. The PDF remains the off
 
 - Next.js app router project
 - TypeScript
-- Resume content stored in `data/resume.json`
+- Header and shared settings stored in `data/header.json`
 - Interactive resume layout that mirrors a conventional PDF resume
 - Always-visible proof and project links
 - Hover proof cards
@@ -27,12 +27,13 @@ app/
 components/
   InteractiveResume.tsx
 data/
-  resume.json
+  header.json
   education.json
   experience.json
   proofs.json
   projects.json
   skills.json
+  summary.json
   resumeData.ts
 types/
   resume.ts
@@ -68,10 +69,10 @@ http://localhost:3000
 
 ## Where to edit resume content
 
-The master resume file is:
+The header and shared-settings file is:
 
 ```txt
-data/resume.json
+data/header.json
 ```
 
 For easier editing, the main resume sections are split into focused files and merged into the site at build time:
@@ -82,6 +83,7 @@ data/experience.json
 data/proofs.json
 data/projects.json
 data/skills.json
+data/summary.json
 ```
 
 Update these files for:
@@ -91,13 +93,26 @@ Update these files for:
 - `proofs`
 - `projects`
 - `skills`
-
-Update `data/resume.json` for:
-
-- `person`
 - `summary`
 
-`resume.json` intentionally does not duplicate those arrays. The site combines the master file and split sections through `data/resumeData.ts`, so `npm run dev` and `npm run build` use the same assembled resume data.
+Update `data/header.json` for:
+
+- `person`
+
+`header.json` intentionally does not duplicate those arrays. The site combines the header and split sections through `data/resumeData.ts`, so `npm run dev` and `npm run build` use the same assembled resume data.
+
+Education is split into degree and certificate lists in `data/education.json`. Add a certificate with this shape:
+
+```json
+{
+  "certificateName": "Certificate name",
+  "issuer": "Issuing organization",
+  "date": "Month Year",
+  "credentialUrl": "https://example.com/credential"
+}
+```
+
+`credentialUrl` is optional. The Certificates subsection appears below Degrees as soon as the `certificates` array contains an entry.
 
 Each bullet can optionally include a `proofId`. That proof ID connects the resume line to a hover card and, optionally, a project's additional information.
 
@@ -150,7 +165,7 @@ Put your normal ATS resume PDF here:
 public/resume.pdf
 ```
 
-The download button is already configured through `resumePdfPath` in `data/resume.json`.
+The download button is already configured through `resumePdfPath` in `data/header.json`.
 
 ## Replacing placeholder visuals
 

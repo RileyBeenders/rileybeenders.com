@@ -1,7 +1,21 @@
-[
-  {
-    "school": "Penn State University",
-    "degree": "BS, Electro-Mechanical Engineering",
-    "graduation": "Deccember 2024"
-  }
-]
+{
+  "degrees": [
+    {
+      "school": "Penn State University",
+      "degree": "BS, Electro-Mechanical Engineering",
+      "graduation": "Deccember 2024"
+    }
+  ],
+  "certificates": [
+    {
+      "certificateName": "Certificate in Engineering Design and Tools",
+      "issuer": "Penn State University",
+      "date": "Spring 2023"
+    },
+    {
+      "certificateName": "Mechanical Engineering Certificate",
+      "issuer": "Lafayette College",
+      "date": "Spring 2019"
+    }
+  ]
+}

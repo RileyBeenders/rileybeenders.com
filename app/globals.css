@@ -684,8 +684,12 @@ img {
 }
 
 .eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   color: #2563eb;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: .12em;
 }
 
 .resume-block h2,
@@ -740,6 +744,49 @@ img {
   margin: 6px 0 0;
   color: var(--paper-muted);
   line-height: 1.5;
+}
+
+.education-list {
+  display: grid;
+  gap: 12px;
+}
+
+.certificate-section {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(15, 23, 42, .12);
+}
+
+.education-subheading {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: -.03em;
+}
+
+.certificate-card {
+  display: grid;
+  justify-items: start;
+}
+
+.certificate-card h3 {
+  font-size: 16px;
+}
+
+.certificate-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.certificate-link:hover {
+  text-decoration: underline;
 }
 
 .timeline-card-header span {
