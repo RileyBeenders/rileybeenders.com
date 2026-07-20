@@ -14,7 +14,7 @@ import {
   MousePointer2,
   X
 } from "lucide-react";
-import type { CaseStudy, Project, ProjectImage, ProofPoint, ResumeBullet, ResumeData } from "@/types/resume";
+import type { Project, ProjectAdditionalInfo, ProjectImage, ProofPoint, ResumeBullet, ResumeData } from "@/types/resume";
 
 type InteractiveResumeProps = {
   data: ResumeData;
@@ -28,9 +28,8 @@ type ProjectLightboxState = {
 
 export function InteractiveResume({ data }: InteractiveResumeProps) {
   const shellRef = useRef<HTMLDivElement | null>(null);
-  const [proofMode, setProofMode] = useState(true);
   const [activeProofId, setActiveProofId] = useState<string | null>(null);
-  const [selectedCaseStudyId, setSelectedCaseStudyId] = useState<string | null>(null);
+  const [selectedAdditionalInfoProjectId, setSelectedAdditionalInfoProjectId] = useState<string | null>(null);
   const [projectLightbox, setProjectLightbox] = useState<ProjectLightboxState | null>(null);
 
   const proofById = useMemo(() => {
@@ -41,9 +40,9 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     return new Map(data.projects.map((project) => [project.id, project]));
   }, [data.projects]);
 
-  const selectedCaseStudy = useMemo(() => {
-    return data.caseStudies.find((caseStudy) => caseStudy.id === selectedCaseStudyId) ?? null;
-  }, [data.caseStudies, selectedCaseStudyId]);
+  const selectedAdditionalInfo = selectedAdditionalInfoProjectId
+    ? projectById.get(selectedAdditionalInfoProjectId)?.additionalInfo ?? null
+    : null;
 
   const orderedProjects = useMemo(() => {
     return data.projects
@@ -105,9 +104,16 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     element.style.setProperty("--rotate-y", `${rotateY}deg`);
   }
 
-  function openProofCaseStudy(proof?: ProofPoint) {
-    if (!proof?.caseStudyId) return;
-    setSelectedCaseStudyId(proof.caseStudyId);
+  function openProofAdditionalInfo(proof?: ProofPoint) {
+    if (!proof?.projectId) return;
+    const project = projectById.get(proof.projectId);
+    if (!project?.additionalInfo) return;
+    setSelectedAdditionalInfoProjectId(project.id);
+  }
+
+  function openProjectAdditionalInfo(project?: Project) {
+    if (!project?.additionalInfo) return;
+    setSelectedAdditionalInfoProjectId(project.id);
   }
 
   function openProject(project?: Project) {
@@ -131,7 +137,7 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     <main className="site-shell" onPointerMove={handlePointerMove} ref={shellRef}>
       <div className="ambient-grid" aria-hidden="true" />
       <section className="resume-stage">
-        <ResumeHeader data={data} proofMode={proofMode} setProofMode={setProofMode} />
+        <ResumeHeader data={data} />
 
         <section className="resume-paper">
           <div className="resume-column-main">
@@ -156,10 +162,9 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                       bullets={job.bullets}
                       proofById={proofById}
                       projectById={projectById}
-                      proofMode={proofMode}
                       onProofEnter={setActiveProofId}
                       onProofLeave={() => setActiveProofId(null)}
-                      onOpenProof={openProofCaseStudy}
+                      onOpenProof={openProofAdditionalInfo}
                       onOpenProject={openProject}
                     />
                   </article>
@@ -170,7 +175,6 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
             <ResumeBlock eyebrow="Selected Work" title="Projects">
               <div className="project-grid">
                 {orderedProjects.map((project) => {
-                  const proof = project.proofId ? proofById.get(project.proofId) : undefined;
                   return (
                     <article
                       className="project-card interactive-card"
@@ -204,17 +208,16 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                           bullets={project.bullets}
                           proofById={proofById}
                           projectById={projectById}
-                          proofMode={proofMode}
                           onProofEnter={setActiveProofId}
                           onProofLeave={() => setActiveProofId(null)}
-                          onOpenProof={openProofCaseStudy}
+                          onOpenProof={openProofAdditionalInfo}
                           onOpenProject={openProject}
                           compact
                         />
                       )}
-                      {proof?.caseStudyId && (
-                        <button className="text-button" onClick={() => openProofCaseStudy(proof)}>
-                          Open case study <ExternalLink size={14} />
+                      {project.additionalInfo && (
+                        <button className="text-button" onClick={() => openProjectAdditionalInfo(project)}>
+                          Read more <ChevronRight size={14} />
                         </button>
                       )}
                     </article>
@@ -253,17 +256,17 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
             <ProofPanel
               proof={activeProof}
               fallbackProofs={data.proofs.slice(0, 4)}
-              onOpenProof={openProofCaseStudy}
+              onOpenProof={openProofAdditionalInfo}
             />
           </aside>
         </section>
       </section>
 
       <AnimatePresence>
-        {selectedCaseStudy && (
-          <CaseStudyDrawer
-            caseStudy={selectedCaseStudy}
-            onClose={() => setSelectedCaseStudyId(null)}
+        {selectedAdditionalInfo && (
+          <AdditionalInfoDrawer
+            additionalInfo={selectedAdditionalInfo}
+            onClose={() => setSelectedAdditionalInfoProjectId(null)}
           />
         )}
       </AnimatePresence>
@@ -289,11 +292,9 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
 
 type HeaderProps = {
   data: ResumeData;
-  proofMode: boolean;
-  setProofMode: (value: boolean) => void;
 };
 
-function ResumeHeader({ data, proofMode, setProofMode }: HeaderProps) {
+function ResumeHeader({ data }: HeaderProps) {
   return (
     <header className="hero-card interactive-card">
       <div>
@@ -308,14 +309,6 @@ function ResumeHeader({ data, proofMode, setProofMode }: HeaderProps) {
         </div>
       </div>
       <div className="hero-actions">
-        <label className="toggle-row">
-          <input
-            type="checkbox"
-            checked={proofMode}
-            onChange={(event) => setProofMode(event.target.checked)}
-          />
-          <span>{data.proofModeLabel}</span>
-        </label>
         <a className="primary-action" href={data.resumePdfPath}>
           <Download size={16} /> Download PDF
         </a>
@@ -351,7 +344,6 @@ type BulletListProps = {
   bullets: ResumeBullet[];
   proofById: Map<string, ProofPoint>;
   projectById: Map<string, Project>;
-  proofMode: boolean;
   onProofEnter: (id: string) => void;
   onProofLeave: () => void;
   onOpenProof: (proof?: ProofPoint) => void;
@@ -363,7 +355,6 @@ function BulletList({
   bullets,
   proofById,
   projectById,
-  proofMode,
   onProofEnter,
   onProofLeave,
   onOpenProof,
@@ -378,7 +369,7 @@ function BulletList({
         return (
           <li key={bullet.text}>
             <span>{bullet.text}</span>
-            {proofMode && proof && (
+            {proof && (
               <button
                 className="proof-chip"
                 onMouseEnter={() => onProofEnter(proof.id)}
@@ -390,7 +381,7 @@ function BulletList({
                 proof
               </button>
             )}
-            {proofMode && !proof && project && (
+            {!proof && project && (
               <button
                 className="project-chip"
                 onClick={() => onOpenProject(project)}
@@ -613,12 +604,12 @@ function ProofPanel({ proof, fallbackProofs, onOpenProof }: ProofPanelProps) {
   );
 }
 
-type CaseStudyDrawerProps = {
-  caseStudy: CaseStudy;
+type AdditionalInfoDrawerProps = {
+  additionalInfo: ProjectAdditionalInfo;
   onClose: () => void;
 };
 
-function CaseStudyDrawer({ caseStudy, onClose }: CaseStudyDrawerProps) {
+function AdditionalInfoDrawer({ additionalInfo, onClose }: AdditionalInfoDrawerProps) {
   return (
     <motion.div
       className="drawer-backdrop"
@@ -628,25 +619,25 @@ function CaseStudyDrawer({ caseStudy, onClose }: CaseStudyDrawerProps) {
       onClick={onClose}
     >
       <motion.aside
-        className="case-study-drawer"
+        className="additional-info-drawer"
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
         onClick={(event) => event.stopPropagation()}
       >
-        <button className="drawer-close" onClick={onClose} aria-label="Close case study">
+        <button className="drawer-close" onClick={onClose} aria-label="Close additional information">
           <X size={20} />
         </button>
 
         <div className="drawer-hero">
-          <p className="eyebrow">Case Study</p>
-          <h2>{caseStudy.title}</h2>
-          <p>{caseStudy.subtitle}</p>
+          <p className="eyebrow">Additional Info</p>
+          <h2>{additionalInfo.title}</h2>
+          <p>{additionalInfo.subtitle}</p>
         </div>
 
         <div className="asset-strip">
-          {caseStudy.assets.map((asset) => (
+          {additionalInfo.assets.map((asset) => (
             <figure key={asset.src}>
               <img src={asset.src} alt={asset.alt} />
               <figcaption>{asset.label}</figcaption>
@@ -654,35 +645,35 @@ function CaseStudyDrawer({ caseStudy, onClose }: CaseStudyDrawerProps) {
           ))}
         </div>
 
-        <CaseStudySection title="Problem">
-          <p>{caseStudy.problem}</p>
-        </CaseStudySection>
+        <AdditionalInfoSection title="Problem">
+          <p>{additionalInfo.problem}</p>
+        </AdditionalInfoSection>
 
-        <CaseStudySection title="Constraints">
-          <Checklist items={caseStudy.constraints} />
-        </CaseStudySection>
+        <AdditionalInfoSection title="Constraints">
+          <Checklist items={additionalInfo.constraints} />
+        </AdditionalInfoSection>
 
-        <CaseStudySection title="Approach">
-          <Checklist items={caseStudy.approach} ordered />
-        </CaseStudySection>
+        <AdditionalInfoSection title="Approach">
+          <Checklist items={additionalInfo.approach} ordered />
+        </AdditionalInfoSection>
 
-        <CaseStudySection title="Impact">
-          <Checklist items={caseStudy.impact} />
-        </CaseStudySection>
+        <AdditionalInfoSection title="Impact">
+          <Checklist items={additionalInfo.impact} />
+        </AdditionalInfoSection>
 
-        <CaseStudySection title="Tools">
+        <AdditionalInfoSection title="Tools">
           <div className="skill-pills drawer-pills">
-            {caseStudy.tools.map((tool) => <span key={tool}>{tool}</span>)}
+            {additionalInfo.tools.map((tool) => <span key={tool}>{tool}</span>)}
           </div>
-        </CaseStudySection>
+        </AdditionalInfoSection>
       </motion.aside>
     </motion.div>
   );
 }
 
-function CaseStudySection({ title, children }: { title: string; children: React.ReactNode }) {
+function AdditionalInfoSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="case-section">
+    <section className="additional-info-section">
       <h3>{title}</h3>
       {children}
     </section>

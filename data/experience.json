@@ -1,0 +1,175 @@
+[
+  {
+    "company": "PROTEOR",
+    "role": "Research & Development Engineer",
+    "location": "Coplay, PA",
+    "start": "January 2025",
+    "end": "Present",
+    "context": "Following PROTEOR's acquisition of Filament Innovations, expanded additive-manufacturing engineering work to global product innovation, automation, and standardization.",
+    "bullets": [
+      {
+        "text": "Serve as the sole engineer in the additive manufacturing department, responsible for the hardware, electronics, motion-control systems, and software used across the product line.",
+        "proofId": "linear-motion-platform"
+      },
+      {
+        "text": "Converted the POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving 4-micron precision while moving a 30 kg assembly at 4 m/s.",
+        "proofId": "linear-motion-platform"
+      },
+      {
+        "text": "Designed and released ICARUS-Lite, a compact, purpose-built printer for prosthetic and orthotic manufacturing, including a 120/240 VAC electrical design and changes supporting CE machinery-directive conformity.",
+        "projectId": "icarus-lite"
+      },
+      {
+        "text": "Developed an automated LabVIEW system that collects nine data points every 100 ms from multiple laser sensors over Modbus and charts tolerance data for end-customer use.",
+        "proofId": "labview-metrology"
+      },
+      {
+        "text": "Integrated a strain-gauge Z-probing system that automates first-layer calibration through the machine's print head with enough sensitivity to detect contact with an egg without cracking it.",
+        "proofId": "strain-gauge-probing"
+      },
+      {
+        "text": "Contributed to PROTEOR Print, a network-accessible remote operation and diagnostics interface with live video, AI-assisted print-failure alerts, and material, waste, and outcome metrics.",
+        "proofId": "proteor-print"
+      }
+    ]
+  },
+  {
+    "company": "Filament Innovations",
+    "role": "Chief Technology Officer",
+    "location": "Whitehall, PA",
+    "start": "January 2023",
+    "end": "January 2025",
+    "bullets": [
+      {
+        "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
+        "proofId": "gen3-poseidon"
+      },
+      {
+        "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
+        "proofId": "gen3-poseidon"
+      },
+      {
+        "text": "Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM for orders, inventory, tasks, projects, and customer interactions, with dynamic BOM generation linked to purchasing.",
+        "proofId": "internal-erp"
+      },
+      {
+        "text": "Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.",
+        "proofId": "nonplanar-research"
+      }
+    ]
+  },
+  {
+    "company": "Filament Innovations",
+    "role": "Lead Electro-Mechanical Engineer",
+    "location": "Whitehall, PA",
+    "start": "June 2022",
+    "end": "January 2023",
+    "bullets": [
+      {
+        "text": "Improved thermal and acoustic performance through enclosure redesign and component placement, including custom tooling with local fabricators for large-radius aluminum-panel bends.",
+        "proofId": "modular-controls"
+      },
+      {
+        "text": "Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging while supporting larger, modular machines.",
+        "proofId": "modular-controls"
+      },
+      {
+        "text": "Developed independently testable electronics enclosures that could be installed in minutes and coordinated custom harnesses, panel designs, and hardware improvements with vendors.",
+        "proofId": "modular-controls"
+      }
+    ]
+  },
+  {
+    "company": "Filament Innovations",
+    "role": "Industrial Engineer",
+    "location": "Whitehall, PA",
+    "start": "April 2021",
+    "end": "June 2022",
+    "bullets": [
+      {
+        "text": "Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.",
+        "proofId": "kratos"
+      },
+      {
+        "text": "Developed next-generation ICARUS and POSEIDON models with higher-performance components and expanded motion safety through NEMA 34 motors, planetary gearboxes, and power-failure brakes.",
+        "proofId": "gen3-poseidon"
+      },
+      {
+        "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
+        "proofId": "kraken"
+      }
+    ]
+  },
+  {
+    "company": "Filament Innovations",
+    "role": "Engineering Technician",
+    "location": "Whitehall, PA",
+    "start": "May 2020",
+    "end": "April 2021",
+    "bullets": [
+      {
+        "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.",
+        "proofId": "product-reliability"
+      },
+      {
+        "text": "Tuned, calibrated, and optimized print parameters while documenting design limitations and opportunities for product improvement.",
+        "proofId": "product-reliability"
+      }
+    ]
+  },
+  {
+    "company": "RJB.Engineering",
+    "role": "Owner & Engineering Consultant",
+    "location": "Pennsylvania",
+    "start": "2015",
+    "end": "Present",
+    "bullets": [
+      {
+        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",
+        "proofId": "rjb-engineering"
+      },
+      {
+        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
+        "proofId": "rjb-engineering"
+      }
+    ]
+  },
+  {
+    "company": "Blue Mountain Ski Resort",
+    "role": "Ski Lift Operator",
+    "location": "Palmerton, PA",
+    "start": "November 2019",
+    "end": "January 2021",
+    "bullets": [
+      {
+        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information.",
+        "proofId": "ski-lift-systems"
+      },
+      {
+        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns.",
+        "proofId": "ski-lift-systems"
+      }
+    ]
+  },
+  {
+    "company": "Northampton Area School District",
+    "role": "Computer / Network Technician",
+    "location": "Northampton, PA",
+    "start": "June 2016",
+    "end": "August 2019",
+    "bullets": [
+      {
+        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings.",
+        "proofId": "school-network"
+      },
+      {
+        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry.",
+        "proofId": "school-network"
+      },
+      {
+        "text": "Coordinated final device distribution with school administrators.",
+        "proofId": "school-network"
+      }
+    ]
+  }
+]

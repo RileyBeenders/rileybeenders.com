@@ -1,0 +1,265 @@
+[
+  {
+    "id": "linear-motion-platform",
+    "title": "Linear Motion Platform",
+    "summary": "Converted two flagship large-format printers to a shared linear-motor architecture demonstrated at 4-micron precision, 4 m/s, and a 30 kg moving mass.",
+    "tags": [
+      "Linear Motors",
+      "Motion Control",
+      "Platform Standardization"
+    ],
+    "assets": [
+      {
+        "label": "Motion Architecture",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract diagram of a standardized motion-control architecture"
+      }
+    ],
+    "projectId": "linear-motion-platform"
+  },
+  {
+    "id": "icarus-lite",
+    "title": "ICARUS-Lite Product Development",
+    "summary": "Designed and released a compact professional printer for prosthetic and orthotic manufacturing, including industrial design, electrical architecture, and regulatory changes.",
+    "tags": [
+      "Product Development",
+      "Additive Manufacturing",
+      "CE Conformity"
+    ],
+    "assets": [
+      {
+        "label": "Product Development Flow",
+        "src": "/project-artifacts/product-development.svg",
+        "alt": "Abstract product-development flow for the ICARUS-Lite printer"
+      }
+    ],
+    "projectId": "icarus-lite"
+  },
+  {
+    "id": "labview-metrology",
+    "title": "Automated LabVIEW Metrology",
+    "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
+    "tags": [
+      "LabVIEW",
+      "Modbus",
+      "Data Acquisition"
+    ],
+    "assets": [
+      {
+        "label": "Measurement System",
+        "src": "/project-artifacts/labview-control.svg",
+        "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
+      }
+    ],
+    "projectId": "labview-metrology"
+  },
+  {
+    "id": "strain-gauge-probing",
+    "title": "Automated Z-Probing",
+    "summary": "Integrated a strain-gauge probing workflow through the print head for sensitive, intervention-free first-layer calibration.",
+    "tags": [
+      "Automation",
+      "Sensors",
+      "Calibration"
+    ],
+    "assets": [
+      {
+        "label": "Probe Control Loop",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract control-loop diagram for an automated probing system"
+      }
+    ]
+  },
+  {
+    "id": "proteor-print",
+    "title": "PROTEOR Print Integration",
+    "summary": "Contributed machine integration for a remote operations interface with diagnostics, live video, AI-assisted failure alerts, and production metrics.",
+    "tags": [
+      "Remote Operations",
+      "Machine Vision",
+      "Manufacturing Analytics"
+    ],
+    "assets": [
+      {
+        "label": "Remote Operations Flow",
+        "src": "/project-artifacts/manufacturing-systems.svg",
+        "alt": "Abstract workflow for remote machine operation and production analytics"
+      }
+    ],
+    "projectId": "proteor-print"
+  },
+  {
+    "id": "gen3-poseidon",
+    "title": "Gen3 POSEIDON",
+    "summary": "Led the design and launch of a 1 m³ hybrid filament-and-pellet printer with braked Z drives, industrial-servo XY motion, and a custom gantry.",
+    "tags": [
+      "Machine Design",
+      "Hybrid Extrusion",
+      "Product Launch"
+    ],
+    "assets": [
+      {
+        "label": "Machine Architecture",
+        "src": "/project-artifacts/product-development.svg",
+        "alt": "Abstract architecture diagram for a large-format hybrid printer"
+      }
+    ],
+    "projectId": "gen3-poseidon"
+  },
+  {
+    "id": "internal-erp",
+    "title": "Engineering Operations Platform",
+    "summary": "Built a redundant Kubernetes-hosted ERP/CRM and connected dynamic engineering BOMs to purchasing workflows.",
+    "tags": [
+      "Kubernetes",
+      "ERP / CRM",
+      "Workflow Automation"
+    ],
+    "assets": [
+      {
+        "label": "Platform Architecture",
+        "src": "/project-artifacts/northstar-infra.svg",
+        "alt": "Abstract infrastructure diagram for an internal engineering operations platform"
+      }
+    ],
+    "projectId": "internal-erp"
+  },
+  {
+    "id": "nonplanar-research",
+    "title": "Advanced Motion Research",
+    "summary": "Evaluated high-speed linear motors and early 6-axis robotic non-planar printing, including motion trials and toolpath-generation work.",
+    "tags": [
+      "R&D",
+      "Robotics",
+      "Non-Planar Printing"
+    ],
+    "assets": [
+      {
+        "label": "Research Stack",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract research diagram for advanced robotic additive manufacturing"
+      }
+    ]
+  },
+  {
+    "id": "modular-controls",
+    "title": "Modular Controls Architecture",
+    "summary": "Combined CAN-bus controls, independently testable electronics enclosures, and supplier-coordinated harnesses to simplify machine assembly and diagnosis.",
+    "tags": [
+      "CAN Bus",
+      "Electrical Design",
+      "Design for Manufacturing"
+    ],
+    "assets": [
+      {
+        "label": "Controls Architecture",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
+      }
+    ],
+    "projectId": "modular-controls"
+  },
+  {
+    "id": "kratos",
+    "title": "Kratos Prosthetic Printer",
+    "summary": "Designed and released a printer purpose-built for high-strength above-knee and below-knee prosthetic sockets.",
+    "tags": [
+      "Prosthetics",
+      "Product Design",
+      "Additive Manufacturing"
+    ],
+    "assets": [
+      {
+        "label": "Product Flow",
+        "src": "/project-artifacts/product-development.svg",
+        "alt": "Abstract product flow for a prosthetic-socket printing system"
+      }
+    ]
+  },
+  {
+    "id": "kraken",
+    "title": "THE KRAKEN",
+    "summary": "Delivered a 1 x 2 x 1.5 m hybrid pellet-and-filament printer through the complete lifecycle from CAD and sourcing to firmware, support, and training.",
+    "tags": [
+      "Large-Format Printing",
+      "Custom Machinery",
+      "Full-Lifecycle Delivery"
+    ],
+    "assets": [
+      {
+        "label": "Delivery Lifecycle",
+        "src": "/project-artifacts/product-development.svg",
+        "alt": "Abstract delivery lifecycle for a custom large-format printer"
+      }
+    ],
+    "projectId": "kraken"
+  },
+  {
+    "id": "product-reliability",
+    "title": "Early Product Reliability Work",
+    "summary": "Diagnosed mechanical and electrical issues, tuned print behavior, and documented design limitations during the company's early product-development stage.",
+    "tags": [
+      "Troubleshooting",
+      "Calibration",
+      "Continuous Improvement"
+    ],
+    "assets": [
+      {
+        "label": "Reliability Loop",
+        "src": "/project-artifacts/manufacturing-systems.svg",
+        "alt": "Abstract feedback loop for machine reliability improvements"
+      }
+    ]
+  },
+  {
+    "id": "rjb-engineering",
+    "title": "Independent Engineering Work",
+    "summary": "Project-based automotive engineering support, 3D-printer accessory sales, and rapid production of 3D-printed face shields during the pandemic.",
+    "tags": [
+      "Consulting",
+      "Product Sales",
+      "Rapid Fabrication"
+    ],
+    "assets": [
+      {
+        "label": "Independent Work",
+        "src": "/project-artifacts/portfolio.svg",
+        "alt": "Abstract overview of independent engineering and fabrication work"
+      }
+    ]
+  },
+  {
+    "id": "ski-lift-systems",
+    "title": "Lift Operations & Safety",
+    "summary": "Combined high-volume guest operations with motor and control safety checks and hands-on maintenance support.",
+    "tags": [
+      "Safety",
+      "Controls",
+      "Field Support"
+    ],
+    "assets": [
+      {
+        "label": "Operations Flow",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract operations and safety-check workflow"
+      }
+    ]
+  },
+  {
+    "id": "school-network",
+    "title": "District Technology Deployment",
+    "summary": "Deployed more than 750 access points and accelerated setup of more than 2,500 Chromebooks with an Arduino-based automation tool.",
+    "tags": [
+      "Network Infrastructure",
+      "Deployment Automation",
+      "Arduino"
+    ],
+    "assets": [
+      {
+        "label": "Deployment Architecture",
+        "src": "/project-artifacts/northstar-infra.svg",
+        "alt": "Abstract network and device-deployment architecture"
+      }
+    ]
+  }
+]

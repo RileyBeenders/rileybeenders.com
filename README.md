@@ -1,6 +1,6 @@
 # Interactive Resume Starter
 
-A resume-shaped portfolio website that stays readable at rest and reveals proof-of-work through hover states, subtle 3D motion, and expandable case-study drawers.
+A resume-shaped portfolio website that stays readable at rest and reveals proof-of-work through hover states, subtle 3D motion, and expandable additional-information drawers.
 
 This is designed to sit next to a normal ATS resume PDF. The PDF remains the official application document. The website is the interactive evidence layer.
 
@@ -10,9 +10,9 @@ This is designed to sit next to a normal ATS resume PDF. The PDF remains the off
 - TypeScript
 - Resume content stored in `data/resume.json`
 - Interactive resume layout that mirrors a conventional PDF resume
-- Proof mode toggle
+- Always-visible proof and project links
 - Hover proof cards
-- Expandable case-study drawer
+- Expandable additional-information drawer
 - Mouse-driven 3D page movement
 - Placeholder SVG project artifacts
 - Download button wired to `/resume.pdf`
@@ -28,6 +28,12 @@ components/
   InteractiveResume.tsx
 data/
   resume.json
+  education.json
+  experience.json
+  proofs.json
+  projects.json
+  skills.json
+  resumeData.ts
 types/
   resume.ts
 public/
@@ -62,23 +68,38 @@ http://localhost:3000
 
 ## Where to edit resume content
 
-Most content lives in:
+The master resume file is:
 
 ```txt
 data/resume.json
 ```
 
-Update:
+For easier editing, the main resume sections are split into focused files and merged into the site at build time:
+
+```txt
+data/education.json
+data/experience.json
+data/proofs.json
+data/projects.json
+data/skills.json
+```
+
+Update these files for:
+
+- `education`
+- `experience`
+- `proofs`
+- `projects`
+- `skills`
+
+Update `data/resume.json` for:
 
 - `person`
 - `summary`
-- `experience`
-- `projects`
-- `skills`
-- `proofs`
-- `caseStudies`
 
-Each bullet can optionally include a `proofId`. That proof ID connects the resume line to a hover card and, optionally, a full case study.
+`resume.json` intentionally does not duplicate those arrays. The site combines the master file and split sections through `data/resumeData.ts`, so `npm run dev` and `npm run build` use the same assembled resume data.
+
+Each bullet can optionally include a `proofId`. That proof ID connects the resume line to a hover card and, optionally, a project's additional information.
 
 Example:
 
@@ -89,25 +110,37 @@ Example:
 }
 ```
 
-The matching proof object is in the `proofs` array:
+The matching proof object is in `data/proofs.json`:
 
 ```json
 {
   "id": "product-line",
   "title": "Product Development Evidence",
   "summary": "Prototype-to-production story with visuals and supporting context.",
-  "caseStudyId": "product-development"
+  "projectId": "product-development"
 }
 ```
 
-The matching case study is in the `caseStudies` array:
+The matching project in `data/projects.json` can contain its long-form content directly:
 
 ```json
 {
   "id": "product-development",
-  "title": "Product Development Case Study"
+  "name": "Product Development",
+  "additionalInfo": {
+    "title": "Product Development",
+    "subtitle": "From prototype to production",
+    "problem": "The challenge the project addressed.",
+    "constraints": [],
+    "approach": [],
+    "impact": [],
+    "tools": [],
+    "assets": []
+  }
 }
 ```
+
+Projects with `additionalInfo` display a **Read more** action and open an **Additional Info** drawer.
 
 ## Adding your resume PDF
 
