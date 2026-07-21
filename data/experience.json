@@ -1,18 +1,18 @@
 [
   {
-    "company": "PROTEOR",
-    "role": "Research & Development Engineer",
+    "company": "Proteor / Proteor Printing Solutions",
+    "role": "Lead, Research & Development Engineer",
     "location": "Coplay, PA",
     "start": "January 2025",
     "end": "Present",
-    "context": "Following PROTEOR's acquisition of Filament Innovations, expanded additive-manufacturing engineering work to global product innovation, automation, and standardization.",
+    "context": "Following Proteor's acquisition of Filament Innovations, expanded additive-manufacturing engineering work to global product innovation, automation, and standardization.",
     "bullets": [
       {
         "text": "Serve as the sole engineer in the additive manufacturing department, responsible for the hardware, electronics, motion-control systems, and software used across the product line.",
         "proofId": "linear-motion-platform"
       },
       {
-        "text": "Converted the POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving 4-micron precision while moving a 30 kg assembly at 4 m/s.",
+        "text": "Converted the POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving 4-micron precision while moving a 30 kg assembly at speeds up to 4 m/s.",
         "proofId": "linear-motion-platform"
       },
       {
@@ -21,15 +21,15 @@
       },
       {
         "text": "Developed an automated LabVIEW system that collects nine data points every 100 ms from multiple laser sensors over Modbus and charts tolerance data for end-customer use.",
-        "proofId": "labview-metrology"
+        "projectId": "ExtrusionLine-Studio"
       },
       {
         "text": "Integrated a strain-gauge Z-probing system that automates first-layer calibration through the machine's print head with enough sensitivity to detect contact with an egg without cracking it.",
         "proofId": "strain-gauge-probing"
       },
       {
-        "text": "Contributed to PROTEOR Print, a network-accessible remote operation and diagnostics interface with live video, AI-assisted print-failure alerts, and material, waste, and outcome metrics.",
-        "proofId": "proteor-print"
+        "text": "Contributed to ProteorPrint OS, a network-accessible remote operation and diagnostics interface with live video, AI-assisted print-failure alerts, and material, waste, and outcome metrics.",
+        "proofId": "Proteor-print"
       }
     ]
   },
@@ -39,6 +39,7 @@
     "location": "Whitehall, PA",
     "start": "January 2023",
     "end": "January 2025",
+    "context": "Currently recognized as Proteor.",
     "bullets": [
       {
         "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",

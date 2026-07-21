@@ -36,7 +36,7 @@
     "projectId": "icarus-lite"
   },
   {
-    "id": "labview-metrology",
+    "id": "ExtrusionLine-Studio",
     "title": "Automated LabVIEW Metrology",
     "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
     "tags": [
@@ -51,7 +51,25 @@
         "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
       }
     ],
-    "projectId": "labview-metrology"
+    "projectId": "ExtrusionLine-Studio"
+  },
+  {
+    "id": "ExtrusionLine-Studio_Modbus",
+    "title": "TestOfNewProof",
+    "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
+    "tags": [
+      "LabVIEW",
+      "Modbus",
+      "Data Acquisition"
+    ],
+    "assets": [
+      {
+        "label": "Measurement System",
+        "src": "/project-artifacts/labview-control.svg",
+        "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
+      }
+    ],
+    "projectId": "ExtrusionLine-Studio_Modbus"
   },
   {
     "id": "strain-gauge-probing",
