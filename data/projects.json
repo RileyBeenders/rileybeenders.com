@@ -56,8 +56,8 @@
     "name": "ICARUS-Lite",
     "id": "icarus-lite",
     "order": 2,
-    "type": "Additive Manufacturing Product",
-    "summary": "A compact, purpose-built professional printer designed to automate prosthetic and orthotic production with minimal customer setup.",
+    "type": "Industrial Design",
+    "summary": "A compact, purpose-built industrial printer designed to automate prosthetic and orthotic production with minimal customer setup.",
     "images": [
       {
         "src": "/project-images/IcarusLiteRender.png",
@@ -75,17 +75,15 @@
     "proofId": "icarus-lite",
     "bullets": [
       {
-        "text": "Designed a bolt-less shell with seamless chamfered geometry that carries the POSEIDON industrial-design language into a smaller platform.",
-        "proofId": "icarus-lite"
+        "text": "Achieved a bolt-less shell with seamless chamfered geometry that gives omage to the POSEIDON, one of the largest 3D printers I designed and Filament Innovation's mass produced."
       },
       {
-        "text": "Created an IEEE-style electrical design adaptable to 120/240 VAC and completed product changes supporting conformity with the 2006/42/EC machinery directive.",
-        "proofId": "icarus-lite"
+        "text": "Created an IEEE-style electrical design adaptable to 120/240 VAC and completed product changes supporting conformity with the 2006/42/EC machinery directive."
       }
     ],
     "additionalInfo": {
-      "title": "ICARUS-Lite Product Development",
-      "subtitle": "Compact professional additive manufacturing for prosthetics and orthotics",
+      "title": "ICARUS-Lite",
+      "subtitle": "Product development of a compact, professional 3D Printer. Purpose built for prosthetics and orthotics.",
       "problem": "Professional prosthetic and orthotic users needed a compact, purpose-built printer that retained industrial capability while being easier for a new customer to install and operate.",
       "constraints": [
         "Minimize setup and visual complexity",
@@ -121,20 +119,24 @@
     }
   },
   {
-    "name": "Automated LabVIEW Metrology System",
-    "id": "labview-metrology",
+    "name": "ExtrusionLine Studio Software",
+    "id": "ExtrusionLine-Studio",
     "order": 3,
-    "type": "Test Automation / Data Acquisition",
-    "summary": "An automated measurement utility that collects high-frequency laser-sensor data over Modbus and turns it into tolerance charts.",
-    "proofId": "labview-metrology",
+    "type": "LabVIEW Data Aquisition",
+    "summary": "An automated measurement program that is capable of collecting three seperate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart. At the end of data collection, it creates and formats a PDF report and stores it on a remote server with an ID. The ID is then converted into a QR code and placed on the product and can be read if there are any difficulties with it in the field.",
+    "proofId": "ExtrusionLine-Studio",
     "bullets": [
       {
-        "text": "Collected nine data points every 100 ms from multiple sensors without manual transcription.",
-        "proofId": "labview-metrology"
+        "text": "Automatically negotiates the Modbus communication.",
+        "proofId": "ExtrusionLine-Studio_Modbus"
       },
       {
-        "text": "Generated charts that made dimensional tolerance results directly usable by the end customer.",
-        "proofId": "labview-metrology"
+        "text": "Connected and observed through a private VLAN over the network.",
+        "proofId": "ExtrusionLine-Studio_Modbus"
+      },
+      {
+        "text": "Hands free Startup.",
+        "proofId": "ExtrusionLine-Studio_SimpleStart"
       }
     ],
     "additionalInfo": {
@@ -435,6 +437,55 @@
         "Modular enclosures",
         "Wiring harnesses",
         "Supplier coordination"
+      ],
+      "assets": [
+        {
+          "label": "Controls Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Unified Ubiquiti Network",
+    "id": "unifi-network",
+    "order": 9,
+    "type": "Network Infustructure",
+    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
+    "proofId": "unifi-network",
+    "bullets": [
+      {
+        "text": " ",
+        "proofId": " "
+      },
+      {
+        "text": " ",
+        "proofId": " "
+      }
+    ],
+    "additionalInfo": {
+      "title": "title",
+      "subtitle": "subtitle",
+      "problem": "Problem Statement goes here",
+      "constraints": [
+        "constraint01",
+        "constraint02",
+        "constraint03",
+        "constraint04"
+      ],
+      "approach": [
+        "approach01",
+        "approach02"
+      ],
+      "impact": [
+        "impact statement 01",
+        "impact statement 02",
+        "impact statement 03"
+      ],
+      "tools": [
+        "Connect back",
+        "to skills listed"
       ],
       "assets": [
         {
