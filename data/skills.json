@@ -2,56 +2,62 @@
   {
     "category": "Engineering",
     "items": [
+      "Design for Manufacturing",
+      "Electrical Layout and Schematic Design",
+      "Engineering Documentation and BOM Control",
+      "FDM, FGF, MJF, and SLS Design",
+      "Fixture and Tooling Design",
       "Product Development and Commercialization",
       "Product Safety and Regulatory Compliance",
-      "R&D Prototyping & Validation",
       "Production Workflow Optimization",
-      "Engineering Documentation and BOM Control",
-      "Vendor Communication and Cost Negotiation",
+      "R&D Prototyping & Validation",
       "Technical Writing and Documentation",
-      "Electrical Layout and Schematic Design"
+      "Vendor Communication and Cost Negotiation",
+      "Worldwide Project Collaboration"
     ]
   },
   {
-    "category": "Design & CAD",
+    "category": "Design & Software",
     "items": [
-      "SolidWorks",
-      "CATIA",
-      "Siemens NX",
       "Autodesk Inventor",
+      "CATIA",
+      "Fixture and Tooling Design",
       "Fusion 360",
-      "Visual Studio Code",
-      "Design for Manufacturing",
-      "FDM, FGF, MJF, and SLS Design",
+      "GitHub",
+      "LabVIEW",
+      "LM Studio",
+      "Macros",
+      "MATLAB",
+      "oMLX",
+      "Python",
       "Rapid Prototyping",
-      "Fixture and Tooling Design"
+      "Siemens NX",
+      "SolidWorks",
+      "Visual Studio Code"
     ]
   },
   {
-    "category": "Controls, Automation & Software",
+    "category": "Controls & Automation",
     "items": [
-      "LabVIEW Development",
-      "MATLAB",
-      "Python",
+      "Allen Bradley PLCs",
       "Data Logging and Process Analysis",
-      "Machine Control Macros",
-      "Manufacturing Software Tools",
+      "Git Version Control",
       "Workflow Automation",
-      "Git/GitHub Version Control"
+      "Windows Applications"
     ]
   },
   {
     "category": "Infrastructure & Systems",
     "items": [
-      "Self-Hosted Infrastructure",
-      "Windows/Linux Systems Administration",
-      "Proxmox Virtualization",
-      "Virtual Machine and Container Management",
-      "Server and Network Configuration",
-      "Reverse Proxy and Routing Concepts",
       "Domain-Based Application Access",
       "DNS and Subdomain Configuration",
-      "Docker and Containerized Applications"
+      "Docker and Containerized Applications",
+      "Proxmox Virtualization",
+      "Reverse Proxy and Firewall Routing",
+      "Self-Hosted Infrastructure",
+      "Server Network and VLAN Configuration",
+      "Virtual Machine and Container Management",
+      "Windows/Linux Systems Administration"
     ]
   }
 ]
