@@ -12,3 +12,76 @@
 
 
 Alter Line 136 - To link to the network project + VLANs/Wifi routing
+
+
+
+# ------------------------------------------------------
+
+# AI script for generating the resume PDF file
+### JSON files to include in data collection
+  {
+    header.json
+    summary.json
+    education.json
+    experience.json
+    skills.json
+  }
+
+
+## experience.json
+  #### ---------------------------
+  ### Items to include:
+    {
+      company,
+      role,
+      location
+      start,
+      end,
+      context,
+      bullets[text,projectID],
+    }
+  ### Items not to include:
+    {
+      bullets[proofID],
+    }
+  #### ---------------------------
+
+## example.json
+  #### ---------------------------
+  ### Items to include:
+    {
+
+    }
+  ### Items not to include:
+    {
+
+    }
+  #### ---------------------------
+  
+  ## example.json
+  #### ---------------------------
+  ### Items to include:
+    {
+      
+    }
+  ### Items not to include:
+    {
+
+    }
+  #### ---------------------------
+
+## example.json
+  #### ---------------------------
+  ### Items to include:
+    {
+      
+    }
+  ### Items not to include:
+    {
+
+    }
+  #### ---------------------------
+
+
+
+# ------------------------------------------------------
