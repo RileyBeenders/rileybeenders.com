@@ -8,6 +8,11 @@
   ],
   "certificates": [
     {
+      "certificateName": "Lean Six Sigma - Yellow Belt",
+      "issuer" :"Educate 360",
+      "date": "Summer 2025"
+    },    
+    {
       "certificateName": "Certificate in Engineering Design and Tools",
       "issuer": "Penn State University",
       "date": "Spring 2023"

@@ -107,7 +107,7 @@
     ]
   },
   {
-    "id": "CPX-KM",
+    "id": "Filament",
     "title": "Filament Production",
     "summary": "THIS IS A TEST",
     "tags": [
@@ -278,23 +278,6 @@
         "label": "Independent Work",
         "src": "/project-artifacts/portfolio.svg",
         "alt": "Abstract overview of independent engineering and fabrication work"
-      }
-    ]
-  },
-  {
-    "id": "school-network",
-    "title": "District Technology Deployment",
-    "summary": "Deployed more than 750 access points and accelerated setup of more than 2,500 Chromebooks with an Arduino-based automation tool.",
-    "tags": [
-      "Network Infrastructure",
-      "Deployment Automation",
-      "Arduino"
-    ],
-    "assets": [
-      {
-        "label": "Deployment Architecture",
-        "src": "/project-artifacts/northstar-infra.svg",
-        "alt": "Abstract network and device-deployment architecture"
       }
     ]
   }

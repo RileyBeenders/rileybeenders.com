@@ -53,11 +53,11 @@
     "context": "Aquired by Proteor and is currently recognized globally as 'Proteor Print'.",
     "bullets": [
       {
-        "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
+        "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware and software development.",
         "proofId": "unifi-network"
       },
       {
-        "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
+        "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1m³ build volume, filament-and-pellet dual extrusion, geared and braked NEMA34 Z ballscrews, industrial servo XY motion, and a custom gantry.",
         "proofId": "gen3-poseidon"
       },
       {
@@ -67,6 +67,10 @@
       {
         "text": "Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.",
         "proofId": "nonplanar-research"
+      },
+      {
+        "text": "Filament Production",
+        "projectId": "Filament"
       }
     ]
   },
@@ -99,16 +103,14 @@
     "end": "June 2022",
     "bullets": [
       {
-        "text": "Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.",
-        "proofId": "kratos"
+        "text": "Introduced KRATOS for producing high-strength below-knee prosthetic sockets at a more affordable price. Following the 2025 acquisition, ICARUS-Lite succeeded Kratos as a separate platform while building on its foundational design principles."
       },
       {
-        "text": "Developed next-generation ICARUS and POSEIDON models with higher-performance components and expanded motion safety through NEMA 34 motors, planetary gearboxes, and power-failure brakes.",
-        "proofId": "gen3-poseidon"
+        "text": "Advanced the ICARUS and POSEIDON product lines with higher-performance components and enhanced motion safety, including NEMA34 stepper motors equipped with planetary gearboxes and power-failure brakes. Standardized components to reduce BOM complexity and manufacturing costs."
       },
       {
-        "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
-        "proofId": "kraken"
+        "text": "Engineered THE KRAKEN, a 1×2x1.5 meter 3D printer capable of simultaneously printing with pellet and filament materials; developed solely for the world’s largest 3D-printed statue, 'The Statue of Inspiration', recognized by Guinness Book of World Records on February 5, 2022.",
+        "projectId": "kraken"
       }
     ]
   },
@@ -120,29 +122,34 @@
     "end": "April 2021",
     "bullets": [
       {
-        "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.",
-        "proofId": "product-reliability"
+        "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability."
       },
       {
-        "text": "Tuned, calibrated, and optimized print parameters while documenting design limitations and opportunities for product improvement.",
-        "proofId": "product-reliability"
+        "text": "Tuned, calibrated, and optimized 3D printing parameters while documenting design limitations and opportunities for product improvement."
+      },
+      {
+        "text": "Reworked the First Generation ICARUS platforms, transitioning from an acrylic construction to powder coated aluminum panels for a more polished product."
+      },
+      {
+        "text": "Introduced the first generation POSEIDON to the Filament Innovations lineup."
       }
     ]
   },
   {
     "company": "RJB.Engineering",
-    "role": "Owner & Engineering Consultant",
+    "role": "Business Owner & Engineering Consultant",
     "location": "Pennsylvania",
     "start": "2015",
     "end": "Present",
     "bullets": [
       {
-        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",
-        "proofId": "rjb-engineering"
+        "text": "Deliver project-based engineering support for international automotive clients."
       },
       {
-        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
-        "proofId": "rjb-engineering"
+        "text": "Operated a small online store for 3D-printing heat inserts and other printer accessories while in college."
+      },
+      {
+        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic."
       }
     ]
   },
@@ -175,16 +182,13 @@
     "end": "August 2019",
     "bullets": [
       {
-        "text": "Built network infrastructure and deployed more than 800 wireless access points across six school buildings.",
-        "proofId": "school-network"
+        "text": "Built network infrastructure and deployed more than 800 wireless access points across six school buildings."
       },
       {
-        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-nano tool to automate setup-data entry.",
-        "proofId": "school-network"
+        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-nano tool to automate setup-data entry."
       },
       {
-        "text": "Coordinated final device distribution with school administrators.",
-        "proofId": "school-network"
+        "text": "Coordinated final device distribution with school administrators."
       }
     ]
   }
