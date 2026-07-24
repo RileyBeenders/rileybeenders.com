@@ -107,6 +107,23 @@
     ]
   },
   {
+    "id": "CPX-KM",
+    "title": "Filament Production",
+    "summary": "THIS IS A TEST",
+    "tags": [
+      "Automation",
+      "Sensors",
+      "Calibration"
+    ],
+    "assets": [
+      {
+        "label": "Probe Control Loop",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract control-loop diagram for an automated probing system"
+      }
+    ]
+  },
+  {
     "id": "proteor-print",
     "title": "PROTEOR Print Integration",
     "summary": "Contributed machine integration for a remote operations interface with diagnostics, live video, AI-assisted failure alerts, and production metrics.",
@@ -261,23 +278,6 @@
         "label": "Independent Work",
         "src": "/project-artifacts/portfolio.svg",
         "alt": "Abstract overview of independent engineering and fabrication work"
-      }
-    ]
-  },
-  {
-    "id": "ski-lift-systems",
-    "title": "Lift Operations & Safety",
-    "summary": "Combined high-volume guest operations with motor and control safety checks and hands-on maintenance support.",
-    "tags": [
-      "Safety",
-      "Controls",
-      "Field Support"
-    ],
-    "assets": [
-      {
-        "label": "Operations Flow",
-        "src": "/project-artifacts/automation.svg",
-        "alt": "Abstract operations and safety-check workflow"
       }
     ]
   },

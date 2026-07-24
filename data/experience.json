@@ -8,7 +8,7 @@
     "context": "Proteor acquired Filament Innovations in January, 2025 and my role evolved from CTO to Lead R&D Engineer. I continue to carry out my former CTO responsibilities, now with expanded oversight of the East Coast engineering team and involvement across Proteor’s global product portfolio.",
     "bullets": [
       {
-        "text": "Project lead behind the ICARUS-Lite 3D printer, a compact, purpose-built printer for prosthetic and orthotic manufacturing. The latest version of the machine includes a hybrid voltage support of 120/240 VAC input using AC heaters. The mechanical, electrical and software design.",
+        "text": "Project lead behind the ICARUS-Lite - a compact, purpose-built 3D printer for prosthetic and orthotic manufacturing. The latest version of the machine includes a hybrid voltage support of 120/240 VAC input using AC heaters. The mechanical, electrical and software design.",
         "projectId": "icarus-lite"
       },
       {
@@ -35,6 +35,10 @@
         "proofId": "linear-motion-platform"
       },
       {
+        "text": "Co-launched CPX-KyronMax with Mitsubishi Chemical Group and contributed to its ISO385 skin-safe certification.",
+        "proofId": "CPX-KM"
+      },
+      {
         "text": "Continued development of our internal IT infustructure and standardize software and internal processes within our division of Proteor.",
         "projectId": "unifi-network"
       }
@@ -43,10 +47,10 @@
   {
     "company": "Filament Innovations",
     "role": "Chief Technology Officer",
-    "location": "Whitehall, PA",
+    "location": "Coplay, PA",
     "start": "January 2023",
     "end": "January 2025",
-    "context": "Aquired by Proteor and is recognized globally as 'Proteor Print'.",
+    "context": "Aquired by Proteor and is currently recognized globally as 'Proteor Print'.",
     "bullets": [
       {
         "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
@@ -68,8 +72,8 @@
   },
   {
     "company": "Filament Innovations",
-    "role": "Lead Electro-Mechanical Engineer",
-    "location": "Whitehall, PA",
+    "role": "Lead, Electro-Mechanical Engineer",
+    "location": "Coplay, PA",
     "start": "June 2022",
     "end": "January 2023",
     "bullets": [
@@ -90,7 +94,7 @@
   {
     "company": "Filament Innovations",
     "role": "Industrial Engineer",
-    "location": "Whitehall, PA",
+    "location": "Coplay, PA",
     "start": "April 2021",
     "end": "June 2022",
     "bullets": [
@@ -111,7 +115,7 @@
   {
     "company": "Filament Innovations",
     "role": "Engineering Technician",
-    "location": "Whitehall, PA",
+    "location": "Coplay, PA",
     "start": "May 2020",
     "end": "April 2021",
     "bullets": [
@@ -150,12 +154,16 @@
     "end": "January 2021",
     "bullets": [
       {
-        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information.",
-        "proofId": "ski-lift-systems"
+        "text": "Started lift each morning, performed safety inspections and performed post-operation shutdown procedures."
       },
       {
-        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns.",
-        "proofId": "ski-lift-systems"
+        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns."
+      },
+      {
+        "text": "Cared to thousands of guests while loading chairlifts, scanning tickets and resolving ticket issues."
+      },
+      {
+        "text": "Educated guests on snow conditions, run closures and weather forecasts."
       }
     ]
   },
@@ -167,11 +175,11 @@
     "end": "August 2019",
     "bullets": [
       {
-        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings.",
+        "text": "Built network infrastructure and deployed more than 800 wireless access points across six school buildings.",
         "proofId": "school-network"
       },
       {
-        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry.",
+        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-nano tool to automate setup-data entry.",
         "proofId": "school-network"
       },
       {

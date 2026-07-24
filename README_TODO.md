@@ -6,6 +6,8 @@
 - Create a new proof 'ExtrusionLine-Studio_SimpleStart`
     - Must edit text & skills in proof
 
+- *Create a new proof 'CPX-KM'
+    -- Verify the ISO number.. I believe its ISO385 verification.
 
 Alter Line 136 - To link to the network project + VLANs/Wifi routing
 
