@@ -454,16 +454,7 @@
     "type": "Network Infustructure",
     "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
     "proofId": "unifi-network",
-    "bullets": [
-      {
-        "text": " ",
-        "proofId": " "
-      },
-      {
-        "text": " ",
-        "proofId": " "
-      }
-    ],
+    "bullets": [],
     "additionalInfo": {
       "title": "title",
       "subtitle": "subtitle",

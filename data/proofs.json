@@ -55,12 +55,12 @@
   },
   {
     "id": "ExtrusionLine-Studio_Modbus",
-    "title": "TestOfNewProof",
-    "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
+    "title": "Standalone Modbus Connection",
+    "summary": "Automatically establishes a Modbus connection through a standalone SubVI. The only requirement is that the Extrusion Line is powered on.",
     "tags": [
       "LabVIEW",
       "Modbus",
-      "Data Acquisition"
+      "Automation"
     ],
     "assets": [
       {
@@ -69,7 +69,25 @@
         "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
       }
     ],
-    "projectId": "ExtrusionLine-Studio_Modbus"
+    "projectId": "ExtrusionLine-Studio"
+  },
+  {
+    "id": "ExtrusionLine-Studio_SimpleStart",
+    "title": "Simple Start-Up",
+    "summary": "The technician’s start-up procedure is simply to turn on the host computer. Windows then boots, the programs launch automatically, find their positions on screen, and begin collecting data.",
+    "tags": [
+      "Automation",
+      "Data Collection",
+      "User Experience"
+    ],
+    "assets": [
+      {
+        "label": "Automated Start-Up",
+        "src": "/project-artifacts/automation.svg",
+        "alt": "Abstract diagram of an automated software start-up workflow"
+      }
+    ],
+    "projectId": "ExtrusionLine-Studio"
   },
   {
     "id": "strain-gauge-probing",
