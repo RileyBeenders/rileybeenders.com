@@ -393,11 +393,11 @@ function BulletList({
 }: BulletListProps) {
   return (
     <ul className={compact ? "bullet-list compact" : "bullet-list"}>
-      {bullets.map((bullet) => {
+      {bullets.map((bullet, index) => {
         const proof = bullet.proofId ? proofById.get(bullet.proofId) : undefined;
         const project = bullet.projectId ? projectById.get(bullet.projectId) : undefined;
         return (
-          <li key={bullet.text}>
+          <li key={`${bullet.text}-${bullet.proofId ?? bullet.projectId ?? index}`}>
             <span>{bullet.text}</span>
             {proof && (
               <button
