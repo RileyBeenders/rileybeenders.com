@@ -8,10 +8,16 @@
     - Text:
         The technician's procedure to start everything is to simply click the power button of the host computer on. From there, Windows boots up and the programs automatically launch, find their position on screen, and start data collection.
 
-
-
-
 Alter Line 136 - To link to the network project + VLANs/Wifi routing
+
+# Projects (in order of the experience.json file)
+  icarus-lite
+  ExtrusionLine-Studio
+  Proteor-Print
+  unifi-network
+# Proofs (in order of the experience.json file)
+  the-rabbit
+  linear-motion-platform
 
 
 
