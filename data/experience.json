@@ -17,28 +17,26 @@
       },
       {
         "text": "Oversight of Microsoft's Buisness Central softwar implementation for all of my divisions items and products. The Business Central software syncs with all of our other Proteor locations around the world to make sales and managing inventory easier."
+      },      
+      {
+        "text": "Lead the implementation of ProteorPrint OS, a network-accessible remote operation and diagnostics interface with live video, AI-assisted alerts, material, waste, and outcome metrics. This software was developed in collaboration with SimplyPrint.io",
+        "projectId": "Proteor-Print"
       },
       {
-        "text": "Collaborated with another Additive Manufacturer to develop a reliable and cost effective hotend that meets our material's specific needs.",
+        "text": "Collaborated with another Additive Manufacturer to develop a reliable, cost effective hotend that meets our material's specific needs.",
         "proofId": "the-rabbit"
       },
-      
-      
-      
-      
-      
       {
         "text": "Serve as the sole engineer in the additive manufacturing department, responsible for the hardware, electronics, motion-control systems, and software used across the product line.",
         "proofId": "linear-motion-platform"
       },
       {
-        "text": "Converted the POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving a 1-micron precision while moving a 30 kg assembly at speeds up to 4 m/s.",
+        "text": "Converted the Filament Innovation POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving a 1-micron precision per 1 m/s while moving a 30 kg payload. The system maxed out at a speed of 4 m/s",
         "proofId": "linear-motion-platform"
       },
-      
       {
-        "text": "Lead the implementation of ProteorPrint OS, a network-accessible remote operation and diagnostics interface with live video, AI-assisted alerts, material, waste, and outcome metrics. This software was developed in collaboration with SimplyPrint.io",
-        "proofId": "Proteor-Print"
+        "text": "Continued development of our internal IT infustructure and standardize software and internal processes within our division of Proteor.",
+        "projectId": "unifi-network"
       }
     ]
   },
@@ -48,11 +46,11 @@
     "location": "Whitehall, PA",
     "start": "January 2023",
     "end": "January 2025",
-    "context": "Currently recognized as Proteor.",
+    "context": "Aquired by Proteor and is recognized globally as 'Proteor Print'.",
     "bullets": [
       {
         "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
-        "proofId": "gen3-poseidon"
+        "proofId": "unifi-network"
       },
       {
         "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
