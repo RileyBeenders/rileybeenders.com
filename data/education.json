@@ -8,14 +8,56 @@
   ],
   "certificates": [
     {
+      "certificateName": "MATLAB OnRamp",
+      "issuer": "MathWorks",
+      "date": "Issued July 2026",
+      "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=d7bc16fc-fe76-4477-b34b-8b9573fb799c&",
+      "credentialLabel": "Show credential"
+    },
+    {
+      "certificateName": "Simulink OnRamp",
+      "issuer": "MathWorks",
+      "date": "Issued July 2026",
+      "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=233c6e48-52c7-4cb7-be95-87dec2d4fe88&",
+      "credentialLabel": "Show credential"
+    },
+    {
+      "certificateName": "Simscape OnRamp",
+      "issuer": "MathWorks",
+      "date": "Issued July 2026",
+      "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=37a51e8e-d643-47dc-b485-99c353192a10&",
+      "credentialLabel": "Show credential"
+    },
+    {
+      "certificateName": "Machine Learning Onramp",
+      "issuer": "MathWorks",
+      "date": "Issued July 2026",
+      "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=1990a924-01dd-4d39-ba05-7be2d3b6a038&",
+      "credentialLabel": "Show credential"
+    },
+    {
+      "certificateName": "Lean Six Sigma Yellow Belt",
+      "issuer": "Educate 360",
+      "date": "Issued July 2025",
+      "credentialUrl": "https://learn.educate360.com/c/iDwK_MMRRf20ArtoW-cx_Q",
+      "credentialLabel": "Show credential"
+    },
+    {
+      "certificateName": "Lean Six Sigma White Belt",
+      "issuer": "Educate 360",
+      "date": "Issued June 2025",
+      "credentialUrl": "https://learn.educate360.com/c/wcZzX0gFSkuW2MdDF5_QSA",
+      "credentialLabel": "Show credential"
+    },
+    {
       "certificateName": "Certificate in Engineering Design and Tools",
       "issuer": "Penn State University",
-      "date": "Spring 2023"
+      "date": "Issued Spring 2023"
     },
     {
       "certificateName": "Mechanical Engineering Certificate",
       "issuer": "Lafayette College",
-      "date": "Spring 2019"
+      "date": "Issued Spring 2019"
     }
   ]
 }

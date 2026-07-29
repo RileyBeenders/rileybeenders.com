@@ -8,8 +8,11 @@
     "context": "Proteor acquired Filament Innovations in January, 2025 and my role evolved from CTO to Lead R&D Engineer. I continue to carry out my former CTO responsibilities, now with expanded oversight of the East Coast engineering team and involvement across Proteor’s global product portfolio.",
     "bullets": [
       {
-        "text": "Project lead behind the ICARUS-Lite 3D printer, a compact, purpose-built printer for prosthetic and orthotic manufacturing. The latest version of the machine includes a hybrid voltage support of 120/240 VAC input using AC heaters. The mechanical, electrical and software design.",
+        "text": "Project lead on the ICARUS-Lite prject - a compact 3D printer, purpose-built for digital prosthetic and orthotic production. The latest version of the machine includes a hybrid voltage support of 120/240 VAC input using AC heaters. The mechanical, electrical and software design.",
         "projectId": "icarus-lite"
+      },
+      {
+        "text": "Led the ICARUS-Lite from product development through commercialization, contributing to increased revenue and the addition of approximately five new roles."
       },
       {
         "text": "Developed an automated LabVIEW system that collects nine data points every 15 ms from multiple laser sensors over Modbus and charts tolerance data for internal quality control and end-customer use.",
@@ -17,7 +20,7 @@
       },
       {
         "text": "Oversight of Microsoft's Buisness Central softwar implementation for all of my divisions items and products. The Business Central software syncs with all of our other Proteor locations around the world to make sales and managing inventory easier."
-      },      
+      },
       {
         "text": "Lead the implementation of ProteorPrint OS, a network-accessible remote operation and diagnostics interface with live video, AI-assisted alerts, material, waste, and outcome metrics. This software was developed in collaboration with SimplyPrint.io",
         "projectId": "Proteor-Print"
@@ -27,7 +30,7 @@
         "proofId": "the-rabbit"
       },
       {
-        "text": "Serve as the sole engineer in the additive manufacturing department, responsible for the hardware, electronics, motion-control systems, and software used across the product line.",
+        "text": "Work alongside production, sales, and customer service teams to support the product line. Responsibilities include hardware, electronics, motion-control systems, software, troubleshooting and after-sales technical support.",
         "proofId": "linear-motion-platform"
       },
       {

@@ -95,8 +95,8 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
     const rect = element.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
-    const rotateX = (0.5 - y) * 1;
-    const rotateY = (x - 0.5) * 2;
+    const rotateX = (0.5 - y) * 0.4;
+    const rotateY = (x - 0.5) * 0.8;
 
     element.style.setProperty("--pointer-x", `${x * 100}%`);
     element.style.setProperty("--pointer-y", `${y * 100}%`);
@@ -258,7 +258,8 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                             target="_blank"
                             rel="noreferrer"
                           >
-                            View credential <ExternalLink size={13} />
+                            {certificate.credentialLabel || "Show credential"}
+                            <ExternalLink aria-hidden="true" size={14} />
                           </a>
                         )}
                       </div>

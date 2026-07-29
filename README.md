@@ -108,11 +108,12 @@ Education is split into degree and certificate lists in `data/education.json`. A
   "certificateName": "Certificate name",
   "issuer": "Issuing organization",
   "date": "Month Year",
-  "credentialUrl": "https://example.com/credential"
+  "credentialUrl": "https://example.com/credential",
+  "credentialLabel": "Show credential"
 }
 ```
 
-`credentialUrl` is optional. The Certificates subsection appears below Degrees as soon as the `certificates` array contains an entry.
+`credentialUrl` is optional. When it is present, the certificate displays a link that opens in a new tab. Use `credentialLabel` to customize the button text; if it is omitted or empty, the button says `Show credential`. The Certificates subsection appears below Degrees as soon as the `certificates` array contains an entry.
 
 Each bullet can optionally include a `proofId`. That proof ID connects the resume line to a hover card and, optionally, a project's additional information.
 
