@@ -8,7 +8,7 @@
     "context": "Proteor acquired Filament Innovations in January, 2025 and my role evolved from CTO to Lead R&D Engineer. I continue to carry out my former CTO responsibilities, now with expanded oversight of the East Coast engineering team and involvement across Proteor’s global product portfolio.",
     "bullets": [
       {
-        "text": "Project lead on the ICARUS-Lite prject - a compact 3D printer, purpose-built for digital prosthetic and orthotic production. The latest version of the machine includes a hybrid voltage support of 120/240 VAC input using AC heaters. The mechanical, electrical and software design.",
+        "text": "Led the design and development of the ICARUS-Lite, a compact 3D printer purpose-built for digital prosthetic and orthotic production. Primarily responsible for its mechanical, electrical, and software design, including custom AC heaters and dual-voltage 120/240 VAC operation.",
         "projectId": "icarus-lite"
       },
       {
@@ -136,12 +136,10 @@
     "end": "Present",
     "bullets": [
       {
-        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",
-        "proofId": "rjb-engineering"
+        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories."
       },
       {
-        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
-        "proofId": "rjb-engineering"
+        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic."
       }
     ]
   },
@@ -153,12 +151,10 @@
     "end": "January 2021",
     "bullets": [
       {
-        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information.",
-        "proofId": "ski-lift-systems"
+        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information."
       },
       {
-        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns.",
-        "proofId": "ski-lift-systems"
+        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns."
       }
     ]
   },
@@ -170,16 +166,13 @@
     "end": "August 2019",
     "bullets": [
       {
-        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings.",
-        "proofId": "school-network"
+        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings."
       },
       {
-        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry.",
-        "proofId": "school-network"
+        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry."
       },
       {
-        "text": "Coordinated final device distribution with school administrators.",
-        "proofId": "school-network"
+        "text": "Coordinated final device distribution with school administrators."
       }
     ]
   }
