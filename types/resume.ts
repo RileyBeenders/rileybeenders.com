@@ -47,6 +47,7 @@ export type EducationCertificate = {
   issuer: string;
   date: string;
   credentialUrl?: string;
+  credentialLabel?: string;
 };
 
 export type Education = {

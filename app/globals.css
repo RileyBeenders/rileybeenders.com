@@ -779,14 +779,27 @@ img {
   align-items: center;
   gap: 6px;
   margin-top: 14px;
-  color: #2563eb;
+  min-height: 36px;
+  padding: 7px 13px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: var(--ink);
   font-size: 13px;
   font-weight: 800;
+  line-height: 1;
   text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
 .certificate-link:hover {
-  text-decoration: underline;
+  background: var(--ink);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.certificate-link:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .3);
+  outline-offset: 3px;
 }
 
 .timeline-card-header span {
