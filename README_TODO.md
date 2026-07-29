@@ -9,8 +9,15 @@
 - *Create a new proof 'CPX-KM'
     -- Verify the ISO number.. I believe its ISO385 verification.
 
-- Proof ID: 'rjb-engineering'
-    -- Grab data and photos from Rimac project.
+- Remove the following proofs
+  --> "proofId": "product-reliability"
+  --> "proofId": "kratos"
+  --> "proofId": "rjb-engineering"
+  --> "proofId": "gen3-poseidon"
+  -->
+
+
+
 
 
 
