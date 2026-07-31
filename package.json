@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "framer-motion": "latest",
+    "jspdf": "^4.2.1",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "^16.2.12",
     "react": "latest",
     "react-dom": "latest"
   },

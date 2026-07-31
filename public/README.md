@@ -1,2 +1,2 @@
-Place your ATS resume PDF here as public/resume.pdf.
-The Download PDF button currently points to /resume.pdf.
+The Download PDF button generates the latest published resume through
+`/api/resume-pdf`; a static `public/resume.pdf` file is no longer required.

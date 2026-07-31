@@ -9,6 +9,7 @@ import {
   Code,
   Download,
   ExternalLink,
+  LoaderCircle,
   Mail,
   Maximize2,
   MousePointer2,
@@ -336,6 +337,24 @@ type HeaderProps = {
 };
 
 function ResumeHeader({ data }: HeaderProps) {
+  const [pdfDownloadState, setPdfDownloadState] = useState<"idle" | "loading" | "error">("idle");
+  const isPdfDownloading = pdfDownloadState === "loading";
+
+  async function handlePdfDownload() {
+    if (isPdfDownloading) return;
+
+    setPdfDownloadState("loading");
+
+    try {
+      const { downloadPublishedResumePdf } = await import("@/ResumeBuilder/downloadPublishedResume");
+      await downloadPublishedResumePdf(data.resumePdfPath);
+      setPdfDownloadState("idle");
+    } catch (error) {
+      console.error("Unable to download the published resume PDF.", error);
+      setPdfDownloadState("error");
+    }
+  }
+
   return (
     <header className="hero-card interactive-card">
       <div>
@@ -350,12 +369,26 @@ function ResumeHeader({ data }: HeaderProps) {
         </div>
       </div>
       <div className="hero-actions">
-        <a className="primary-action" href={data.resumePdfPath}>
-          <Download size={16} /> Download PDF
-        </a>
+        <button
+          aria-busy={isPdfDownloading}
+          className="primary-action"
+          disabled={isPdfDownloading}
+          onClick={handlePdfDownload}
+          type="button"
+        >
+          {isPdfDownloading
+            ? <LoaderCircle aria-hidden="true" className="pdf-loading-icon" size={16} />
+            : <Download aria-hidden="true" size={16} />}
+          {isPdfDownloading ? "Preparing PDF..." : "Download PDF"}
+        </button>
         <a className="secondary-action" href={data.person.website}>
           Live URL <ExternalLink size={16} />
         </a>
+        {pdfDownloadState === "error" && (
+          <span className="pdf-download-error" role="alert">
+            The PDF could not be created. Please try again.
+          </span>
+        )}
       </div>
     </header>
   );
