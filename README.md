@@ -34,11 +34,17 @@ http://localhost:3000
 
 ```txt
 app/
+  api/
+    resume-pdf/
+      route.ts
   globals.css
   layout.tsx
   page.tsx
 components/
   InteractiveResume.tsx
+ResumeBuilder/
+  downloadPublishedResume.ts
+  generateResumePdf.ts
 data/
   header.json
   education.json

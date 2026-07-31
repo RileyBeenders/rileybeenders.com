@@ -16,5 +16,5 @@
     "projectsSection": false,
     "proofIndex": false
   },
-  "resumePdfPath": "/resume.pdf"
+  "resumePdfPath": "/api/resume-pdf"
 }
