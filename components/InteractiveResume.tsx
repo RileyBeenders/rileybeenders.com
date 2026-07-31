@@ -57,6 +57,10 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
   }, [data.projects]);
 
   const activeProof = activeProofId ? proofById.get(activeProofId) ?? null : null;
+  const portfolioLayersEnabled = data.visibility.projectsSection
+    || data.visibility.proofIndex
+    || data.visibility.experienceProjectButtons
+    || data.visibility.experienceProofButtons;
 
   useEffect(() => {
     if (!projectLightbox) return;
@@ -166,65 +170,69 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
                       onProofLeave={() => setActiveProofId(null)}
                       onOpenProof={openProofAdditionalInfo}
                       onOpenProject={openProject}
+                      showProofButtons={data.visibility.experienceProofButtons}
+                      showProjectButtons={data.visibility.experienceProjectButtons}
                     />
                   </article>
                 ))}
               </div>
             </ResumeBlock>
 
-            <ResumeBlock eyebrow="Selected Work" title="Projects">
-              <div className="project-grid">
-                {orderedProjects.map((project) => {
-                  return (
-                    <article
-                      className="project-card interactive-card"
-                      id={`project-${project.id}`}
-                      key={project.id}
-                      tabIndex={-1}
-                    >
-                      <div className="project-type">
-                        {project.order !== undefined && (
-                          <span className="project-order">{String(project.order).padStart(2, "0")}</span>
+            {data.visibility.projectsSection && (
+              <ResumeBlock eyebrow="Selected Work" title="Projects">
+                <div className="project-grid">
+                  {orderedProjects.map((project) => {
+                    return (
+                      <article
+                        className="project-card interactive-card"
+                        id={`project-${project.id}`}
+                        key={project.id}
+                        tabIndex={-1}
+                      >
+                        <div className="project-type">
+                          {project.order !== undefined && (
+                            <span className="project-order">{String(project.order).padStart(2, "0")}</span>
+                          )}
+                          <span>{project.type}</span>
+                        </div>
+                        <h3>{project.name}</h3>
+                        <p>{project.summary}</p>
+                        {project.images && project.images.length > 0 && (
+                          <ProjectImageGallery
+                            images={project.images}
+                            projectName={project.name}
+                            onOpen={(index) => {
+                              setProjectLightbox({
+                                images: project.images ?? [],
+                                index,
+                                projectName: project.name
+                              });
+                            }}
+                          />
                         )}
-                        <span>{project.type}</span>
-                      </div>
-                      <h3>{project.name}</h3>
-                      <p>{project.summary}</p>
-                      {project.images && project.images.length > 0 && (
-                        <ProjectImageGallery
-                          images={project.images}
-                          projectName={project.name}
-                          onOpen={(index) => {
-                            setProjectLightbox({
-                              images: project.images ?? [],
-                              index,
-                              projectName: project.name
-                            });
-                          }}
-                        />
-                      )}
-                      {project.bullets && (
-                        <BulletList
-                          bullets={project.bullets}
-                          proofById={proofById}
-                          projectById={projectById}
-                          onProofEnter={setActiveProofId}
-                          onProofLeave={() => setActiveProofId(null)}
-                          onOpenProof={openProofAdditionalInfo}
-                          onOpenProject={openProject}
-                          compact
-                        />
-                      )}
-                      {project.additionalInfo && (
-                        <button className="text-button" onClick={() => openProjectAdditionalInfo(project)}>
-                          Read more <ChevronRight size={14} />
-                        </button>
-                      )}
-                    </article>
-                  );
-                })}
-              </div>
-            </ResumeBlock>
+                        {project.bullets && (
+                          <BulletList
+                            bullets={project.bullets}
+                            proofById={proofById}
+                            projectById={projectById}
+                            onProofEnter={setActiveProofId}
+                            onProofLeave={() => setActiveProofId(null)}
+                            onOpenProof={openProofAdditionalInfo}
+                            onOpenProject={openProject}
+                            compact
+                          />
+                        )}
+                        {project.additionalInfo && (
+                          <button className="text-button" onClick={() => openProjectAdditionalInfo(project)}>
+                            Read more <ChevronRight size={14} />
+                          </button>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+              </ResumeBlock>
+            )}
           </div>
 
           <aside className="resume-column-side">
@@ -284,17 +292,19 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
               </div>
             </ResumeBlock>
 
-            <ProofPanel
-              proof={activeProof}
-              fallbackProofs={data.proofs.slice(0, 4)}
-              onOpenProof={openProofAdditionalInfo}
-            />
+            {data.visibility.proofIndex && (
+              <ProofPanel
+                proof={activeProof}
+                fallbackProofs={data.proofs.slice(0, 4)}
+                onOpenProof={openProofAdditionalInfo}
+              />
+            )}
           </aside>
         </section>
       </section>
 
       <AnimatePresence>
-        {selectedAdditionalInfo && (
+        {portfolioLayersEnabled && selectedAdditionalInfo && (
           <AdditionalInfoDrawer
             additionalInfo={selectedAdditionalInfo}
             onClose={() => setSelectedAdditionalInfoProjectId(null)}
@@ -303,7 +313,7 @@ export function InteractiveResume({ data }: InteractiveResumeProps) {
       </AnimatePresence>
 
       <AnimatePresence>
-        {projectLightbox && (
+        {data.visibility.projectsSection && projectLightbox && (
           <ProjectImageLightbox
             images={projectLightbox.images}
             index={projectLightbox.index}
@@ -379,6 +389,8 @@ type BulletListProps = {
   onProofLeave: () => void;
   onOpenProof: (proof?: ProofPoint) => void;
   onOpenProject: (project?: Project) => void;
+  showProofButtons?: boolean;
+  showProjectButtons?: boolean;
   compact?: boolean;
 };
 
@@ -390,13 +402,15 @@ function BulletList({
   onProofLeave,
   onOpenProof,
   onOpenProject,
+  showProofButtons = true,
+  showProjectButtons = true,
   compact
 }: BulletListProps) {
   return (
     <ul className={compact ? "bullet-list compact" : "bullet-list"}>
       {bullets.map((bullet, index) => {
-        const proof = bullet.proofId ? proofById.get(bullet.proofId) : undefined;
-        const project = bullet.projectId ? projectById.get(bullet.projectId) : undefined;
+        const proof = showProofButtons && bullet.proofId ? proofById.get(bullet.proofId) : undefined;
+        const project = showProjectButtons && bullet.projectId ? projectById.get(bullet.projectId) : undefined;
         return (
           <li key={`${bullet.text}-${bullet.proofId ?? bullet.projectId ?? index}`}>
             <span>{bullet.text}</span>

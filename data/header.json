@@ -10,5 +10,11 @@
     "linkedin": "https://linkedin.com/in/riley-beenders",
     "github": "https://github.com/RileyBeenders"
   },
+  "visibility": {
+    "experienceProjectButtons": false,
+    "experienceProofButtons": false,
+    "projectsSection": false,
+    "proofIndex": false
+  },
   "resumePdfPath": "/resume.pdf"
 }
