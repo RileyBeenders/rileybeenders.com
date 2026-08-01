@@ -1,10 +1,22 @@
 # RileyBeenders.com
 
+***
+
 'RileyBeenders.com' is a resume-shaped portfolio website designed to complement a traditional ATS-friendly resume PDF. The PDF remains the official application document, while the website serves as an interactive evidence layer that demonstrates the work behind the claims on the resume.
 
 The site stays readable as a conventional resume at rest, then reveals additional proof of work through hover states, subtle mouse-driven 3D motion, persistent project links, and expandable information drawers. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact.
 
-## Getting Started
+# Job Applications Submitted
+
+
+
+| Job Title | Company | Location (Goal) | Date Submitted | Updates |
+|:----|:----|:----:|:----:|:----:|
+|Principal Ride Control Software Engineer (Controls Automation)| Walt Disney Imagineering | Glendale, CA, USA | July 31, 2026 | 🟢 Application Received |
+
+***
+
+# Running the Local Environment
 
 ```bash
 npm install
@@ -29,8 +41,9 @@ Then open:
 ```txt
 http://localhost:3000
 ```
+***
 
-## Project Structure
+# Project Structure
 
 ```txt
 app/
@@ -59,3 +72,4 @@ types/
 public/
   project-artifacts/
 ```
+***
