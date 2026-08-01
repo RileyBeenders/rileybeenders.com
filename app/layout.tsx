@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import resumeData from "@/data/resumeData";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const siteData = resumeData;
 const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.comingSoon);
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
