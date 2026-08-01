@@ -14,6 +14,7 @@ type Color = readonly [number, number, number];
 
 const TEXT: Color = [20, 20, 20];
 const MUTED: Color = [78, 78, 78];
+const LINK: Color = [0, 0, 238];
 const RULE: Color = [188, 188, 188];
 const LIGHT_RULE: Color = [224, 224, 224];
 
@@ -169,6 +170,7 @@ export function generateResumePdf(data: ResumeData): ArrayBuffer {
 
     items.forEach((item, index) => {
       const label = normalizeText(item.label);
+      const url = safeLink(item.url);
       const separatorWidth = index === 0 ? 0 : doc.getTextWidth(separator);
       const labelWidth = doc.getTextWidth(label);
 
@@ -176,14 +178,18 @@ export function generateResumePdf(data: ResumeData): ArrayBuffer {
         y += lineHeight;
         x = MARGIN_LEFT;
       } else if (index > 0) {
+        setTextStyle(size, "normal", MUTED);
         doc.text(separator, x, y);
         x += separatorWidth;
       }
 
+      setTextStyle(size, "normal", url ? LINK : MUTED);
       doc.text(label, x, y);
-      const url = safeLink(item.url);
       if (url) {
         doc.link(x, y - size, labelWidth, lineHeight, { url });
+        doc.setDrawColor(...LINK);
+        doc.setLineWidth(0.4);
+        doc.line(x, y + 1, x + labelWidth, y + 1);
       }
       x += labelWidth;
     });
@@ -440,10 +446,10 @@ export function generateResumePdf(data: ResumeData): ArrayBuffer {
       });
 
       if (credentialLabel && credentialUrl) {
-        setTextStyle(8.25, "bold", MUTED);
+        setTextStyle(8.25, "bold", LINK);
         doc.textWithLink(credentialLabel, MARGIN_LEFT, y, { url: credentialUrl });
         const credentialWidth = doc.getTextWidth(credentialLabel);
-        doc.setDrawColor(...MUTED);
+        doc.setDrawColor(...LINK);
         doc.setLineWidth(0.4);
         doc.line(MARGIN_LEFT, y + 1, MARGIN_LEFT + credentialWidth, y + 1);
         y += 10;

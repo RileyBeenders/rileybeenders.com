@@ -381,9 +381,6 @@ function ResumeHeader({ data }: HeaderProps) {
             : <Download aria-hidden="true" size={16} />}
           {isPdfDownloading ? "Preparing PDF..." : "Download PDF"}
         </button>
-        <a className="secondary-action" href={data.person.website}>
-          Live URL <ExternalLink size={16} />
-        </a>
         {pdfDownloadState === "error" && (
           <span className="pdf-download-error" role="alert">
             The PDF could not be created. Please try again.
