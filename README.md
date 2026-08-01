@@ -10,9 +10,14 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
 
 
-| Job Title | Company | Location (Goal) | Date Submitted | Updates |
-|:----|:----|:----:|:----:|:----:|
-|Principal Ride Control Software Engineer (Controls Automation)| Walt Disney Imagineering | Glendale, CA, USA | July 31, 2026 | 🟢 Application Received |
+| PDF ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
+|:----:|:----|:----|:----:|:----:|:----:|
+|001|Principal Ride Control Software Engineer (Controls Automation)| Walt Disney Imagineering | Glendale, CA, USA | July 31, 2026 | Tailored Resume | 🟢 Application Received |
+|002|General Application | Fluidstack.io | Unknown ATM | August 01, 2026 | Website Generated |🟢 Application Received |
+|003|Principal Electro-Mechanical Manufacturing Engineer | K2 Space | Los Angeles, CA | August 01, 2026 | Website Generated | 🟢 Application Received |
+|004|Lead, Manufacturing Engineer, Integration & Test | Relativity Space | Long Beach, California | August 01, 2026 | Website Generated | 🟢 Application Received |
+|005| Sr. Network Security Engineer | SpaceX | Hawthorne, CA | August 01, 2026 | Tailored Resume | 🟢 Application Received |
+|006| Principal Software Engineer | Walt Disney Imagineering | Glendale, CA, USA | August 01, 2026 | Tailored Resume | 🟢 Application Received |
 
 ***
 
@@ -73,3 +78,13 @@ public/
   project-artifacts/
 ```
 ***
+
+## Tailored Resume Builder Prompt
+
+```
+I am applying to some jobs. I needs 1-page resumes generated based off of my current 'live' website "www.rileybeenders.com" matching the same format that we generated [reference Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf] yesterday.
+
+Please make sure to follow the same theme, underline the hyperlinks and make them blue. When finished, use the following name format: "RileyBeenders_<company>_<job title>.pdf"
+
+Use the "/JobsAplliedTo/<PDF Name Here>.pdf" to reference the current job I am applying to.
+```
