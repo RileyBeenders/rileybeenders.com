@@ -8,10 +8,10 @@ const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.com
 export const metadata: Metadata = {
   title: isComingSoon
     ? `${siteData.comingSoon?.headline ?? siteData.person.name} | Coming Soon`
-    : `${siteData.person.name} | Interactive Resume`,
+    : `Riley Beenders | Exploring, Building, Improving`,
   description: isComingSoon
     ? siteData.comingSoon?.summary ?? siteData.summary
-    : "A resume-shaped portfolio with interactive proof-of-work layers."
+    : "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
