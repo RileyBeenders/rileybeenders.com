@@ -12,12 +12,32 @@ import type { ResumeData } from "@/types/resume";
  * summaries, and project details live in focused JSON files and are merged
  * here at build time.
  */
+const visibility = header.visibility as ResumeData["visibility"];
+
+const visibleExperience: ResumeData["experience"] = experience.map((job) => ({
+  ...job,
+  bullets: job.bullets.map((bullet) => ({
+    text: bullet.text,
+    ...(visibility.experienceProofButtons && "proofId" in bullet
+      ? { proofId: bullet.proofId }
+      : {}),
+    ...(visibility.experienceProjectButtons && "projectId" in bullet
+      ? { projectId: bullet.projectId }
+      : {})
+  }))
+}));
+
+const includeProofData = visibility.proofIndex || visibility.experienceProofButtons;
+const includeProjectData = visibility.projectsSection
+  || visibility.experienceProjectButtons
+  || includeProofData;
+
 const resumeData: ResumeData = {
   ...(header as ResumeData),
   education: education as ResumeData["education"],
-  experience: experience as ResumeData["experience"],
-  proofs: proofs as ResumeData["proofs"],
-  projects: projects as ResumeData["projects"],
+  experience: visibleExperience,
+  proofs: includeProofData ? proofs as ResumeData["proofs"] : [],
+  projects: includeProjectData ? projects as ResumeData["projects"] : [],
   skills: skills as ResumeData["skills"],
   summary: summary.summary
 };

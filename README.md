@@ -1,47 +1,27 @@
-# Interactive Resume Starter
+# RileyBeenders.com
 
-A resume-shaped portfolio website that stays readable at rest and reveals proof-of-work through hover states, subtle 3D motion, and expandable additional-information drawers.
+***
 
-This is designed to sit next to a normal ATS resume PDF. The PDF remains the official application document. The website is the interactive evidence layer.
+'RileyBeenders.com' is a resume-shaped portfolio website designed to complement a traditional ATS-friendly resume PDF. The PDF remains the official application document, while the website serves as an interactive evidence layer that demonstrates the work behind the claims on the resume.
 
-## What is included
+The site stays readable as a conventional resume at rest, then reveals additional proof of work through hover states, subtle mouse-driven 3D motion, persistent project links, and expandable information drawers. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact.
 
-- Next.js app router project
-- TypeScript
-- Header and shared settings stored in `data/header.json`
-- Interactive resume layout that mirrors a conventional PDF resume
-- Always-visible proof and project links
-- Hover proof cards
-- Expandable additional-information drawer
-- Mouse-driven 3D page movement
-- Placeholder SVG project artifacts
-- Download button wired to `/resume.pdf`
+# Job Applications Submitted
 
-## Project structure
 
-```txt
-app/
-  globals.css
-  layout.tsx
-  page.tsx
-components/
-  InteractiveResume.tsx
-data/
-  header.json
-  education.json
-  experience.json
-  proofs.json
-  projects.json
-  skills.json
-  summary.json
-  resumeData.ts
-types/
-  resume.ts
-public/
-  project-artifacts/
-```
 
-## Getting started
+| GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
+|:----:|:----|:----|:----:|:----:|:----:|:----| 
+|001|[Principal Ride Control Software Engineer (Controls Automation)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf)| Walt Disney Imagineering | Glendale, CA | July 31, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf) | 🟢 Application Received |
+|002|[General Application](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf) | Fluidstack.io | Unknown ATM | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) |🟢 Application Received |
+|003|[Principal Electro-Mechanical Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf) | K2 Space | Los Angeles, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
+|004|[Lead, Manufacturing Engineer, Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf) | Relativity Space | Long Beach, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
+|005|[Sr. Network Security Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf) | SpaceX | Hawthorne, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/005_RileyBeenders_SpaceX_Sr_Network_Security_Engineer.pdf) | 🟢 Application Received |
+|006|[Principal Software Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf) | Walt Disney Imagineering | Glendale, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf) | 🟢 Application Received |
+
+***
+
+# Running the Local Environment
 
 ```bash
 npm install
@@ -66,158 +46,45 @@ Then open:
 ```txt
 http://localhost:3000
 ```
+***
 
-## Where to edit resume content
-
-The header and shared-settings file is:
-
-```txt
-data/header.json
-```
-
-For easier editing, the main resume sections are split into focused files and merged into the site at build time:
+# Project Structure
 
 ```txt
-data/education.json
-data/experience.json
-data/proofs.json
-data/projects.json
-data/skills.json
-data/summary.json
+app/
+  api/
+    resume-pdf/
+      route.ts
+  globals.css
+  layout.tsx
+  page.tsx
+components/
+  InteractiveResume.tsx
+ResumeBuilder/
+  downloadPublishedResume.ts
+  generateResumePdf.ts
+data/
+  header.json
+  education.json
+  experience.json
+  proofs.json
+  projects.json
+  skills.json
+  summary.json
+  resumeData.ts
+types/
+  resume.ts
+public/
+  project-artifacts/
 ```
+***
 
-Update these files for:
+## Tailored Resume Builder Prompt
 
-- `education`
-- `experience`
-- `proofs`
-- `projects`
-- `skills`
-- `summary`
-
-Update `data/header.json` for:
-
-- `person`
-
-`header.json` intentionally does not duplicate those arrays. The site combines the header and split sections through `data/resumeData.ts`, so `npm run dev` and `npm run build` use the same assembled resume data.
-
-Education is split into degree and certificate lists in `data/education.json`. Add a certificate with this shape:
-
-```json
-{
-  "certificateName": "Certificate name",
-  "issuer": "Issuing organization",
-  "date": "Month Year",
-  "credentialUrl": "https://example.com/credential",
-  "credentialLabel": "Show credential"
-}
 ```
+I am applying to some jobs. I needs 1-page resumes generated based off of my current 'live' website "www.rileybeenders.com" matching the same format that we generated [reference Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf] yesterday.
 
-`credentialUrl` is optional. When it is present, the certificate displays a link that opens in a new tab. Use `credentialLabel` to customize the button text; if it is omitted or empty, the button says `Show credential`. The Certificates subsection appears below Degrees as soon as the `certificates` array contains an entry.
+Please make sure to follow the same theme, underline the hyperlinks and make them blue. When finished, use the following name format: "RileyBeenders_<company>_<job title>.pdf"
 
-Each bullet can optionally include a `proofId`. That proof ID connects the resume line to a hover card and, optionally, a project's additional information.
-
-Example:
-
-```json
-{
-  "text": "Led development and production release support for a new additive manufacturing product line.",
-  "proofId": "product-line"
-}
+Use the "/JobsAplliedTo/<PDF Name Here>.pdf" to reference the current job I am applying to.
 ```
-
-The matching proof object is in `data/proofs.json`:
-
-```json
-{
-  "id": "product-line",
-  "title": "Product Development Evidence",
-  "summary": "Prototype-to-production story with visuals and supporting context.",
-  "projectId": "product-development"
-}
-```
-
-The matching project in `data/projects.json` can contain its long-form content directly:
-
-```json
-{
-  "id": "product-development",
-  "name": "Product Development",
-  "additionalInfo": {
-    "title": "Product Development",
-    "subtitle": "From prototype to production",
-    "problem": "The challenge the project addressed.",
-    "constraints": [],
-    "approach": [],
-    "impact": [],
-    "tools": [],
-    "assets": []
-  }
-}
-```
-
-Projects with `additionalInfo` display a **Read more** action and open an **Additional Info** drawer.
-
-## Adding your resume PDF
-
-Put your normal ATS resume PDF here:
-
-```txt
-public/resume.pdf
-```
-
-The download button is already configured through `resumePdfPath` in `data/header.json`.
-
-## Replacing placeholder visuals
-
-Replace the files inside:
-
-```txt
-public/project-artifacts/
-```
-
-Use sanitized project visuals only. Good options:
-
-- Cropped product photos
-- Abstracted CAD renders
-- Redrawn diagrams
-- Blurred screenshots
-- Non-proprietary workflow maps
-- Generic architecture diagrams
-
-## Recommended GitHub setup
-
-Create an empty repository, then either upload these files or push from your local machine:
-
-```bash
-git init
-git add .
-git commit -m "Initial interactive resume starter"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-```
-
-## Deployment
-
-Recommended hosts:
-
-- Vercel
-- Cloudflare Pages
-- Self-hosted through your own reverse proxy
-
-For a custom domain, point something like this at the deployment:
-
-```txt
-resume.yourdomain.com
-portfolio.yourdomain.com
-rileybeenders.com/resume
-```
-
-## Design intent
-
-The site should answer one question:
-
-> Is this person actually as capable as the resume claims?
-
-The PDF gets you screened. This site provides the proof.

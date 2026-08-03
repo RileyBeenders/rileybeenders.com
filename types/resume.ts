@@ -121,6 +121,13 @@ export type ComingSoonContent = {
   signals: string[];
 };
 
+export type ResumeVisibility = {
+  experienceProjectButtons: boolean;
+  experienceProofButtons: boolean;
+  projectsSection: boolean;
+  proofIndex: boolean;
+};
+
 export type ResumeData = {
   siteMode?: "resume" | "coming-soon";
   person: {
@@ -134,6 +141,7 @@ export type ResumeData = {
     github: string;
   };
   summary: string;
+  visibility: ResumeVisibility;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
   skills: {

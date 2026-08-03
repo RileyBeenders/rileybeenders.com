@@ -9,9 +9,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "latest",
+    "jspdf": "^4.2.1",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "^16.2.12",
     "react": "latest",
     "react-dom": "latest"
   },
