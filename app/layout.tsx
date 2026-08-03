@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import resumeData from "@/data/resumeData";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const siteData = resumeData;
 const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.comingSoon);
@@ -8,16 +10,20 @@ const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.com
 export const metadata: Metadata = {
   title: isComingSoon
     ? `${siteData.comingSoon?.headline ?? siteData.person.name} | Coming Soon`
-    : `${siteData.person.name} | Interactive Resume`,
+    : `Riley Beenders | Exploring, Building, Improving`,
   description: isComingSoon
     ? siteData.comingSoon?.summary ?? siteData.summary
-    : "A resume-shaped portfolio with interactive proof-of-work layers."
+    : "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

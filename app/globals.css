@@ -206,10 +206,36 @@ img {
 }
 
 .primary-action {
+  min-height: 42px;
   padding: 12px 16px;
+  border: 0;
   background: var(--accent);
   color: #06101b;
   font-weight: 800;
+}
+
+.primary-action:disabled {
+  cursor: wait;
+  opacity: .72;
+  transform: none;
+}
+
+.pdf-loading-icon {
+  animation: pdf-loading-spin 800ms linear infinite;
+}
+
+.pdf-download-error {
+  color: #fecaca;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@keyframes pdf-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .secondary-action {
@@ -648,7 +674,7 @@ img {
 
 .resume-paper {
   display: grid;
-  grid-template-columns: minmax(0, 1.9fr) minmax(300px, .85fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
   align-items: start;
 }

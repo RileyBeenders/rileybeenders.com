@@ -2,7 +2,7 @@
   "siteMode": "coming-soon",
   "person": {
     "name": "Riley Beenders",
-    "title": "Engineering portfolio under development",
+    "title": "R&D, Electromechanical and Automation Engineer",
     "location": "Bethlehem, PA",
     "email": "rileybeenders@gmail.com",
     "phone": "(484)-523-4431",
@@ -10,5 +10,11 @@
     "linkedin": "https://linkedin.com/in/riley-beenders",
     "github": "https://github.com/RileyBeenders"
   },
-  "resumePdfPath": "/resume.pdf"
+  "visibility": {
+    "experienceProjectButtons": false,
+    "experienceProofButtons": false,
+    "projectsSection": false,
+    "proofIndex": false
+  },
+  "resumePdfPath": "/api/resume-pdf"
 }
