@@ -32,23 +32,39 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply				:active, 2026-08-01, 7d
+    Waiting for Reply				        :active, 2026-08-01, 7d
 
     section 005
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply				:active, 2026-08-01, 7d
+    Waiting for Reply				        :active, 2026-08-01, 7d
 
     section 006
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    No Longer in Consideration		:crit, done, 2026-08-01, 3d
+    No Longer in Consideration		  :crit, done, 2026-08-01, 3d
 
     section 007
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply				:active, 2026-08-08, 1d
+    Waiting for Reply				        :active, 2026-08-08, 1d
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply				:active, 2026-08-08, 1d
+    Waiting for Reply				        :active, 2026-08-08, 1d
+
+    section 009
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				        :active, 2026-08-08, 1d
+
+    section 010
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				        :active, 2026-08-08, 1d
+
+    section 011
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				        :active, 2026-08-08, 1d
+
+    section 012
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				        :active, 2026-08-08, 1d
 ```
 
 | GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
@@ -59,8 +75,12 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 |004|[Lead, Manufacturing Engineer, Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf) | Relativity Space | Long Beach, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
 |005|[Sr. Network Security Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf) | SpaceX | Hawthorne, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/005_RileyBeenders_SpaceX_Sr_Network_Security_Engineer.pdf) | 🟢 Application Received |
 |006|[Principal Software Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf) | Walt Disney Imagineering | Glendale, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf) | 🔴 No longer in consideration [August 4, 2026] |
-|007| [Senior Staff Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf) | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/007_Riley%20Beenders_Senior%20Staff%20Manufacturing%20Engineer_20260808.pdf) | 🟢 Application Received |
-|008| [Staff Manufacturing Engineering - Atlas](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/008_Staff%20Manufacturing%20Engineering%20-%20Atlas%20at%20Boston%20Dynamics.pdf) | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/008_Riley%20Beenders_Staff%20Manufacturing%20Engineering%20-%20Atlas_20260808.pdf) | 🟢 Application Received |
+|007|[Senior Staff Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf) | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/007_Riley%20Beenders_Senior%20Staff%20Manufacturing%20Engineer_20260808.pdf) | 🟢 Application Received |
+|008|[Staff Manufacturing Engineering - Atlas](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/008_Staff%20Manufacturing%20Engineering%20-%20Atlas%20at%20Boston%20Dynamics.pdf) | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/008_Riley%20Beenders_Staff%20Manufacturing%20Engineering%20-%20Atlas_20260808.pdf) | 🟢 Application Received |
+|009|[Manufacturing Engineer]() | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
+|010|[NPI Engineer]() | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
+|011|[Mechanical Engineer - Integration & Test]() | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
+|012|[Product Engineer, Global Manufacturing Engineering]() | Google | Atlanta, GA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
 
 
 ***
