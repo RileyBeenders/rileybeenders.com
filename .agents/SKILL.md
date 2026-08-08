@@ -22,9 +22,10 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
 ## Task: Generate one tailored resume to a specific job posting.
 
 1. Use the selected page count and job-posting PDF.
-   - Resolve the common `JobsAplliedTo` typo to the repository's `JobsAppliedTo` directory.
    - Ask for clarification if the PDF path matches no file or multiple files.
 2. Extract the company, job title, location, responsibilities, qualifications, and important ATS terms from the job PDF.
+   - Look for the most important requirements and responsibilities, and any specific keywords that are repeated or emphasized.
+   - Keywords are the most important. The wording between `data/skills.json` and the job posting may slightly difer in spelling, punctuation, or capitalization. Use the job posting's wording when possible.
 3. Build a fact-only evidence matrix from:
    - `https://www.rileybeenders.com`
    - `data/*.json`
