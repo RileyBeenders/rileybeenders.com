@@ -6,18 +6,61 @@
 
 The site stays readable as a conventional resume at rest, then reveals additional proof of work through hover states, subtle mouse-driven 3D motion, persistent project links, and expandable information drawers. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact.
 
-# Job Applications Submitted
+# Job Application Tracker
 
+```mermaid
+  gantt
+    title Job Application Tracker 2026
+    dateFormat YYYY-MM-DD
+    tickInterval 1week
+    axisFormat %b %Y
 
+    section 001
+    Applied Jul 31                  :milestone, 2026-07-31, 0d
+    Waiting for Reply               :active, 2026-07-31, 8d
+
+    section 002
+    Applied Aug 01                  :milestone, 2026-08-01, 0d
+    Waiting for Reply               :active, 2026-08-01, 7d
+
+    section 003
+    Applied Aug 01                  :milestone, 2026-08-01, 0d
+    Application Submitted           :done, 2026-08-01, 7d
+    Scheduling Interview            :milestone, 2026-08-08
+    Waiting for Reply               :active, 2026-08-08, 1d
+
+    section 004
+    Applied Aug 01                  :milestone, 2026-08-01, 0d
+    Waiting for Reply				:active, 2026-08-01, 7d
+
+    section 005
+    Applied Aug 01                  :milestone, 2026-08-01, 0d
+    Waiting for Reply				:active, 2026-08-01, 7d
+
+    section 006
+    Applied Aug 01                  :milestone, 2026-08-01, 0d
+    No Longer in Consideration		:crit, done, 2026-08-01, 3d
+
+    section 007
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				:active, 2026-08-08, 1d
+
+    section 008
+    Applied Aug 08                  :milestone, 2026-08-08, 0d
+    Waiting for Reply				:active, 2026-08-08, 1d
+```
 
 | GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
 |:----:|:----|:----|:----:|:----:|:----:|:----| 
 |001|[Principal Ride Control Software Engineer (Controls Automation)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf)| Walt Disney Imagineering | Glendale, CA | July 31, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf) | 🟢 Application Received |
 |002|[General Application](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf) | Fluidstack.io | Unknown ATM | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) |🟢 Application Received |
-|003|[Principal Electro-Mechanical Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf) | K2 Space | Los Angeles, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
+|003|[Principal Electro-Mechanical Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf) | K2 Space | Los Angeles, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟡 Scheduling Interview |
 |004|[Lead, Manufacturing Engineer, Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf) | Relativity Space | Long Beach, CA | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
 |005|[Sr. Network Security Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf) | SpaceX | Hawthorne, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/005_RileyBeenders_SpaceX_Sr_Network_Security_Engineer.pdf) | 🟢 Application Received |
-|006|[Principal Software Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf) | Walt Disney Imagineering | Glendale, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf) | 🟢 Application Received |
+|006|[Principal Software Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf) | Walt Disney Imagineering | Glendale, CA | August 01, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf) | 🔴 No longer in consideration [August 4, 2026] |
+|007| [Senior Staff Manufacturing Engineer]() | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
+|008| [Staff Manufacturing Engineering - Atlas]() | Boston Dynamics | Waltham, MA | August 08, 2026 | [Tailored Resume]() | 🟢 Application Received |
+
 
 ***
 
