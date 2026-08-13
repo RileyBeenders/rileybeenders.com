@@ -29,7 +29,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
     Application Submitted           :done, 2026-08-01, 7d
     Scheduling Interview            :milestone, 2026-08-08, 0d
     Interview                       :milestone, 2026-08-12, 0d
-    Waiting for Reply               :active, 2026-08-14, 1d
+    Interview Process               :active, 2026-08-08, 6d
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -45,27 +45,27 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 007
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 
     section 010
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 
     section 011
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 
     section 012
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 1d
+    Waiting for Reply               :active, 2026-08-08, 6d
 ```
 
 | GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
