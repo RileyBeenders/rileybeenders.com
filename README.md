@@ -28,7 +28,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
     Applied Aug 01                  :milestone, 2026-08-01, 0d
     Application Submitted           :done, 2026-08-01, 7d
     Scheduling Interview            :milestone, 2026-08-08, 0d
-    Interview                       :milestone, 2026-12-08, 0d
+    Interview                       :milestone, 2026-08-12, 0d
     Waiting for Reply               :active, 2026-08-14, 1d
 
     section 004
