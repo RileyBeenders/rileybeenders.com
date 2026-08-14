@@ -49,7 +49,8 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    No Longer in Consideration      :crit, done, 2026-08-08, 6d
+    Waiting for Reply               :done, 2026-08-08, 5d
+    No Longer in Consideration      :crit, milestone, 2026-08-13, 0d
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -86,7 +87,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 |010|[NPI Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/010_Job%20Application%20for%20NPI%20Engineer%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/010_Riley%20Beenders_NPI%20Engineer_20260808.pdf) | 🟢 Application Received |
 |011|[Mechanical Engineer - Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/011_Riley%20Beenders_Mechanical%20Engineer%20-%20Integration%20%26%20Test_20260808.pdf) | 🟢 Application Received |
 |012|[Product Engineer, Global Manufacturing Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf) | Google | Atlanta, GA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/012_Riley%20Beenders_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering_20260808.pdf) | 🟢 Application Received |
-|013|[Product Software Engineer I]()| Walt Disney Entertainment | Glendale, CA | Aug 14, 2026 | [Tailored Resume]()| 🟢 Application Received |
+|013|[Product Software Engineer I](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf)| Walt Disney Entertainment | Glendale, CA | Aug 14, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/output/ApplicationsUsed/013_RileyBeendersResume_Product%20Software%20Engineer%20I_20260814.pdf)| 🟢 Application Received |
 
 
 ***
