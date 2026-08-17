@@ -57,6 +57,130 @@ img {
   max-width: 100%;
 }
 
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(8, 18, 23, 0.86);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header-tier {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.site-header-tier-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 48px;
+  border-bottom: 1px solid rgba(198, 176, 145, 0.12);
+}
+
+.site-header-brand {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: rgba(198, 176, 145, 0.38);
+  white-space: nowrap;
+  transition: color 200ms ease;
+}
+
+.site-header-brand:hover {
+  color: rgba(198, 176, 145, 0.7);
+}
+
+.site-header-tier-primary nav {
+  display: flex;
+  gap: 2px;
+}
+
+.site-header-tier-primary a {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #9aa7b5;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.site-header-tier-primary a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, .06);
+}
+
+.site-header-tier-primary a.is-active {
+  color: var(--accent);
+  background: rgba(255, 138, 61, .12);
+}
+
+.site-header-tier-secondary {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-header-tier-secondary::-webkit-scrollbar {
+  display: none;
+}
+
+.site-header-sections {
+  position: relative;
+  display: flex;
+  gap: 26px;
+  height: 100%;
+  align-items: center;
+}
+
+.site-header-sections button {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0 1px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: #6b7a86;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.site-header-sections button:hover {
+  color: #cbd5e1;
+}
+
+.site-header-sections button.is-active {
+  color: var(--white);
+}
+
+.site-header-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+  opacity: 0;
+  transition:
+    transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 200ms ease;
+  will-change: transform, width;
+}
+
 .site-shell {
   min-height: 100vh;
   position: relative;
@@ -118,6 +242,7 @@ img {
   background: linear-gradient(135deg, rgba(15, 23, 42, .94), rgba(10, 18, 30, .78));
   box-shadow: 0 24px 90px rgba(0,0,0,.32);
   backdrop-filter: blur(18px);
+  scroll-margin-top: 112px;
 }
 
 .status-pill,
@@ -697,6 +822,7 @@ img {
 
 .resume-block {
   transform: translateZ(0);
+  scroll-margin-top: 112px;
 }
 
 .section-title-row {
@@ -730,6 +856,90 @@ img {
   line-height: 1.7;
   color: var(--ink-soft);
   margin: 0;
+}
+
+.gantt-chart-wrap {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid rgba(15, 23, 42, .10);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .5);
+  overflow-x: auto;
+}
+
+.gantt-chart {
+  min-width: 640px;
+}
+
+.gantt-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gantt-chart-error {
+  margin-top: 22px;
+  padding: 14px 18px;
+  border: 1px solid rgba(224, 122, 95, .35);
+  border-radius: 14px;
+  background: rgba(224, 122, 95, .08);
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.jobs-table-wrap {
+  margin-top: 22px;
+  overflow-x: auto;
+  border: 1px solid rgba(15, 23, 42, .10);
+  border-radius: 18px;
+}
+
+.jobs-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.jobs-table th,
+.jobs-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(15, 23, 42, .10);
+  vertical-align: top;
+}
+
+.jobs-table th {
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--paper-muted);
+  background: rgba(15, 23, 42, .04);
+  white-space: nowrap;
+}
+
+.jobs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.jobs-table tbody tr:hover {
+  background: rgba(255, 138, 61, .05);
+}
+
+.jobs-table td {
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.jobs-table a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .stacked-list {

@@ -75,7 +75,7 @@
     "proofId": "icarus-lite",
     "bullets": [
       {
-        "text": "Achieved a bolt-less shell with seamless chamfered geometry that gives omage to the POSEIDON, one of the largest 3D printers I designed and Filament Innovation's mass produced."
+        "text": "Achieved a bolt-less shell with seamless chamfered geometry that gives homage to the POSEIDON, one of the largest 3D printers I designed and Filament Innovation's mass produced."
       },
       {
         "text": "Created an IEEE-style electrical design adaptable to 120/240 VAC and completed product changes supporting conformity with the 2006/42/EC machinery directive."
@@ -122,8 +122,8 @@
     "name": "ExtrusionLine Studio Software",
     "id": "ExtrusionLine-Studio",
     "order": 3,
-    "type": "LabVIEW Data Aquisition",
-    "summary": "An automated measurement program that is capable of collecting three seperate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart. At the end of data collection, it creates and formats a PDF report and stores it on a remote server with an ID. The ID is then converted into a QR code and placed on the product and can be read if there are any difficulties with it in the field.",
+    "type": "LabVIEW Data Acquisition",
+    "summary": "An automated measurement program that is capable of collecting three separate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart. At the end of data collection, it creates and formats a PDF report and stores it on a remote server with an ID. The ID is then converted into a QR code and placed on the product and can be read if there are any difficulties with it in the field.",
     "proofId": "ExtrusionLine-Studio",
     "bullets": [
       {
@@ -451,7 +451,7 @@
     "name": "Unified Ubiquiti Network",
     "id": "unifi-network",
     "order": 9,
-    "type": "Network Infustructure",
+    "type": "Network Infrastructure",
     "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
     "proofId": "unifi-network",
     "bullets": [],

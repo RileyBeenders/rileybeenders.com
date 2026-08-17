@@ -1,0 +1,15 @@
+{
+  "hero": {
+    "eyebrow": "More Info",
+    "title": "About This Site",
+    "description": [
+      "\"RileyBeenders.com\" is a resume-shaped portfolio website designed to complement a traditional ATS-friendly resume PDF. The PDF remains the official application document, while the website serves as an interactive evidence layer that demonstrates the work behind the claims on the resume.",
+      "The site stays readable as a conventional resume at rest, then reveals additional proof of work through hover states, subtle mouse-driven 3D motion, persistent project links, and expandable information drawers. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact."
+    ]
+  },
+  "ganttSection": {
+    "eyebrow": "Job Search",
+    "title": "Application Tracker",
+    "intro": "A live look at the roles I've applied to while building this site, tracked from application through outcome."
+  }
+}
