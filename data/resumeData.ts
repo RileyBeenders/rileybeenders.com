@@ -1,10 +1,10 @@
 import header from "@/data/header.json";
-import education from "@/data/education.json";
-import experience from "@/data/experience.json";
-import proofs from "@/data/proofs.json";
-import projects from "@/data/projects.json";
-import skills from "@/data/skills.json";
-import summary from "@/data/summary.json";
+import education from "@/data/home/education.json";
+import experience from "@/data/home/experience.json";
+import proofs from "@/data/projects/proofs.json";
+import projects from "@/data/projects/projects.json";
+import skills from "@/data/home/skills.json";
+import summary from "@/data/home/summary.json";
 import type { ResumeData } from "@/types/resume";
 
 /**
