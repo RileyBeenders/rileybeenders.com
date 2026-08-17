@@ -13,7 +13,7 @@
   "visibility": {
     "experienceProjectButtons": false,
     "experienceProofButtons": false,
-    "projectsSection": false,
+    "projectsSection": true,
     "proofIndex": false
   },
   "resumePdfPath": "/api/resume-pdf"
