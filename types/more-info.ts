@@ -1,16 +1,26 @@
-export type MoreInfoHero = {
-  eyebrow: string;
+export type MoreInfoAboutHeader = {
+  title: string;
+  description: string[];
+};
+
+export type MoreInfoAboutMe = {
+  title: string;
+  description: string[];
+};
+
+export type MoreInfoAboutSite = {
   title: string;
   description: string[];
 };
 
 export type MoreInfoGanttSection = {
-  eyebrow: string;
   title: string;
   intro: string;
 };
 
 export type MoreInfoData = {
-  hero: MoreInfoHero;
+  aboutHeader: MoreInfoAboutHeader;
+  aboutMe: MoreInfoAboutMe;
+  aboutSite: MoreInfoAboutSite;
   ganttSection: MoreInfoGanttSection;
 };

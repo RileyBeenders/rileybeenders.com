@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(curl -s \"https://boards-api.greenhouse.io/v1/boards/k2spacecorporation/jobs\" | python -c \"\nimport json,sys\ndata=json.loa…)"
-    ]
-  }
-}

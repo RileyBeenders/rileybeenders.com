@@ -858,6 +858,10 @@ img {
   margin: 0;
 }
 
+#section-moreinfo-aboutme .summary-text + .summary-text {
+  margin-top: 16px;
+}
+
 .gantt-chart-wrap {
   margin-top: 22px;
   padding: 18px;
