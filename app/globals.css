@@ -821,6 +821,7 @@ img {
 }
 
 .resume-block {
+  min-width: 0;
   transform: translateZ(0);
   scroll-margin-top: 112px;
 }
@@ -868,17 +869,17 @@ img {
   border: 1px solid rgba(15, 23, 42, .10);
   border-radius: 18px;
   background: rgba(255, 255, 255, .5);
-  overflow-x: auto;
 }
 
 .gantt-chart {
-  min-width: 640px;
+  height: 50vh;
+  min-height: 220px;
+  border-radius: 10px;
+  overflow: auto;
 }
 
 .gantt-chart svg {
   display: block;
-  width: 100%;
-  height: auto;
 }
 
 .gantt-chart-error {

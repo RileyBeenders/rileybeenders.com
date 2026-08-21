@@ -17,7 +17,7 @@ function renderCell(text: string): ReactNode {
   if (!match) return text;
 
   return (
-    <a href={match[2]} target="_blank" rel="noreferrer">
+    <a href={match[2]} target="_blank" rel="noreferrer" suppressHydrationWarning>
       {match[1]}
       <ExternalLink aria-hidden="true" size={12} />
     </a>
