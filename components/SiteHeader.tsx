@@ -34,6 +34,8 @@ const SECTIONS_BY_ROUTE: Record<string, SiteSection[]> = {
   ],
   "/more-info": [
     { id: "section-moreinfo-header", label: "About" },
+    { id: "section-moreinfo-aboutme", label: "About Me" },
+    { id: "section-moreinfo-aboutsite", label: "About the Site" },
     { id: "section-moreinfo-tracker", label: "Application Tracker" }
   ]
 };

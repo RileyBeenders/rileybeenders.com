@@ -27,9 +27,8 @@ export default function MoreInfoPage() {
       <section className="resume-stage">
         <header className="hero-card" id="section-moreinfo-header">
           <div>
-            <div className="status-pill">{data.hero.eyebrow}</div>
-            <h1>{data.hero.title}</h1>
-            {data.hero.description.map((paragraph) => (
+            <h1>{data.aboutHeader.title}</h1>
+            {data.aboutHeader.description.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
@@ -37,10 +36,31 @@ export default function MoreInfoPage() {
 
         <section className="resume-paper">
           <div className="resume-column-main">
+            <section className="resume-block" id="section-moreinfo-aboutme">
+              <div className="section-title-row">
+                <div>
+                  <h2>{data.aboutMe.title}</h2>
+                </div>
+              </div>
+              {data.aboutMe.description.map((paragraph) => (
+                <p key={paragraph} className="summary-text">{paragraph}</p>
+              ))}
+            </section>
+
+            <section className="resume-block" id="section-moreinfo-aboutsite">
+              <div className="section-title-row">
+                <div>
+                  <h2>{data.aboutSite.title}</h2>
+                </div>
+              </div>
+              {data.aboutSite.description.map((paragraph) => (
+                <p key={paragraph} className="summary-text">{paragraph}</p>
+              ))}
+            </section>
+
             <section className="resume-block" id="section-moreinfo-tracker">
               <div className="section-title-row">
                 <div>
-                  <p className="eyebrow">{data.ganttSection.eyebrow}</p>
                   <h2>{data.ganttSection.title}</h2>
                 </div>
               </div>
