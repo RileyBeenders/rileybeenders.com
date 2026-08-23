@@ -160,7 +160,21 @@ Every job application tracked in `README.md` / `data/more-info/gantt.md` (IDs `0
 - Resume used: `output/ApplicationsUsed/<file>.pdf`
 ```
 
-Frontmatter carries `tags: [job-application]`, `company`, `role`, `applicationId`, `dateApplied`, and `status` (mirror the emoji-coded status from the README/gantt tracker table as plain text, e.g. `"Application Received"`, `"Interviewing"`, `"No longer in consideration (Aug 4, 2026)"`).
+Frontmatter property keys are always capitalized: `Tags: [job-application]`, `Company`, `Role`, `JobID`, `Date Applied`, `Status` (mirror the emoji-coded status from the README/gantt tracker table as plain text, e.g. `"Application Received"`, `"Interviewing"`, `"No longer in consideration (Aug 4, 2026)"`), and `PDF Referenced` — a GitHub `blob` URL to the source posting PDF in `JobsAppliedTo/`. `JobID` is the value used everywhere in the vault and in repo tables (see **Renaming GitID to JobID** below) — it is the same three-digit application ID, not a GitHub or job-board internal ID.
+
+### Renaming GitID to JobID
+
+The tracker table's first column is named `JobID`, not `GitID`, in both `README.md` and `data/more-info/gantt.md` — this was renamed for clarity since the column has nothing to do with git. If you ever see `GitID` reappear in either table (e.g. from a stale edit or a merge), correct it back to `JobID`, and update any vault note quoting that column list (currently [[More Info and Gantt Data]] and [[Job Application Tracker]]) to match. `JobsTable.tsx` renders whatever header text is in the table, so this column name change alone requires no code change — it flows straight through to the live site.
+
+### Linking the PDF Referenced property
+
+The `PDF Referenced` value is a GitHub `blob` URL to the application's source PDF:
+
+`https://github.com/RileyBeenders/rileybeenders.com/blob/<branch>/JobsAppliedTo/<url-encoded-filename>.pdf`
+
+- **Always check the current branch before writing or updating this link.** Run `git branch --show-current` (or equivalent) at the moment you write the property, and use that exact branch name as `<branch>`. Never hardcode a branch name left over from a previous session. If the branch you're on is `main`, the link correctly reads `.../blob/main/...` — `main` is not a special case to avoid, it's just whatever the current branch happens to be.
+- URL-encode the filename the way GitHub does: spaces → `%20`, commas → `%2C`, ampersands → `%26`, and any non-ASCII character (e.g. an em dash) as its percent-encoded UTF-8 bytes (e.g. `—` → `%E2%80%94`). Parentheses can stay literal. When in doubt, reuse the exact encoded filename already present for that ID in the README/`gantt.md` tracker table rather than re-encoding by hand.
+- If the repo later merges so a file only exists on `main`, re-check the branch and update every `PDF Referenced` link that still points at a deleted branch — a stale branch segment 404s.
 
 ### Creating a new application page
 
@@ -168,10 +182,11 @@ When a new ID appears in `JobsAppliedTo/` and the README/`gantt.md` tracker tabl
 
 1. Read the job-posting PDF in full and extract Job ID (if the posting states one internally — job-board URL IDs don't count), date posted, salary/comp range, job summary, responsibilities, required/preferred qualifications, education requirement, and benefits, exactly as the posting states them. Don't paraphrase requirements into something stronger or weaker than what's written.
 2. Pull "Date Applied" from the README/gantt tracker row for that ID.
-3. Write the **At Application** match: compare the posting's requirements against `data/home/skills.json`, `data/home/experience.json`, `data/home/education.json`, and `data/projects/projects.json` **as they existed on or before the application date** (check with `git log`/`git show` against that date if the current files may have changed since — see the next section). State concrete overlaps and concrete gaps; never invent supporting experience that doesn't exist in the data, matching the fact-only evidence standard used by the `custom-resume` skill above.
-4. Write the **Now** section using current data. If nothing relevant has changed since application, say so plainly rather than padding out an artificial difference.
-5. Add the new row to the tracker table in [[Job Application Tracker]], linking the ID cell to the new page.
-6. Link the new page from `Home.md` only if it changes the vault's structure (it normally won't — the Job Application Tracker note is the index into these pages, so Home.md doesn't need a per-application link).
+3. Build the `PDF Referenced` frontmatter link per the rule above.
+4. Write the **At Application** match: compare the posting's requirements against `data/home/skills.json`, `data/home/experience.json`, `data/home/education.json`, and `data/projects/projects.json` **as they existed on or before the application date** (check with `git log`/`git show` against that date if the current files may have changed since — see the next section). State concrete overlaps and concrete gaps; never invent supporting experience that doesn't exist in the data, matching the fact-only evidence standard used by the `custom-resume` skill above.
+5. Write the **Now** section using current data. If nothing relevant has changed since application, say so plainly rather than padding out an artificial difference.
+6. Add the new row to the tracker table in [[Job Application Tracker]], linking the JobID cell to the new page.
+7. Link the new page from `Home.md` only if it changes the vault's structure (it normally won't — the Job Application Tracker note is the index into these pages, so Home.md doesn't need a per-application link).
 
 ### Keeping the "Now" section current
 

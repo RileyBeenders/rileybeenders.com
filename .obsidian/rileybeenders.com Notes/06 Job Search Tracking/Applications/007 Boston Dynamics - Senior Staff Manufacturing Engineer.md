@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Boston Dynamics"
-role: "Senior Staff Manufacturing Engineer (Atlas)"
-applicationId: "007"
-dateApplied: 2026-08-08
-status: "Application Received"
+Tags: [job-application]
+Company: "Boston Dynamics"
+Role: "Senior Staff Manufacturing Engineer (Atlas)"
+JobID: "007"
+Date Applied: 2026-08-08
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf"
 ---
 
 # Senior Staff Manufacturing Engineer — Boston Dynamics (Atlas)

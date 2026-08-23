@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Boston Dynamics"
-role: "Staff Manufacturing Engineering - Atlas"
-applicationId: "008"
-dateApplied: 2026-08-08
-status: "No longer in consideration (Aug 14, 2026)"
+Tags: [job-application]
+Company: "Boston Dynamics"
+Role: "Staff Manufacturing Engineering - Atlas"
+JobID: "008"
+Date Applied: 2026-08-08
+Status: "No longer in consideration (Aug 14, 2026)"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/008_Staff%20Manufacturing%20Engineering%20-%20Atlas%20at%20Boston%20Dynamics.pdf"
 ---
 
 # Staff Manufacturing Engineering - Atlas — Boston Dynamics

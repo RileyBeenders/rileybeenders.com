@@ -12,33 +12,32 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
 ```mermaid
   gantt
-    title Job Application Tracker 2026
     dateFormat YYYY-MM-DD
     tickInterval 1week
-    axisFormat %b %Y
+    axisFormat %d %b %Y
 
     section 001
     Applied Jul 31                  :milestone, 2026-07-31, 0d
-    Waiting for Reply               :active, 2026-07-31, 8d
+    Waiting for Reply               :active, 2026-07-31, 20d
 
     section 002
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 7d
+    Waiting for Reply               :active, 2026-08-01, 19d
 
     section 003
     Applied Aug 01                  :milestone, 2026-08-01, 0d
     Application Submitted           :done, 2026-08-01, 7d
     Scheduling Interview            :milestone, 2026-08-08, 0d
     Interview                       :milestone, 2026-08-12, 0d
-    Interview Process               :active, 2026-08-08, 6d
+    Interview Process               :active, 2026-08-08, 12d
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 7d
+    Waiting for Reply               :active, 2026-08-01, 19d
 
     section 005
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 7d
+    Waiting for Reply               :active, 2026-08-01, 19d
 
     section 006
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -50,8 +49,8 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :done, 2026-08-08, 5d
-    No Longer in Consideration      :crit, milestone, 2026-08-13, 0d
+    Waiting for Reply               :done, 2026-08-08, 6d
+    No Longer in Consideration      :crit, milestone, 2026-08-14, 0d
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -71,11 +70,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 013
     Applied Aug 14                  :milestone, 2026-08-14, 0d
-    Waiting for Reply               :active, 2026-08-14, 6d
-    No Longer in Consideration      :crit, milestone, 2026-08-14, 6d
+    Waiting for Reply               :done, 2026-08-14, 6d
+    No Longer in Consideration      :crit, milestone, 2026-08-20, 0d
 ```
 
-| GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
+| JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
 | :----: | :---- | :---- | :----: | :----: | :----: | :---- |
 | 001 | [Principal Ride Control Software Engineer (Controls Automation)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf) | Walt Disney Imagineering | Glendale, CA | July 31, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf) | 🟢 Application Received |
 | 002 | [General Application](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf) | Fluidstack.io | Unknown ATM | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |

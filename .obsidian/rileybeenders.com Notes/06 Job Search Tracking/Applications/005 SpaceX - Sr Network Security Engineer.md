@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "SpaceX"
-role: "Sr. Network Security Engineer"
-applicationId: "005"
-dateApplied: 2026-08-01
-status: "Application Received"
+Tags: [job-application]
+Company: "SpaceX"
+Role: "Sr. Network Security Engineer"
+JobID: "005"
+Date Applied: 2026-08-01
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf"
 ---
 
 # Sr. Network Security Engineer — SpaceX
