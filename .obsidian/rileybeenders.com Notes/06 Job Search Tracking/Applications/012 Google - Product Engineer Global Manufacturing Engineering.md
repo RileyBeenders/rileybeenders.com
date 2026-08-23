@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Google"
-role: "Product Engineer, Global Manufacturing Engineering"
-applicationId: "012"
-dateApplied: 2026-08-08
-status: "Application Received"
+Tags: [job-application]
+Company: "Google"
+Role: "Product Engineer, Global Manufacturing Engineering"
+JobID: "012"
+Date Applied: 2026-08-08
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf"
 ---
 
 # Product Engineer, Global Manufacturing Engineering — Google

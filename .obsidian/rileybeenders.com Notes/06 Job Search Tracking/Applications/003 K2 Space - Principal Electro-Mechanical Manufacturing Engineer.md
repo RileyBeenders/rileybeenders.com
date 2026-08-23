@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "K2 Space"
-role: "Principal Electro-Mechanical Manufacturing Engineer"
-applicationId: "003"
-dateApplied: 2026-08-01
-status: "Interviewing"
+Tags: [job-application]
+Company: "K2 Space"
+Role: "Principal Electro-Mechanical Manufacturing Engineer"
+JobID: "003"
+Date Applied: 2026-08-01
+Status: "Interviewing"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf"
 ---
 
 # Principal Electro-Mechanical Manufacturing Engineer — K2 Space

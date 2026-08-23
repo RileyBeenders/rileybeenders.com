@@ -22,7 +22,7 @@ Every tracked application also has its own note under `06 Job Search Tracking/Ap
 
 ## The tracker table (duplicated in two places)
 
-Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdown table with columns `GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`. **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters.
+Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdown table with columns `JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`. **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters.
 
 ### Current applications (13, as of README.md)
 

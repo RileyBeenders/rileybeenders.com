@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Figure"
-role: "Manufacturing Engineer"
-applicationId: "009"
-dateApplied: 2026-08-08
-status: "Application Received"
+Tags: [job-application]
+Company: "Figure"
+Role: "Manufacturing Engineer"
+JobID: "009"
+Date Applied: 2026-08-08
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/009_Job%20Application%20for%20Manufacturing%20Engineer%20at%20Figure.pdf"
 ---
 
 # Manufacturing Engineer — Figure

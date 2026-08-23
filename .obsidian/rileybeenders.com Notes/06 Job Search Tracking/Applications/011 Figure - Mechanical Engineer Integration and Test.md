@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Figure"
-role: "Mechanical Engineer - Integration & Test"
-applicationId: "011"
-dateApplied: 2026-08-08
-status: "Application Received"
+Tags: [job-application]
+Company: "Figure"
+Role: "Mechanical Engineer - Integration & Test"
+JobID: "011"
+Date Applied: 2026-08-08
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf"
 ---
 
 # Mechanical Engineer - Integration & Test — Figure

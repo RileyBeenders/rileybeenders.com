@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Relativity Space"
-role: "Lead, Manufacturing Engineer, Integration & Test"
-applicationId: "004"
-dateApplied: 2026-08-01
-status: "Application Received"
+Tags: [job-application]
+Company: "Relativity Space"
+Role: "Lead, Manufacturing Engineer, Integration & Test"
+JobID: "004"
+Date Applied: 2026-08-01
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf"
 ---
 
 # Lead, Manufacturing Engineer, Integration & Test — Relativity Space

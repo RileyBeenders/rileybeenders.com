@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Disney Entertainment and ESPN Product & Technology"
-role: "Product Software Engineer I"
-applicationId: "013"
-dateApplied: 2026-08-14
-status: "No longer in consideration (Aug 20, 2026)"
+Tags: [job-application]
+Company: "Disney Entertainment and ESPN Product & Technology"
+Role: "Product Software Engineer I"
+JobID: "013"
+Date Applied: 2026-08-14
+Status: "No longer in consideration (Aug 20, 2026)"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf"
 ---
 
 # Product Software Engineer I — Disney Entertainment and ESPN Product & Technology

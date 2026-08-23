@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Walt Disney Imagineering"
-role: "Principal Ride Control Software Engineer (Controls Automation)"
-applicationId: "001"
-dateApplied: 2026-07-31
-status: "Application Received"
+Tags: [job-application]
+Company: "Walt Disney Imagineering"
+Role: "Principal Ride Control Software Engineer (Controls Automation)"
+JobID: "001"
+Date Applied: 2026-07-31
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf"
 ---
 
 # Principal Ride Control Software Engineer (Controls Automation) — Walt Disney Imagineering

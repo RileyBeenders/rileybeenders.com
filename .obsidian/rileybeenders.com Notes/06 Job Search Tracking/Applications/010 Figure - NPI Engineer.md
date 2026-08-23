@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Figure"
-role: "NPI Engineer"
-applicationId: "010"
-dateApplied: 2026-08-08
-status: "Application Received"
+Tags: [job-application]
+Company: "Figure"
+Role: "NPI Engineer"
+JobID: "010"
+Date Applied: 2026-08-08
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/010_Job%20Application%20for%20NPI%20Engineer%20at%20Figure.pdf"
 ---
 
 # NPI Engineer — Figure

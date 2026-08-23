@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Fluidstack"
-role: "General Application (Automation)"
-applicationId: "002"
-dateApplied: 2026-08-01
-status: "Application Received"
+Tags: [job-application]
+Company: "Fluidstack"
+Role: "General Application (Automation)"
+JobID: "002"
+Date Applied: 2026-08-01
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf"
 ---
 
 # General Application — Fluidstack

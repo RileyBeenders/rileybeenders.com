@@ -1,10 +1,11 @@
 ---
-tags: [job-application]
-company: "Walt Disney Imagineering (Disney Cruise Line)"
-role: "Principal Software Engineer"
-applicationId: "006"
-dateApplied: 2026-08-01
-status: "No longer in consideration (Aug 4, 2026)"
+Tags: [job-application]
+Company: "Walt Disney Imagineering (Disney Cruise Line)"
+Role: "Principal Software Engineer"
+JobID: "006"
+Date Applied: 2026-08-01
+Status: "No longer in consideration (Aug 4, 2026)"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf"
 ---
 
 # Principal Software Engineer — Disney (Cruise Line Shipboard Systems)

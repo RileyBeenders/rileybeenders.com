@@ -20,13 +20,13 @@ Typed by `MoreInfoData` (see [[Data Layer and Types]]). Four blocks, each render
 A markdown file combining two things in one document:
 
 1. A fenced ` ```mermaid ` **gantt** block (dateFormat `YYYY-MM-DD`, `tickInterval 1week`, one `section` per job application, tasks tagged `milestone`/`active`/`done`/`crit`).
-2. A markdown **table** immediately after it: columns `GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`, one row per application, with GitHub-hosted links to the job posting PDF and the resume PDF used.
+2. A markdown **table** immediately after it: columns `JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`, one row per application, with GitHub-hosted links to the job posting PDF and the resume PDF used.
 
 This file is read at request time by `app/more-info/page.tsx` via `fs.readFileSync` (not imported as a module) and split apart by `lib/gantt.ts`'s `parseGanttFile()` into `{ chart, columns, rows }`, which are handed to [[BulletList GanttChart and JobsTable|GanttChart and JobsTable]] respectively.
 
 ### Duplicated in `README.md`
 
-`README.md` contains **its own copy** of essentially the same Gantt chart and tracker table (see [[Job Application Tracker]]) — they are two independently hand-maintained documents describing the same underlying job-search state, and they can and do drift (the `gantt.md` version currently has slightly different day-counts and a resolved status for entry 008/013 that the README version doesn't yet reflect). There is no code-level link between them. Anyone (human or agent) updating one should update the other, and this is exactly the kind of drift the vault-sync skill in [[Repository Skills (.agents SKILL.md)]] should watch for.
+`README.md` contains **its own copy** of essentially the same Gantt chart and tracker table (see [[Job Application Tracker]]) — they are two independently hand-maintained documents describing the same underlying job-search state, with no code-level link between them, so they can drift if only one is edited. The mermaid gantt blocks were verified byte-identical and the tracker tables verified identical on Aug 22, 2026 (a prior drift — different day-counts through Aug 20, plus a wrong rejection date/duration for application 013 in `README.md` — was found and fixed on that date; entry 008's milestone date was also corrected from 2026-08-13 to 2026-08-14 in both files to match its table row). Anyone (human or agent) updating one should update the other, and this is exactly the kind of drift the vault-sync skill in [[Repository Skills (.agents SKILL.md)]] should watch for.
 
 ### Current tracked applications (as of `gantt.md`)
 

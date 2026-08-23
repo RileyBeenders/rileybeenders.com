@@ -37,8 +37,8 @@
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :done, 2026-08-08, 5d
-    No Longer in Consideration      :crit, milestone, 2026-08-13, 0d
+    Waiting for Reply               :done, 2026-08-08, 6d
+    No Longer in Consideration      :crit, milestone, 2026-08-14, 0d
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -62,7 +62,7 @@
     No Longer in Consideration      :crit, milestone, 2026-08-20, 0d
 ```
 
-| GitID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
+| JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
 | :----: | :---- | :---- | :----: | :----: | :----: | :---- |
 | 001 | [Principal Ride Control Software Engineer (Controls Automation)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf) | Walt Disney Imagineering | Glendale, CA | July 31, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf) | 🟢 Application Received |
 | 002 | [General Application](https://github.com/RileyBeenders/rileybeenders.com/blob/main/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf) | Fluidstack.io | Unknown ATM | August 01, 2026 | [Website Generated](https://github.com/RileyBeenders/rileybeenders.com/blob/main/output/ApplicationsUsed/Riley-Beenders-Resume_080126.pdf) | 🟢 Application Received |
