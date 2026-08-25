@@ -138,7 +138,14 @@ export function SiteHeader() {
 
   function scrollToSection(id: string) {
     const el = document.getElementById(id);
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!el) return;
+
+    const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 0;
+    const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+    const raw = el.getBoundingClientRect().top + window.scrollY - headerHeight;
+    const target = Math.min(Math.max(0, raw), maxScroll);
+
+    window.scrollTo({ top: target, behavior: "smooth" });
   }
 
   return (
