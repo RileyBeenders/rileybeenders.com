@@ -277,14 +277,14 @@ img {
 
 .floating-status-pill {
   position: fixed;
-  left: 24px;
-  bottom: 24px;
+  left: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
   z-index: 40;
   display: inline-flex;
-  gap: 10px;
+  gap: 0.8em;
   align-items: center;
   color: var(--white);
-  padding: 10px 16px;
+  padding: 0.75em 1.15em;
   border: 1px solid rgba(239, 68, 68, .35);
   border-radius: 999px;
   background: rgba(8, 18, 23, .88);
@@ -292,28 +292,18 @@ img {
   box-shadow: 0 12px 36px rgba(0, 0, 0, .4), 0 0 22px rgba(239, 68, 68, .12);
   letter-spacing: .09em;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: clamp(9px, 1.6vw, 13px);
   font-weight: 700;
-}
-
-@media (max-width: 480px) {
-  .floating-status-pill {
-    left: 14px;
-    bottom: 14px;
-    padding: 8px 12px;
-    gap: 8px;
-    font-size: 10px;
-  }
 }
 
 .pulse-dot {
   position: relative;
-  width: 10px;
-  height: 10px;
+  width: 0.8em;
+  height: 0.8em;
   flex-shrink: 0;
   border-radius: 50%;
   background: #ef4444;
-  box-shadow: 0 0 10px 2px rgba(239, 68, 68, .85);
+  box-shadow: 0 0 0.8em 0.15em rgba(239, 68, 68, .85);
 }
 
 .pulse-dot::after {
