@@ -228,7 +228,7 @@ function ResumeHeader({ data }: HeaderProps) {
   return (
     <header className="hero-card interactive-card" id="section-header">
       <div>
-        <div className="status-pill"><MousePointer2 size={14} /> Interactive resume experience</div>
+        <div className="status-pill"><MousePointer2 size={14} /> Interactive Resume</div>
         <h1>{data.person.name}</h1>
         <p>{data.person.title}</p>
         <div className="contact-row">
