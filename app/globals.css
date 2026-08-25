@@ -123,9 +123,15 @@ img {
   height: 42px;
   display: flex;
   align-items: center;
-  justify-content: safe center;
+  justify-content: center;
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+@media (max-width: 640px) {
+  .site-header-tier-secondary {
+    justify-content: flex-start;
+  }
 }
 
 .site-header-tier-secondary::-webkit-scrollbar {
@@ -288,6 +294,16 @@ img {
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .floating-status-pill {
+    left: 14px;
+    bottom: 14px;
+    padding: 8px 12px;
+    gap: 8px;
+    font-size: 10px;
+  }
 }
 
 .pulse-dot {
