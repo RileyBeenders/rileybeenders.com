@@ -1,0 +1,92 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Blueprint Press" },
+    { "id": "page-2", "name": "Earlier sketches" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Homepage", "page": "page-1", "x": 0, "y": 0, "w": 1200, "h": 2000, "is_interactive": true },
+    { "file": "Mark.dc.html", "title": "The Mark", "page": "page-1", "x": 1340, "y": 0, "w": 1000, "h": 1240, "is_interactive": true },
+    { "file": "Interactions.dc.html", "title": "Motion & Controls", "page": "page-1", "x": 1340, "y": 1400, "w": 1000, "h": 1180, "is_interactive": true },
+
+    { "file": "Blueprint.dc.html", "title": "A · Blueprint", "page": "page-2", "x": 0, "y": 0, "w": 1200, "h": 1400 },
+    { "file": "Editorial.dc.html", "title": "B · Editorial Press", "page": "page-2", "x": 1340, "y": 0, "w": 1200, "h": 1400 },
+    { "file": "Machined.dc.html", "title": "C · Machined", "page": "page-2", "x": 2680, "y": 0, "w": 1200, "h": 1400 },
+    { "file": "Instrument.dc.html", "title": "D · Instrument", "page": "page-2", "x": 4020, "y": 0, "w": 1200, "h": 1400 },
+    { "file": "SwissGrid.dc.html", "title": "E · Swiss Grid", "page": "page-2", "x": 5360, "y": 0, "w": 1200, "h": 1400 }
+  ],
+  "annotations": [
+    {
+      "id": "hybrid-brief",
+      "page": "page-1",
+      "x": -470,
+      "y": 0,
+      "w": 400,
+      "text": "BLUEPRINT PRESS\n\nThe combination you asked for:\n\n· Blueprint's drafting grid, now drawn in faint navy on light stock\n· Swiss Grid's palette — off-white, near-black, one red accent\n· Editorial Press's type — Instrument Serif over Spectral\n\nOne change I made on purpose: the 'black' is #0B1A2B, the blueprint navy, not a true black. It keeps the whole page faintly blue and lets the mark belong.\n\nHover anything. The nav is clickable."
+    },
+    {
+      "id": "note-mark",
+      "page": "page-1",
+      "x": 2480,
+      "y": 0,
+      "w": 380,
+      "text": "THE MARK\n\nThe B's curves are now ONE unbroken stroke that starts at the top of the stem and ends at its base — out, back, out further, back. It never lifts.\n\nThe navy→blue gradient runs along that travel, so the eye follows the direction of flow.\n\nFour containers to choose from, plus how it holds up at favicon size (it needs a heavier stroke and flat blue below ~24px)."
+    },
+    {
+      "id": "note-motion",
+      "page": "page-1",
+      "x": 2480,
+      "y": 1400,
+      "w": 380,
+      "text": "MOTION & CONTROLS\n\nTwelve live treatments — hover them, click the segmented toggle.\n\nThey all share one easing curve so the site feels like one hand made it.\n\nTell me which ones you want and I'll build those into the real components. 07 (flowing border) is the loudest; 01 and 08 are the ones I'd use everywhere."
+    },
+    {
+      "id": "intro",
+      "page": "page-2",
+      "x": -470,
+      "y": 0,
+      "w": 380,
+      "text": "The original five. A · Blueprint was the pick — its grid and its navy carried over into Blueprint Press on the first page.\n\nKept here for reference, and in case you want to pull anything else across."
+    },
+    {
+      "id": "note-a-blueprint",
+      "page": "page-2",
+      "x": 0,
+      "y": -260,
+      "w": 420,
+      "text": "A · BLUEPRINT  ← chosen\n\nThe work itself, as a drafting sheet: grid, title block, dimension lines, revision numbers.\n\nThe grid texture and the navy both survive into the final direction; the dark background did not."
+    },
+    {
+      "id": "note-b-editorial",
+      "page": "page-2",
+      "x": 1340,
+      "y": -260,
+      "w": 420,
+      "text": "B · EDITORIAL PRESS  ← type came from here\n\nInstrument Serif over Spectral, hairline rules, the drop cap.\n\nTradeoff it carried: on its own it read more 'design portfolio' than 'engineer' — solved by keeping the blueprint grid underneath it."
+    },
+    {
+      "id": "note-c-machined",
+      "page": "page-2",
+      "x": 2680,
+      "y": -260,
+      "w": 420,
+      "text": "C · MACHINED\n\nLoud and physical: safety orange, hazard striping, Archivo Black, part-number tags.\n\nTradeoff: heavy and shouty. Great on a hero, tiring across a long resume page."
+    },
+    {
+      "id": "note-d-instrument",
+      "page": "page-2",
+      "x": 4020,
+      "y": -260,
+      "w": 420,
+      "text": "D · INSTRUMENT\n\nAn HMI / oscilloscope panel — mono throughout, readouts, status LEDs, a live scope trace.\n\nTradeoff: phosphor green is a big commitment, and the data density fights long prose."
+    },
+    {
+      "id": "note-e-swiss",
+      "page": "page-2",
+      "x": 5360,
+      "y": -260,
+      "w": 420,
+      "text": "E · SWISS GRID  ← palette came from here\n\nOff-white stock, near-black ink, a single red accent.\n\nIts strict 12-column layout stayed behind; the numbered section rails (01 Summary, 02 Experience) are the part that carried over."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

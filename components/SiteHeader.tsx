@@ -42,7 +42,9 @@ const SECTIONS_BY_ROUTE: Record<string, SiteSection[]> = {
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const sections = SECTIONS_BY_ROUTE[pathname] ?? [];
+  // The /v3 design preview ships its own chrome.
+  const isDesignPreview = pathname.startsWith("/v3");
+  const sections = isDesignPreview ? [] : SECTIONS_BY_ROUTE[pathname] ?? [];
 
   const headerRef = useRef<HTMLElement | null>(null);
   const sectionsNavRef = useRef<HTMLElement | null>(null);
@@ -147,6 +149,8 @@ export function SiteHeader() {
 
     window.scrollTo({ top: target, behavior: "smooth" });
   }
+
+  if (isDesignPreview) return null;
 
   return (
     <header className="site-header" ref={headerRef}>

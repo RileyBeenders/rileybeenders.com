@@ -4,10 +4,35 @@ import { useEffect, useId, useRef, useState } from "react";
 
 type GanttChartProps = {
   chart: string;
+  /** "v3" renders against the light Blueprint Press palette. */
+  variant?: "default" | "v3";
 };
 
 const VISIBLE_DAYS = 20;
 const MS_PER_DAY = 86400000;
+
+const THEMES = {
+  default: {
+    primaryColor: "rgba(255, 138, 61, 0.16)",
+    primaryBorderColor: "#ff8a3d",
+    primaryTextColor: "#15201f",
+    secondaryColor: "rgba(139, 227, 214, 0.35)",
+    secondaryBorderColor: "#4fae9d",
+    tertiaryColor: "rgba(233, 196, 106, 0.35)",
+    lineColor: "#8a9490",
+    textColor: "#15201f"
+  },
+  v3: {
+    primaryColor: "rgba(227, 52, 47, 0.14)",
+    primaryBorderColor: "#e3342f",
+    primaryTextColor: "#0b1a2b",
+    secondaryColor: "rgba(47, 134, 196, 0.18)",
+    secondaryBorderColor: "#2f86c4",
+    tertiaryColor: "rgba(11, 26, 43, 0.10)",
+    lineColor: "#b9c2cb",
+    textColor: "#0b1a2b"
+  }
+} as const;
 
 function countTotalDays(chart: string): number {
   const taskPattern = /(\d{4}-\d{2}-\d{2}),\s*(\d+)d/g;
@@ -27,7 +52,7 @@ function countTotalDays(chart: string): number {
     : 1;
 }
 
-export function GanttChart({ chart }: GanttChartProps) {
+export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartId = `gantt-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const [error, setError] = useState(false);
@@ -44,17 +69,10 @@ export function GanttChart({ chart }: GanttChartProps) {
           startOnLoad: false,
           theme: "base",
           securityLevel: "strict",
-          fontFamily: "var(--font-body)",
+          fontFamily: variant === "v3" ? "var(--v3-font-body)" : "var(--font-body)",
           themeVariables: {
             background: "transparent",
-            primaryColor: "rgba(255, 138, 61, 0.16)",
-            primaryBorderColor: "#ff8a3d",
-            primaryTextColor: "#15201f",
-            secondaryColor: "rgba(139, 227, 214, 0.35)",
-            secondaryBorderColor: "#4fae9d",
-            tertiaryColor: "rgba(233, 196, 106, 0.35)",
-            lineColor: "#8a9490",
-            textColor: "#15201f",
+            ...THEMES[variant],
             fontSize: "13px"
           },
           gantt: {
@@ -103,7 +121,7 @@ export function GanttChart({ chart }: GanttChartProps) {
     return () => {
       cancelled = true;
     };
-  }, [chart, chartId]);
+  }, [chart, chartId, variant]);
 
   if (!chart) return null;
 
@@ -116,9 +134,9 @@ export function GanttChart({ chart }: GanttChartProps) {
   }
 
   return (
-    <div className="gantt-chart-wrap">
+    <div className={variant === "v3" ? "v3-gantt-wrap" : "gantt-chart-wrap"}>
       <div
-        className="gantt-chart"
+        className={variant === "v3" ? "v3-gantt" : "gantt-chart"}
         ref={containerRef}
         role="img"
         aria-label="Job application Gantt chart"
