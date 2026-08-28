@@ -1,5 +1,4 @@
-/* Shared shell reset. Everything visual lives in the per-design
-   stylesheets: app/(site)/blueprint.css and app/globals.css. */
+/* Shared shell reset. Everything visual lives in app/(site)/blueprint.css. */
 
 * {
   box-sizing: border-box;

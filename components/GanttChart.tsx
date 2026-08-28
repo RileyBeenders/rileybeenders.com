@@ -4,34 +4,21 @@ import { useEffect, useId, useRef, useState } from "react";
 
 type GanttChartProps = {
   chart: string;
-  /** "blueprint" renders against the light Blueprint Press palette. */
-  variant?: "default" | "blueprint";
 };
 
 const VISIBLE_DAYS = 20;
 const MS_PER_DAY = 86400000;
 
-const THEMES = {
-  default: {
-    primaryColor: "rgba(255, 138, 61, 0.16)",
-    primaryBorderColor: "#ff8a3d",
-    primaryTextColor: "#15201f",
-    secondaryColor: "rgba(139, 227, 214, 0.35)",
-    secondaryBorderColor: "#4fae9d",
-    tertiaryColor: "rgba(233, 196, 106, 0.35)",
-    lineColor: "#8a9490",
-    textColor: "#15201f"
-  },
-  blueprint: {
-    primaryColor: "rgba(227, 52, 47, 0.14)",
-    primaryBorderColor: "#e3342f",
-    primaryTextColor: "#0b1a2b",
-    secondaryColor: "rgba(47, 134, 196, 0.18)",
-    secondaryBorderColor: "#2f86c4",
-    tertiaryColor: "rgba(11, 26, 43, 0.10)",
-    lineColor: "#b9c2cb",
-    textColor: "#0b1a2b"
-  }
+/** Mermaid's palette, matched to the Blueprint Press tokens in blueprint.css. */
+const THEME = {
+  primaryColor: "rgba(227, 52, 47, 0.14)",
+  primaryBorderColor: "#e3342f",
+  primaryTextColor: "#0b1a2b",
+  secondaryColor: "rgba(47, 134, 196, 0.18)",
+  secondaryBorderColor: "#2f86c4",
+  tertiaryColor: "rgba(11, 26, 43, 0.10)",
+  lineColor: "#b9c2cb",
+  textColor: "#0b1a2b"
 } as const;
 
 function countTotalDays(chart: string): number {
@@ -52,7 +39,7 @@ function countTotalDays(chart: string): number {
     : 1;
 }
 
-export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
+export function GanttChart({ chart }: GanttChartProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartId = `gantt-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const [error, setError] = useState(false);
@@ -69,10 +56,10 @@ export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
           startOnLoad: false,
           theme: "base",
           securityLevel: "strict",
-          fontFamily: variant === "blueprint" ? "var(--bp-font-body)" : "var(--font-body)",
+          fontFamily: "var(--bp-font-body)",
           themeVariables: {
             background: "transparent",
-            ...THEMES[variant],
+            ...THEME,
             fontSize: "13px"
           },
           gantt: {
@@ -121,22 +108,22 @@ export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
     return () => {
       cancelled = true;
     };
-  }, [chart, chartId, variant]);
+  }, [chart, chartId]);
 
   if (!chart) return null;
 
   if (error) {
     return (
-      <p className="gantt-chart-error" role="alert">
+      <p className="bp-gantt-error" role="alert">
         The application tracker chart couldn't be rendered. The chart definition may need a check in data/more-info/gantt.md.
       </p>
     );
   }
 
   return (
-    <div className={variant === "blueprint" ? "bp-gantt-wrap" : "gantt-chart-wrap"}>
+    <div className="bp-gantt-wrap">
       <div
-        className={variant === "blueprint" ? "bp-gantt" : "gantt-chart"}
+        className="bp-gantt"
         ref={containerRef}
         role="img"
         aria-label="Job application Gantt chart"
