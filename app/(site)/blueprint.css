@@ -1,7 +1,7 @@
 /* ==========================================================================
    Blueprint Press — the site design
    Blueprint grid texture · Swiss palette · Editorial typography
-   Everything is scoped under .bp so it cannot leak into the classic design at /classic.
+   Everything is scoped under .bp.
    ========================================================================== */
 
 /* Paints the overscroll gutter to match the page. Loads only on site routes. */
@@ -515,6 +515,16 @@ html {
 }
 .bp-gantt { height: 50vh; min-height: 220px; overflow: auto; }
 .bp-gantt svg { display: block; }
+
+.bp-gantt-error {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--accent);
+  background: rgba(227, 52, 47, 0.05);
+  color: var(--accent);
+  font-size: 15px;
+  line-height: 1.6;
+}
 
 .bp-table-wrap { margin-top: 22px; overflow-x: auto; border: 1px solid var(--rule); background: var(--white); }
 .bp-table { width: 100%; border-collapse: collapse; font-size: 14px; }

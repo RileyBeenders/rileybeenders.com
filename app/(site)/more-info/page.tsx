@@ -80,8 +80,8 @@ export default function MoreInfoPage() {
             <Reveal delay={0.06}>
               <div>
                 <p className="bp-prose">{data.ganttSection.intro}</p>
-                <GanttChart chart={chart} variant="blueprint" />
-                <JobsTable columns={columns} rows={rows} variant="blueprint" />
+                <GanttChart chart={chart} />
+                <JobsTable columns={columns} rows={rows} />
               </div>
             </Reveal>
           </div>

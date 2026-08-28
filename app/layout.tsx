@@ -9,10 +9,7 @@ export const metadata: Metadata = {
     "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
 };
 
-/**
- * Shell only. Each design owns its own chrome and stylesheet:
- * app/(site) is the live Blueprint Press design, app/classic the previous one.
- */
+/** Shell only — chrome and styling live in the app/(site) layout. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">

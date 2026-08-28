@@ -4,8 +4,6 @@ import type { ReactNode } from "react";
 type JobsTableProps = {
   columns: string[];
   rows: string[][];
-  /** "blueprint" renders against the light Blueprint Press palette. */
-  variant?: "default" | "blueprint";
 };
 
 // Anchored + greedy so a URL containing literal parentheses (e.g. a PDF
@@ -26,12 +24,12 @@ function renderCell(text: string): ReactNode {
   );
 }
 
-export function JobsTable({ columns, rows, variant = "default" }: JobsTableProps) {
+export function JobsTable({ columns, rows }: JobsTableProps) {
   if (columns.length === 0 || rows.length === 0) return null;
 
   return (
-    <div className={variant === "blueprint" ? "bp-table-wrap" : "jobs-table-wrap"}>
-      <table className={variant === "blueprint" ? "bp-table" : "jobs-table"}>
+    <div className="bp-table-wrap">
+      <table className="bp-table">
         <thead>
           <tr>
             {columns.map((column) => (
