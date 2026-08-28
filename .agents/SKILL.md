@@ -22,6 +22,8 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
 ## Task: Generate one tailored resume to a specific job posting.
 
 1. Use the selected page count and job-posting PDF.
+   - The job-posting directory is spelled `2.JobsApplliedTo`. Resolve near-miss
+     spellings (`JobsAppliedTo`, `JobsAplliedTo`) to that directory.
    - Ask for clarification if the PDF path matches no file or multiple files.
 2. Extract the company, job title, location, responsibilities, qualifications, and important ATS terms from the job PDF.
    - Look for the most important requirements and responsibilities, and any specific keywords that are repeated or emphasized.
