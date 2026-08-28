@@ -8,7 +8,6 @@ export const contentType = "image/png";
 
 const INK = "#0b1a2b";
 const BLUE = "#2f86c4";
-const ACCENT = "#e3342f";
 const PAPER = "#fbfbf9";
 
 /**
@@ -77,20 +76,7 @@ export default async function OpengraphImage() {
           <div
             style={{
               display: "flex",
-              fontSize: 22,
-              letterSpacing: 7,
-              color: ACCENT,
-              fontFamily: "Instrument Serif"
-            }}
-          >
-            R&amp;D · ELECTROMECHANICAL · AUTOMATION
-          </div>
-
-          <div
-            style={{
-              display: "flex",
               flexDirection: "column",
-              marginTop: 26,
               fontFamily: "Instrument Serif",
               fontSize: 104,
               lineHeight: 1.02,
