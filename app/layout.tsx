@@ -1,30 +1,23 @@
 import type { Metadata } from "next";
-import resumeData from "@/data/resumeData";
-import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { SiteHeader } from "@/components/SiteHeader";
-import { RelocationBadge } from "@/components/RelocationBadge";
-
-const siteData = resumeData;
-const isComingSoon = siteData.siteMode === "coming-soon" && Boolean(siteData.comingSoon);
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./base.css";
 
 export const metadata: Metadata = {
-  title: isComingSoon
-    ? `${siteData.comingSoon?.headline ?? siteData.person.name} | Coming Soon`
-    : `Riley Beenders | Exploring, Building, Improving`,
-  description: isComingSoon
-    ? siteData.comingSoon?.summary ?? siteData.summary
-    : "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
+  title: "Riley Beenders | R&D, Electromechanical and Automation Engineer",
+  description:
+    "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
 };
 
+/**
+ * Shell only. Each design owns its own chrome and stylesheet:
+ * app/(site) is the live Blueprint Press design, app/classic the previous one.
+ */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body suppressHydrationWarning>
-        <SiteHeader />
-          {children}
-        <RelocationBadge />
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>

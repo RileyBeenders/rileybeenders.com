@@ -10,29 +10,29 @@ type SiteSection = {
 };
 
 const PRIMARY_NAV: { label: string; href: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "Contact", href: "/contact" },
-  { label: "More Info", href: "/more-info" }
+  { label: "Home", href: "/classic" },
+  { label: "Projects", href: "/classic/projects" },
+  { label: "Contact", href: "/classic/contact" },
+  { label: "More Info", href: "/classic/more-info" }
 ];
 
 const SECTIONS_BY_ROUTE: Record<string, SiteSection[]> = {
-  "/": [
+  "/classic": [
     { id: "section-header", label: "Header" },
     { id: "section-summary", label: "Summary" },
     { id: "section-experience", label: "Experience" },
     { id: "section-education", label: "Education" },
     { id: "section-skills", label: "Skills" }
   ],
-  "/projects": [
+  "/classic/projects": [
     { id: "section-projects-header", label: "Overview" },
     { id: "section-projects-work", label: "Selected Work" }
   ],
-  "/contact": [
+  "/classic/contact": [
     { id: "section-contact-header", label: "Get in Touch" },
     { id: "section-contact-details", label: "Details" }
   ],
-  "/more-info": [
+  "/classic/more-info": [
     { id: "section-moreinfo-header", label: "About" },
     { id: "section-moreinfo-aboutme", label: "About Me" },
     { id: "section-moreinfo-aboutsite", label: "About the Site" },
@@ -42,9 +42,7 @@ const SECTIONS_BY_ROUTE: Record<string, SiteSection[]> = {
 
 export function SiteHeader() {
   const pathname = usePathname();
-  // The /v3 design preview ships its own chrome.
-  const isDesignPreview = pathname.startsWith("/v3");
-  const sections = isDesignPreview ? [] : SECTIONS_BY_ROUTE[pathname] ?? [];
+  const sections = SECTIONS_BY_ROUTE[pathname] ?? [];
 
   const headerRef = useRef<HTMLElement | null>(null);
   const sectionsNavRef = useRef<HTMLElement | null>(null);
@@ -150,12 +148,10 @@ export function SiteHeader() {
     window.scrollTo({ top: target, behavior: "smooth" });
   }
 
-  if (isDesignPreview) return null;
-
   return (
     <header className="site-header" ref={headerRef}>
       <div className="site-header-tier site-header-tier-primary">
-        <Link href="/" className="site-header-brand" suppressHydrationWarning>
+        <Link href="/classic" className="site-header-brand" suppressHydrationWarning>
           RileyBeenders.com
         </Link>
         <nav aria-label="Site">

@@ -4,8 +4,8 @@ import { useEffect, useId, useRef, useState } from "react";
 
 type GanttChartProps = {
   chart: string;
-  /** "v3" renders against the light Blueprint Press palette. */
-  variant?: "default" | "v3";
+  /** "blueprint" renders against the light Blueprint Press palette. */
+  variant?: "default" | "blueprint";
 };
 
 const VISIBLE_DAYS = 20;
@@ -22,7 +22,7 @@ const THEMES = {
     lineColor: "#8a9490",
     textColor: "#15201f"
   },
-  v3: {
+  blueprint: {
     primaryColor: "rgba(227, 52, 47, 0.14)",
     primaryBorderColor: "#e3342f",
     primaryTextColor: "#0b1a2b",
@@ -69,7 +69,7 @@ export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
           startOnLoad: false,
           theme: "base",
           securityLevel: "strict",
-          fontFamily: variant === "v3" ? "var(--v3-font-body)" : "var(--font-body)",
+          fontFamily: variant === "blueprint" ? "var(--bp-font-body)" : "var(--font-body)",
           themeVariables: {
             background: "transparent",
             ...THEMES[variant],
@@ -134,9 +134,9 @@ export function GanttChart({ chart, variant = "default" }: GanttChartProps) {
   }
 
   return (
-    <div className={variant === "v3" ? "v3-gantt-wrap" : "gantt-chart-wrap"}>
+    <div className={variant === "blueprint" ? "bp-gantt-wrap" : "gantt-chart-wrap"}>
       <div
-        className={variant === "v3" ? "v3-gantt" : "gantt-chart"}
+        className={variant === "blueprint" ? "bp-gantt" : "gantt-chart"}
         ref={containerRef}
         role="img"
         aria-label="Job application Gantt chart"

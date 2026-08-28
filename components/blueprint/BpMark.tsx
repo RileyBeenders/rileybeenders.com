@@ -1,4 +1,4 @@
-type V3MarkProps = {
+type BpMarkProps = {
   /** Rendered size in px. */
   size?: number;
   /** Unique per instance — several marks on one page must not share a gradient id. */
@@ -19,24 +19,24 @@ type V3MarkProps = {
  * without lifting. The gradient runs along that travel so the eye follows the
  * direction of flow.
  */
-export function V3Mark({
+export function BpMark({
   size = 34,
   id,
   animated = false,
   float = false,
   reversed = false,
   bare = false
-}: V3MarkProps) {
-  const gradientId = `v3-mark-${id}`;
+}: BpMarkProps) {
+  const gradientId = `bp-mark-${id}`;
   const stem = reversed ? "#fbfbf9" : "#0b1a2b";
   const ring = reversed ? "#5a7488" : "#0b1a2b";
   // Stroke weight has to grow as the mark shrinks or the bowls fill in.
   const weight = size <= 20 ? 3.4 : size <= 28 ? 2.9 : 2.4;
 
   const className = [
-    "v3-mark",
-    animated ? "v3-mark--animated" : "",
-    float ? "v3-mark--float" : ""
+    "bp-mark",
+    animated ? "bp-mark--animated" : "",
+    float ? "bp-mark--float" : ""
   ].filter(Boolean).join(" ");
 
   return (
