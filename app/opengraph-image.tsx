@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 
-export const alt = "Riley Beenders' Professional Portfolio";
+export const alt = "Riley's Professional Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -31,18 +31,15 @@ const grid = `data:image/svg+xml;base64,${Buffer.from(
 ).toString("base64")}`;
 
 /**
- * The mark's stem and its one continuous flowing bowl, oversized as a
- * watermark. Sized and placed so the whole letterform sits inside the frame
- * and its stem falls behind the end of the headline rather than beside it.
+ * Just the two flowing bowls of the mark — no stem — oversized as a
+ * watermark and placed so the curves sit behind the end of the headline.
  */
-const GHOST = { width: 512, height: 640, top: -4, right: 148 };
+const GHOST = { width: 420, height: 640, top: -4, right: 176 };
 
 const ghostB = `data:image/svg+xml;base64,${Buffer.from(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="${GHOST.width}" height="${GHOST.height}">
-     <g fill="none" stroke="${INK}" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.14">
-       <path d="M40 18v214"/>
-       <path d="M40 18c72 0 108 18 108 45 0 26-36 44-108 44 82 0 121 19 121 46 0 25-39 45-121 45"/>
-     </g>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 165 250" width="${GHOST.width}" height="${GHOST.height}">
+     <path d="M5 18c72 0 108 18 108 45 0 26-36 44-108 44 82 0 121 19 121 46 0 25-39 45-121 45"
+           fill="none" stroke="${INK}" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.14"/>
    </svg>`
 ).toString("base64")}`;
 
@@ -101,7 +98,7 @@ export default async function OpengraphImage() {
               color: INK
             }}
           >
-            <div style={{ display: "flex" }}>Riley Beenders&rsquo;</div>
+            <div style={{ display: "flex" }}>Riley&rsquo;s</div>
             <div style={{ display: "flex" }}>Professional Portfolio</div>
           </div>
 

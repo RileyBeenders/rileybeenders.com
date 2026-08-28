@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Riley Beenders",
     url: "https://rileybeenders.com",
-    title: "Riley Beenders' Professional Portfolio",
+    title: "Riley's Professional Portfolio",
     description: DESCRIPTION
   },
   twitter: {
     card: "summary_large_image",
-    title: "Riley Beenders' Professional Portfolio",
+    title: "Riley's Professional Portfolio",
     description: DESCRIPTION
   }
 };
