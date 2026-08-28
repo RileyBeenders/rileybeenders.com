@@ -2,18 +2,23 @@
   {
     "category": "Engineering",
     "items": [
-      "Design for Manufacturing",
+      "Design for Manufacturing (DFM)",
+      "Design for Assembly (DFA)",
       "Electrical Layout and Schematic Design",
       "Engineering Documentation and BOM Control",
       "FDM, FGF, MJF, and SLS Design",
       "Fixture and Tooling Design",
+      "Geometric Dimensioning & Toleranceing (GD&T)",
+      "Lean Manufacturing",
+      "Lean Six Sigma",
       "Product Development and Commercialization",
       "Product Safety and Regulatory Compliance",
       "Production Workflow Optimization",
       "R&D Prototyping & Validation",
       "Technical Writing and Documentation",
       "Vendor Communication and Cost Negotiation",
-      "Worldwide Project Collaboration"
+      "Worldwide Project Collaboration",
+      "Process Development"
     ]
   },
   {
@@ -49,12 +54,12 @@
   {
     "category": "Infrastructure & Systems",
     "items": [
+      "Automation Equipment Development",
       "Domain-Based Application Access",
       "DNS and Subdomain Configuration",
       "Docker and Containerized Applications",
       "Proxmox Virtualization",
       "Reverse Proxy and Firewall Routing",
-      "Self-Hosted Infrastructure",
       "Server Network and VLAN Configuration",
       "Virtual Machine and Container Management",
       "Windows/Linux Systems Administration"

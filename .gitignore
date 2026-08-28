@@ -5,3 +5,8 @@ out
 .DS_Store
 *.log
 *.tsbuildinfo
+
+# Obsidian vault: track the notes and shared config, ignore per-device
+# window/pane state so it doesn't churn or conflict across machines.
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
