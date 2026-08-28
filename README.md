@@ -1,6 +1,5 @@
 # RileyBeenders.com
-
-## WIP on branch 'Version-2.0'
+#### Version 2.0 released on August, 27th.
 
 ***
 
