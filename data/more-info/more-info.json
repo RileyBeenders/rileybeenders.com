@@ -1,0 +1,25 @@
+{
+  "aboutHeader": {
+    "title": "More Info",
+    "description": [
+      "A closer look at me, this site, and the job search behind it."
+    ]
+  },
+  "aboutMe": {
+    "title": "About Me",
+    "description": [
+      "How did you read this before the rest of the site??",
+      "This box uses the same format as \"About the Site\" below."
+    ]
+  },
+  "aboutSite": {
+    "title": "About This Site",
+    "description": [
+      "This site was created as a portfolio website designed to complement a traditional resume. The PDF remains the official application document, while the website serves as an interactive \"evidence of excellence\" layer that demonstrates the work behind the claims on the resume.",
+      "At rest, the site stays readable as a conventional resume. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact."
+    ]
+  },
+  "ganttSection": {
+    "title": "Application Tracker"
+  }
+}
