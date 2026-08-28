@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 type JobsTableProps = {
   columns: string[];
   rows: string[][];
-  /** "v3" renders against the light Blueprint Press palette. */
-  variant?: "default" | "v3";
+  /** "blueprint" renders against the light Blueprint Press palette. */
+  variant?: "default" | "blueprint";
 };
 
 // Anchored + greedy so a URL containing literal parentheses (e.g. a PDF
@@ -30,8 +30,8 @@ export function JobsTable({ columns, rows, variant = "default" }: JobsTableProps
   if (columns.length === 0 || rows.length === 0) return null;
 
   return (
-    <div className={variant === "v3" ? "v3-table-wrap" : "jobs-table-wrap"}>
-      <table className={variant === "v3" ? "v3-table" : "jobs-table"}>
+    <div className={variant === "blueprint" ? "bp-table-wrap" : "jobs-table-wrap"}>
+      <table className={variant === "blueprint" ? "bp-table" : "jobs-table"}>
         <thead>
           <tr>
             {columns.map((column) => (

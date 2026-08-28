@@ -13,7 +13,7 @@ const PHASES = [
 
 const PHASE_INTERVAL_MS = 2600;
 
-export function V3ComingSoon({ teasers = [] }: { teasers?: Teaser[] }) {
+export function BpComingSoon({ teasers = [] }: { teasers?: Teaser[] }) {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
@@ -27,19 +27,19 @@ export function V3ComingSoon({ teasers = [] }: { teasers?: Teaser[] }) {
   }, []);
 
   return (
-    <div className="v3-soon">
-      <div className="v3-soon-loader" aria-hidden="true">
-        <span className="v3-soon-ring v3-soon-ring-1" />
-        <span className="v3-soon-ring v3-soon-ring-2" />
-        <span className="v3-soon-ring v3-soon-ring-3" />
-        <span className="v3-soon-core" />
+    <div className="bp-soon">
+      <div className="bp-soon-loader" aria-hidden="true">
+        <span className="bp-soon-ring bp-soon-ring-1" />
+        <span className="bp-soon-ring bp-soon-ring-2" />
+        <span className="bp-soon-ring bp-soon-ring-3" />
+        <span className="bp-soon-core" />
       </div>
 
-      <p className="v3-soon-status" aria-hidden="true">{PHASES[phase]}</p>
+      <p className="bp-soon-status" aria-hidden="true">{PHASES[phase]}</p>
 
-      <div className="v3-soon-bar" aria-hidden="true"><span /></div>
+      <div className="bp-soon-bar" aria-hidden="true"><span /></div>
 
-      <div className="v3-soon-copy">
+      <div className="bp-soon-copy">
         <h3>Case studies in progress</h3>
         <p>
           Detailed write-ups for each project — the problem, the approach, and the
@@ -48,14 +48,14 @@ export function V3ComingSoon({ teasers = [] }: { teasers?: Teaser[] }) {
       </div>
 
       {teasers.length > 0 && (
-        <div className="v3-soon-queue">
-          <p className="v3-soon-queue-label">Queued for publish</p>
-          <ul className="v3-soon-list">
+        <div className="bp-soon-queue">
+          <p className="bp-soon-queue-label">Queued for publish</p>
+          <ul className="bp-soon-list">
             {teasers.map((teaser) => (
-              <li className="v3-soon-item" key={teaser.name}>
-                <span className="v3-soon-dot" aria-hidden="true" />
-                <span className="v3-soon-name">{teaser.name}</span>
-                <span className="v3-soon-type">{teaser.type}</span>
+              <li className="bp-soon-item" key={teaser.name}>
+                <span className="bp-soon-dot" aria-hidden="true" />
+                <span className="bp-soon-name">{teaser.name}</span>
+                <span className="bp-soon-type">{teaser.type}</span>
               </li>
             ))}
           </ul>
