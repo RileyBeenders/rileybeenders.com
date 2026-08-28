@@ -30,13 +30,7 @@ export default function ProjectsPage() {
 
         <section className="resume-paper">
           <div className="resume-column-main">
-            <section className="resume-block" id="section-projects-work">
-              <div className="section-title-row">
-                <div>
-                  <p className="eyebrow">Case Studies</p>
-                  <h2>Projects</h2>
-                </div>
-              </div>
+            <section className="resume-block resume-block-bare" id="section-projects-work">
               <ComingSoon teasers={teasers} />
             </section>
           </div>
