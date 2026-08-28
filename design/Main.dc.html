@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--ink); }
+
+    /* ---- entrance ---- */
+    @keyframes rb-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes rb-rule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes rb-draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+    @keyframes rb-drift { from { background-position: 0 0, 0 0, 0 0, 0 0; } to { background-position: 16px 16px, 16px 16px, 96px 96px, 96px 96px; } }
+    @keyframes rb-sheen { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
+    @keyframes rb-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    .rb-rise { animation: rb-rise .82s cubic-bezier(.22,.9,.28,1) both; }
+    .rb-rule { transform-origin: left center; animation: rb-rule .9s cubic-bezier(.22,.9,.28,1) both; }
+    .rb-grid { animation: rb-drift 24s linear infinite; }
+
+    /* ---- flowing mark ---- */
+    .rb-mark path { stroke-dasharray: var(--len); animation: rb-draw 1.9s cubic-bezier(.5,0,.2,1) both; }
+    .rb-mark:hover path { animation: rb-draw 1.1s cubic-bezier(.5,0,.2,1) both; }
+
+    /* ---- nav ---- */
+    .rb-nav-link { position: relative; padding: 6px 2px; cursor: pointer; color: #6f7d88; transition: color .3s ease; }
+    .rb-nav-link:hover { color: var(--ink); }
+    .rb-nav-link.is-active { color: var(--ink); }
+    .rb-nav-link::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left center;
+      transition: transform .42s cubic-bezier(.22,.9,.28,1);
+    }
+    .rb-nav-link:hover::after, .rb-nav-link.is-active::after { transform: scaleX(1); }
+
+    /* ---- buttons ---- */
+    .rb-btn {
+      position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 28px; min-height: 48px; box-sizing: border-box; cursor: pointer;
+      font-family: 'Spectral', Georgia, serif; font-size: 15px; font-weight: 500; letter-spacing: .02em;
+      border: 1px solid var(--ink); background: transparent; color: var(--ink);
+      transition: color .42s cubic-bezier(.22,.9,.28,1), border-color .42s ease, transform .42s cubic-bezier(.22,.9,.28,1);
+    }
+    .rb-btn > * { position: relative; z-index: 1; }
+    .rb-btn::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; background: var(--ink);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform .48s cubic-bezier(.22,.9,.28,1);
+    }
+    .rb-btn:hover { color: #fbfbf9; transform: translateY(-2px); }
+    .rb-btn:hover::before { transform: scaleX(1); }
+    .rb-btn .rb-arrow { transition: transform .42s cubic-bezier(.22,.9,.28,1); }
+    .rb-btn:hover .rb-arrow { transform: translateX(5px); }
+
+    .rb-btn-solid { background: var(--accent); border-color: var(--accent); color: #fbfbf9; }
+    .rb-btn-solid::before { background: var(--ink); }
+    .rb-btn-solid:hover { color: #fbfbf9; border-color: var(--ink); }
+    .rb-btn-solid .rb-sheen {
+      position: absolute; top: 0; bottom: 0; width: 34%; z-index: 1; pointer-events: none;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.34), transparent);
+      animation: rb-sheen 3.6s cubic-bezier(.5,0,.4,1) infinite;
+    }
+
+    /* ---- cards ---- */
+    .rb-role { position: relative; padding: 26px 0 26px 30px; cursor: default; transition: transform .42s cubic-bezier(.22,.9,.28,1); }
+    .rb-role::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--rule);
+      transition: background .42s ease;
+    }
+    .rb-role::after {
+      content: ""; position: absolute; left: 0; top: 0; width: 2px; height: 100%; background: var(--accent);
+      transform: scaleY(0); transform-origin: top center;
+      transition: transform .52s cubic-bezier(.22,.9,.28,1);
+    }
+    .rb-role:hover { transform: translateX(7px); }
+    .rb-role:hover::after { transform: scaleY(1); }
+
+    /* ---- pills ---- */
+    .rb-pill {
+      padding: 8px 16px; border: 1px solid var(--rule); background: #fff; cursor: default;
+      font-size: 14px; color: #4a5c6b;
+      transition: transform .34s cubic-bezier(.22,.9,.28,1), border-color .34s ease, color .34s ease, box-shadow .34s ease;
+    }
+    .rb-pill:hover {
+      transform: translateY(-3px); border-color: var(--ink); color: var(--ink);
+      box-shadow: 0 6px 18px rgba(11,26,43,.10);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rb-rise, .rb-rule, .rb-grid, .rb-mark path, .rb-sheen { animation: none !important; }
+      .rb-rule { transform: none; }
+      .rb-mark path { stroke-dashoffset: 0; }
+    }
+  </style>
+</helmet>
+
+<div class="rb-grid" style="--accent: {{accent}}; --ink: #0b1a2b; --rule: #d9dee3; width: 1200px; min-height: 1960px; box-sizing: border-box; background-color: #fbfbf9; background-image: linear-gradient(rgba(11,26,43,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(11,26,43,.045) 1px, transparent 1px), linear-gradient(rgba(11,26,43,.085) 1px, transparent 1px), linear-gradient(90deg, rgba(11,26,43,.085) 1px, transparent 1px); background-size: 16px 16px, 16px 16px, 96px 96px, 96px 96px; font-family: 'Spectral', Georgia, serif; color: #0b1a2b;">
+
+  <!-- ================= NAV ================= -->
+  <div class="rb-rise" style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 64px; border-bottom: 1px solid #d9dee3; background: rgba(251,251,249,.86); backdrop-filter: blur(10px); animation-delay: .05s;">
+    <div style="display: flex; align-items: center; gap: 13px;">
+      <svg class="rb-mark" width="34" height="34" viewBox="0 0 40 40" fill="none" style="display: block; overflow: visible;">
+        <defs>
+          <linearGradient id="rbflow" x1="13" y1="10" x2="24" y2="30" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0b1a2b"/>
+            <stop offset="1" stop-color="#2f86c4"/>
+          </linearGradient>
+        </defs>
+        <circle cx="20" cy="20" r="18.4" stroke="#0b1a2b" stroke-width="1" style="--len: 116; animation-delay: .1s;"/>
+        <path d="M13 10.6v18.8" stroke="#0b1a2b" stroke-width="2.4" stroke-linecap="round" style="--len: 19; animation-delay: .3s;"/>
+        <path d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7" stroke="url(#rbflow)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="--len: 62; animation-delay: .45s;"/>
+      </svg>
+      <span style="font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: #6f7d88;">Riley Beenders</span>
+    </div>
+    <div style="display: flex; gap: 30px; font-size: 15px;">
+      <sc-for list="{{navItems}}" as="item" hint-placeholder-count="4">
+        <span class="{{item.cls}}" onClick="{{item.pick}}">{{item.label}}</span>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <div style="position: relative; padding: 78px 64px 0; overflow: hidden;">
+
+    <!-- oversized flowing ribbon, echoing the mark -->
+    <svg width="620" height="700" viewBox="0 0 200 240" fill="none" style="position: absolute; top: -30px; right: -80px; opacity: .11; pointer-events: none;" aria-hidden="true">
+      <path class="rb-flowline" d="M40 20c72 0 108 18 108 45 0 26-36 44-108 44 82 0 121 19 121 46 0 25-39 45-121 45" stroke="#0b1a2b" stroke-width="2" stroke-linecap="round" style="stroke-dasharray: 600; stroke-dashoffset: 600; animation: rb-draw 3.4s cubic-bezier(.5,0,.2,1) .5s both; --len: 600;"/>
+    </svg>
+
+    <div class="rb-rise" style="font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); animation-delay: .18s;">R&amp;D · Electromechanical · Automation</div>
+
+    <div style="font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 152px; line-height: .86; letter-spacing: -.038em; margin-top: 26px;">
+      <div class="rb-rise" style="animation-delay: .3s;">Riley</div>
+      <div class="rb-rise" style="animation-delay: .42s;">Beenders</div>
+    </div>
+
+    <div class="rb-rule" style="height: 2px; background: #0b1a2b; margin-top: 38px; animation-delay: .56s;"></div>
+
+    <div class="rb-rise" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-top: 26px; animation-delay: .64s;">
+      <div style="font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: 33px; line-height: 1.22; color: #3d4d5c; max-width: 24ch;">Engineer of machines that<br>have to work on Monday.</div>
+      <div style="display: flex; flex-direction: column; gap: 5px; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: #6f7d88; text-align: right;">
+        <div>Bethlehem, Pennsylvania</div>
+        <div style="color: var(--accent);">Open to relocation</div>
+      </div>
+    </div>
+
+    <!-- action row -->
+    <div class="rb-rise" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; padding-bottom: 64px; animation-delay: .74s;">
+      <div class="rb-btn rb-btn-solid">
+        <span class="rb-sheen"></span>
+        <span>Download PDF</span>
+        <svg class="rb-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v11m0 0l-4.5-4.5M8 13l4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="rb-btn">
+        <span>Email</span>
+        <svg class="rb-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12v8H2V4z" stroke="currentColor" stroke-width="1.4"/><path d="M2 4.6l6 4 6-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="rb-btn">
+        <span>LinkedIn</span>
+        <svg class="rb-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 3h9v10H4z" stroke="currentColor" stroke-width="1.4"/><path d="M6.4 6.6v4M6.4 4.9v.1M9 10.6V8.4a1.4 1.4 0 012.8 0v2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="rb-btn">
+        <span>GitHub</span>
+        <svg class="rb-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5.5 2.5L2 8l3.5 5.5M10.5 2.5L14 8l-3.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SUMMARY ================= -->
+  <div style="padding: 0 64px 62px;">
+    <div class="rb-rule" style="height: 1px; background: #d9dee3; animation-delay: .8s;"></div>
+    <div style="display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px;">
+      <div class="rb-rise" style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); padding-top: 12px; animation-delay: .86s;">01 &nbsp;Summary</div>
+      <div class="rb-rise" style="animation-delay: .92s;">
+        <div style="font-size: 22px; line-height: 1.68; color: #26333f; max-width: 74ch; text-wrap: pretty;">
+          <span style="float: left; font-family: 'Instrument Serif', Georgia, serif; font-size: 88px; line-height: .76; padding: 8px 14px 0 0; color: var(--accent);">I</span>&rsquo;m an electromechanical engineer and R&amp;D leader specializing in product development, manufacturing and industrial automation. I bring together mechanical design, electronics, controls, software, and manufacturing to develop reliable, practical products and systems built for real-world use.
+        </div>
+        <div style="font-size: 22px; line-height: 1.68; color: #26333f; margin-top: 20px; max-width: 74ch; text-wrap: pretty;">That curiosity extends past the day job — traveling, rebuilding cars, replicating movie props, and automating the repetitive parts of everyday life.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <div style="padding: 0 64px 62px;">
+    <div class="rb-rule" style="height: 1px; background: #d9dee3;"></div>
+    <div style="display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px;">
+      <div style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); padding-top: 12px;">02 &nbsp;Experience</div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+
+        <div class="rb-role">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px;">
+            <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; line-height: 1.14; letter-spacing: -.01em;">Lead, Research &amp; Development Engineer</div>
+            <div style="font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #6f7d88; white-space: nowrap;">2025 —</div>
+          </div>
+          <div style="font-size: 15px; letter-spacing: .05em; color: var(--accent); margin-top: 8px;">Proteor Printing Solutions · Coplay, PA</div>
+          <div style="font-size: 17px; line-height: 1.68; color: #46545f; margin-top: 10px; max-width: 68ch;">Led design and development of the ICARUS-Lite — a compact printer purpose-built for digital prosthetic and orthotic production — from prototype through commercialization.</div>
+        </div>
+
+        <div class="rb-role">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px;">
+            <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; line-height: 1.14; letter-spacing: -.01em;">Chief Technology Officer</div>
+            <div style="font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #6f7d88; white-space: nowrap;">2022 — 25</div>
+          </div>
+          <div style="font-size: 15px; letter-spacing: .05em; color: var(--accent); margin-top: 8px;">Filament Innovations · Allentown, PA</div>
+          <div style="font-size: 17px; line-height: 1.68; color: #46545f; margin-top: 10px; max-width: 68ch;">Owned engineering across the product line — large-format additive platforms, controls architecture, and the internal systems the shop ran on.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOOLCHAIN ================= -->
+  <div style="padding: 0 64px 62px;">
+    <div class="rb-rule" style="height: 1px; background: #d9dee3;"></div>
+    <div style="display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px;">
+      <div style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); padding-top: 12px;">03 &nbsp;Toolchain</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 9px;">
+        <div class="rb-pill">SolidWorks</div>
+        <div class="rb-pill">Siemens NX</div>
+        <div class="rb-pill">CATIA</div>
+        <div class="rb-pill">Fusion 360</div>
+        <div class="rb-pill">LabVIEW</div>
+        <div class="rb-pill">Allen Bradley PLCs</div>
+        <div class="rb-pill">GD&amp;T</div>
+        <div class="rb-pill">Python</div>
+        <div class="rb-pill">MATLAB</div>
+        <div class="rb-pill">Docker</div>
+        <div class="rb-pill">Proxmox</div>
+        <div class="rb-pill">Lean Six Sigma</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EDUCATION + CTA ================= -->
+  <div style="padding: 0 64px 72px;">
+    <div class="rb-rule" style="height: 1px; background: #d9dee3;"></div>
+    <div style="display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; padding-top: 40px;">
+      <div style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); padding-top: 12px;">04 &nbsp;Education</div>
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;">
+        <div>
+          <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; line-height: 1.16;">Penn State University</div>
+          <div style="font-size: 16px; color: #6f7d88; margin-top: 6px;">BS, Electro-Mechanical Engineering · December 2024</div>
+        </div>
+        <div class="rb-btn">
+          <span>See all certificates</span>
+          <svg class="rb-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8h11m0 0l-4.5-4.5M13.5 8L9 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER MARK ================= -->
+  <div style="padding: 0 64px 64px;">
+    <div style="border-top: 2px solid #0b1a2b; padding-top: 30px; display: flex; align-items: center; justify-content: space-between; gap: 30px;">
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <svg class="rb-mark" width="58" height="58" viewBox="0 0 40 40" fill="none" style="display: block; overflow: visible; animation: rb-float 5s ease-in-out infinite;">
+          <defs>
+            <linearGradient id="rbflow2" x1="13" y1="10" x2="25" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#0b1a2b"/>
+              <stop offset="1" stop-color="#2f86c4"/>
+            </linearGradient>
+          </defs>
+          <circle cx="20" cy="20" r="18.4" stroke="#0b1a2b" stroke-width="1" style="--len: 116; animation-delay: 1s;"/>
+          <path d="M13 10.6v18.8" stroke="#0b1a2b" stroke-width="2.4" stroke-linecap="round" style="--len: 19; animation-delay: 1.2s;"/>
+          <path d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7" stroke="url(#rbflow2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="--len: 62; animation-delay: 1.35s;"/>
+        </svg>
+        <div style="font-size: 15px; line-height: 1.6; color: #6f7d88; max-width: 40ch;">One continuous stroke, top to bottom — the R&rsquo;s stem, then both bowls of the <span style="font-style: italic;">B</span> as a single flowing curve.</div>
+      </div>
+      <div style="font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #97a3ac;">rileybeenders.com</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#e3342f","options":["#e3342f","#1d6fa5","#0b1a2b","#ff8a3d"]}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { nav: 0 };
+  }
+  renderVals() {
+    const labels = ['Home', 'Projects', 'Contact', 'More Info'];
+    return {
+      accent: this.props.accent ?? '#e3342f',
+      navItems: labels.map((label, i) => ({
+        label: label,
+        cls: i === this.state.nav ? 'rb-nav-link is-active' : 'rb-nav-link',
+        pick: () => this.setState({ nav: i })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

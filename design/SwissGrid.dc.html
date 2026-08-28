@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;700;800&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #e3342f; text-decoration: none; }
+    a:hover { color: #b02420; }
+  </style>
+</helmet>
+
+<div style="width: 1200px; min-height: 1400px; background: #fbfbf9; font-family: 'Public Sans', Helvetica, Arial, sans-serif; color: #111110; box-sizing: border-box;">
+
+  <!-- nav -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 64px; border-bottom: 3px solid #111110;">
+    <div style="display: flex; align-items: center; gap: 11px;">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style="display: block;">
+        <rect width="32" height="32" fill="#111110"/>
+        <path d="M9 24V8h7.5a4.6 4.6 0 010 9.2H9m7.4 0L23 24" stroke="#fbfbf9" stroke-width="2.6" stroke-linecap="square"/>
+      </svg>
+      <span style="font-size: 13px; font-weight: 700; letter-spacing: -.01em;">Riley Beenders</span>
+    </div>
+    <div style="display: flex; gap: 26px; font-size: 13px; font-weight: 500; letter-spacing: -.01em; color: #6b6b66;">
+      <span style="color: #111110; border-bottom: 3px solid #e3342f; padding-bottom: 2px;">Home</span>
+      <span>Projects</span>
+      <span>Contact</span>
+      <span>More Info</span>
+    </div>
+  </div>
+
+  <!-- hero: strict 12-col feel -->
+  <div style="padding: 60px 64px 0;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: start;">
+      <div style="grid-column: span 2; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #e3342f; padding-top: 12px;">01</div>
+      <div style="grid-column: span 10;">
+        <div style="font-size: 116px; font-weight: 800; line-height: .9; letter-spacing: -.055em;">Riley<br>Beenders</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; margin-top: 40px; padding-bottom: 26px; border-bottom: 1px solid #d6d6d0;">
+      <div style="grid-column: span 2;"></div>
+      <div style="grid-column: span 5; font-size: 26px; font-weight: 500; line-height: 1.25; letter-spacing: -.025em;">R&amp;D, Electromechanical and Automation Engineer</div>
+      <div style="grid-column: span 2; font-size: 13px; line-height: 1.65; color: #6b6b66;">Bethlehem<br>Pennsylvania</div>
+      <div style="grid-column: span 3; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.5;">
+        <span style="color: #e3342f; font-weight: 500;">Email</span>
+        <span style="color: #e3342f; font-weight: 500;">LinkedIn</span>
+        <span style="color: #e3342f; font-weight: 500;">GitHub</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- big numerals stat row -->
+  <div style="padding: 34px 64px 0;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px;">
+      <div style="grid-column: span 2;"></div>
+      <div style="grid-column: span 10; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+        <div style="border-top: 3px solid #111110; padding-top: 12px;">
+          <div style="font-size: 62px; font-weight: 800; line-height: 1; letter-spacing: -.05em;">6</div>
+          <div style="font-size: 13px; color: #6b6b66; margin-top: 6px;">Years leading R&amp;D and engineering</div>
+        </div>
+        <div style="border-top: 3px solid #111110; padding-top: 12px;">
+          <div style="font-size: 62px; font-weight: 800; line-height: 1; letter-spacing: -.05em;">9</div>
+          <div style="font-size: 13px; color: #6b6b66; margin-top: 6px;">Systems designed and commercialized</div>
+        </div>
+        <div style="border-top: 3px solid #e3342f; padding-top: 12px;">
+          <div style="font-size: 62px; font-weight: 800; line-height: 1; letter-spacing: -.05em; color: #e3342f;">PA</div>
+          <div style="font-size: 13px; color: #6b6b66; margin-top: 6px;">Based in Bethlehem, open to relocation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div style="padding: 46px 64px 0;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: start;">
+      <div style="grid-column: span 2; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #e3342f;">02 &nbsp;Summary</div>
+      <div style="grid-column: span 8; font-size: 22px; line-height: 1.6; letter-spacing: -.015em; color: #33332e; text-wrap: pretty;">Electromechanical engineer and R&amp;D leader specializing in product development, manufacturing and industrial automation. I bring together mechanical design, electronics, controls, software, and manufacturing to develop reliable, practical products and systems built for real-world use.</div>
+    </div>
+  </div>
+
+  <!-- experience -->
+  <div style="padding: 50px 64px 0;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: start;">
+      <div style="grid-column: span 2; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #e3342f;">03 &nbsp;Experience</div>
+      <div style="grid-column: span 10; display: flex; flex-direction: column; gap: 0;">
+        <div style="display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 24px; padding: 22px 0; border-top: 1px solid #111110;">
+          <div style="font-size: 13px; font-weight: 500; color: #6b6b66;">2025—</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 27px; font-weight: 700; letter-spacing: -.03em; line-height: 1.15;">Lead, Research &amp; Development Engineer</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e3342f;">Proteor Printing Solutions, Coplay PA</div>
+            <div style="font-size: 16px; line-height: 1.6; color: #55554e; max-width: 64ch;">Led design and development of the ICARUS-Lite, a compact printer purpose-built for digital prosthetic and orthotic production, through commercialization.</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 24px; padding: 22px 0; border-top: 1px solid #d6d6d0;">
+          <div style="font-size: 13px; font-weight: 500; color: #6b6b66;">2022—25</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 27px; font-weight: 700; letter-spacing: -.03em; line-height: 1.15;">Chief Technology Officer</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e3342f;">Filament Innovations, Allentown PA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- mark -->
+  <div style="padding: 46px 64px 60px;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: center;">
+      <div style="grid-column: span 2; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #e3342f;">04 &nbsp;Mark</div>
+      <div style="grid-column: span 10; display: flex; align-items: center; gap: 18px;">
+        <svg width="56" height="56" viewBox="0 0 32 32" fill="none" style="display: block; flex: none;">
+          <rect width="32" height="32" fill="#111110"/>
+          <path d="M9 24V8h7.5a4.6 4.6 0 010 9.2H9m7.4 0L23 24" stroke="#fbfbf9" stroke-width="2.6" stroke-linecap="square"/>
+        </svg>
+        <div style="font-size: 15px; line-height: 1.6; color: #55554e; max-width: 52ch;">A geometric <strong style="font-weight: 700;">R</strong> knocked out of a solid square — no container, no ornament. Reverses to red for accents and holds up at 16px.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

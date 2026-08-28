@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #7fd4e8; text-decoration: none; }
+    a:hover { color: #b5e8f5; }
+  </style>
+</helmet>
+
+<div style="width: 1200px; min-height: 1400px; background-color: #0b1a2b; background-image: linear-gradient(rgba(127,212,232,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(127,212,232,.055) 1px, transparent 1px), linear-gradient(rgba(127,212,232,.11) 1px, transparent 1px), linear-gradient(90deg, rgba(127,212,232,.11) 1px, transparent 1px); background-size: 16px 16px, 16px 16px, 96px 96px, 96px 96px; font-family: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif; color: #dce9f2; padding: 0; box-sizing: border-box;">
+
+  <!-- nav -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 48px; border-bottom: 1px solid rgba(127,212,232,.22);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style="display: block;">
+        <path d="M3 3h20l6 6v20H3V3z" stroke="#7fd4e8" stroke-width="1.5"/>
+        <path d="M23 3v6h6" stroke="#7fd4e8" stroke-width="1.5"/>
+        <path d="M9 23V10h6a4 4 0 010 8H9m6 0l5 5" stroke="#7fd4e8" stroke-width="2" stroke-linecap="square"/>
+      </svg>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .16em; color: #7fd4e8;">RILEYBEENDERS.COM</span>
+    </div>
+    <div style="display: flex; gap: 28px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #8ea6b8;">
+      <span style="color: #7fd4e8; border-bottom: 2px solid #7fd4e8; padding-bottom: 3px;">HOME</span>
+      <span>PROJECTS</span>
+      <span>CONTACT</span>
+      <span>MORE INFO</span>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="padding: 56px 48px 40px; display: flex; flex-direction: column; gap: 0;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .22em; color: #6f9ab0;">SHEET 01 &nbsp;·&nbsp; GENERAL ARRANGEMENT</div>
+
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; margin-top: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="font-size: 108px; line-height: .88; font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; color: #f2f8fb;">Riley</div>
+        <div style="font-size: 108px; line-height: .88; font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; color: #7fd4e8;">Beenders</div>
+      </div>
+
+      <!-- title block -->
+      <div style="width: 300px; border: 1.5px solid rgba(127,212,232,.5); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em;">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0;">
+          <div style="padding: 9px 11px; border-right: 1px solid rgba(127,212,232,.3); border-bottom: 1px solid rgba(127,212,232,.3);"><div style="color: #6f9ab0;">DISCIPLINE</div><div style="color: #dce9f2; margin-top: 4px;">ELECTROMECH</div></div>
+          <div style="padding: 9px 11px; border-bottom: 1px solid rgba(127,212,232,.3);"><div style="color: #6f9ab0;">LOCATION</div><div style="color: #dce9f2; margin-top: 4px;">BETHLEHEM, PA</div></div>
+          <div style="padding: 9px 11px; border-right: 1px solid rgba(127,212,232,.3); border-bottom: 1px solid rgba(127,212,232,.3);"><div style="color: #6f9ab0;">STATUS</div><div style="color: #e8a13a; margin-top: 4px;">OPEN TO RELO</div></div>
+          <div style="padding: 9px 11px; border-bottom: 1px solid rgba(127,212,232,.3);"><div style="color: #6f9ab0;">REV</div><div style="color: #dce9f2; margin-top: 4px;">2.0</div></div>
+        </div>
+        <div style="padding: 11px; display: flex; align-items: center; gap: 11px;">
+          <svg width="34" height="34" viewBox="0 0 32 32" fill="none" style="display: block; flex: none;">
+            <path d="M2 2h22l6 6v22H2V2z" stroke="#7fd4e8" stroke-width="1.5"/>
+            <path d="M24 2v6h6" stroke="#7fd4e8" stroke-width="1.5"/>
+            <path d="M9 24V9h6.5a4.5 4.5 0 010 9H9m7 0l6 6" stroke="#7fd4e8" stroke-width="2.4" stroke-linecap="square"/>
+          </svg>
+          <div style="color: #6f9ab0; line-height: 1.5;">MARK — DRAFTING<br>TITLE-BLOCK &ldquo;RB&rdquo;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- dimension line -->
+    <div style="display: flex; align-items: center; gap: 10px; margin-top: 18px; color: #6f9ab0;">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M13 5H1m0 0l4-4M1 5l4 4" stroke="#6f9ab0" stroke-width="1.2"/></svg>
+      <div style="flex-grow: 1; height: 1px; background: rgba(127,212,232,.3);"></div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .16em;">R&amp;D · ELECTROMECHANICAL · AUTOMATION</div>
+      <div style="flex-grow: 1; height: 1px; background: rgba(127,212,232,.3);"></div>
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12m0 0l-4-4m4 4l-4 4" stroke="#6f9ab0" stroke-width="1.2"/></svg>
+    </div>
+
+    <div style="display: flex; gap: 12px; margin-top: 30px; align-items: center;">
+      <div style="padding: 13px 24px; background: #e8a13a; color: #0b1a2b; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: .12em;">DOWNLOAD PDF</div>
+      <div style="padding: 13px 22px; border: 1px solid rgba(127,212,232,.45); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #7fd4e8;">EMAIL</div>
+      <div style="padding: 13px 22px; border: 1px solid rgba(127,212,232,.45); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #7fd4e8;">LINKEDIN</div>
+      <div style="padding: 13px 22px; border: 1px solid rgba(127,212,232,.45); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #7fd4e8;">GITHUB</div>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div style="padding: 0 48px 44px; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: start;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .18em; color: #6f9ab0; padding-top: 6px;">A · SUMMARY</div>
+    <div style="font-size: 21px; line-height: 1.6; color: #b9cddb; max-width: 78ch;">Electromechanical engineer and R&amp;D leader specializing in product development, manufacturing and industrial automation — bringing together mechanical design, electronics, controls, software and manufacturing to build reliable systems for real-world use.</div>
+  </div>
+
+  <!-- experience -->
+  <div style="padding: 0 48px 44px; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: start;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .18em; color: #6f9ab0; padding-top: 6px;">B · EXPERIENCE</div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="border-left: 2px solid #7fd4e8; padding: 4px 0 4px 22px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px;">
+          <div style="font-size: 28px; font-weight: 700; letter-spacing: -.01em; color: #f2f8fb;">Lead, Research &amp; Development Engineer</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; color: #6f9ab0; white-space: nowrap;">2025 — PRESENT</div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; color: #7fd4e8;">PROTEOR PRINTING SOLUTIONS &nbsp;·&nbsp; COPLAY, PA</div>
+        <div style="font-size: 16px; line-height: 1.65; color: #9db4c4; max-width: 70ch;">Led design and development of the ICARUS-Lite, a compact printer purpose-built for digital prosthetic and orthotic production — through commercialization.</div>
+      </div>
+      <div style="border-left: 2px solid rgba(127,212,232,.3); padding: 4px 0 4px 22px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px;">
+          <div style="font-size: 28px; font-weight: 700; letter-spacing: -.01em; color: #cddfe9;">Chief Technology Officer</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; color: #6f9ab0; white-space: nowrap;">2022 — 2025</div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; color: #7fd4e8;">FILAMENT INNOVATIONS &nbsp;·&nbsp; ALLENTOWN, PA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- skills -->
+  <div style="padding: 0 48px 56px; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: start;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .18em; color: #6f9ab0; padding-top: 6px;">C · TOOLCHAIN</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">SolidWorks</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Siemens NX</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">LabVIEW</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Allen Bradley PLCs</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">GD&amp;T</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Python</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Docker</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Proxmox</div>
+      <div style="padding: 7px 13px; border: 1px solid rgba(127,212,232,.28); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #a9c3d3;">Lean Six Sigma</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
