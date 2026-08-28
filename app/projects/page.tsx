@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import resumeData from "@/data/resumeData";
-import { ProjectsExplorer } from "@/components/ProjectsExplorer";
+import { ComingSoon } from "@/components/ComingSoon";
 
 export const metadata: Metadata = {
   title: "Projects | Riley Beenders",
-  description: "Selected projects and case studies."
+  description: "Selected projects and case studies — coming soon."
 };
 
 export default function ProjectsPage() {
+  const teasers = [...resumeData.projects]
+    .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER))
+    .slice(0, 6)
+    .map((project) => ({ name: project.name, type: project.type }));
+
   return (
     <main className="site-shell">
       <div className="ambient-grid" aria-hidden="true" />
@@ -18,7 +23,7 @@ export default function ProjectsPage() {
             <h1>Selected Work</h1>
             <p>
               A closer look at the projects referenced throughout the resume — problem,
-              approach, and impact for each.
+              approach, and impact for each. The full write-ups are on their way.
             </p>
           </div>
         </header>
@@ -32,7 +37,7 @@ export default function ProjectsPage() {
                   <h2>Projects</h2>
                 </div>
               </div>
-              <ProjectsExplorer data={resumeData} />
+              <ComingSoon teasers={teasers} />
             </section>
           </div>
         </section>
