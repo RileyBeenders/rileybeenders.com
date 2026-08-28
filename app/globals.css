@@ -1955,19 +1955,21 @@ img {
 
 .projects-soon-teasers {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .projects-soon-teaser {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 8px 14px;
+  max-width: 100%;
+  padding: 8px 16px;
   border: 1px solid rgba(255, 255, 255, .12);
   border-radius: 999px;
   background: rgba(255, 255, 255, .04);
