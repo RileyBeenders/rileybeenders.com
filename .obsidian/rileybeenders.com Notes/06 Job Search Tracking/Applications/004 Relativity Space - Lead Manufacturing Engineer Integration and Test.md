@@ -5,7 +5,7 @@ Role: "Lead, Manufacturing Engineer, Integration & Test"
 JobID: "004"
 Date Applied: 2026-08-01
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf"
 ---
 
 # Lead, Manufacturing Engineer, Integration & Test — Relativity Space
@@ -72,5 +72,5 @@ Relativity Space is developing Terran R to deliver customer payloads to orbit at
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/004_Lead, Manufacturing Engineer, Integration & Test at Relativity Space.pdf`
-- Resume used: `output/ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)
+- Source posting: `2.JobsApplliedTo/004_Lead, Manufacturing Engineer, Integration & Test at Relativity Space.pdf`
+- Resume used: `1.ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)

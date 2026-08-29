@@ -5,7 +5,7 @@ Role: "General Application (Automation)"
 JobID: "002"
 Date Applied: 2026-08-01
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/002_General%20Application%20at%20Fluidstack.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/002_General%20Application%20at%20Fluidstack.pdf"
 ---
 
 # General Application — Fluidstack
@@ -61,5 +61,5 @@ Fluidstack frames its mission as "making humanity more free" through frontier AI
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/002_General Application at Fluidstack.pdf`
-- Resume used: `output/ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)
+- Source posting: `2.JobsApplliedTo/002_General Application at Fluidstack.pdf`
+- Resume used: `1.ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)

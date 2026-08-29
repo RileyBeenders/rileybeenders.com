@@ -5,7 +5,7 @@ Role: "Principal Software Engineer"
 JobID: "006"
 Date Applied: 2026-08-01
 Status: "No longer in consideration (Aug 4, 2026)"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/006_Principal%20Software%20Engineer%20at%20Disney.pdf"
 ---
 
 # Principal Software Engineer — Disney (Cruise Line Shipboard Systems)
@@ -70,5 +70,5 @@ This role sits within Disney Entertainment (DX)'s Technology & Digital organizat
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/006_Principal Software Engineer at Disney.pdf`
-- Resume used: `output/ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf`
+- Source posting: `2.JobsApplliedTo/006_Principal Software Engineer at Disney.pdf`
+- Resume used: `1.ApplicationsUsed/006_RileyBeenders_Disney_Principal_Software_Engineer.pdf`

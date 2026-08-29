@@ -66,6 +66,19 @@ export default function MoreInfoPage() {
                 {data.aboutSite.description.map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
+                {data.aboutSite.readMore && (
+                  <a
+                    className="bp-link bp-readmore"
+                    href={data.aboutSite.readMore.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {data.aboutSite.readMore.label}
+                    <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                )}
               </div>
             </Reveal>
           </div>

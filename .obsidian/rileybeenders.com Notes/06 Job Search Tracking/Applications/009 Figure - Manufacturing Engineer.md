@@ -5,7 +5,7 @@ Role: "Manufacturing Engineer"
 JobID: "009"
 Date Applied: 2026-08-08
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/009_Job%20Application%20for%20Manufacturing%20Engineer%20at%20Figure.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/009_Job%20Application%20for%20Manufacturing%20Engineer%20at%20Figure.pdf"
 ---
 
 # Manufacturing Engineer — Figure
@@ -71,5 +71,5 @@ Figure's stated goal is to ship humanoid robots with human-level intelligence, e
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/009_Job Application for Manufacturing Engineer at Figure.pdf`
-- Resume used: `output/ApplicationsUsed/009_Riley Beenders_Manufacturing Engineer_20260808.pdf`
+- Source posting: `2.JobsApplliedTo/009_Job Application for Manufacturing Engineer at Figure.pdf`
+- Resume used: `1.ApplicationsUsed/009_Riley Beenders_Manufacturing Engineer_20260808.pdf`

@@ -5,7 +5,7 @@ Role: "Mechanical Engineer - Integration & Test"
 JobID: "011"
 Date Applied: 2026-08-08
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf"
 ---
 
 # Mechanical Engineer - Integration & Test — Figure
@@ -70,5 +70,5 @@ Figure's stated goal is to ship humanoid robots with human-level intelligence, e
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/011_Job Application for Mechanical Engineer - Integration & Test at Figure.pdf`
-- Resume used: `output/ApplicationsUsed/011_Riley Beenders_Mechanical Engineer - Integration & Test_20260808.pdf` (cover letter: `output/ApplicationsUsed/011_Cover_Letter_Riley Beenders_Mechanical Engineer - Integration & Test.pdf`)
+- Source posting: `2.JobsApplliedTo/011_Job Application for Mechanical Engineer - Integration & Test at Figure.pdf`
+- Resume used: `1.ApplicationsUsed/011_Riley Beenders_Mechanical Engineer - Integration & Test_20260808.pdf` (cover letter: `1.ApplicationsUsed/011_Cover_Letter_Riley Beenders_Mechanical Engineer - Integration & Test.pdf`)

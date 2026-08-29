@@ -5,7 +5,7 @@ Role: "Principal Ride Control Software Engineer (Controls Automation)"
 JobID: "001"
 Date Applied: 2026-07-31
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/001_Principal%20Ride%20Control%20Software%20Engineer%20(Controls%20Automation)%20at%20DISNEY%20-%20073126.pdf"
 ---
 
 # Principal Ride Control Software Engineer (Controls Automation) — Walt Disney Imagineering
@@ -72,5 +72,5 @@ Walt Disney Imagineering (WDI), founded in 1952 as WED Enterprises to build Disn
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/001_Principal Ride Control Software Engineer (Controls Automation) at DISNEY - 073126.pdf`
-- Resume used: `output/ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf`
+- Source posting: `2.JobsApplliedTo/001_Principal Ride Control Software Engineer (Controls Automation) at DISNEY - 073126.pdf`
+- Resume used: `1.ApplicationsUsed/001_Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume.pdf`

@@ -23,14 +23,15 @@ tags: [build, tooling, config]
 
 **Dev dependencies**: `@types/node`, `@types/react`, `@types/react-dom`, `typescript` (all `latest`).
 
-Note several deps are pinned to `"latest"` rather than a fixed range (`react`, `react-dom`, `framer-motion`, `lucide-react`, `typescript`, all `@types/*`) — this repo will pick up new majors automatically on a fresh `npm install`, which is worth knowing before debugging an unexpected behavior change that isn't in the diff.
+Several deps are pinned to `"latest"` (`react`, `react-dom`, `framer-motion`, `lucide-react`, `typescript`, all `@types/*`) — a fresh `npm install` can pick up new majors, worth knowing before debugging a behaviour change that isn't in the diff. Next 16 dev uses **Turbopack** by default.
 
 ## `tsconfig.json`
 
-- `strict: true`, target `ES2017`, module/resolution `esnext`/`bundler`.
-- `resolveJsonModule: true` — this is what lets `data/*.json` be imported directly as typed modules throughout the codebase.
-- Path alias: `"@/*"` → `"./*"` (repo root) — used everywhere (`@/data/resumeData`, `@/components/...`, `@/types/resume`, `@/lib/gantt`).
-- `exclude`: `node_modules`, `Under-Dev-UI` (a folder name that doesn't currently exist in the repo — likely a forward-looking exclusion for planned work-in-progress UI).
+- `strict: true`, target `ES2017`, module/resolution `esnext` / `bundler`.
+- `resolveJsonModule: true` — lets `data/*.json` be imported directly as typed modules.
+- Path alias: `"@/*"` → `"./*"` (repo root) — used everywhere (`@/data/resumeData`, `@/components/blueprint/...`, `@/types/resume`, `@/lib/gantt`, `@/ResumeBuilder/...`).
+- `include` lists both `.next/types/**/*.ts` **and** `.next/dev/types/**/*.ts` — Next 16 writes generated route types under `.next/dev/types/` in dev and `.next/types/` for `build`. `next-env.d.ts` (Next-generated, "should not be edited") flips its two `import` lines between those two paths depending on which command ran last; a bare branch switch can leave it pointing at a stale set until the dev server or a build regenerates it.
+- `exclude`: `node_modules`, `Under-Dev-UI` (a folder that doesn't currently exist — a forward-looking exclusion).
 
 ## `next.config.mjs`
 
@@ -41,7 +42,7 @@ const nextConfig = {
 };
 ```
 
-`allowedDevOrigins` whitelists two specific LAN IPs so the dev server can be reached from other devices on the local network during development (Next.js otherwise blocks cross-origin dev requests). No other custom Next.js config — no image domains, no redirects/rewrites, no experimental flags.
+`allowedDevOrigins` whitelists two LAN IPs so the dev server is reachable from other devices on the local network. No image domains, redirects/rewrites, or experimental flags.
 
 ## `.gitignore`
 
@@ -53,9 +54,14 @@ out
 .DS_Store
 *.log
 *.tsbuildinfo
+
+# Obsidian vault: track the notes and shared config, ignore per-device
+# window/pane state so it doesn't churn or conflict across machines.
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
 ```
 
-Notably, **`.obsidian/` is not listed** — this vault's own config folder is currently untracked by git purely because it's new, not because it's excluded. If you want the vault (this documentation) to travel with the repo across clones/branches, it needs to be `git add`ed explicitly.
+The vault (this documentation) is tracked — only the two per-device Obsidian workspace files are ignored. When editing vault notes, stage them normally.
 
 ## Running locally
 
@@ -64,13 +70,13 @@ npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`. On Windows PowerShell, if script execution is disabled, the README recommends either using `npm.cmd` directly or running `Set-Execution-Policy -Scope CurrentUser RemoteSigned` once in an elevated terminal.
+Then open `http://localhost:3000`. On Windows PowerShell, if script execution is disabled, use `npm.cmd` directly or run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once.
 
-`npm run typecheck` runs `tsc --noEmit` — there's no separate lint script in `package.json`.
+`npm run typecheck` runs `tsc --noEmit` — no separate lint script.
 
 ## Deployment signal
 
-No explicit deployment config (no `vercel.json`), but strong indirect evidence of **Vercel** hosting: `@vercel/analytics` and `@vercel/speed-insights` are both mounted in `app/layout.tsx`, and `app/api/resume-pdf/route.ts` sets `CDN-Cache-Control` and `Vercel-CDN-Cache-Control` headers specifically (headers that only mean something on Vercel's edge network).
+No explicit deployment config (no `vercel.json`), but strong indirect evidence of **Vercel** hosting: `@vercel/analytics` and `@vercel/speed-insights` are both mounted in the root `app/layout.tsx`, and `app/api/resume-pdf/route.ts` sets `CDN-Cache-Control` and `Vercel-CDN-Cache-Control` headers (meaningful only on Vercel's edge).
 
 ## Related
 - [[Architecture and Data Flow]]
