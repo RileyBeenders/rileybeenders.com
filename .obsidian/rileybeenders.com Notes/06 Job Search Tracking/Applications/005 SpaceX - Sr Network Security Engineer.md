@@ -5,7 +5,7 @@ Role: "Sr. Network Security Engineer"
 JobID: "005"
 Date Applied: 2026-08-01
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/005_Sr.%20Network%20Security%20Engineer%20at%20SpaceX.pdf"
 ---
 
 # Sr. Network Security Engineer — SpaceX
@@ -69,5 +69,5 @@ SpaceX was founded on the premise that a future with humanity exploring the star
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/005_Sr. Network Security Engineer at SpaceX.pdf`
-- Resume used: `output/ApplicationsUsed/005_RileyBeenders_SpaceX_Sr_Network_Security_Engineer.pdf`
+- Source posting: `2.JobsApplliedTo/005_Sr. Network Security Engineer at SpaceX.pdf`
+- Resume used: `1.ApplicationsUsed/005_RileyBeenders_SpaceX_Sr_Network_Security_Engineer.pdf`

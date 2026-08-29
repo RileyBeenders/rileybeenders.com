@@ -5,7 +5,7 @@ Role: "Product Software Engineer I"
 JobID: "013"
 Date Applied: 2026-08-14
 Status: "No longer in consideration (Aug 20, 2026)"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf"
 ---
 
 # Product Software Engineer I — Disney Entertainment and ESPN Product & Technology
@@ -70,5 +70,5 @@ This posting sits under Disney Entertainment and ESPN Product & Technology's Ad 
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/013_Product Software Engineer I at DISNEY - Disney Careers.pdf`
-- Resume used: `output/ApplicationsUsed/013_RileyBeendersResume_Product Software Engineer I_20260814.pdf` (cover letter: `output/ApplicationsUsed/013_RileyBeendersCoverLetter_Product Software Engineer I_20260814.pdf`)
+- Source posting: `2.JobsApplliedTo/013_Product Software Engineer I at DISNEY - Disney Careers.pdf`
+- Resume used: `1.ApplicationsUsed/013_RileyBeendersResume_Product Software Engineer I_20260814.pdf` (cover letter: `1.ApplicationsUsed/013_RileyBeendersCoverLetter_Product Software Engineer I_20260814.pdf`)

@@ -8,16 +8,20 @@
   "aboutMe": {
     "title": "About Me",
     "description": [
-      "How did you read this before the rest of the site??",
-      "This box uses the same format as \"About the Site\" below."
+      "How did you read this before the rest of the site?? You can stay here... but I recommend checking out the rest of the site first."
     ]
   },
   "aboutSite": {
     "title": "About This Site",
     "description": [
-      "This site was created as a portfolio website designed to complement a traditional resume. The PDF remains the official application document, while the website serves as an interactive \"evidence of excellence\" layer that demonstrates the work behind the claims on the resume.",
-      "At rest, the site stays readable as a conventional resume. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact."
-    ]
+      "This site was created as a portfolio website designed to complement a traditional resume.",
+      "At rest, the site stays readable as a conventional resume. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore my projects and professional impact.",
+      "Additionally, this site serves as a central hub for all of my career data, allowing me to use AI agents to analyze my job search, identify trends, and generate actionable insights that can improve my chances of landing the right role."
+    ],
+    "readMore": {
+      "label": "Read more",
+      "href": "https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents"
+    }
   },
   "ganttSection": {
     "title": "Application Tracker"

@@ -5,7 +5,7 @@ Role: "Product Engineer, Global Manufacturing Engineering"
 JobID: "012"
 Date Applied: 2026-08-08
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf"
 ---
 
 # Product Engineer, Global Manufacturing Engineering — Google
@@ -68,5 +68,5 @@ This role sits in Google's AI and Infrastructure organization, which builds the 
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/012_Product Engineer, Global Manufacturing Engineering — Google Careers.pdf`
-- Resume used: `output/ApplicationsUsed/012_Riley Beenders_Product Engineer, Global Manufacturing Engineering_20260808.pdf` (cover letter: `output/ApplicationsUsed/012_Cover_Letter_Riley Beenders_Product Engineer, Global Manufacturing Engineering.pdf`)
+- Source posting: `2.JobsApplliedTo/012_Product Engineer, Global Manufacturing Engineering — Google Careers.pdf`
+- Resume used: `1.ApplicationsUsed/012_Riley Beenders_Product Engineer, Global Manufacturing Engineering_20260808.pdf` (cover letter: `1.ApplicationsUsed/012_Cover_Letter_Riley Beenders_Product Engineer, Global Manufacturing Engineering.pdf`)

@@ -5,7 +5,7 @@ Role: "Principal Electro-Mechanical Manufacturing Engineer"
 JobID: "003"
 Date Applied: 2026-08-01
 Status: "Interviewing"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/003_Principal%20Electro-Mechanical%20Manufacturing%20Engineer%20at%20K2%20Space.pdf"
 ---
 
 # Principal Electro-Mechanical Manufacturing Engineer — K2 Space
@@ -70,5 +70,5 @@ K2 Space builds high-power satellite platforms for missions from LEO to deep spa
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/003_Principal Electro-Mechanical Manufacturing Engineer at K2 Space.pdf`
-- Resume used: `output/ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)
+- Source posting: `2.JobsApplliedTo/003_Principal Electro-Mechanical Manufacturing Engineer at K2 Space.pdf`
+- Resume used: `1.ApplicationsUsed/000_Riley-Beenders-Resume_080126.pdf` (website-generated resume)

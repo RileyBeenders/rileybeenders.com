@@ -155,5 +155,5 @@ public/
 
 Please make sure to follow the same theme, underline the hyperlinks and make them blue. When finished, use the following name format: "RileyBeenders_<company>_<job title>.pdf"
 
-Use the "/JobsAplliedTo/<PDF Name Here>.pdf" to reference the current job I am applying to.
+Use the "/2.JobsApplliedTo/<PDF Name Here>.pdf" to reference the current job I am applying to.
 ```

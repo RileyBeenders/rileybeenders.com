@@ -5,7 +5,7 @@ Role: "Senior Staff Manufacturing Engineer (Atlas)"
 JobID: "007"
 Date Applied: 2026-08-08
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf"
 ---
 
 # Senior Staff Manufacturing Engineer — Boston Dynamics (Atlas)
@@ -70,5 +70,5 @@ Boston Dynamics is a global robotics leader (Atlas, Spot, Stretch) blending mech
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/007_Senior Staff Manufacturing Engineer at Boston Dynamics.pdf`
-- Resume used: `output/ApplicationsUsed/007_Riley Beenders_Senior Staff Manufacturing Engineer_20260808.pdf`
+- Source posting: `2.JobsApplliedTo/007_Senior Staff Manufacturing Engineer at Boston Dynamics.pdf`
+- Resume used: `1.ApplicationsUsed/007_Riley Beenders_Senior Staff Manufacturing Engineer_20260808.pdf`

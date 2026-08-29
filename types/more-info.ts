@@ -8,9 +8,15 @@ export type MoreInfoAboutMe = {
   description: string[];
 };
 
+export type MoreInfoReadMore = {
+  label: string;
+  href: string;
+};
+
 export type MoreInfoAboutSite = {
   title: string;
   description: string[];
+  readMore?: MoreInfoReadMore;
 };
 
 export type MoreInfoGanttSection = {

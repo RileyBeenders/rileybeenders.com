@@ -5,7 +5,7 @@ Role: "NPI Engineer"
 JobID: "010"
 Date Applied: 2026-08-08
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-2.0/JobsAppliedTo/010_Job%20Application%20for%20NPI%20Engineer%20at%20Figure.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/010_Job%20Application%20for%20NPI%20Engineer%20at%20Figure.pdf"
 ---
 
 # NPI Engineer — Figure
@@ -69,5 +69,5 @@ Figure's stated goal is to ship humanoid robots with human-level intelligence, e
 
 ## Related
 - [[Job Application Tracker]]
-- Source posting: `JobsAppliedTo/010_Job Application for NPI Engineer at Figure.pdf`
-- Resume used: `output/ApplicationsUsed/010_Riley Beenders_NPI Engineer_20260808.pdf`
+- Source posting: `2.JobsApplliedTo/010_Job Application for NPI Engineer at Figure.pdf`
+- Resume used: `1.ApplicationsUsed/010_Riley Beenders_NPI Engineer_20260808.pdf`

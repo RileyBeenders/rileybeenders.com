@@ -194,6 +194,14 @@ html {
 .bp-link .bp-arrow { transition: transform 0.42s var(--ease); }
 .bp-link:hover .bp-arrow { transform: translate(3px, -3px); }
 
+.bp-readmore {
+  margin-top: 24px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 /* ---------------------------------------------------------------- hero --- */
 .bp-hero { position: relative; overflow: hidden; padding: clamp(48px, 8vw, 92px) 0 0; }
 
