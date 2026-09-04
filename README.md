@@ -17,26 +17,26 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 001
     Applied Jul 31                  :milestone, 2026-07-31, 0d
-    Waiting for Reply               :active, 2026-07-31, 20d
+    Waiting for Reply               :active, 2026-07-31, 35d
 
     section 002
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 19d
+    Waiting for Reply               :active, 2026-08-01, 34d
 
     section 003
     Applied Aug 01                  :milestone, 2026-08-01, 0d
     Application Submitted           :done, 2026-08-01, 7d
     Scheduling Interview            :milestone, 2026-08-08, 0d
     Interview                       :milestone, 2026-08-12, 0d
-    Interview Process               :active, 2026-08-08, 12d
+    Interview Process               :active, 2026-08-08, 27d
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 19d
+    Waiting for Reply               :active, 2026-08-01, 34d
 
     section 005
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 19d
+    Waiting for Reply               :active, 2026-08-01, 34d
 
     section 006
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -44,7 +44,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 007
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 12d
+    Waiting for Reply               :active, 2026-08-08, 27d
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -53,24 +53,29 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 12d
+    Waiting for Reply               :active, 2026-08-08, 27d
 
     section 010
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 12d
+    Waiting for Reply               :active, 2026-08-08, 27d
 
     section 011
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 12d
+    Waiting for Reply               :active, 2026-08-08, 27d
 
     section 012
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 12d
+    Waiting for Reply               :active, 2026-08-08, 27d
 
     section 013
     Applied Aug 14                  :milestone, 2026-08-14, 0d
     Waiting for Reply               :done, 2026-08-14, 6d
     No Longer in Consideration      :crit, milestone, 2026-08-20, 0d
+
+    section 014
+    Applied Aug 08                  :milestone, 2026-09-03, 0d
+    Waiting for Reply               :done, 2026-09-04, 1d
+    No Longer in Consideration      :crit, milestone, 2026-09-04, 1d
 ```
 
 | JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
@@ -88,6 +93,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 | 011 | [Mechanical Engineer - Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/011_Riley%20Beenders_Mechanical%20Engineer%20-%20Integration%20%26%20Test_20260808.pdf) | 🟢 Application Received |
 | 012 | [Product Engineer, Global Manufacturing Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf) | Google | Atlanta, GA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/012_Riley%20Beenders_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering_20260808.pdf) | 🟢 Application Received |
 | 013 | [Product Software Engineer I](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Walt Disney Entertainment | Glendale, CA | August 14, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/013_RileyBeendersResume_Product%20Software%20Engineer%20I_20260814.pdf) | 🔴 No longer in consideration [August 20, 2026] |
+| 014 | [WDI Figure Programming Intern, Spring 2027] | Walt Disney Imagineering | CA or FL | September 03, 2026 | [Tailored Resume] | 🔴 Not in consideration because I am not currently enrolled in college |
 
 ***
 
