@@ -10,7 +10,7 @@ The repo doubles as the owner's personal job-search system of record. This note 
 
 | Folder | Contents |
 |---|---|
-| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`013`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
+| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`014`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
 | `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline and matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013. |
 | `output/pdf/` | Additional generated resume PDF variants (Disney Principal Software Engineer, Disney Ride Control Controls Automation, SpaceX Sr. Network Security Engineer) plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
 | `references/` | Dated **snapshot resumes** (`RileyBeenders_Apr2022.pdf`, `_Sept2025.pdf`, `_Jan2026.pdf`) kept as historical evidence of how the resume has evolved, and as reference material the `custom-resume` procedure can draw layout/content cues from. |
@@ -24,7 +24,7 @@ Every tracked application also has its own note under `06 Job Search Tracking/Ap
 
 Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdown table with columns `JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`. **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters, and the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] for reconciling them.
 
-### Current applications (13, as of README.md)
+### Current applications (14, as of README.md)
 
 | ID | Company | Role | Status |
 |---|---|---|---|
@@ -41,6 +41,7 @@ Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdow
 | [[011 Figure - Mechanical Engineer Integration and Test\|011]] | Figure Robotics | Mechanical Engineer - Integration & Test | 🟢 Application Received |
 | [[012 Google - Product Engineer Global Manufacturing Engineering\|012]] | Google | Product Engineer, Global Manufacturing Engineering | 🟢 Application Received |
 | [[013 Disney - Product Software Engineer I\|013]] | Walt Disney Entertainment | Product Software Engineer I | 🔴 No longer in consideration |
+| [[014 Disney - WDI Figure Programming Intern\|014]] | Walt Disney Imagineering | WDI Figure Programming Intern, Spring 2027 | 🔴 Not in consideration (not currently enrolled in college) |
 
 ## The `custom-resume` generation workflow
 
