@@ -5,7 +5,7 @@ import proofs from "@/data/projects/proofs.json";
 import projects from "@/data/projects/projects.json";
 import skills from "@/data/home/skills.json";
 import summary from "@/data/home/summary.json";
-import type { ResumeData } from "@/types/resume";
+import type { Project, ProofPoint, ResumeData } from "@/types/resume";
 
 /**
  * Header data keeps the shared site metadata. Editable resume content, proof
@@ -13,6 +13,23 @@ import type { ResumeData } from "@/types/resume";
  * here at build time.
  */
 const visibility = header.visibility as ResumeData["visibility"];
+
+/**
+ * Entries opt out of the public site with `"visible": false`. Anything without
+ * the key stays published, so the flag is additive — history lives on in the
+ * JSON (and in the Studio) even once a project comes off the site.
+ */
+function isPublished(entry: { visible?: boolean }): boolean {
+  return entry.visible !== false;
+}
+
+/** Explicit `order` wins; anything without one falls to the back, in file order. */
+function byOrder(a: Project, b: Project): number {
+  return (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER);
+}
+
+const publishedProjects = (projects as Project[]).filter(isPublished).sort(byOrder);
+const publishedProofs = (proofs as ProofPoint[]).filter(isPublished);
 
 const visibleExperience: ResumeData["experience"] = experience.map((job) => ({
   ...job,
@@ -27,7 +44,11 @@ const visibleExperience: ResumeData["experience"] = experience.map((job) => ({
   }))
 }));
 
-const includeProofData = visibility.proofIndex || visibility.experienceProofButtons;
+// The projects page uses proofs as its detail layer, so it needs them loaded
+// even when the standalone proof index stays switched off.
+const includeProofData = visibility.proofIndex
+  || visibility.experienceProofButtons
+  || visibility.projectsSection;
 const includeProjectData = visibility.projectsSection
   || visibility.experienceProjectButtons
   || includeProofData;
@@ -36,8 +57,8 @@ const resumeData: ResumeData = {
   ...(header as ResumeData),
   education: education as ResumeData["education"],
   experience: visibleExperience,
-  proofs: includeProofData ? proofs as ResumeData["proofs"] : [],
-  projects: includeProjectData ? projects as ResumeData["projects"] : [],
+  proofs: includeProofData ? publishedProofs : [],
+  projects: includeProjectData ? publishedProjects : [],
   skills: skills as ResumeData["skills"],
   summary: summary.summary
 };

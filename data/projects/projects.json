@@ -123,6 +123,7 @@
     "id": "ExtrusionLine-Studio",
     "order": 3,
     "type": "LabVIEW Data Acquisition",
+    "visible": false,
     "summary": "An automated measurement program that is capable of collecting three separate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart. At the end of data collection, it creates and formats a PDF report and stores it on a remote server with an ID. The ID is then converted into a QR code and placed on the product and can be read if there are any difficulties with it in the field.",
     "proofId": "ExtrusionLine-Studio",
     "bullets": [
@@ -181,6 +182,7 @@
     "id": "proteor-print",
     "order": 4,
     "type": "Remote Operations Software",
+    "visible": false,
     "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
     "proofId": "proteor-print",
     "bullets": [
@@ -235,6 +237,7 @@
     "id": "gen3-poseidon",
     "order": 5,
     "type": "Large-Format Additive Manufacturing System",
+    "visible": false,
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
     "proofId": "gen3-poseidon",
     "bullets": [
@@ -289,6 +292,7 @@
     "id": "kraken",
     "order": 6,
     "type": "Custom Hybrid Additive Manufacturing System",
+    "visible": false,
     "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
     "proofId": "kraken",
     "bullets": [
@@ -344,6 +348,7 @@
     "id": "internal-erp",
     "order": 7,
     "type": "Internal Software / Infrastructure",
+    "visible": false,
     "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
     "proofId": "internal-erp",
     "bullets": [
@@ -398,6 +403,7 @@
     "id": "modular-controls",
     "order": 8,
     "type": "Electrical / Manufacturing System",
+    "visible": false,
     "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
     "proofId": "modular-controls",
     "bullets": [
@@ -452,6 +458,7 @@
     "id": "unifi-network",
     "order": 9,
     "type": "Network Infrastructure",
+    "visible": false,
     "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
     "proofId": "unifi-network",
     "bullets": [],

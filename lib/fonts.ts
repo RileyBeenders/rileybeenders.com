@@ -1,4 +1,12 @@
-import type { FontId } from "@/types/studio";
+export type FontId =
+  | "instrument-serif"
+  | "spectral"
+  | "playfair-display"
+  | "fraunces"
+  | "source-serif-4"
+  | "inter"
+  | "space-grotesk"
+  | "ibm-plex-mono";
 
 export type FontOption = {
   id: FontId;
@@ -74,11 +82,11 @@ export const FONT_OPTIONS: FontOption[] = [
   }
 ];
 
-export function getFontOption(id: FontId): FontOption {
+export function getFontOption(id: string): FontOption {
   return FONT_OPTIONS.find((option) => option.id === id) ?? FONT_OPTIONS[0];
 }
 
-export function fontVarExpression(id: FontId): string {
+export function fontVarExpression(id: string): string {
   const option = getFontOption(id);
   return `var(${option.cssVar}), ${option.fallback}`;
 }

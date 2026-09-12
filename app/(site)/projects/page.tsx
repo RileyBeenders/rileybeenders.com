@@ -1,30 +1,47 @@
 import type { Metadata } from "next";
 import resumeData from "@/data/resumeData";
+import { buildProjectViews } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
-import { BpProjectsGrid } from "@/components/blueprint/BpProjectsGrid";
-import { readStudioSettings } from "@/lib/studio-settings";
-
-// The WIP animation vs. the real project grid is a Studio setting — re-read on every request.
-export const dynamic = "force-dynamic";
+import { ProjectStage } from "@/components/projects/ProjectStage";
+import { BackToTop } from "@/components/projects/BackToTop";
+import "./projects.css";
 
 export const metadata: Metadata = {
   title: "Projects | Riley Beenders",
-  description: "Selected projects and case studies — coming soon."
+  description:
+    "Selected projects — the problem, the approach, and the measurable impact behind each line of the resume."
 };
 
 export default function ProjectsPage() {
-  const settings = readStudioSettings();
-  const showWip = settings.projects.showWipAnimation;
+  const views = buildProjectViews(resumeData.projects, resumeData.proofs);
 
-  const sortedProjects = [...resumeData.projects].sort(
-    (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)
-  );
-  const teasers = sortedProjects.slice(0, 6).map((project) => ({ name: project.name, type: project.type }));
+  // Nothing published yet — either the section is switched off in the site
+  // settings, or every project is hidden. Fall back to the holding page.
+  if (views.length === 0) {
+    return (
+      <main>
+        <section className="bp-hero" style={{ paddingBottom: 8 }}>
+          <div className="bp-shell">
+            <Reveal delay={0.05}><p className="bp-eyebrow">Selected Work</p></Reveal>
+            <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
+              <Reveal delay={0.14}><span style={{ display: "block" }}>Projects</span></Reveal>
+            </h1>
+            <Reveal as="rule" delay={0.3}><div className="bp-rule" style={{ marginTop: 32 }} /></Reveal>
+          </div>
+        </section>
+        <section className="bp-section">
+          <div className="bp-shell">
+            <Reveal delay={0.1}><BpComingSoon /></Reveal>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
-    <main>
-      <section className="bp-hero" style={{ paddingBottom: 8 }}>
+    <main className="pj">
+      <section className="bp-hero pj-intro">
         <div className="bp-shell">
           <Reveal delay={0.05}><p className="bp-eyebrow">Selected Work</p></Reveal>
           <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
@@ -34,22 +51,30 @@ export default function ProjectsPage() {
             <div className="bp-rule" style={{ marginTop: 32 }} />
           </Reveal>
           <Reveal delay={0.38}>
-            <p className="bp-prose" style={{ marginTop: 26 }}>
-              {showWip
-                ? "A closer look at the projects referenced throughout the resume — problem, approach, and impact for each. The full write-ups are on their way."
-                : "A closer look at the projects referenced throughout the resume — problem, approach, and impact for each."}
+            <p className="bp-prose pj-intro-prose">
+              {views.length} projects, each one followed by its proof — the problem it
+              started from, the decisions behind it, and what changed as a result.
+              Scroll to descend through them.
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section className="bp-section">
+      {views.map((view, index) => (
+        <ProjectStage key={view.project.id} view={view} index={index} total={views.length} />
+      ))}
+
+      <footer className="pj-outro">
         <div className="bp-shell">
-          <Reveal delay={0.1}>
-            {showWip ? <BpComingSoon teasers={teasers} /> : <BpProjectsGrid projects={sortedProjects} />}
-          </Reveal>
+          <p className="bp-eyebrow">End of the descent</p>
+          <p className="bp-prose" style={{ marginTop: 18 }}>
+            Every project above is linked from a line on the resume. The proof panels
+            go a layer deeper — design decisions, root causes, and measured results.
+          </p>
         </div>
-      </section>
+      </footer>
+
+      <BackToTop />
     </main>
   );
 }
