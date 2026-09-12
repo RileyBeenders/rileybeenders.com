@@ -6,6 +6,18 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Studio · rileybeenders.com</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9C%8E%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Runs before the stylesheet so the saved theme is on <html> for first
+    // paint — otherwise the page would flash light before studio.js loads.
+    (function () {
+      var theme = null;
+      try { theme = localStorage.getItem("theme"); } catch (e) {}
+      if (theme !== "light" && theme !== "dark") {
+        theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
   <link rel="stylesheet" href="/studio/studio.css" />
 </head>
 <body>
@@ -25,6 +37,7 @@
       <button type="button" id="revert" class="f-btn f-btn--quiet" disabled>Revert</button>
       <button type="button" id="save" class="f-btn f-btn--solid" disabled>Save</button>
       <a id="site-link" class="f-btn f-btn--quiet" href="http://localhost:3000" target="_blank" rel="noreferrer">Site ↗</a>
+      <button type="button" id="theme-toggle" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode"></button>
     </div>
   </header>
 

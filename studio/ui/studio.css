@@ -22,21 +22,21 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0d1b2a;
-    --panel: #142a3d;
-    --ink: #eef3f7;
-    --ink-soft: #b7c4d1;
-    --muted: #8b9aa8;
-    --faint: #5b6b79;
-    --rule: #24384a;
-    --accent: #ff6b62;
-    --blue: #5aa9e6;
-    --green: #4cc38a;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    color-scheme: dark;
-  }
+/* The init script in index.html stamps data-theme on <html> before first
+   paint: the saved choice, or the OS setting when nothing has been saved. */
+:root[data-theme="dark"] {
+  --paper: #0d1b2a;
+  --panel: #142a3d;
+  --ink: #eef3f7;
+  --ink-soft: #b7c4d1;
+  --muted: #8b9aa8;
+  --faint: #5b6b79;
+  --rule: #24384a;
+  --accent: #ff6b62;
+  --blue: #5aa9e6;
+  --green: #4cc38a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -202,6 +202,8 @@ h1, h2 { margin: 0; font-weight: 600; }
   overflow-y: auto;
   padding: 22px clamp(18px, 3vw, 40px) 96px;
 }
+/* Single-document files have no list, so the editor takes that column too. */
+.list-pane[hidden] ~ .detail { grid-column: 2 / -1; }
 
 .detail-head {
   display: flex;
@@ -214,6 +216,7 @@ h1, h2 { margin: 0; font-weight: 600; }
   border-bottom: 1px solid var(--rule);
 }
 .detail-head h2 { font-size: 22px; letter-spacing: -0.01em; }
+.detail-desc { margin: 5px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); max-width: 60ch; }
 
 .tag {
   font-size: 11px;
@@ -229,8 +232,28 @@ h1, h2 { margin: 0; font-weight: 600; }
 
 /* -------------------------------------------------------------- fields --- */
 
+/* Every run of fields is a six-column grid. A field takes the whole row
+   unless its schema gives it a span, so short inputs can sit side by side. */
+.f-form, .f-card-body, .f-group {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 16px;
+  align-items: start;
+  container-type: inline-size;
+}
+.f-form--page { max-width: 920px; }
+.f-form--page .f-field, .f-form--page .f-group { max-width: none; }
+
+.f-form > *, .f-card-body > *, .f-group > * { grid-column: 1 / -1; }
+.f-field--half { grid-column: span 3; }
+.f-field--third { grid-column: span 2; }
+
 .f-field { margin-bottom: 18px; max-width: 780px; }
 .f-field--boolean { margin-bottom: 16px; }
+
+@container (max-width: 560px) {
+  .f-field--half, .f-field--third { grid-column: span 6; }
+}
 
 .f-label {
   display: block;
@@ -268,6 +291,14 @@ h1, h2 { margin: 0; font-weight: 600; }
 .f-input--mono { font-family: var(--mono); font-size: 13px; }
 .f-input--short { width: auto; min-width: 150px; }
 .f-textarea { resize: vertical; line-height: 1.55; }
+.f-textarea--prose {
+  min-height: 16rem;
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.7;
+  field-sizing: content;
+}
+.f-count { margin: 6px 0 0; font-family: var(--mono); font-size: 11px; color: var(--faint); text-align: right; }
 .f-select { appearance: auto; }
 
 /* -------------------------------------------------------------- switch --- */
@@ -402,6 +433,44 @@ h1, h2 { margin: 0; font-weight: 600; }
 
 .f-file { font-size: 12px; max-width: 230px; }
 
+/* -------------------------------------------------------- theme toggle --- */
+
+.theme-toggle {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 23px;
+  margin-left: 4px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--ink); }
+.theme-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 17px;
+  height: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+}
+.theme-toggle[aria-checked="true"] .theme-toggle-thumb {
+  transform: translateX(19px);
+  background: var(--accent);
+  color: #fff;
+}
+
 /* --------------------------------------------------------------- toast --- */
 
 .toast {
@@ -498,6 +567,7 @@ h1, h2 { margin: 0; font-weight: 600; }
   .workspace { grid-template-columns: 1fr; }
   .rail { flex-direction: row; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid var(--rule); }
   .list-pane { border-right: 0; border-bottom: 1px solid var(--rule); max-height: 320px; }
+  .list-pane[hidden] ~ .detail { grid-column: auto; }
   .topbar { grid-template-columns: 1fr; text-align: left; }
   .topbar-mid { text-align: left; }
   .topbar-right { justify-content: flex-start; }
