@@ -45,8 +45,13 @@ function icon(name) {
     el("path", { d: paths[name], stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 }
 
+/** `span` in a schema lets a short field share its row: "half" or "third". */
+function fieldClass(field, type = field.type) {
+  return `f-field f-field--${type}${field.span ? ` f-field--${field.span}` : ""}`;
+}
+
 function fieldShell(field, control, extra) {
-  return el("div", { class: `f-field f-field--${field.type}` },
+  return el("div", { class: fieldClass(field) },
     el("label", { class: "f-label", for: control.id || undefined },
       field.label,
       field.required ? el("span", { class: "f-required", title: "Required" }, "*") : null),
@@ -83,7 +88,7 @@ function textControl(field, value, ctx) {
   const control = field.type === "textarea"
     ? el("textarea", {
         id,
-        class: "f-input f-textarea",
+        class: `f-input f-textarea${field.prose ? " f-textarea--prose" : ""}`,
         rows: field.rows || 3,
         value: value[field.name] ?? "",
         placeholder: field.placeholder || ""
@@ -97,14 +102,25 @@ function textControl(field, value, ctx) {
         spellcheck: field.type !== "slug"
       });
 
+  // Long-form prose gets a running word count, since the resume has a budget.
+  const count = field.prose ? el("p", { class: "f-count" }) : null;
+  const paintCount = () => {
+    if (!count) return;
+    const text = control.value.trim();
+    const words = text === "" ? 0 : text.split(/\s+/).length;
+    count.textContent = `${words} words · ${control.value.length} characters`;
+  };
+  paintCount();
+
   control.addEventListener("input", () => {
     value[field.name] = field.type === "slug"
       ? control.value.replace(/\s+/g, "-")
       : control.value;
+    paintCount();
     ctx.onEdit();
   });
 
-  return fieldShell(field, control);
+  return fieldShell(field, control, count);
 }
 
 function numberControl(field, value, ctx) {
@@ -141,7 +157,7 @@ function booleanControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return el("div", { class: "f-field f-field--boolean" },
+  return el("div", { class: fieldClass(field, "boolean") },
     el("div", { class: "f-switch-row" },
       toggle,
       el("span", { class: "f-label f-label--inline" }, field.label)),
@@ -233,7 +249,7 @@ function stringListControl(field, value, ctx) {
   const add = el("button", { type: "button", class: "f-btn f-btn--quiet" }, icon("add"), ` Add ${field.label.replace(/s$/, "").toLowerCase()}`);
   add.addEventListener("click", () => { list.push(""); ctx.onStructureChange(); });
 
-  return el("div", { class: "f-field f-field--list" },
+  return el("div", { class: fieldClass(field, "list") },
     el("span", { class: "f-label" }, field.label),
     rows.length === 0 ? el("p", { class: "f-empty" }, "Nothing yet.") : el("div", { class: "f-rows" }, ...rows),
     add,
@@ -265,7 +281,7 @@ function objectListControl(field, value, ctx) {
     ctx.onStructureChange();
   });
 
-  return el("div", { class: "f-field f-field--list" },
+  return el("div", { class: fieldClass(field, "list") },
     el("span", { class: "f-label" }, field.label),
     cards.length === 0 ? el("p", { class: "f-empty" }, "Nothing yet.") : el("div", { class: "f-cards" }, ...cards),
     add,

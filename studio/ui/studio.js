@@ -34,6 +34,7 @@ const dom = {
   saveBtn: document.querySelector("#save"),
   revertBtn: document.querySelector("#revert"),
   status: document.querySelector("#status"),
+  themeToggle: document.querySelector("#theme-toggle"),
   toast: document.querySelector("#toast"),
   modal: document.querySelector("#modal")
 };
@@ -302,7 +303,13 @@ function paintDetail() {
   };
 
   if (schema.shape === "object") {
-    dom.detail.replaceChildren(renderFields(schema.fields, doc.data, ctx));
+    dom.detail.replaceChildren(
+      el("div", { class: "detail-head" },
+        el("div", {},
+          el("h2", {}, schema.label),
+          schema.description ? el("p", { class: "detail-desc" }, schema.description) : null)),
+      el("div", { class: "f-form f-form--page" }, renderFields(schema.fields, doc.data, ctx))
+    );
   } else {
     const index = state.selection[key] ?? 0;
     const entry = doc.data[index];
@@ -314,7 +321,7 @@ function paintDetail() {
       el("div", { class: "detail-head" },
         el("h2", {}, schema.title(entry)),
         isHidden(schema, entry) ? el("span", { class: "tag tag--off" }, "Hidden from the site") : el("span", { class: "tag" }, "Live")),
-      renderFields(schema.fields, entry, ctx)
+      el("div", { class: "f-form" }, renderFields(schema.fields, entry, ctx))
     );
   }
 
@@ -393,6 +400,50 @@ function revert() {
   paintList();
   paintDetail();
   toast("Reverted to the last saved version");
+}
+
+/* --------------------------------------------------------------- theme --- */
+
+const THEME_KEY = "theme";
+
+function currentTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+
+function paintTheme() {
+  const dark = currentTheme() === "dark";
+  dom.themeToggle.setAttribute("aria-checked", String(dark));
+  dom.themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  dom.themeToggle.title = dark ? "Switch to light mode" : "Switch to dark mode";
+  dom.themeToggle.replaceChildren(el("span", { class: "theme-toggle-thumb", "aria-hidden": "true" }, themeIcon(dark)));
+}
+
+function toggleTheme() {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch {
+    // Storage can be unavailable — the theme still holds for this page load.
+  }
+  paintTheme();
+}
+
+/** Lucide's sun and moon, the same pair the site's toggle uses. */
+function themeIcon(dark) {
+  const svg = el("svg", {
+    width: 11, height: 11, viewBox: "0 0 24 24", fill: "none",
+    stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round",
+    "aria-hidden": "true"
+  });
+  if (dark) {
+    svg.append(el("path", { d: "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" }));
+  } else {
+    svg.append(
+      el("circle", { cx: 12, cy: 12, r: 4 }),
+      el("path", { d: "M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" }));
+  }
+  return svg;
 }
 
 /* -------------------------------------------------------- image picker --- */
@@ -478,6 +529,8 @@ function openImagePicker(current) {
 async function boot() {
   dom.saveBtn.addEventListener("click", save);
   dom.revertBtn.addEventListener("click", revert);
+  dom.themeToggle.addEventListener("click", toggleTheme);
+  paintTheme();
 
   window.addEventListener("keydown", (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
