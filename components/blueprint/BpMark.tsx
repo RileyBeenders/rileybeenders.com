@@ -28,8 +28,8 @@ export function BpMark({
   bare = false
 }: BpMarkProps) {
   const gradientId = `bp-mark-${id}`;
-  const stem = reversed ? "#fbfbf9" : "#0b1a2b";
-  const ring = reversed ? "#5a7488" : "#0b1a2b";
+  const stem = reversed ? "var(--paper)" : "var(--ink)";
+  const ring = reversed ? "#5a7488" : "var(--ink)";
   // Stroke weight has to grow as the mark shrinks or the bowls fill in.
   const weight = size <= 20 ? 3.4 : size <= 28 ? 2.9 : 2.4;
 
@@ -51,8 +51,8 @@ export function BpMark({
     >
       <defs>
         <linearGradient id={gradientId} x1="13" y1="10" x2="26" y2="30" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor={reversed ? "#fbfbf9" : "#0b1a2b"} />
-          <stop offset="1" stopColor={reversed ? "#5fc0f0" : "#2f86c4"} />
+          <stop offset="0" stopColor={reversed ? "#fbfbf9" : "var(--ink)"} />
+          <stop offset="1" stopColor={reversed ? "#5fc0f0" : "var(--blue)"} />
         </linearGradient>
       </defs>
 
@@ -79,7 +79,7 @@ export function BpMark({
 
       <path
         d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7"
-        stroke={size <= 24 ? "#2f86c4" : `url(#${gradientId})`}
+        stroke={size <= 24 ? "var(--blue)" : `url(#${gradientId})`}
         strokeWidth={weight}
         strokeLinecap="round"
         strokeLinejoin="round"

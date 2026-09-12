@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./base.css";
+
+// Runs before hydration so the correct theme is on <html> for first paint —
+// otherwise the page would flash light before React mounts and applies it.
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
 
 const TITLE = "Riley Beenders | R&D, Electromechanical and Automation Engineer";
 const DESCRIPTION =
@@ -30,8 +35,11 @@ export const metadata: Metadata = {
 /** Shell only — chrome and styling live in the app/(site) layout. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {THEME_INIT_SCRIPT}
+        </Script>
         {children}
         <Analytics />
         <SpeedInsights />

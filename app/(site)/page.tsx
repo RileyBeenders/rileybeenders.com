@@ -19,7 +19,7 @@ export default function HomePage() {
         >
           <path
             d="M40 20c72 0 108 18 108 45 0 26-36 44-108 44 82 0 121 19 121 46 0 25-39 45-121 45"
-            stroke="#0b1a2b"
+            stroke="var(--ink)"
             strokeWidth="2"
             strokeLinecap="round"
           />

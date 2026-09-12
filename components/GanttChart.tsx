@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useTheme } from "@/components/blueprint/ThemeProvider";
 
 type GanttChartProps = {
   chart: string;
@@ -9,8 +10,12 @@ type GanttChartProps = {
 const VISIBLE_DAYS = 20;
 const MS_PER_DAY = 86400000;
 
-/** Mermaid's palette, matched to the Blueprint Press tokens in blueprint.css. */
-const THEME = {
+/**
+ * Mermaid bakes colors into the SVG it returns rather than consuming CSS
+ * variables, so the light/dark palettes are duplicated here to match the
+ * `--ink`/`--paper`/etc. tokens in blueprint.css.
+ */
+const THEME_LIGHT = {
   primaryColor: "rgba(227, 52, 47, 0.14)",
   primaryBorderColor: "#e3342f",
   primaryTextColor: "#0b1a2b",
@@ -18,7 +23,25 @@ const THEME = {
   secondaryBorderColor: "#2f86c4",
   tertiaryColor: "rgba(11, 26, 43, 0.10)",
   lineColor: "#b9c2cb",
-  textColor: "#0b1a2b"
+  textColor: "#0b1a2b",
+  // Mermaid's "done" task styling doesn't derive from the colors above, so it
+  // needs an explicit pin — otherwise the dark palette below inherits
+  // mermaid's default lightgrey bar, which near-white task text disappears on.
+  doneTaskBkgColor: "lightgrey",
+  doneTaskBorderColor: "grey"
+} as const;
+
+const THEME_DARK = {
+  primaryColor: "rgba(255, 107, 98, 0.2)",
+  primaryBorderColor: "#ff6b62",
+  primaryTextColor: "#eef3f7",
+  secondaryColor: "rgba(90, 169, 230, 0.22)",
+  secondaryBorderColor: "#5aa9e6",
+  tertiaryColor: "rgba(255, 255, 255, 0.08)",
+  lineColor: "#4a5c6b",
+  textColor: "#eef3f7",
+  doneTaskBkgColor: "#3a4552",
+  doneTaskBorderColor: "#5b6b79"
 } as const;
 
 function countTotalDays(chart: string): number {
@@ -40,6 +63,7 @@ function countTotalDays(chart: string): number {
 }
 
 export function GanttChart({ chart }: GanttChartProps) {
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartId = `gantt-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const [error, setError] = useState(false);
@@ -59,7 +83,7 @@ export function GanttChart({ chart }: GanttChartProps) {
           fontFamily: "var(--bp-font-body)",
           themeVariables: {
             background: "transparent",
-            ...THEME,
+            ...(theme === "dark" ? THEME_DARK : THEME_LIGHT),
             fontSize: "13px"
           },
           gantt: {
@@ -108,7 +132,7 @@ export function GanttChart({ chart }: GanttChartProps) {
     return () => {
       cancelled = true;
     };
-  }, [chart, chartId]);
+  }, [chart, chartId, theme]);
 
   if (!chart) return null;
 

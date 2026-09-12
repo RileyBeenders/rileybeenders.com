@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Spectral } from "next/font/google";
 import { BpNav } from "@/components/blueprint/BpNav";
+import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import "./blueprint.css";
 
 const display = Instrument_Serif({
@@ -27,13 +28,15 @@ export const metadata: Metadata = {
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`bp ${display.variable} ${body.variable}`}>
-      <BpNav />
-      {children}
-      <div className="bp-badge">
-        <span className="bp-badge-dot" aria-hidden="true" />
-        Open to relocation
+    <ThemeProvider>
+      <div className={`bp ${display.variable} ${body.variable}`}>
+        <BpNav />
+        {children}
+        <div className="bp-badge">
+          <span className="bp-badge-dot" aria-hidden="true" />
+          Open to relocation
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
