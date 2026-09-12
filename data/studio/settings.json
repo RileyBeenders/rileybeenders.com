@@ -1,0 +1,29 @@
+{
+  "theme": {
+    "paletteId": "default",
+    "custom": {
+      "light": {
+        "paper": "#fbfbf9",
+        "white": "#ffffff",
+        "ink": "#0b1a2b",
+        "accent": "#e3342f",
+        "blue": "#2f86c4"
+      },
+      "dark": {
+        "paper": "#0d1b2a",
+        "white": "#142a3d",
+        "ink": "#eef3f7",
+        "accent": "#ff6b62",
+        "blue": "#5aa9e6"
+      }
+    }
+  },
+  "fonts": {
+    "header": "instrument-serif",
+    "subheader": "instrument-serif",
+    "body": "spectral"
+  },
+  "projects": {
+    "showWipAnimation": true
+  }
+}
