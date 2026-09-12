@@ -1,11 +1,13 @@
-import type { PaletteSeeds, PaletteTokens } from "@/types/studio";
+import type { PaletteSeeds } from "@/types/resume";
 
-const HEX_RE = /^#[0-9a-fA-F]{6}$/;
-
-/** Falls back to `fallback` for anything that isn't a well-formed 6-digit hex color. */
-export function sanitizeHex(value: unknown, fallback: string): string {
-  return typeof value === "string" && HEX_RE.test(value) ? value : fallback;
-}
+export type PaletteTokens = PaletteSeeds & {
+  inkSoft: string;
+  muted: string;
+  faint: string;
+  rule: string;
+  prose: string;
+  pillText: string;
+};
 
 function hexToRgb(hex: string): [number, number, number] {
   const num = parseInt(hex.slice(1), 16);
@@ -77,14 +79,4 @@ export function tokensToCssVars(tokens: PaletteTokens): Record<string, string> {
     out[CSS_VAR_KEYS[key]] = tokens[key];
   }
   return out;
-}
-
-export function sanitizeSeeds(seeds: Partial<PaletteSeeds> | undefined, fallback: PaletteSeeds): PaletteSeeds {
-  return {
-    paper: sanitizeHex(seeds?.paper, fallback.paper),
-    white: sanitizeHex(seeds?.white, fallback.white),
-    ink: sanitizeHex(seeds?.ink, fallback.ink),
-    accent: sanitizeHex(seeds?.accent, fallback.accent),
-    blue: sanitizeHex(seeds?.blue, fallback.blue)
-  };
 }

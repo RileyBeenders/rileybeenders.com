@@ -9,17 +9,13 @@ import {
   Space_Grotesk,
   Spectral
 } from "next/font/google";
+import resumeData from "@/data/resumeData";
 import { BpNav } from "@/components/blueprint/BpNav";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
-import { resolveThemeTokens } from "@/lib/studio-theme";
-import { readStudioSettings } from "@/lib/studio-settings";
+import { resolveThemeTokens } from "@/lib/theme";
 import "./blueprint.css";
-
-// Studio writes settings.json on disk — read it fresh on every request instead
-// of freezing whatever it held at build time.
-export const dynamic = "force-dynamic";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;
 // picking a font just points --bp-font-header/subheader/body at one of these.
@@ -103,26 +99,25 @@ function cssBlock(vars: Record<string, string>): string {
 }
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
-  const settings = readStudioSettings();
-  const tokens = resolveThemeTokens(settings.theme);
+  const tokens = resolveThemeTokens(resumeData.theme);
 
   const overrideCss = `
-.bp[data-studio-theme] {
+.bp[data-theme-id] {
 ${cssBlock({
   ...tokensToCssVars(tokens.light),
-  "--bp-font-header": fontVarExpression(settings.fonts.header),
-  "--bp-font-subheader": fontVarExpression(settings.fonts.subheader),
-  "--bp-font-body": fontVarExpression(settings.fonts.body)
+  "--bp-font-header": fontVarExpression(resumeData.fonts.header),
+  "--bp-font-subheader": fontVarExpression(resumeData.fonts.subheader),
+  "--bp-font-body": fontVarExpression(resumeData.fonts.body)
 })}
 }
-html[data-theme="dark"] .bp[data-studio-theme] {
+html[data-theme="dark"] .bp[data-theme-id] {
 ${cssBlock(tokensToCssVars(tokens.dark))}
 }`;
 
   return (
     <ThemeProvider>
-      <div className={`bp ${FONT_VARIABLES}`} data-studio-theme={settings.theme.paletteId}>
-        {/* Palette/font tokens picked in Studio (Site Settings) — see lib/studio-theme.ts */}
+      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId}>
+        {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
         <BpNav />
         {children}

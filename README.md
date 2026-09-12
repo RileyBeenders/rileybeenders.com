@@ -120,37 +120,95 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 Then open:
 
 ```txt
-http://localhost:3000```
+http://localhost:3000
+```
+
+***
+
+### Editing Content — the Studio
+
+Site content lives in the JSON files under `data/`. Rather than editing those by
+hand, run the Studio: a local editor that reads and writes the same files
+through a browser.
+
+```bash
+npm run studio
+```
+
+Then open:
+
+```txt
+http://localhost:3001
+```
+
+Run it alongside `npm run dev` in a second terminal — save in the Studio, and the
+site on port 3000 hot-reloads with the change.
+
+- **Local only.** The Studio is a standalone Node server; it is not part of the
+  Next app and never ships to production. It binds to the loopback interface, so
+  nothing outside the machine can reach it — not even another device on the same
+  network.
+- **Projects and proofs** get a purpose-built editor: reorder them, edit bullets,
+  build the image gallery, and cross-link a project to its proof.
+- **Show / hide.** The eye icon next to a project or proof writes
+  `"visible": false` into the JSON. The entry stays in the file — and in the
+  Studio — but drops off the public site. History is kept; visibility is not.
+- **Images.** Upload straight into `public/project-images` or
+  `public/project-artifacts`, or pick from what is already there.
+- **Saves are guarded.** Every save writes the previous version into
+  `.studio-backups/` (git-ignored, last 25 kept), and a save is refused if the
+  file changed on disk since it was loaded.
+
+Use a different port with `STUDIO_PORT=3002 npm run studio`.
+
 ***
 
 # Project Structure
 
 ```txt
 app/
+  (site)/
+    blueprint.css          site-wide styling
+    layout.tsx             nav, theme, shared chrome
+    page.tsx               the resume
+    contact/page.tsx
+    more-info/page.tsx
+    projects/
+      page.tsx             the stair-descend scroller
+      projects.css
   api/
-    resume-pdf/
-      route.ts
-  globals.css
+    resume-pdf/route.ts
+  base.css
   layout.tsx
-  page.tsx
 components/
-  InteractiveResume.tsx
-ResumeBuilder/
-  downloadPublishedResume.ts
-  generateResumePdf.ts
+  blueprint/               shared site components
+  projects/
+    ProjectStage.tsx       one project + its sliding proof panel
+    ProjectGallery.tsx     the scrolling image column
+    Lightbox.tsx           full-screen image viewer
+    BackToTop.tsx
 data/
-  header.json
-  education.json
-  experience.json
-  proofs.json
-  projects.json
-  skills.json
-  summary.json
-  resumeData.ts
+  header.json              site metadata and visibility switches
+  home/
+    education.json
+    experience.json
+    skills.json
+    summary.json
+  projects/
+    projects.json
+    proofs.json
+  resumeData.ts            merges the JSON into one typed object
+lib/
+  projects.ts              builds the project and proof views
+studio/                    the local content editor (never deployed)
+  server.mjs
+  ui/
+ResumeBuilder/
 types/
   resume.ts
 public/
-  project-artifacts/
+  project-images/          photographs and renders
+  project-artifacts/       diagrams
 ```
 
 ***

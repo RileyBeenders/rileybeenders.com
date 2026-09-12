@@ -11,6 +11,8 @@ export type ProofPoint = {
   tags: string[];
   assets: ProofAsset[];
   projectId?: string;
+  /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
+  visible?: boolean;
 };
 
 export type ResumeBullet = {
@@ -65,6 +67,8 @@ export type Project = {
   proofId?: string;
   images?: ProjectImage[];
   additionalInfo?: ProjectAdditionalInfo;
+  /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
+  visible?: boolean;
 };
 
 export type ProjectAdditionalInfo = {
@@ -76,6 +80,10 @@ export type ProjectAdditionalInfo = {
   impact: string[];
   tools: string[];
   assets: ProofAsset[];
+  /** Why the design went the way it did — the trade-offs behind the approach. */
+  designDecisions?: string[];
+  /** What was actually wrong underneath the symptom the project started from. */
+  rootCause?: string;
 };
 
 export type ComingSoonAction = {
@@ -128,6 +136,29 @@ export type ResumeVisibility = {
   proofIndex: boolean;
 };
 
+/** Five colors a palette is built from — the rest of the token set is derived from these (see lib/palette.ts). */
+export type PaletteSeeds = {
+  paper: string;
+  white: string;
+  ink: string;
+  accent: string;
+  blue: string;
+};
+
+export type ThemeSetting = {
+  /** One of the preset ids in lib/palettes.ts, or "custom" to use the seeds below. */
+  paletteId: string;
+  custom: {
+    light: PaletteSeeds;
+    dark: PaletteSeeds;
+  };
+};
+
+export type FontRole = "header" | "subheader" | "body";
+
+/** Values are ids from lib/fonts.ts. */
+export type FontSettings = Record<FontRole, string>;
+
 export type ResumeData = {
   siteMode?: "resume" | "coming-soon";
   person: {
@@ -142,6 +173,8 @@ export type ResumeData = {
   };
   summary: string;
   visibility: ResumeVisibility;
+  theme: ThemeSetting;
+  fonts: FontSettings;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
   skills: {
