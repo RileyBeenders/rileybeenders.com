@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BpMark } from "@/components/blueprint/BpMark";
+import { BpThemeToggle } from "@/components/blueprint/BpThemeToggle";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -22,19 +23,22 @@ export function BpNav() {
           <span className="bp-brand-name">Riley Beenders</span>
         </Link>
 
-        <nav className="bp-nav-links" aria-label="Site">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              className={pathname === item.href ? "bp-nav-link is-active" : "bp-nav-link"}
-              href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
-              suppressHydrationWarning
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="bp-nav-right">
+          <nav className="bp-nav-links" aria-label="Site">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                className={pathname === item.href ? "bp-nav-link is-active" : "bp-nav-link"}
+                href={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
+                suppressHydrationWarning
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <BpThemeToggle />
+        </div>
       </div>
     </header>
   );
