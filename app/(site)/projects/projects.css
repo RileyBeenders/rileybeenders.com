@@ -1,0 +1,509 @@
+/* ==========================================================================
+   Projects — the stair descent
+   Each project holds in a sticky frame while its proof slides in from the
+   right; the next project then rises underneath. Scoped under .pj.
+
+   The stacked, static layout is the default, so the page reads top to bottom
+   with no JavaScript. The descent is layered on by .pj-stage--animated, which
+   only appears once the client has confirmed a wide screen and that motion is
+   welcome.
+   ========================================================================== */
+
+.pj {
+  /* Height of the sticky site nav, so a stage sits directly beneath it. */
+  --pj-nav: 68px;
+  --pj-gutter: clamp(18px, 4vw, 56px);
+  --pj-span: 240vh;
+}
+
+/* The intro shrinks so the first project arrives quickly. */
+.pj-intro { padding-bottom: clamp(28px, 5vh, 56px); }
+.pj-intro-prose { margin-top: 26px; max-width: 60ch; }
+
+/* The site's "Open to relocation" badge shares this corner — the back-to-top
+   control owns it on this page instead. */
+.bp:has(.pj) .bp-badge { display: none; }
+
+/* ---------------------------------------------------------------- stage --- */
+
+.pj-stage { position: relative; }
+
+.pj-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(20px, 3.4vw, 56px);
+  width: 100%;
+  max-width: calc(var(--shell) + var(--pj-gutter) * 2);
+  margin: 0 auto;
+  min-height: min(78vh, 760px);
+  padding: clamp(18px, 3.4vh, 44px) var(--pj-gutter) clamp(46px, 7vh, 78px);
+}
+
+.pj-col { min-width: 0; min-height: 0; }
+
+/* Text column: title pinned top, bullets pinned to the bottom. */
+.pj-col--text {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(16px, 3vh, 34px);
+}
+
+/* ----------------------------------------------------------------- head --- */
+
+/* Right-aligned so the title block runs to a clean edge against the gallery. */
+.pj-head { text-align: right; }
+
+.pj-index {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.pj-title {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-size: clamp(30px, 4.2vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-top: 12px;
+}
+
+.pj-subtitle {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.5vw, 21px);
+  line-height: 1.3;
+  color: var(--accent);
+  margin-top: 10px;
+}
+
+.pj-head-rule {
+  height: 2px;
+  width: 100%;
+  background: var(--ink);
+  margin-top: clamp(12px, 2vh, 22px);
+}
+
+/* ----------------------------------------------------------------- body --- */
+
+.pj-body {
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 20px);
+  min-height: 0;
+}
+
+.pj-summary {
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+.pj-bullets {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(9px, 1.4vh, 15px);
+  font-size: clamp(14px, 1.22vw, 17px);
+  line-height: 1.58;
+  color: var(--prose);
+  max-width: 58ch;
+}
+.pj-bullets li::marker { color: var(--accent); }
+
+/* Only meaningful while the proof is something you scroll into. Sits at the
+   right of the column, clear of the back-to-top control in the left corner. */
+.pj-cue {
+  display: none;
+  align-self: flex-end;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pj-cue-arrow { display: inline-flex; color: var(--accent); animation: pj-nudge 2.4s ease-in-out infinite; }
+@keyframes pj-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+/* -------------------------------------------------------------- gallery --- */
+
+.pj-col--media { display: flex; min-height: 0; }
+
+.pj-gallery { display: flex; flex-direction: column; gap: 10px; width: 100%; min-height: 0; }
+
+.pj-shots {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.6vh, 18px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.pj-shots:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.pj-shot { margin: 0; scroll-snap-align: start; }
+
+.pj-shot-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  cursor: zoom-in;
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.pj-shot-btn:hover { border-color: var(--ink); transform: translateY(-2px); }
+.pj-shot-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pj-shot-btn img { width: 100%; height: auto; max-height: 58vh; object-fit: contain; display: block; }
+
+.pj-shot-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  padding: 7px;
+  border-radius: 50%;
+  background: rgba(251, 251, 249, 0.9);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+html[data-theme="dark"] .pj-shot-zoom { background: rgba(20, 42, 61, 0.9); }
+.pj-shot-btn:hover .pj-shot-zoom,
+.pj-shot-btn:focus-visible .pj-shot-zoom { opacity: 1; transform: translateY(0); }
+
+.pj-shot figcaption {
+  margin-top: 7px;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.pj-gallery-note {
+  flex: none;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---------------------------------------------------------------- proof --- */
+
+.pj-proof { border-top: 1px solid var(--rule); }
+
+.pj-proof-inner {
+  max-width: calc(var(--shell) + var(--pj-gutter) * 2);
+  margin: 0 auto;
+  padding: clamp(24px, 4vh, 52px) var(--pj-gutter) clamp(40px, 6vh, 72px);
+}
+
+.pj-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pj-proof-title {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(24px, 2.8vw, 40px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 14px 0 0;
+}
+
+.pj-proof-subtitle {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.5vw, 20px);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.pj-proof-summary {
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.65;
+  color: var(--prose);
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  max-width: 68ch;
+}
+
+.pj-proof-section { margin-top: clamp(20px, 3vh, 30px); }
+.pj-proof-section h4 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 9px;
+}
+.pj-proof-section p {
+  font-size: clamp(14px, 1.15vw, 16.5px);
+  line-height: 1.65;
+  color: var(--prose);
+  max-width: 62ch;
+}
+.pj-proof-section ul {
+  margin: 0;
+  padding-left: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: clamp(13.5px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--prose);
+  max-width: 62ch;
+}
+.pj-proof-section li::marker { color: var(--accent); }
+
+.pj-proof-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3vh, 32px); }
+.pj-tag {
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--pill-text);
+  background: var(--white);
+}
+
+.pj-proof-assets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: clamp(22px, 3vh, 32px);
+}
+.pj-proof-assets figure { margin: 0; }
+.pj-proof-assets img { width: 100%; border: 1px solid var(--rule); background: var(--white); }
+.pj-proof-assets figcaption {
+  margin-top: 7px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ====================================================== the descent ====== */
+
+.pj-stage--animated { height: var(--pj-span); }
+
+.pj-stage--animated .pj-sticky {
+  position: sticky;
+  top: var(--pj-nav);
+  height: calc(100svh - var(--pj-nav));
+  overflow: hidden;
+}
+
+.pj-stage--animated .pj-card {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  will-change: transform, opacity;
+}
+
+/* Long copy and tall galleries scroll inside the frame; once either hits its
+   end, the page carries on scrolling as normal. */
+.pj-stage--animated .pj-body { overflow-y: auto; padding-right: 4px; }
+.pj-stage--animated .pj-shots {
+  /* Takes the height it needs, shrinking to the frame when there is more than
+     fits — so the caption underneath stays with the images. */
+  flex: 0 1 auto;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;
+  padding-right: 8px;
+}
+/* One standard frame height for every project, scaled off the viewport. */
+.pj-stage--animated .pj-shot-btn img { height: clamp(168px, 30vh, 330px); max-height: none; }
+
+.pj-stage--animated .pj-cue { display: inline-flex; }
+
+.pj-stage--animated .pj-proof {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(720px, 64%);
+  overflow-y: auto;
+  border-top: 0;
+  border-left: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 94%, var(--ink));
+  box-shadow: -26px 0 60px rgba(11, 26, 43, 0.13);
+  /* Off-canvas for the first painted frame, before the scroll handler runs. */
+  transform: translate3d(101%, 0, 0);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+html[data-theme="dark"] .pj-stage--animated .pj-proof {
+  background: color-mix(in srgb, var(--paper) 82%, #000);
+  box-shadow: -26px 0 60px rgba(0, 0, 0, 0.4);
+}
+.pj-stage--animated .pj-proof-inner { margin: 0; max-width: none; padding-inline: clamp(22px, 3.4vw, 56px); }
+
+/* ---------------------------------------------------------------- outro --- */
+
+.pj-outro { padding: clamp(56px, 12vh, 132px) 0 clamp(80px, 14vh, 160px); }
+
+/* ----------------------------------------------------------- back to top --- */
+
+.pj-top {
+  position: fixed;
+  left: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
+}
+html[data-theme="dark"] .pj-top { background: rgba(20, 42, 61, 0.92); }
+.pj-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.pj-top:hover { border-color: var(--accent); }
+.pj-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ------------------------------------------------------------- lightbox --- */
+
+.pj-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(8px, 2vw, 24px);
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(8, 16, 26, 0.93);
+  backdrop-filter: blur(6px);
+  animation: pj-fade 0.24s ease both;
+}
+@keyframes pj-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.pj-lb-figure {
+  grid-column: 2;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.pj-lb-figure img {
+  max-width: 100%;
+  max-height: 78vh;
+  width: auto;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pj-lb-figure figcaption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+.pj-lb-count { font-size: 11px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
+
+.pj-lb-close,
+.pj-lb-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.pj-lb-close:hover,
+.pj-lb-nav:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.55); }
+.pj-lb-close:focus-visible,
+.pj-lb-nav:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.pj-lb-close { position: absolute; top: clamp(14px, 3vw, 28px); right: clamp(14px, 3vw, 28px); }
+.pj-lb-nav--prev { grid-column: 1; }
+.pj-lb-nav--next { grid-column: 3; }
+
+/* ------------------------------------------------------------- narrow --- */
+
+@media (max-width: 900px) {
+  .pj-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(20px, 4vh, 34px);
+    min-height: 0;
+    padding-block: clamp(34px, 7vh, 64px);
+  }
+  .pj-col--text { grid-template-rows: auto auto; }
+  .pj-head { text-align: left; }
+
+  /* Belt and braces: the client may not have measured the screen yet, and the
+     descent must never half-apply on a phone. */
+  .pj-stage--animated,
+  .pj-stage--animated .pj-sticky { height: auto; }
+  .pj-stage--animated .pj-sticky { position: static; overflow: visible; }
+  .pj-stage--animated .pj-card,
+  .pj-stage--animated .pj-proof { position: static; transform: none !important; opacity: 1 !important; }
+  .pj-stage--animated .pj-proof {
+    width: auto;
+    overflow: visible;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+    box-shadow: none;
+  }
+  .pj-stage--animated .pj-body,
+  .pj-stage--animated .pj-shots { overflow: visible; }
+  .pj-stage--animated .pj-shot-btn img { height: auto; max-height: 60vh; }
+  .pj-stage--animated .pj-cue { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-cue-arrow, .pj-lightbox { animation: none; }
+
+  .pj-stage--animated,
+  .pj-stage--animated .pj-sticky { height: auto; }
+  .pj-stage--animated .pj-sticky { position: static; overflow: visible; }
+  .pj-stage--animated .pj-card,
+  .pj-stage--animated .pj-proof { position: static; transform: none !important; opacity: 1 !important; }
+  .pj-stage--animated .pj-proof {
+    width: auto;
+    overflow: visible;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+    box-shadow: none;
+  }
+  .pj-stage--animated .pj-body,
+  .pj-stage--animated .pj-shots { overflow: visible; }
+  .pj-stage--animated .pj-shot-btn img { height: auto; max-height: 60vh; }
+  .pj-stage--animated .pj-cue { display: none; }
+}
