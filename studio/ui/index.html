@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Studio · rileybeenders.com</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9C%8E%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/studio/studio.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand">Studio</span>
+      <span class="brand-sub">rileybeenders.com</span>
+    </div>
+
+    <div class="topbar-mid">
+      <h1 id="doc-title">Projects</h1>
+      <code id="doc-path"></code>
+    </div>
+
+    <div class="topbar-right">
+      <span id="status" class="status">Saved</span>
+      <button type="button" id="revert" class="f-btn f-btn--quiet" disabled>Revert</button>
+      <button type="button" id="save" class="f-btn f-btn--solid" disabled>Save</button>
+      <a id="site-link" class="f-btn f-btn--quiet" href="http://localhost:3000" target="_blank" rel="noreferrer">Site ↗</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <nav id="file-rail" class="rail" aria-label="Data files"></nav>
+
+    <section id="list-pane" class="list-pane" aria-label="Entries">
+      <div class="list-head">
+        <h2 id="list-title">Projects</h2>
+      </div>
+      <div id="list-body" class="list-body"></div>
+      <div id="list-actions" class="list-actions"></div>
+    </section>
+
+    <section id="detail" class="detail" aria-label="Editor"></section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal" class="modal"></dialog>
+
+  <script type="module" src="/studio/studio.js"></script>
+</body>
+</html>

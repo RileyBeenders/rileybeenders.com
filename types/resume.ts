@@ -11,6 +11,8 @@ export type ProofPoint = {
   tags: string[];
   assets: ProofAsset[];
   projectId?: string;
+  /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
+  visible?: boolean;
 };
 
 export type ResumeBullet = {
@@ -65,6 +67,8 @@ export type Project = {
   proofId?: string;
   images?: ProjectImage[];
   additionalInfo?: ProjectAdditionalInfo;
+  /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
+  visible?: boolean;
 };
 
 export type ProjectAdditionalInfo = {
@@ -76,6 +80,10 @@ export type ProjectAdditionalInfo = {
   impact: string[];
   tools: string[];
   assets: ProofAsset[];
+  /** Why the design went the way it did — the trade-offs behind the approach. */
+  designDecisions?: string[];
+  /** What was actually wrong underneath the symptom the project started from. */
+  rootCause?: string;
 };
 
 export type ComingSoonAction = {
