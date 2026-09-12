@@ -28,6 +28,11 @@ html[data-theme="dark"] {
   --prose: #26333f;
   --pill-text: #4a5c6b;
 
+  /* Studio's per-role font choices override these; these are the fallback if that override is ever missing. */
+  --bp-font-header: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  --bp-font-subheader: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  --bp-font-body: var(--font-spectral), Georgia, serif;
+
   --ease: cubic-bezier(0.22, 0.9, 0.28, 1);
   --shell: 1240px;
   --pad: clamp(20px, 5vw, 64px);
@@ -72,8 +77,13 @@ html[data-theme="dark"] .bp {
 .bp *::before,
 .bp *::after { box-sizing: border-box; }
 
-.bp h1, .bp h2, .bp h3 {
-  font-family: var(--bp-font-display), "Iowan Old Style", Georgia, serif;
+.bp h1 {
+  font-family: var(--bp-font-header), "Iowan Old Style", Georgia, serif;
+  font-weight: 400;
+  margin: 0;
+}
+.bp h2, .bp h3 {
+  font-family: var(--bp-font-subheader), "Iowan Old Style", Georgia, serif;
   font-weight: 400;
   margin: 0;
 }
@@ -316,7 +326,7 @@ html[data-theme="dark"] .bp-nav {
   margin-top: 26px;
 }
 .bp-hero-tagline {
-  font-family: var(--bp-font-display), Georgia, serif;
+  font-family: var(--bp-font-header), Georgia, serif;
   font-style: italic;
   font-size: clamp(23px, 3vw, 33px);
   line-height: 1.22;
@@ -367,7 +377,7 @@ html[data-theme="dark"] .bp-nav {
 
 .bp-dropcap {
   float: left;
-  font-family: var(--bp-font-display), Georgia, serif;
+  font-family: var(--bp-font-header), Georgia, serif;
   font-size: 3.9em;
   line-height: 0.76;
   padding: 0.09em 0.16em 0 0;
@@ -480,7 +490,7 @@ html[data-theme="dark"] .bp-nav {
   border-color: var(--ink);
   box-shadow: 0 16px 34px rgba(11, 26, 43, 0.13);
 }
-.bp-cert h4 { font-family: var(--bp-font-display), Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.2; margin: 0; }
+.bp-cert h4 { font-family: var(--bp-font-subheader), Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.2; margin: 0; }
 .bp-cert-issuer { font-size: 14px; color: var(--muted); margin-top: 5px; }
 .bp-cert-date { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-top: 8px; }
 .bp-cert-bar {
@@ -492,6 +502,53 @@ html[data-theme="dark"] .bp-nav {
   margin-top: 12px;
 }
 .bp-cert:hover .bp-cert-bar { transform: scaleX(1); }
+
+/* --------------------------------------------------------- projects --- */
+.bp-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 8px;
+}
+.bp-project-card {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  padding: 24px 26px;
+  transition: transform 0.44s var(--ease), box-shadow 0.44s ease, border-color 0.44s ease;
+}
+.bp-project-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--ink);
+  box-shadow: 0 16px 34px rgba(11, 26, 43, 0.13);
+}
+.bp-project-type {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.bp-project-card h3 { font-size: 22px; line-height: 1.22; margin-top: 10px; }
+.bp-project-summary { font-size: 15px; line-height: 1.6; color: var(--ink-soft); margin-top: 12px; }
+.bp-project-bullets {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.bp-project-bullets li::marker { color: var(--accent); }
+.bp-project-bar {
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s var(--ease);
+  margin-top: 16px;
+}
+.bp-project-card:hover .bp-project-bar { transform: scaleX(1); }
 
 /* ------------------------------------------------------------- footer --- */
 .bp-footer { padding: 0 0 clamp(40px, 6vw, 72px); }
