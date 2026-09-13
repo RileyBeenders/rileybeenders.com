@@ -82,7 +82,14 @@ html[data-theme="dark"] .bp {
   margin: 0;
 }
 
-.bp a { color: var(--accent); text-decoration: none; }
+/* Bare anchors default to no underline everywhere; only prose/table links pick up
+   the accent color by default. Named link components (.bp-nav-link, .bp-link,
+   .bp-btn) set their own color and must win over that default, so it stays scoped
+   here rather than on the blanket `.bp a` — a blanket `.bp a { color: var(--accent) }`
+   was previously out-specificity-ing all three of those. */
+.bp a { text-decoration: none; }
+.bp-prose a,
+.bp-table a { color: var(--accent); }
 .bp p { margin: 0; }
 
 .bp-shell { max-width: var(--shell); margin: 0 auto; padding-inline: var(--pad); }

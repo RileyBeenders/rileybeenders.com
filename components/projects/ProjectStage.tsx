@@ -32,6 +32,13 @@ function useMatches(query: string): boolean {
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
+/**
+ * Decelerating ease over the raw scroll fraction, so the proof panel settles
+ * into place instead of tracking the scrollbar linearly — same "one hand"
+ * character as --ease elsewhere on the site, cheap enough for a scroll handler.
+ */
+const easeOut = (t: number) => 1 - (1 - t) ** 3;
+
 type StageProps = {
   view: ProjectView;
   index: number;
@@ -88,7 +95,7 @@ export function ProjectStage({ view, index, total }: StageProps) {
       const travel = rect.height - (window.innerHeight - nav);
       const progress = travel > 0 ? clamp01((nav - rect.top) / travel) : 0;
 
-      const slide = clamp01((progress - SLIDE_IN) / (SLIDE_DONE - SLIDE_IN));
+      const slide = easeOut(clamp01((progress - SLIDE_IN) / (SLIDE_DONE - SLIDE_IN)));
 
       panelEl.style.transform = `translate3d(${(1 - slide) * 101}%, 0, 0)`;
       panelEl.style.opacity = String(clamp01(slide * 2.6));

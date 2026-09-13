@@ -6,9 +6,9 @@ export const alt = "Riley's Professional Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const INK = "#0b1a2b";
-const BLUE = "#2f86c4";
-const PAPER = "#fbfbf9";
+const INK = "#171a20";
+const BLUE = "#3e6ae1";
+const PAPER = "#ffffff";
 
 /**
  * The blueprint grid, as a data URI. Satori does not handle
@@ -18,10 +18,10 @@ const grid = `data:image/svg+xml;base64,${Buffer.from(
   `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
      <defs>
        <pattern id="fine" width="16" height="16" patternUnits="userSpaceOnUse">
-         <path d="M16 0H0V16" fill="none" stroke="rgba(11,26,43,0.055)" stroke-width="1"/>
+         <path d="M16 0H0V16" fill="none" stroke="rgba(23,26,32,0.055)" stroke-width="1"/>
        </pattern>
        <pattern id="coarse" width="96" height="96" patternUnits="userSpaceOnUse">
-         <path d="M96 0H0V96" fill="none" stroke="rgba(11,26,43,0.1)" stroke-width="1"/>
+         <path d="M96 0H0V96" fill="none" stroke="rgba(23,26,32,0.1)" stroke-width="1"/>
        </pattern>
      </defs>
      <rect width="1200" height="630" fill="url(#fine)"/>

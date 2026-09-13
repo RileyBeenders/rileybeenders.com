@@ -50,6 +50,16 @@ export const PRESET_PALETTES: Palette[] = [
     modes: { light: DEFAULT_LIGHT, dark: DEFAULT_DARK }
   },
   {
+    id: "electric",
+    name: "Electric",
+    description:
+      "Tesla-inspired white canvas in light, Bugatti-inspired near-black canvas in dark — one electric-blue accent both ways.",
+    modes: fromSeeds(
+      { paper: "#ffffff", white: "#f4f4f4", ink: "#171a20", accent: "#3e6ae1", blue: "#3e6ae1" },
+      { paper: "#000000", white: "#141414", ink: "#ffffff", accent: "#3e6ae1", blue: "#3e6ae1" }
+    )
+  },
+  {
     id: "forest",
     name: "Forest",
     description: "Sage paper, deep forest ink, burnt-orange accent.",
