@@ -17,7 +17,7 @@
     "proofIndex": false
   },
   "theme": {
-    "paletteId": "default",
+    "paletteId": "rose",
     "custom": {
       "light": {
         "paper": "#fbfbf9",
