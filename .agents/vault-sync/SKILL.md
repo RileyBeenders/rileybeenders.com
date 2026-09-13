@@ -5,7 +5,7 @@ description: Keep the Obsidian documentation vault at .obsidian/rileybeenders.co
 
 # Vault Sync (Documentation)
 
-One of three repository agent procedures — see `.agents/README.md` for the set.
+One of several repository agent procedures — see `.agents/README.md` for the set.
 
 Keep the Obsidian vault at `.obsidian/rileybeenders.com Notes/` in sync with the live site. This applies to **every** agent working in this repo — Claude Code, ChatGPT, or anything else — not just Claude. Whenever you change site code, data, or config in this repo, update the matching vault note(s) in the same session, before finishing the task.
 
@@ -41,7 +41,7 @@ Paths below are the current `main` tree.
 | `data/home/skills.json`, `data/home/experience.json`, `data/home/education.json`, `data/projects/projects.json` | Every existing note in `06 Job Search Tracking/Applications/` — refresh each one's **Now** section — see **Job application detail pages** below |
 | `package.json`, `next.config.mjs`, `tsconfig.json`, `.gitignore` | `07 Build Tooling and Config/Build Tooling and Config.md` |
 | `assets/fonts/**` | Build-time font source for the Satori-rendered OG image / apple icon. Covered by `02 Components/Blueprint Nav and Mark.md` and the styling note; the site's own web fonts load via `next/font` in `app/(site)/layout.tsx`. |
-| `.agents/**` (any of the three `SKILL.md` files or `.agents/README.md`) | `08 Agents and Automation/Repository Agent Skills (.agents).md` |
+| `.agents/**` (any `SKILL.md` under it, `.agents/README.md`, or `.agents/skills/**`) | `08 Agents and Automation/Repository Agent Skills (.agents).md` |
 | New route, component, data file, or top-level folder with no existing note | Create a new note in the matching numbered folder above, following the existing notes' structure (frontmatter tags, a short prose description, a `## Related` section with wikilinks), then add it to the Map of Content and any relevant cross-links in `Home.md` |
 
 ## How to update

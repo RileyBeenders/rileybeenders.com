@@ -5,7 +5,7 @@ description: Generate and verify a job-targeted resume for Riley Beenders using 
 
 # Custom Resume
 
-One of three repository agent procedures — see `.agents/README.md` for the set.
+One of several repository agent procedures — see `.agents/README.md` for the set.
 
 ## Collect required inputs
 
