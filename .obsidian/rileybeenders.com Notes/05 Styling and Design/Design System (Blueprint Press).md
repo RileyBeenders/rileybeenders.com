@@ -11,7 +11,9 @@ Two plain global stylesheets, no CSS modules / CSS-in-JS / Tailwind. The pre-res
 | `app/base.css` | root `app/layout.tsx` | Bare reset only: `* { box-sizing }`, `body { margin: 0; min-height: 100vh }`, `img { display: block; max-width: 100% }`, `button/input { font: inherit }`, `a { color: inherit; text-decoration: none }`, `.sr-only`. Nothing visual. |
 | `app/(site)/blueprint.css` | `app/(site)/layout.tsx` | The entire visible design system (~590 lines). Almost everything is scoped under `.bp`. |
 
-The design source is a Claude Design canvas in `design/` (`*.dc.html` artboards + `canvas.json`, published as `design/rileybeenders-directions.html`).
+The design source is a Claude Design canvas in `design/` (`Main.dc.html`, `Mark.dc.html`, `Interactions.dc.html` + `canvas.json`) — the chosen "Blueprint Press" direction only. The one-time published export (`design/rileybeenders-directions.html`) and the five rejected "earlier sketches" artboards (`Blueprint`/`Editorial`/`Machined`/`Instrument`/`SwissGrid.dc.html`, plus their `canvas.json` page and annotations) were removed as stale/unused clutter once the direction was picked — the three remaining `.dc.html` files + `canvas.json` are the live, editable source and can still be re-published at any time.
+
+A separate pair of reference (not live) design-token systems for a future light/dark toggle lives at `.obsidian/rileybeenders.com Notes/08 Agents and Automation/Repository Agent Skills (.agents).md` → `design-guidelines`, sourced from `.agents/design-guidelines/` in the repo. Don't confuse those Tesla/Bugatti-inspired references with the tokens documented below, which are what's actually shipped.
 
 ## Tokens (`.bp { … }`)
 
@@ -56,4 +58,5 @@ One breakpoint: **`max-width: 860px`** — `.bp-section-grid` and `.bp-hero-plac
 - [[Blueprint Nav and Mark]]
 - [[Blueprint UI Components]]
 - [[Routes Overview]]
+- [[Repository Agent Skills (.agents)]]
 - [[Home]]
