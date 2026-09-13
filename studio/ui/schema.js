@@ -41,7 +41,7 @@ const IMAGE_FIELDS = [
 ];
 
 /**
- * Nine hand-picked presets plus Customization. Swatches are the light-mode
+ * Ten hand-picked presets plus Customization. Swatches are the light-mode
  * preview only — each preset's full light/dark token set (and the ramp that
  * derives ink-soft/muted/faint/rule/prose/pill-text from just these five
  * seeds) lives in lib/palettes.ts and lib/palette.ts on the site side. Keep
@@ -52,6 +52,11 @@ const PALETTE_OPTIONS = [
     id: "default", name: "Default",
     description: "The site's original paper-and-ink palette with a red accent.",
     swatch: { paper: "#fbfbf9", ink: "#0b1a2b", accent: "#e3342f", blue: "#2f86c4" }
+  },
+  {
+    id: "electric", name: "Electric",
+    description: "Tesla-inspired white canvas in light, Bugatti-inspired near-black canvas in dark — one electric-blue accent both ways.",
+    swatch: { paper: "#ffffff", ink: "#171a20", accent: "#3e6ae1", blue: "#3e6ae1" }
   },
   {
     id: "forest", name: "Forest",
@@ -316,7 +321,7 @@ export const SCHEMAS = {
         name: "theme",
         type: "group",
         label: "Overall theme",
-        help: "Nine preset color palettes, each with its own light and dark mode, plus a Customization option for picking any colors you like.",
+        help: "Ten preset color palettes, each with its own light and dark mode, plus a Customization option for picking any colors you like.",
         fields: [
           { name: "paletteId", type: "palette", label: "Palette", options: PALETTE_OPTIONS, always: true },
           {

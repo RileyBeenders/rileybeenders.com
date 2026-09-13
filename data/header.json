@@ -17,21 +17,21 @@
     "proofIndex": false
   },
   "theme": {
-    "paletteId": "rose",
+    "paletteId": "electric",
     "custom": {
       "light": {
-        "paper": "#fbfbf9",
-        "white": "#ffffff",
-        "ink": "#0b1a2b",
-        "accent": "#e3342f",
-        "blue": "#2f86c4"
+        "paper": "#ffffff",
+        "white": "#f4f4f4",
+        "ink": "#171a20",
+        "accent": "#3e6ae1",
+        "blue": "#3e6ae1"
       },
       "dark": {
-        "paper": "#0d1b2a",
-        "white": "#142a3d",
-        "ink": "#eef3f7",
-        "accent": "#ff6b62",
-        "blue": "#5aa9e6"
+        "paper": "#000000",
+        "white": "#141414",
+        "ink": "#ffffff",
+        "accent": "#3e6ae1",
+        "blue": "#3e6ae1"
       }
     }
   },
