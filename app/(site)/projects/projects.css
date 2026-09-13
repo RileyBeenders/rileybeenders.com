@@ -171,13 +171,12 @@
   display: inline-flex;
   padding: 7px;
   border-radius: 50%;
-  background: rgba(251, 251, 249, 0.9);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
   color: var(--ink);
   opacity: 0;
   transform: translateY(5px);
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
 }
-html[data-theme="dark"] .pj-shot-zoom { background: rgba(20, 42, 61, 0.9); }
 .pj-shot-btn:hover .pj-shot-zoom,
 .pj-shot-btn:focus-visible .pj-shot-zoom { opacity: 1; transform: translateY(0); }
 
@@ -369,7 +368,7 @@ html[data-theme="dark"] .pj-stage--animated .pj-proof {
   padding: 10px 15px;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--white) 92%, transparent);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
   font-size: 11px;
@@ -382,7 +381,6 @@ html[data-theme="dark"] .pj-stage--animated .pj-proof {
   pointer-events: none;
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
 }
-html[data-theme="dark"] .pj-top { background: rgba(20, 42, 61, 0.92); }
 .pj-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .pj-top:hover { border-color: var(--accent); }
 .pj-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

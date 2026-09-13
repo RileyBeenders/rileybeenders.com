@@ -112,7 +112,12 @@ ${cssBlock({
 }
 html[data-theme="dark"] .bp[data-theme-id] {
 ${cssBlock(tokensToCssVars(tokens.dark))}
-}`;
+}
+/* The overscroll gutter is painted on <html>, outside .bp's scope, so it needs the resolved color rather than a var().
+   [lang] is redundant (root layout always sets it) but bumps specificity above blueprint.css's own html rules
+   without depending on this tag rendering after that stylesheet in the document. */
+html[lang] { background: ${tokens.light.paper}; }
+html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
 
   return (
     <ThemeProvider>

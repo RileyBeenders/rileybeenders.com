@@ -40,10 +40,10 @@ html[data-theme="dark"] {
   min-height: 100vh;
   background-color: var(--paper);
   background-image:
-    linear-gradient(rgba(11, 26, 43, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(11, 26, 43, 0.045) 1px, transparent 1px),
-    linear-gradient(rgba(11, 26, 43, 0.085) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(11, 26, 43, 0.085) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px);
   background-size: 16px 16px, 16px 16px, 96px 96px, 96px 96px;
   background-attachment: fixed;
   font-family: var(--bp-font-body), Georgia, serif;
@@ -65,12 +65,6 @@ html[data-theme="dark"] .bp {
   --blue: #5aa9e6;
   --prose: #d7e0e8;
   --pill-text: #a9b8c5;
-
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
 }
 
 .bp *,
@@ -99,12 +93,9 @@ html[data-theme="dark"] .bp {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--rule);
-  background: rgba(251, 251, 249, 0.82);
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
   backdrop-filter: blur(12px);
   transition: background-color 0.4s ease, border-color 0.4s ease;
-}
-html[data-theme="dark"] .bp-nav {
-  background: rgba(13, 27, 42, 0.82);
 }
 
 .bp-nav-inner {
@@ -609,7 +600,7 @@ html[data-theme="dark"] .bp-nav {
   margin-top: 22px;
   padding: 16px 18px;
   border: 1px solid var(--accent);
-  background: rgba(227, 52, 47, 0.05);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
   color: var(--accent);
   font-size: 15px;
   line-height: 1.6;
@@ -630,7 +621,7 @@ html[data-theme="dark"] .bp-nav {
 }
 .bp-table td { padding: 13px 16px; border-bottom: 1px solid var(--rule); color: var(--ink-soft); vertical-align: top; }
 .bp-table tbody tr { transition: background 0.3s ease; }
-.bp-table tbody tr:hover { background: rgba(11, 26, 43, 0.03); }
+.bp-table tbody tr:hover { background: color-mix(in srgb, var(--ink) 3%, transparent); }
 .bp-table a { display: inline-flex; align-items: center; gap: 5px; }
 
 /* ------------------------------------------------------------ badge --- */
@@ -644,14 +635,13 @@ html[data-theme="dark"] .bp-nav {
   gap: 11px;
   padding: 11px 20px;
   border: 1px solid var(--rule);
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--white) 92%, transparent);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
   font-size: 13px;
   color: var(--ink);
   transition: border-color 0.38s ease, background-color 0.38s ease, transform 0.38s var(--ease);
 }
-html[data-theme="dark"] .bp-badge { background: rgba(20, 42, 61, 0.92); }
 .bp-badge:hover { border-color: var(--accent); transform: translateY(-2px); }
 .bp-badge-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
 .bp-badge-dot::after {
