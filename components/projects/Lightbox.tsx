@@ -12,9 +12,10 @@ type LightboxProps = {
 };
 
 /**
- * Full-screen image viewer. Rendered into <body> through a portal: the project
- * stages carry scroll-driven transforms, and `position: fixed` inside a
- * transformed ancestor anchors to that ancestor instead of the viewport.
+ * Full-screen image viewer. Rendered into <body> through a portal, so it
+ * always covers the full viewport regardless of which project's gallery
+ * opened it, and never clips against an ancestor's overflow or stacking
+ * context.
  */
 export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProps) {
   const [mounted, setMounted] = useState(false);
