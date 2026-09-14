@@ -240,10 +240,11 @@ html[data-theme="dark"] .bp {
 .bp-btn--solid:disabled { cursor: wait; opacity: 0.75; transform: none; }
 .bp-btn--solid:disabled::before { transform: scaleX(0); }
 
-@keyframes bp-sheen { from { transform: translateX(-130%); } to { transform: translateX(340%); } }
+@keyframes bp-sheen { from { transform: translateX(-260%); } to { transform: translateX(340%); } }
 .bp-sheen {
   position: absolute;
   top: 0; bottom: 0;
+  left: 0;
   width: 34%;
   z-index: 0;
   pointer-events: none;
