@@ -4,6 +4,7 @@ import { buildProjectViews } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
 import { ProjectEntry } from "@/components/projects/ProjectEntry";
+import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
 import { BackToTop } from "@/components/projects/BackToTop";
 import "./projects.css";
 
@@ -60,9 +61,11 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {views.map((view, index) => (
-        <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
-      ))}
+      <ProjectListSpine>
+        {views.map((view, index) => (
+          <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
+        ))}
+      </ProjectListSpine>
 
       <footer className="pj-outro">
         <div className="bp-shell">

@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useId, useRef, useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { ProjectView } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
@@ -16,6 +16,18 @@ type ProjectEntryProps = {
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
+/** How far the media column drifts against the text column as the entry scrolls past — a classic parallax read of depth, with no pinning involved. */
+const PARALLAX_RANGE = 56;
+
+const bulletListVariants = {
+  hidden: {},
+  shown: { transition: { staggerChildren: 0.09, delayChildren: 0.3 } }
+};
+const bulletItemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  shown: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } }
+};
+
 /**
  * One project, full height, no pinning. Summary and bullets sit beside a photo
  * grid; the deeper case study (problem, approach, impact) is tucked behind a
@@ -27,6 +39,14 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
   const [expanded, setExpanded] = useState(false);
   const reduced = useReducedMotion();
   const panelId = useId();
+
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: mediaProgress } = useScroll({
+    target: mediaRef,
+    offset: ["start end", "end start"]
+  });
+  const mediaProgressSmooth = useSpring(mediaProgress, { stiffness: 220, damping: 36, mass: 0.4 });
+  const mediaY = useTransform(mediaProgressSmooth, [0, 1], [PARALLAX_RANGE, -PARALLAX_RANGE]);
 
   const caseStudy: ReactNode = proof && (
     <div className="pj-case-study">
@@ -83,27 +103,40 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
                 {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(total).padStart(2, "0")}
               </p>
             </Reveal>
-            <Reveal delay={0.05}><h2 className="pj-title">{project.name}</h2></Reveal>
+            <Reveal delay={0.08}><h2 className="pj-title">{project.name}</h2></Reveal>
             {project.type && (
-              <Reveal delay={0.08}><p className="pj-subtitle">{project.type}</p></Reveal>
+              <Reveal delay={0.14}><p className="pj-subtitle">{project.type}</p></Reveal>
             )}
-            <Reveal as="rule" delay={0.12}><div className="pj-head-rule" /></Reveal>
+            <Reveal as="rule" delay={0.2}><div className="pj-head-rule" /></Reveal>
 
-            <Reveal delay={0.16}>
-              <div className="pj-body">
-                {project.summary && <p className="pj-summary">{project.summary}</p>}
-                {project.bullets.length > 0 && (
+            <div className="pj-body">
+              {project.summary && (
+                <Reveal delay={0.26}><p className="pj-summary">{project.summary}</p></Reveal>
+              )}
+
+              {project.bullets.length > 0 && (
+                reduced ? (
                   <ul className="pj-bullets">
-                    {project.bullets.map((bullet) => (
-                      <li key={bullet.text}>{bullet.text}</li>
-                    ))}
+                    {project.bullets.map((bullet) => <li key={bullet.text}>{bullet.text}</li>)}
                   </ul>
-                )}
-              </div>
-            </Reveal>
+                ) : (
+                  <motion.ul
+                    className="pj-bullets"
+                    initial="hidden"
+                    whileInView="shown"
+                    viewport={{ once: true, amount: 0.3, margin: "0px 0px -80px 0px" }}
+                    variants={bulletListVariants}
+                  >
+                    {project.bullets.map((bullet) => (
+                      <motion.li key={bullet.text} variants={bulletItemVariants}>{bullet.text}</motion.li>
+                    ))}
+                  </motion.ul>
+                )
+              )}
+            </div>
 
             {proof && (
-              <Reveal delay={0.2}>
+              <Reveal delay={0.32}>
                 <button
                   type="button"
                   className="pj-toggle"
@@ -124,9 +157,15 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
           </div>
 
           {images.length > 0 && (
-            <div className="pj-entry-media">
-              <Reveal delay={0.1}>
-                <ProjectGallery images={images} projectName={project.name} />
+            <div className="pj-entry-media" ref={mediaRef}>
+              <Reveal delay={0.14}>
+                {reduced ? (
+                  <ProjectGallery images={images} projectName={project.name} />
+                ) : (
+                  <motion.div style={{ y: mediaY }}>
+                    <ProjectGallery images={images} projectName={project.name} />
+                  </motion.div>
+                )}
               </Reveal>
             </div>
           )}
