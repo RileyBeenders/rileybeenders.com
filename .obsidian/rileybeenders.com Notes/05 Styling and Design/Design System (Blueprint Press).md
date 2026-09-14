@@ -13,9 +13,15 @@ Two plain global stylesheets, no CSS modules / CSS-in-JS / Tailwind. The pre-res
 
 The design source is a Claude Design canvas in `design/` (`Main.dc.html`, `Mark.dc.html`, `Interactions.dc.html` + `canvas.json`) — the chosen "Blueprint Press" direction only. The one-time published export (`design/rileybeenders-directions.html`) and the five rejected "earlier sketches" artboards (`Blueprint`/`Editorial`/`Machined`/`Instrument`/`SwissGrid.dc.html`, plus their `canvas.json` page and annotations) were removed as stale/unused clutter once the direction was picked — the three remaining `.dc.html` files + `canvas.json` are the live, editable source and can still be re-published at any time.
 
-A separate pair of reference (not live) design-token systems for a future light/dark toggle lives at `.obsidian/rileybeenders.com Notes/08 Agents and Automation/Repository Agent Skills (.agents).md` → `design-guidelines`, sourced from `.agents/design-guidelines/` in the repo. Don't confuse those Tesla/Bugatti-inspired references with the tokens documented below, which are what's actually shipped.
+A separate pair of reference design-token systems lives at `.obsidian/rileybeenders.com Notes/08 Agents and Automation/Repository Agent Skills (.agents).md` → `design-guidelines`, sourced from `.agents/design-guidelines/` in the repo (Tesla for light mode, Bugatti for dark). As of the **Electric** palette (below), those references are no longer purely aspirational — they're the source the live accent/canvas colors were pulled from.
 
-## Tokens (`.bp { … }`)
+## Palette presets (Studio)
+
+Colors are no longer hand-authored solely in `blueprint.css`. `lib/palettes.ts` holds a set of presets (five seed colors per mode — paper/white/ink/accent/blue — run through a fixed tint ramp in `lib/palette.ts`), Studio's Site Settings tab picks one via `data/header.json`'s `theme.paletteId`, and `app/(site)/layout.tsx` injects the resolved tokens as a CSS override at render time. `blueprint.css`'s own `.bp { … }` block (below) is only the no-JS/no-override fallback, and it deliberately still mirrors the **Default** preset, not whatever preset is actually active.
+
+**Currently active: `electric`** — Tesla-derived light mode (white canvas, Carbon Dark `#171a20` ink, Electric Blue `#3e6ae1`), Bugatti-derived dark mode (true-black `#000000` canvas, white ink), the *same* `#3e6ae1` blue as the accent in both modes rather than Bugatti's usual no-accent rule. `components/GanttChart.tsx`'s mermaid `themeVariables`, `app/apple-icon.tsx`, and `app/opengraph-image.tsx` hardcode their own color copies (mermaid bakes colors into SVG; the icon/OG routes run outside `.bp`) and are hand-synced to match whichever preset is active — currently Electric.
+
+## Tokens (`.bp { … }`, the Default-preset fallback)
 
 | Variable | Value | Use |
 |---|---|---|
