@@ -15,6 +15,30 @@
    control owns it on this page instead. */
 .bp:has(.pj) .bp-badge { display: none; }
 
+/* ---------------------------------------------------------------- spine --- */
+
+.pj-list { position: relative; }
+
+/* Aligned with .bp-shell's own content edge at every width — same centering
+   math .bp-shell uses internally, nudged into the padding gutter so it never
+   sits flush against the index/title text. */
+.pj-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(max(var(--pad), calc((100% - var(--shell)) / 2 + var(--pad))) - 12px);
+  width: 2px;
+  pointer-events: none;
+}
+.pj-spine-track { position: absolute; inset: 0; background: var(--rule); }
+.pj-spine-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
+}
+
 /* --------------------------------------------------------------- entry --- */
 
 .pj-entry { padding: clamp(44px, 7vh, 80px) 0; }
