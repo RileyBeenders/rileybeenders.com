@@ -188,14 +188,25 @@ html[data-theme="dark"] .bp {
 .bp-nav-link.is-active { color: var(--ink); }
 
 /* -------------------------------------------------------------- marks --- */
-@keyframes bp-draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+@keyframes bp-draw {
+  0% { stroke-dashoffset: var(--len); animation-timing-function: var(--ease); }
+  49.3% { stroke-dashoffset: 0; animation-timing-function: linear; }
+  66.4% { stroke-dashoffset: 0; animation-timing-function: linear; }
+  99.3% { stroke-dashoffset: var(--len); animation-timing-function: linear; }
+  100% { stroke-dashoffset: var(--len); }
+}
+@keyframes bp-chase { to { stroke-dashoffset: -116; } }
 @keyframes bp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
 .bp-mark { display: block; overflow: visible; }
 .bp-mark--animated [data-draw] {
   stroke-dasharray: var(--len);
-  animation: bp-draw 1.8s var(--ease) both;
+  animation: bp-draw 7.3s infinite;
   animation-delay: var(--delay, 0s);
+}
+.bp-mark--animated [data-chase] {
+  stroke-dasharray: 29 87;
+  animation: bp-chase 1.8s linear infinite;
 }
 .bp-mark--float { animation: bp-float 5s ease-in-out infinite; }
 
@@ -684,5 +695,6 @@ html[data-theme="dark"] .bp {
   }
   .bp-mark--animated [data-draw],
   .bp-hero-ribbon path { stroke-dashoffset: 0 !important; }
+  .bp-mark--animated [data-chase] { stroke-dasharray: none !important; }
   .bp-soon-bar span { width: 100%; }
 }
