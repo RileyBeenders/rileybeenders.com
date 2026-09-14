@@ -1,21 +1,25 @@
 /* ==========================================================================
    Studio — local content editor
-   Borrows the site's blueprint palette so editing feels like the same product,
-   but runs on system fonts: this never ships, so it never loads a webfont.
+   Borrows the site's Electric palette (lib/palettes.ts) so editing feels like
+   the same product — Tesla-derived light, Bugatti-derived dark, one electric-
+   blue accent both ways — but runs on system fonts: this never ships, so it
+   never loads a webfont. The ink-soft/muted/faint/rule values below are the
+   site's own tint ramp (lib/palette.ts) pre-computed for this ink/paper pair,
+   since this plain CSS file can't import the TypeScript that generates them.
    ========================================================================== */
 
 :root {
-  --paper: #fbfbf9;
-  --panel: #ffffff;
-  --ink: #0b1a2b;
-  --ink-soft: #46545f;
-  --muted: #6f7d88;
-  --faint: #97a3ac;
-  --rule: #d9dee3;
-  --accent: #e3342f;
-  --blue: #2f86c4;
+  --paper: #ffffff;
+  --panel: #f4f4f4;
+  --ink: #171a20;
+  --ink-soft: #515358;
+  --muted: #7f8184;
+  --faint: #a2a3a6;
+  --rule: #e1e1e2;
+  --accent: #3e6ae1;
+  --blue: #3e6ae1;
   --green: #1f8a5b;
-  --shadow: 0 1px 2px rgba(11, 26, 43, 0.06);
+  --shadow: 0 1px 2px rgba(23, 26, 32, 0.06);
   --ease: cubic-bezier(0.22, 0.9, 0.28, 1);
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -25,15 +29,15 @@
 /* The init script in index.html stamps data-theme on <html> before first
    paint: the saved choice, or the OS setting when nothing has been saved. */
 :root[data-theme="dark"] {
-  --paper: #0d1b2a;
-  --panel: #142a3d;
-  --ink: #eef3f7;
-  --ink-soft: #b7c4d1;
-  --muted: #8b9aa8;
-  --faint: #5b6b79;
-  --rule: #24384a;
-  --accent: #ff6b62;
-  --blue: #5aa9e6;
+  --paper: #000000;
+  --panel: #141414;
+  --ink: #ffffff;
+  --ink-soft: #bfbfbf;
+  --muted: #8c8c8c;
+  --faint: #666666;
+  --rule: #212121;
+  --accent: #3e6ae1;
+  --blue: #3e6ae1;
   --green: #4cc38a;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   color-scheme: dark;
@@ -51,8 +55,8 @@ body {
   color: var(--ink);
   background-color: var(--paper);
   background-image:
-    linear-gradient(rgba(127, 145, 163, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(127, 145, 163, 0.08) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
   -webkit-font-smoothing: antialiased;
 }
@@ -562,7 +566,7 @@ h1, h2 { margin: 0; font-weight: 600; }
   color: var(--ink);
   overflow: hidden;
 }
-.modal::backdrop { background: rgba(11, 26, 43, 0.45); backdrop-filter: blur(2px); }
+.modal::backdrop { background: rgba(23, 26, 32, 0.45); backdrop-filter: blur(2px); }
 
 .picker { display: flex; flex-direction: column; max-height: inherit; }
 .picker-head {
