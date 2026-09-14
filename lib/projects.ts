@@ -1,10 +1,10 @@
 import type { Project, ProjectImage, ProofAsset, ProofPoint } from "@/types/resume";
 
 /**
- * The projects page shows each project twice: the project panel itself, then a
- * proof panel that slides in beside it. Both views are assembled here so the
- * page component stays a layout, and so the shape the UI consumes is stable
- * even as the JSON behind it grows.
+ * The projects page shows each project twice: the project entry itself, then
+ * an optional case study behind its "view the full case study" toggle. Both
+ * views are assembled here so the page component stays a layout, and so the
+ * shape the UI consumes is stable even as the JSON behind it grows.
  */
 
 export type ProofSection = {
@@ -42,9 +42,9 @@ function list(label: string, items?: string[]): ProofSection | null {
 }
 
 /**
- * Builds the slide-in panel from the project's own write-up, enriched with the
- * matching proof entry. Returns null when there is nothing worth sliding in, so
- * the stage can render as a project on its own.
+ * Builds the case study from the project's own write-up, enriched with the
+ * matching proof entry. Returns null when there is nothing worth expanding
+ * into, so the entry renders as a project on its own, with no toggle.
  */
 export function buildProofView(project: Project, proofs: ProofPoint[]): ProofView | null {
   const proof = project.proofId

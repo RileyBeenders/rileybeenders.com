@@ -3,7 +3,7 @@ import resumeData from "@/data/resumeData";
 import { buildProjectViews } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
-import { ProjectStage } from "@/components/projects/ProjectStage";
+import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { BackToTop } from "@/components/projects/BackToTop";
 import "./projects.css";
 
@@ -52,24 +52,24 @@ export default function ProjectsPage() {
           </Reveal>
           <Reveal delay={0.38}>
             <p className="bp-prose pj-intro-prose">
-              {views.length} projects, each one followed by its proof — the problem it
-              started from, the decisions behind it, and what changed as a result.
-              Scroll to descend through them.
+              {views.length} projects — the problem each one started from, the decisions
+              behind it, and what changed as a result. Open a case study for the full
+              story.
             </p>
           </Reveal>
         </div>
       </section>
 
       {views.map((view, index) => (
-        <ProjectStage key={view.project.id} view={view} index={index} total={views.length} />
+        <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
       ))}
 
       <footer className="pj-outro">
         <div className="bp-shell">
-          <p className="bp-eyebrow">End of the descent</p>
+          <p className="bp-eyebrow">That's everything, for now</p>
           <p className="bp-prose" style={{ marginTop: 18 }}>
-            Every project above is linked from a line on the resume. The proof panels
-            go a layer deeper — design decisions, root causes, and measured results.
+            Every project above is linked from a line on the resume. Each case study
+            goes a layer deeper — design decisions, root causes, and measured results.
           </p>
         </div>
       </footer>

@@ -5,9 +5,10 @@ import type { ProjectImage } from "@/types/resume";
 import { Lightbox } from "@/components/projects/Lightbox";
 
 /**
- * The right-hand column of a project panel: a scrolling column of photographs,
- * each one a button into the full-screen viewer. Frames are sized off the
- * viewport, so every project reads at the same scale whatever the source image.
+ * A project's photos as a responsive grid — one image fills the row, two sit
+ * side by side, more wrap into rows. Every cell is a fixed-aspect frame (no
+ * clipped-height scroller), so the grid never needs its own scrollbar. Each
+ * cell opens the full-screen viewer.
  */
 export function ProjectGallery({ images, projectName }: { images: ProjectImage[]; projectName: string }) {
   const [openAt, setOpenAt] = useState<number | null>(null);
@@ -17,8 +18,7 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
   return (
     <div className="pj-gallery">
       <div
-        className="pj-shots"
-        tabIndex={0}
+        className="pj-gallery-grid"
         role="group"
         aria-label={`${projectName} images — ${images.length} in total`}
       >
@@ -36,7 +36,7 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
                 src={image.src}
                 alt={image.alt}
                 loading={index === 0 ? "eager" : "lazy"}
-                style={{ objectFit: image.fit === "contain" ? "contain" : "cover" }}
+                className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
               />
               <span className="pj-shot-zoom" aria-hidden="true">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
@@ -51,7 +51,7 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
       </div>
 
       <p className="pj-gallery-note">
-        {images.length === 1 ? "Click to enlarge" : `${images.length} images · scroll the column, click to enlarge`}
+        {images.length === 1 ? "Click to enlarge" : `${images.length} images · click to enlarge`}
       </p>
 
       {openAt !== null && (
