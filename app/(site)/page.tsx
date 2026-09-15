@@ -5,6 +5,9 @@ import { BpMark } from "@/components/blueprint/BpMark";
 
 export default function HomePage() {
   const data = resumeData;
+  const summaryRest = data.summary.slice(1);
+  const siteLinkLabel = "RileyBeenders.com";
+  const [summaryBeforeLink, summaryAfterLink] = summaryRest.split(siteLinkLabel);
 
   return (
     <main>
@@ -65,7 +68,11 @@ export default function HomePage() {
               <div>
                 <p className="bp-prose">
                   <span className="bp-dropcap">{data.summary.slice(0, 1)}</span>
-                  {data.summary.slice(1)}
+                  {summaryBeforeLink}
+                  <a href="https://www.rileybeenders.com" target="_blank" rel="noreferrer">
+                    {siteLinkLabel}
+                  </a>
+                  {summaryAfterLink}
                 </p>
               </div>
             </Reveal>
@@ -185,8 +192,8 @@ export default function HomePage() {
             <div className="bp-footer-mark">
               <BpMark id="footer" size={58} animated float />
               <p className="bp-footer-note">
-                One continuous stroke, top to bottom — the R&rsquo;s stem, then both bowls
-                of the <em>B</em> as a single flowing curve.
+                A website built to house my experience, compiled into one place
+                for the next challenge.
               </p>
             </div>
             <span className="bp-footer-url">rileybeenders.com</span>

@@ -364,12 +364,12 @@ html[data-theme="dark"] .bp {
 .bp-section-grid {
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr);
-  gap: clamp(20px, 4vw, 44px);
+  gap: 50px;
   align-items: start;
-  padding-top: 36px;
+  padding-top: 15px;
 }
 .bp-section-index {
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
@@ -380,7 +380,6 @@ html[data-theme="dark"] .bp {
   font-size: clamp(18px, 1.55vw, 22px);
   line-height: 1.68;
   color: var(--prose);
-  max-width: 74ch;
   text-wrap: pretty;
 }
 .bp-prose + .bp-prose { margin-top: 20px; }
@@ -427,22 +426,21 @@ html[data-theme="dark"] .bp {
   flex-wrap: wrap;
   gap: 12px 24px;
 }
-.bp-role h3 { font-size: clamp(26px, 3vw, 36px); line-height: 1.14; letter-spacing: -0.01em; }
+.bp-role h3 { font-size: clamp(26px, 3vw, 36px); line-height: 1.14; letter-spacing: -0.01em; font-weight: 700; }
 .bp-role-dates {
   font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
   white-space: nowrap;
 }
-.bp-role-org { font-size: 15px; letter-spacing: 0.05em; color: var(--accent); margin-top: 8px; }
+.bp-role-org { font-size: 20px; letter-spacing: 0.05em; color: var(--accent); margin-top: 8px; }
 .bp-role-context {
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.6;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 75%, var(--ink-soft) 25%);
   font-style: italic;
   margin-top: 10px;
-  max-width: 68ch;
 }
 .bp-bullets {
   margin: 14px 0 0;
@@ -452,7 +450,6 @@ html[data-theme="dark"] .bp {
   font-size: 17px;
   line-height: 1.66;
   color: var(--ink-soft);
-  max-width: 68ch;
 }
 .bp-bullets li::marker { color: var(--accent); }
 
@@ -525,7 +522,7 @@ html[data-theme="dark"] .bp {
   gap: 24px;
 }
 .bp-footer-mark { display: flex; align-items: center; gap: 18px; }
-.bp-footer-note { font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 40ch; }
+.bp-footer-note { font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 50ch; font-style: italic; }
 .bp-footer-url { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }
 
 /* ------------------------------------------------------- coming soon --- */
