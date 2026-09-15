@@ -8,10 +8,13 @@ Full annotated tree of `rileybeenders.com` on the **`main`** branch (post Bluepr
 
 ```text
 .agents/                       # repo agent procedures — see the Repository Agent Skills note
-  README.md                    # index + the "Repository AI Commands" table
+  README.md                    # routing index — the "Repository AI Commands" tables, kept current by hand
   custom-resume/SKILL.md       # name: custom-resume — tailored resume generation
   vault-sync/SKILL.md          # name: vault-sync — keep this Obsidian vault current
   sync-charts/SKILL.md         # name: sync-charts — README ↔ gantt.md tracker sync
+  design-guidelines/           # name: design-guidelines — light/dark reference design-token systems
+    SKILL.md, DESIGN.md, design-light.md, design-dark.md
+  skills/                      # 13 vendored, non-repo-specific frontend/design-taste skills (see .agents/README.md)
 
 .obsidian/                     # NOT the site's config — this Obsidian vault lives inside it
   rileybeenders.com Notes/     # ← you are here
@@ -72,9 +75,8 @@ ResumeBuilder/
 assets/
   fonts/InstrumentSerif-Regular.ttf   # build-time only, for the Satori-rendered OG image (see assets/fonts/README.md)
 
-design/                        # Blueprint Press design source — a Claude Design canvas
-  *.dc.html, canvas.json       # per-artboard design sources + canvas layout
-  rileybeenders-directions.html       # the published design-canvas artifact (self-contained editor + content)
+design/                        # Blueprint Press design source — a Claude Design canvas, chosen direction only
+  Main.dc.html, Mark.dc.html, Interactions.dc.html, canvas.json   # the published export and the 5 rejected "earlier sketches" artboards were removed as stale clutter; regenerate the export by re-publishing if needed
 
 public/
   project-artifacts/*.svg      # abstract diagram assets (from the old drawer design; not currently referenced by any route)
