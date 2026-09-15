@@ -1,0 +1,409 @@
+/* ==========================================================================
+   Projects — case studies
+   Each project is a full, natural-height section — summary and bullets
+   beside a photo grid — that reveals in as you scroll, the same way every
+   other section on the site does. The deeper case study (problem, approach,
+   impact) sits behind an expand/collapse toggle instead of a scroll-scrubbed
+   slide-in panel. Nothing here is clamped to a fixed height, so nothing ever
+   grows its own scrollbar. Scoped under .pj.
+   ========================================================================== */
+
+.pj-intro { padding-bottom: clamp(28px, 5vh, 56px); }
+.pj-intro-prose { margin-top: 26px; max-width: 60ch; }
+
+/* The site's "Open to relocation" badge shares this corner — the back-to-top
+   control owns it on this page instead. */
+.bp:has(.pj) .bp-badge { display: none; }
+
+/* ---------------------------------------------------------------- spine --- */
+
+.pj-list { position: relative; }
+
+/* Aligned with .bp-shell's own content edge at every width — same centering
+   math .bp-shell uses internally, nudged into the padding gutter so it never
+   sits flush against the index/title text. */
+.pj-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(max(var(--pad), calc((100% - var(--shell)) / 2 + var(--pad))) - 12px);
+  width: 2px;
+  pointer-events: none;
+}
+.pj-spine-track { position: absolute; inset: 0; background: var(--rule); }
+.pj-spine-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------- entry --- */
+
+.pj-entry { padding: clamp(44px, 7vh, 80px) 0; }
+
+.pj-entry-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  margin-top: clamp(28px, 4vh, 40px);
+}
+.pj-entry--text-only .pj-entry-grid { grid-template-columns: minmax(0, 1fr); }
+
+/* Every other project swaps sides, so nine in a row don't read as one
+   repeated card — text and photos alternate which column they fall in. */
+.pj-entry--reverse .pj-entry-text { order: 2; }
+.pj-entry--reverse .pj-entry-media { order: 1; }
+
+.pj-index {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.pj-title {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin-top: 10px;
+}
+
+.pj-subtitle {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.4vw, 20px);
+  line-height: 1.3;
+  color: var(--accent);
+  margin-top: 8px;
+}
+
+.pj-head-rule {
+  height: 2px;
+  background: var(--ink);
+  margin-top: clamp(16px, 2.4vh, 24px);
+  transform-origin: left center;
+}
+
+.pj-body {
+  margin-top: clamp(18px, 2.6vh, 26px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 18px);
+}
+
+.pj-summary { font-size: clamp(15px, 1.3vw, 18px); line-height: 1.62; color: var(--ink-soft); max-width: 56ch; }
+
+.pj-bullets {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(9px, 1.4vh, 14px);
+  font-size: clamp(14px, 1.15vw, 16.5px);
+  line-height: 1.58;
+  color: var(--prose);
+  max-width: 58ch;
+}
+.pj-bullets li::marker { color: var(--accent); }
+
+/* -------------------------------------------------------------- toggle --- */
+
+.pj-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: clamp(22px, 3vh, 30px);
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+.pj-toggle:hover { color: var(--accent); }
+.pj-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.pj-toggle-icon { transition: transform 0.42s var(--ease); }
+.pj-toggle-icon.is-open { transform: rotate(180deg); }
+
+/* ---------------------------------------------------------------- media --- */
+
+.pj-gallery { display: flex; flex-direction: column; gap: 10px; }
+
+.pj-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(10px, 1.6vw, 16px);
+}
+
+.pj-shot { margin: 0; }
+
+.pj-shot-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  cursor: zoom-in;
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.pj-shot-btn:hover { border-color: var(--ink); transform: translateY(-2px); }
+.pj-shot-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pj-shot-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Diagrams stand in as photos on projects that don't have any yet — they get
+   letterboxed instead of cropped, so nothing important is clipped off. */
+.pj-shot-btn img.pj-shot-img--contain { object-fit: contain; padding: 22px; background: var(--paper); }
+
+.pj-shot-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  padding: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.pj-shot-btn:hover .pj-shot-zoom,
+.pj-shot-btn:focus-visible .pj-shot-zoom { opacity: 1; transform: translateY(0); }
+
+.pj-shot figcaption {
+  margin-top: 7px;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.pj-gallery-note {
+  flex: none;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---------------------------------------------------------- case study --- */
+
+.pj-case-study-wrap { overflow: hidden; }
+
+.pj-case-study {
+  padding-top: clamp(28px, 4vh, 44px);
+  margin-top: clamp(28px, 4vh, 44px);
+  border-top: 1px solid var(--rule);
+}
+
+.pj-eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
+
+.pj-proof-title {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 12px 0 0;
+}
+
+.pj-proof-subtitle {
+  font-family: var(--bp-font-display), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.pj-proof-summary {
+  font-size: clamp(14px, 1.15vw, 16.5px);
+  line-height: 1.62;
+  color: var(--prose);
+  margin-top: 16px;
+  max-width: 68ch;
+}
+
+.pj-proof-section { margin-top: clamp(20px, 3vh, 28px); }
+.pj-proof-section h4 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 9px;
+}
+.pj-proof-section p {
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.62;
+  color: var(--prose);
+  max-width: 62ch;
+}
+.pj-proof-section ul {
+  margin: 0;
+  padding-left: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: clamp(13.5px, 1.05vw, 15.5px);
+  line-height: 1.55;
+  color: var(--prose);
+  max-width: 62ch;
+}
+.pj-proof-section li::marker { color: var(--accent); }
+
+.pj-proof-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(22px, 3vh, 30px); }
+.pj-tag {
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--pill-text);
+  background: var(--white);
+}
+
+.pj-proof-assets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: clamp(22px, 3vh, 30px);
+}
+.pj-proof-assets figure { margin: 0; }
+.pj-proof-assets img { width: 100%; border: 1px solid var(--rule); background: var(--white); }
+.pj-proof-assets figcaption {
+  margin-top: 7px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---------------------------------------------------------------- outro --- */
+
+.pj-outro { padding: clamp(56px, 12vh, 132px) 0 clamp(80px, 14vh, 160px); }
+
+/* ----------------------------------------------------------- back to top --- */
+
+.pj-top {
+  position: fixed;
+  left: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
+}
+.pj-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.pj-top:hover { border-color: var(--accent); }
+.pj-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ------------------------------------------------------------- lightbox --- */
+
+.pj-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(8px, 2vw, 24px);
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(8, 16, 26, 0.93);
+  backdrop-filter: blur(6px);
+  animation: pj-fade 0.24s ease both;
+}
+@keyframes pj-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.pj-lb-figure {
+  grid-column: 2;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.pj-lb-figure img {
+  max-width: 100%;
+  max-height: 78vh;
+  width: auto;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pj-lb-figure figcaption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+.pj-lb-count { font-size: 11px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
+
+.pj-lb-close,
+.pj-lb-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.pj-lb-close:hover,
+.pj-lb-nav:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.55); }
+.pj-lb-close:focus-visible,
+.pj-lb-nav:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.pj-lb-close { position: absolute; top: clamp(14px, 3vw, 28px); right: clamp(14px, 3vw, 28px); }
+.pj-lb-nav--prev { grid-column: 1; }
+.pj-lb-nav--next { grid-column: 3; }
+
+/* ------------------------------------------------------------- narrow --- */
+
+@media (max-width: 860px) {
+  .pj-entry-grid { grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 5vh, 34px); }
+  /* The desktop zigzag is a visual-only touch — mobile always reads text,
+     then photos, top to bottom, regardless of which project it is. */
+  .pj-entry--reverse .pj-entry-text,
+  .pj-entry--reverse .pj-entry-media { order: initial; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-lightbox { animation: none; }
+  .pj-toggle-icon { transition: none; }
+}

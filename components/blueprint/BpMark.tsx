@@ -3,7 +3,7 @@ type BpMarkProps = {
   size?: number;
   /** Unique per instance — several marks on one page must not share a gradient id. */
   id: string;
-  /** Draw the stroke on mount. */
+  /** Loop the draw / hold / bounce-back animation continuously. */
   animated?: boolean;
   /** Gentle idle bob, for the footer mark. */
   float?: boolean;
@@ -63,8 +63,7 @@ export function BpMark({
           r="18.4"
           stroke={ring}
           strokeWidth={size <= 24 ? 1.5 : 1}
-          data-draw
-          style={{ "--len": 116, "--delay": "0.05s" } as React.CSSProperties}
+          data-chase
         />
       )}
 
@@ -74,7 +73,7 @@ export function BpMark({
         strokeWidth={weight}
         strokeLinecap="round"
         data-draw
-        style={{ "--len": 19, "--delay": "0.22s" } as React.CSSProperties}
+        style={{ "--len": 19, "--delay": "0.44s" } as React.CSSProperties}
       />
 
       <path
@@ -84,7 +83,7 @@ export function BpMark({
         strokeLinecap="round"
         strokeLinejoin="round"
         data-draw
-        style={{ "--len": 62, "--delay": "0.36s" } as React.CSSProperties}
+        style={{ "--len": 62, "--delay": "0.72s" } as React.CSSProperties}
       />
     </svg>
   );

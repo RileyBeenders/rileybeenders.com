@@ -5,7 +5,7 @@ description: Keep the Job Application Tracker mermaid gantt block and JobID tabl
 
 # Sync Charts
 
-One of three repository agent procedures — see `.agents/README.md` for the set.
+One of several repository agent procedures — see `.agents/README.md` for the set.
 
 Keep the Job Application Tracker gantt chart in `README.md` and `data/more-info/gantt.md` identical. Both files carry the same mermaid `gantt` block and JobID table — `README.md` wraps it under the `## Job Application Tracker` heading (between that heading and the next `***` divider), while `data/more-info/gantt.md` holds it as a standalone block with nothing else in the file.
 

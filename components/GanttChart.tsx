@@ -14,16 +14,21 @@ const MS_PER_DAY = 86400000;
  * Mermaid bakes colors into the SVG it returns rather than consuming CSS
  * variables, so the light/dark palettes are duplicated here to match the
  * `--ink`/`--paper`/etc. tokens in blueprint.css.
+ *
+ * The site's accent and secondary-blue tokens are the same electric blue now
+ * (see lib/palettes.ts "electric"), so it alone can't separate the chart's two
+ * task sections. Primary sections stay accent blue; secondary sections use a
+ * neutral ink-gray instead of a second blue, keeping the one-accent palette.
  */
 const THEME_LIGHT = {
-  primaryColor: "rgba(227, 52, 47, 0.14)",
-  primaryBorderColor: "#e3342f",
-  primaryTextColor: "#0b1a2b",
-  secondaryColor: "rgba(47, 134, 196, 0.18)",
-  secondaryBorderColor: "#2f86c4",
-  tertiaryColor: "rgba(11, 26, 43, 0.10)",
-  lineColor: "#b9c2cb",
-  textColor: "#0b1a2b",
+  primaryColor: "rgba(62, 106, 225, 0.14)",
+  primaryBorderColor: "#3e6ae1",
+  primaryTextColor: "#171a20",
+  secondaryColor: "rgba(23, 26, 32, 0.08)",
+  secondaryBorderColor: "#5c5e62",
+  tertiaryColor: "rgba(23, 26, 32, 0.10)",
+  lineColor: "#c7ccd1",
+  textColor: "#171a20",
   // Mermaid's "done" task styling doesn't derive from the colors above, so it
   // needs an explicit pin — otherwise the dark palette below inherits
   // mermaid's default lightgrey bar, which near-white task text disappears on.
@@ -32,16 +37,16 @@ const THEME_LIGHT = {
 } as const;
 
 const THEME_DARK = {
-  primaryColor: "rgba(255, 107, 98, 0.2)",
-  primaryBorderColor: "#ff6b62",
-  primaryTextColor: "#eef3f7",
-  secondaryColor: "rgba(90, 169, 230, 0.22)",
-  secondaryBorderColor: "#5aa9e6",
+  primaryColor: "rgba(62, 106, 225, 0.28)",
+  primaryBorderColor: "#3e6ae1",
+  primaryTextColor: "#ffffff",
+  secondaryColor: "rgba(255, 255, 255, 0.08)",
+  secondaryBorderColor: "#999999",
   tertiaryColor: "rgba(255, 255, 255, 0.08)",
-  lineColor: "#4a5c6b",
-  textColor: "#eef3f7",
-  doneTaskBkgColor: "#3a4552",
-  doneTaskBorderColor: "#5b6b79"
+  lineColor: "#4d4d4d",
+  textColor: "#ffffff",
+  doneTaskBkgColor: "#2a2a2a",
+  doneTaskBorderColor: "#666666"
 } as const;
 
 function countTotalDays(chart: string): number {
