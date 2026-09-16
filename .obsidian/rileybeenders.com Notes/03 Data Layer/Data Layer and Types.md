@@ -33,7 +33,7 @@ Matches `data/more-info/more-info.json`:
 - `MoreInfoAboutHeader`, `MoreInfoAboutMe` — `{ title, description: string[] }`.
 - `MoreInfoReadMore` — `{ label: string; href: string }`.
 - `MoreInfoAboutSite` — `{ title, description: string[], readMore?: MoreInfoReadMore }`. The optional `readMore` renders a "Read more" link after the About-the-Site paragraphs on `/more-info`.
-- `MoreInfoGanttSection` — `{ title, intro }`.
+- `MoreInfoGanttSection` — `{ visible, title, intro }`; `visible` controls the complete live tracker section (timeline and table together).
 - `MoreInfoData` — the four blocks composed.
 
 ## `data/header.json`

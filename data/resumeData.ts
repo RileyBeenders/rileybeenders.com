@@ -31,10 +31,15 @@ function byOrder(a: Project, b: Project): number {
 const publishedProjects = (projects as Project[]).filter(isPublished).sort(byOrder);
 const publishedProofs = (proofs as ProofPoint[]).filter(isPublished);
 
-const visibleExperience: ResumeData["experience"] = experience.map((job) => ({
+const experienceData = experience as ResumeData["experience"];
+
+const visibleExperience: ResumeData["experience"] = experienceData.map((job) => ({
   ...job,
   bullets: job.bullets.map((bullet) => ({
     text: bullet.text,
+    ...(Array.isArray(bullet.emphasis) && bullet.emphasis.length > 0
+      ? { emphasis: bullet.emphasis }
+      : {}),
     ...(visibility.experienceProofButtons && "proofId" in bullet
       ? { proofId: bullet.proofId }
       : {}),

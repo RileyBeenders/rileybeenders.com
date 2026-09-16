@@ -34,6 +34,7 @@ html[data-theme="dark"] {
   --bp-font-body: var(--font-spectral), Georgia, serif;
 
   --ease: cubic-bezier(0.22, 0.9, 0.28, 1);
+  --bullet-accent-stroke: 0.75px;
   --shell: 1240px;
   --pad: clamp(20px, 5vw, 64px);
 
@@ -459,6 +460,30 @@ html[data-theme="dark"] .bp {
   color: var(--ink-soft);
 }
 .bp-bullets li::marker { color: var(--accent); }
+.bp-bullets li {
+  transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+}
+.bp-bullet-content { display: inline; }
+.bp-bullet-emphasis {
+  color: inherit;
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: 0;
+  transition:
+    color 0.28s var(--ease),
+    -webkit-text-stroke-color 0.28s var(--ease),
+    -webkit-text-stroke-width 0.28s var(--ease);
+}
+.bp-bullets li:hover,
+.bp-bullets li:focus-within {
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.bp-bullets li:hover .bp-bullet-emphasis,
+.bp-bullets li:focus-within .bp-bullet-emphasis {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+  -webkit-text-stroke-width: var(--bullet-accent-stroke);
+}
 .bp-bullet-link {
   display: inline-flex;
   align-items: center;
@@ -484,6 +509,12 @@ html[data-theme="dark"] .bp {
 }
 .bp-bullet-link:hover svg { transform: translate(2px, -2px); }
 .bp-bullet-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-bullets li { transition-duration: 0.01ms; }
+  .bp-bullets li:hover,
+  .bp-bullets li:focus-within { transform: none; }
+}
 
 /* -------------------------------------------------------------- pills --- */
 .bp-skill-group + .bp-skill-group { margin-top: 26px; }
@@ -758,6 +789,22 @@ html[data-theme="dark"] .bp {
   animation: bp-ring 1.9s ease-out infinite;
 }
 @keyframes bp-ring { 0% { transform: scale(1); opacity: 0.75; } 100% { transform: scale(3.6); opacity: 0; } }
+
+/* Typewriter label: the ghost copy holds the full label's width (invisibly) while the live copy
+   types/deletes over the top of it, so the badge stays one fixed size through the whole loop. */
+.bp-badge-type { position: relative; display: inline-block; white-space: nowrap; }
+.bp-badge-type-ghost { visibility: hidden; }
+.bp-badge-type-live { position: absolute; inset: 0; white-space: pre; }
+.bp-badge-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  margin-left: 1px;
+  background: var(--accent);
+  vertical-align: -0.14em;
+}
+.bp-badge-caret[data-blink] { animation: bp-caret 1s steps(2, jump-none) infinite; }
+@keyframes bp-caret { from { opacity: 1; } to { opacity: 0; } }
 
 /* ------------------------------------------------------- responsive --- */
 @media (max-width: 860px) {

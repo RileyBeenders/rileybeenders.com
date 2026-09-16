@@ -12,6 +12,44 @@ type LightboxProps = {
 };
 
 /**
+ * The gallery thumbnails are optimizer-resized; this is where the untouched
+ * original is finally fetched. Those files can run to several megabytes, so
+ * the figure says so while the bytes arrive instead of sitting empty. Keyed
+ * by src from the caller, so stepping to the next image starts fresh.
+ */
+function FullImage({ src, alt }: { src: string; alt: string }) {
+  const [status, setStatus] = useState<"loading" | "ready" | "failed">("loading");
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // A cached image can finish before React wires up onLoad; catch that case.
+  useEffect(() => {
+    const node = imgRef.current;
+    if (node?.complete && node.naturalWidth > 0) setStatus("ready");
+  }, []);
+
+  return (
+    <>
+      {/* Not next/image: this is deliberately the original file, and the
+          viewer sizes it against the viewport rather than a box. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        className={status === "ready" ? "is-loaded" : undefined}
+        onLoad={() => setStatus("ready")}
+        onError={() => setStatus("failed")}
+      />
+      {status !== "ready" && (
+        <span className="pj-lb-loading" role="status">
+          {status === "failed" ? "Couldn’t load the full-resolution image" : "Loading full-resolution image…"}
+        </span>
+      )}
+    </>
+  );
+}
+
+/**
  * Full-screen image viewer. Rendered into <body> through a portal, so it
  * always covers the full viewport regardless of which project's gallery
  * opened it, and never clips against an ancestor's overflow or stacking
@@ -80,10 +118,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
       )}
 
       <figure className="pj-lb-figure">
-        {/* Not next/image: these are user-managed files of unknown dimensions,
-            and the viewer sizes them against the viewport rather than a box. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={image.src} alt={image.alt} />
+        <FullImage key={image.src} src={image.src} alt={image.alt} />
         {(image.caption || images.length > 1) && (
           <figcaption>
             {image.caption}

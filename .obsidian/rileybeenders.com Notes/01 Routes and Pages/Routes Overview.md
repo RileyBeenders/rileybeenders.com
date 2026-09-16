@@ -55,8 +55,8 @@ Fully static aside from `person` off `resumeData`. Hero ("Get in touch"), `<BpAc
 The only involved server component:
 
 1. Imports `data/more-info/more-info.json` (typed `MoreInfoData`) for the About copy.
-2. Reads `data/more-info/gantt.md` off disk with `fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8")` — **not** imported as a module, parsed as raw text at request time via `parseGanttFile()` from `lib/gantt.ts`.
-3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` "Read more" link (`aboutSite.readMore`, currently → `https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents`, opens in a new tab) — and section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`.
+2. When `ganttSection.visible` is not `false`, reads `data/more-info/gantt.md` off disk with `fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8")` — **not** imported as a module — and parses the raw text via `parseGanttFile()` from `lib/gantt.ts`. It skips the file read when the tracker is hidden.
+3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` "Read more" link (`aboutSite.readMore`, currently → `https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents`, opens in a new tab) — and, when `ganttSection.visible` is not `false`, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`. Studio's **Show on live site** switch writes that visibility field and controls both tracker views together; when off, the page also skips reading/parsing `gantt.md`.
 
 Because it uses `fs`, this page can't be statically exported without the file present at build time (fine on Vercel). See [[More Info and Gantt Data]].
 

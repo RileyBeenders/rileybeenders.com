@@ -5,46 +5,84 @@
     "location": "Coplay, PA",
     "start": "January 2025",
     "end": "Present",
-    "context": "Proteor acquired Filament Innovations in January, 2025 and my role evolved from CTO to Lead R&D Engineer. I continue to carry out my former CTO responsibilities, now with expanded oversight of the East Coast engineering team and involvement across Proteor’s global product portfolio.",
+    "context": "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer.",
     "bullets": [
       {
-        "text": "Led the design and development of the ICARUS-Lite, a compact 3D printer purpose-built for digital prosthetic and orthotic production. Primarily responsible for its mechanical, electrical, and software design, including custom AC heaters and dual-voltage 120/240 VAC operation.",
+        "text": "Led the design and development of the ICARUS-Lite, a revolutionary tool designed to transform the O&P industry. Owned its mechanical, electrical, and software design, including custom AC heaters.",
+        "emphasis": [
+          "design and development"
+        ],
         "projectId": "icarus-lite"
       },
       {
-        "text": "Led the ICARUS-Lite from product development through commercialization, contributing to increased revenue and the addition of approximately five new roles."
+        "text": "Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.",
+        "emphasis": [
+          "Hiring Manager",
+          "technical interviews"
+        ]
       },
       {
-        "text": "Conduct technical interviews as Hiring Manager, driving engineering hiring decisions alongside core Lead, R&D Engineer responsibilities."
+        "text": "Owned the ICARUS-Lite through commercialization, contributing to increased revenue.",
+        "emphasis": [
+          "increased revenue"
+        ]
       },
       {
-        "text": "Developed an automated LabVIEW system that collects nine data points every 15 ms from multiple laser sensors over Modbus and charts tolerance data for internal quality control and end-customer use.",
+        "text": "Built an automated LabVIEW QC system for real-time tolerance monitoring.",
+        "emphasis": [
+          "QC system",
+          "real-time tolerance monitoring"
+        ],
         "projectId": "ExtrusionLine-Studio"
       },
       {
-        "text": "Oversight of Microsoft's Business Central software implementation for all of my division's items and products. The Business Central software syncs with all of our other Proteor locations around the world to make sales and managing inventory easier."
+        "text": "Managed the Coplay location's Microsoft Business Central ERP implementation, syncing SKUs with Proteor's global locations.",
+        "emphasis": [
+          "Microsoft Business Central ERP implementation"
+        ]
       },
       {
-        "text": "Lead the implementation of ProteorPrint OS, a network-accessible remote operation and diagnostics interface with live video, AI-assisted alerts, material, waste, and outcome metrics. This software was developed in collaboration with SimplyPrint.io",
-        "projectId": "Proteor-Print"
+        "text": "Implemented ProteorPrint OS with SimplyPrint, enabling remote operation and AI-assisted diagnostics with live remote video and material, waste, and outcome metrics.",
+        "emphasis": [
+          "ProteorPrint OS",
+          "AI-assisted diagnostics"
+        ],
+        "projectId": "proteor-print"
       },
       {
-        "text": "Performed and documented risk analysis covering safety, operational, and software risks for ICARUS and ICARUS-Lite products along with the ProteorPrint cloud platform, implementing mitigations applicable to EU and U.S. standards."
+        "text": "Performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products.",
+        "emphasis": [
+          "risk analysis"
+        ]
       },
       {
-        "text": "Collaborated with another Additive Manufacturer to develop a reliable, cost effective hotend that meets our material's specific needs.",
-        "proofId": "the-rabbit"
+        "text": "Co-developed a custom hotend with another additive manufacturing partner, improving reliability and reducing cost for our materials.",
+        "emphasis": [
+          "custom hotend",
+          "improving reliability",
+          "reducing cost"
+        ]
       },
       {
-        "text": "Work alongside production, sales, and customer service teams to support the product line. Responsibilities include hardware, electronics, motion-control systems, software, troubleshooting and after-sales technical support.",
-        "proofId": "linear-motion-platform"
+        "text": "Provide cross-functional technical support for the product line, from troubleshooting to after-sales service.",
+        "emphasis": [
+          "cross-functional technical support",
+          "troubleshooting",
+          "after-sales service"
+        ]
       },
       {
-        "text": "Converted the Filament Innovation POSEIDON and ICARUS platforms from servo-driven ballscrews to a standardized linear-motor architecture, achieving a 1-micron precision per 1 m/s while moving a 30 kg payload. The system maxed out at a speed of 4 m/s",
-        "proofId": "linear-motion-platform"
+        "text": "Re-engineered POSEIDON and ICARUS with a standardized architecture, reaching 4 m/s and 1-micron precision.",
+        "emphasis": [
+          "standardized architecture"
+        ]
       },
       {
-        "text": "Continued development of our internal IT infrastructure and standardized software and internal processes within our division of Proteor.",
+        "text": "Managed and expanded the division's IT infrastructure after the Proteor acquisition, standardizing software and internal processes to align with company-wide systems.",
+        "emphasis": [
+          "IT infrastructure",
+          "standardizing software and internal processes"
+        ],
         "projectId": "unifi-network"
       }
     ]

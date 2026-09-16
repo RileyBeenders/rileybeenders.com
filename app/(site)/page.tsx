@@ -7,6 +7,7 @@ import { HeroRibbon } from "@/components/blueprint/HeroRibbon";
 import { BpHeroRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { PageSpine } from "@/components/blueprint/PageSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
 
 export default function HomePage() {
   const data = resumeData;
@@ -97,7 +98,12 @@ export default function HomePage() {
                             const project = bullet.projectId ? projectsById.get(bullet.projectId) : undefined;
                             return (
                               <li key={bullet.text}>
-                                {bullet.text}
+                                <span className="bp-bullet-content">
+                                  <EmphasizedText
+                                    text={bullet.text}
+                                    phrases={bullet.emphasis}
+                                    className="bp-bullet-emphasis"
+                                  />
                                 {project && (
                                   <Link
                                     href={`/projects#project-${project.id}`}
@@ -111,6 +117,7 @@ export default function HomePage() {
                                     </svg>
                                   </Link>
                                 )}
+                                </span>
                               </li>
                             );
                           })}

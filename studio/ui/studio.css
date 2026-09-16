@@ -312,6 +312,66 @@ h1, h2 { margin: 0; font-weight: 600; }
 .f-count { margin: 6px 0 0; font-family: var(--mono); font-size: 11px; color: var(--faint); text-align: right; }
 .f-select { appearance: auto; }
 
+/* ---------------------------------------------------------- emphasis --- */
+.f-emphasis-editor { width: 100%; }
+.f-emphasis-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 7px;
+}
+.f-emphasis-add { flex: none; }
+.f-emphasis-hint {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 11.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.f-emphasis-phrases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 25px;
+  margin-top: 9px;
+}
+.f-emphasis-chip {
+  display: inline-flex;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--rule));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+  color: var(--ink);
+}
+.f-emphasis-chip.is-missing {
+  border-style: dashed;
+  border-color: var(--faint);
+  background: transparent;
+  color: var(--faint);
+}
+.f-emphasis-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 8px 4px 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11.5px;
+}
+.f-emphasis-remove:hover { color: var(--accent); }
+.f-emphasis-remove:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.f-emphasis-remove span { font-size: 15px; line-height: 0.8; }
+.f-emphasis-empty { color: var(--faint); font-size: 11.5px; font-style: italic; }
+
+@media (max-width: 620px) {
+  .f-emphasis-tools { align-items: flex-start; flex-direction: column; }
+  .f-emphasis-hint { max-width: 100%; }
+}
+
 /* -------------------------------------------------------------- switch --- */
 
 .f-switch-row { display: flex; align-items: center; gap: 10px; }
