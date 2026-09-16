@@ -2,6 +2,7 @@
   {
     "id": "linear-motion-platform",
     "title": "Linear Motion Platform",
+    "visible": false,
     "summary": "Converted two flagship large-format printers to a shared linear-motor architecture demonstrated at 4-micron precision, 4 m/s, and a 30 kg moving mass.",
     "tags": [
       "Linear Motors",
@@ -20,6 +21,7 @@
   {
     "id": "icarus-lite",
     "title": "ICARUS-Lite Product Development",
+    "visible": false,
     "summary": "Designed and released a compact professional printer for prosthetic and orthotic manufacturing, including industrial design, electrical architecture, and regulatory changes.",
     "tags": [
       "Product Development",
@@ -38,6 +40,7 @@
   {
     "id": "ExtrusionLine-Studio",
     "title": "Automated LabVIEW Metrology",
+    "visible": false,
     "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
     "tags": [
       "LabVIEW",
@@ -56,6 +59,7 @@
   {
     "id": "ExtrusionLine-Studio_Modbus",
     "title": "Standalone Modbus Connection",
+    "visible": false,
     "summary": "Automatically establishes a Modbus connection through a standalone SubVI. The only requirement is that the Extrusion Line is powered on.",
     "tags": [
       "LabVIEW",
@@ -74,6 +78,7 @@
   {
     "id": "ExtrusionLine-Studio_SimpleStart",
     "title": "Simple Start-Up",
+    "visible": false,
     "summary": "The technician’s start-up procedure is simply to turn on the host computer. Windows then boots, the programs launch automatically, find their positions on screen, and begin collecting data.",
     "tags": [
       "Automation",
@@ -92,6 +97,7 @@
   {
     "id": "strain-gauge-probing",
     "title": "Automated Z-Probing",
+    "visible": false,
     "summary": "Integrated a strain-gauge probing workflow through the print head for sensitive, intervention-free first-layer calibration.",
     "tags": [
       "Automation",
@@ -109,6 +115,7 @@
   {
     "id": "proteor-print",
     "title": "PROTEOR Print Integration",
+    "visible": false,
     "summary": "Contributed machine integration for a remote operations interface with diagnostics, live video, AI-assisted failure alerts, and production metrics.",
     "tags": [
       "Remote Operations",
@@ -127,6 +134,7 @@
   {
     "id": "gen3-poseidon",
     "title": "Gen3 POSEIDON",
+    "visible": false,
     "summary": "Led the design and launch of a 1 m³ hybrid filament-and-pellet printer with braked Z drives, industrial-servo XY motion, and a custom gantry.",
     "tags": [
       "Machine Design",
@@ -145,6 +153,7 @@
   {
     "id": "internal-erp",
     "title": "Engineering Operations Platform",
+    "visible": false,
     "summary": "Built a redundant Kubernetes-hosted ERP/CRM and connected dynamic engineering BOMs to purchasing workflows.",
     "tags": [
       "Kubernetes",
@@ -163,6 +172,7 @@
   {
     "id": "nonplanar-research",
     "title": "Advanced Motion Research",
+    "visible": false,
     "summary": "Evaluated high-speed linear motors and early 6-axis robotic non-planar printing, including motion trials and toolpath-generation work.",
     "tags": [
       "R&D",
@@ -180,6 +190,7 @@
   {
     "id": "modular-controls",
     "title": "Modular Controls Architecture",
+    "visible": false,
     "summary": "Combined CAN-bus controls, independently testable electronics enclosures, and supplier-coordinated harnesses to simplify machine assembly and diagnosis.",
     "tags": [
       "CAN Bus",
@@ -198,6 +209,7 @@
   {
     "id": "kratos",
     "title": "Kratos Prosthetic Printer",
+    "visible": false,
     "summary": "Designed and released a printer purpose-built for high-strength above-knee and below-knee prosthetic sockets.",
     "tags": [
       "Prosthetics",
@@ -215,6 +227,7 @@
   {
     "id": "kraken",
     "title": "THE KRAKEN",
+    "visible": false,
     "summary": "Delivered a 1 x 2 x 1.5 m hybrid pellet-and-filament printer through the complete lifecycle from CAD and sourcing to firmware, support, and training.",
     "tags": [
       "Large-Format Printing",
@@ -233,6 +246,7 @@
   {
     "id": "product-reliability",
     "title": "Early Product Reliability Work",
+    "visible": false,
     "summary": "Diagnosed mechanical and electrical issues, tuned print behavior, and documented design limitations during the company's early product-development stage.",
     "tags": [
       "Troubleshooting",
@@ -250,6 +264,7 @@
   {
     "id": "rjb-engineering",
     "title": "Independent Engineering Work",
+    "visible": false,
     "summary": "Project-based automotive engineering support, 3D-printer accessory sales, and rapid production of 3D-printed face shields during the pandemic.",
     "tags": [
       "Consulting",
@@ -267,6 +282,7 @@
   {
     "id": "ski-lift-systems",
     "title": "Lift Operations & Safety",
+    "visible": false,
     "summary": "Combined high-volume guest operations with motor and control safety checks and hands-on maintenance support.",
     "tags": [
       "Safety",
@@ -284,6 +300,7 @@
   {
     "id": "school-network",
     "title": "District Technology Deployment",
+    "visible": false,
     "summary": "Deployed more than 750 access points and accelerated setup of more than 2,500 Chromebooks with an Arduino-based automation tool.",
     "tags": [
       "Network Infrastructure",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectImage } from "@/types/resume";
 import { Lightbox } from "@/components/projects/Lightbox";
@@ -26,11 +27,18 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
       onClick={onOpen}
       aria-label={`View ${image.caption || image.alt} full screen`}
     >
-      {/* Plain <img>: sources are editor-managed files of unknown size. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* The originals are editor-managed photos that can run to several
+          megabytes each — far more than a thumbnail needs. `fill` lets
+          next/image size against the fixed 4:3 frame without knowing the
+          file's dimensions, and `sizes` tracks the grid (one column on
+          phones, two in a full-width block, two in a half-width column), so
+          the optimizer serves a frame-sized WebP here. The Lightbox is
+          where the untouched original finally loads. */}
+      <Image
         src={image.src}
         alt={image.alt}
+        fill
+        sizes="(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw"
         loading={index === 0 ? "eager" : "lazy"}
         className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
       />
