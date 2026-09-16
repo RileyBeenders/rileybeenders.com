@@ -16,8 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default function MoreInfoPage() {
-  const ganttRaw = fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8");
-  const { chart, columns, rows } = parseGanttFile(ganttRaw);
+  const showApplicationTracker = data.ganttSection.visible !== false;
+  const applicationTracker = showApplicationTracker
+    ? parseGanttFile(fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8"))
+    : null;
 
   return (
     <main>
@@ -85,21 +87,23 @@ export default function MoreInfoPage() {
         </div>
       </section>
 
-      <section className="bp-section">
-        <div className="bp-shell">
-          <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
-          <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</p></Reveal>
-            <Reveal delay={0.06}>
-              <div>
-                {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
-                <GanttChart chart={chart} />
-                <JobsTable columns={columns} rows={rows} />
-              </div>
-            </Reveal>
+      {applicationTracker ? (
+        <section className="bp-section">
+          <div className="bp-shell">
+            <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
+            <div className="bp-section-grid">
+              <Reveal><p className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</p></Reveal>
+              <Reveal delay={0.06}>
+                <div>
+                  {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
+                  <GanttChart chart={applicationTracker.chart} />
+                  <JobsTable columns={applicationTracker.columns} rows={applicationTracker.rows} />
+                </div>
+              </Reveal>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
     </main>
   );
 }

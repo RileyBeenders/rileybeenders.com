@@ -4,26 +4,41 @@
     "id": "icarus-lite",
     "order": 1,
     "type": "Industrial Design",
-    "visible": false,
-    "summary": "A compact, purpose-built industrial printer designed to automate prosthetic and orthotic production with minimal customer setup.",
+    "summary": "A compact, purpose-built industrial printer designed to automate prosthetic and orthotic production with minimal customer setup. [Project page is currently under development -- More details to come soon! ]",
     "images": [
       {
-        "src": "/project-images/IcarusLiteRender.png",
-        "alt": "Three-quarter product render of the compact gray ICARUS-Lite additive manufacturing system",
-        "caption": "ICARUS-Lite product render",
+        "src": "/project-images/ICARUS-Lite/Three_Outside--21-.jpg",
+        "alt": "",
+        "caption": "ICARUS-Lite",
         "fit": "contain"
       },
       {
-        "src": "/project-images/IcarusLiteRender.png",
-        "alt": "Three-quarter product render of the compact gray ICARUS-Lite additive manufacturing system",
-        "caption": "ICARUS-Lite product render",
+        "src": "/project-images/ICARUS-Lite/Extruder_Portrait--16-.jpg",
+        "alt": "",
+        "caption": "ICARUS-Lite - Rabbit Hotend",
         "fit": "contain"
+      },
+      {
+        "src": "/project-images/ICARUS-Lite/Build_Plate--3-.jpg",
+        "alt": ""
+      },
+      {
+        "src": "/project-images/ICARUS-Lite/Landscape_Outside--21-.jpg",
+        "alt": ""
+      },
+      {
+        "src": "/project-images/ICARUS-Lite/Portrait_Inside--8-.jpg",
+        "alt": ""
+      },
+      {
+        "src": "/project-images/ICARUS-Lite/External_Features--1-.jpg",
+        "alt": ""
       }
     ],
     "proofId": "icarus-lite",
     "bullets": [
       {
-        "text": "Achieved a bolt-less shell with seamless chamfered geometry that gives homage to the POSEIDON, one of the largest 3D printers I designed and Filament Innovation's mass produced."
+        "text": "Achieved a bolt-less shell with seamless chamfered geometry that gives homage to the POSEIDON, one of the largest mass-produced 3D printers I designed while at Filament Innovation."
       },
       {
         "text": "Created an IEEE-style electrical design adaptable to 120/240 VAC and completed product changes supporting conformity with the 2006/42/EC machinery directive."
@@ -56,13 +71,6 @@
         "Electrical design",
         "Design for manufacturing",
         "Regulatory compliance"
-      ],
-      "assets": [
-        {
-          "label": "Product Development Flow",
-          "src": "/project-artifacts/product-development.svg",
-          "alt": "Abstract product-development flow for the ICARUS-Lite printer"
-        }
       ]
     }
   },

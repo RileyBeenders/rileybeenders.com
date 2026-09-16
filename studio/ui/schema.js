@@ -17,7 +17,15 @@
 
 /** Repeatable bullet rows, shared by projects and experience. */
 const BULLET_FIELDS = [
-  { name: "text", type: "textarea", label: "Bullet", rows: 3, required: true },
+  {
+    name: "text",
+    type: "emphasisText",
+    emphasisName: "emphasis",
+    label: "Bullet",
+    rows: 3,
+    required: true,
+    help: "Select words in the bullet, then add them as an accent phrase. They stay unchanged at rest and use the active palette accent when the bullet is hovered."
+  },
   { name: "projectId", type: "ref", source: "projects", label: "Links to project" },
   { name: "proofId", type: "ref", source: "proofs", label: "Links to proof" }
 ];
@@ -356,6 +364,14 @@ export const SCHEMAS = {
         label: "Application tracker",
         help: "The chart itself is drawn from data/more-info/gantt.md, which is still edited by hand.",
         fields: [
+          {
+            name: "visible",
+            type: "boolean",
+            label: "Show on live site",
+            default: true,
+            always: true,
+            help: "Controls both the application timeline and the tracker table."
+          },
           { name: "title", type: "text", label: "Section title", required: true },
           { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." }
         ]
