@@ -26,14 +26,21 @@ const BACKUP_DIR = path.join(ROOT, ".studio-backups");
 const HOST = "127.0.0.1";
 const PORT = Number(process.env.STUDIO_PORT || 3001);
 
-/** Every file the Studio is allowed to touch. Anything else is off limits. */
+/**
+ * Every file the Studio is allowed to touch. Anything else is off limits.
+ * Listed in the order the site reads — the home page top to bottom, then each
+ * further page — which is also the order the editor's rail shows them in
+ * (see RAIL in ui/schema.js).
+ */
 const FILES = {
-  projects: { file: "data/projects/projects.json", label: "Projects", shape: "array" },
-  proofs: { file: "data/projects/proofs.json", label: "Proofs", shape: "array" },
+  summary: { file: "data/home/summary.json", label: "Summary", shape: "object" },
   experience: { file: "data/home/experience.json", label: "Experience", shape: "array" },
   skills: { file: "data/home/skills.json", label: "Skills", shape: "array" },
   education: { file: "data/home/education.json", label: "Education", shape: "object" },
-  summary: { file: "data/home/summary.json", label: "Summary", shape: "object" },
+  projects: { file: "data/projects/projects.json", label: "Projects", shape: "array" },
+  proofs: { file: "data/projects/proofs.json", label: "Proofs", shape: "array" },
+  contact: { file: "data/contact/contact.json", label: "Contact", shape: "object" },
+  moreInfo: { file: "data/more-info/more-info.json", label: "More Info", shape: "object" },
   header: { file: "data/header.json", label: "Site Settings", shape: "object" }
 };
 
@@ -194,22 +201,57 @@ async function writeDataFile(key, data) {
 
 /* ----------------------------------------------------------- image i/o --- */
 
-async function listImages() {
-  const images = [];
-  for (const [folder, dir] of Object.entries(IMAGE_DIRS)) {
-    let names = [];
-    try {
-      names = await readdir(dir);
-    } catch {
-      continue; // Folder is optional — an empty gallery is a valid state.
-    }
-    for (const name of names.sort()) {
-      if (!IMAGE_EXTS.has(path.extname(name).toLowerCase())) continue;
-      const info = await stat(path.join(dir, name));
-      images.push({ src: `/${folder}/${name}`, folder, name, bytes: info.size, modified: info.mtimeMs });
-    }
+/** A path segment may not be empty, a dot-segment, or contain a separator. */
+function isSafeSegment(name) {
+  return typeof name === "string" && name !== "" && name !== "." && name !== ".."
+    && !name.includes("/") && !name.includes("\\") && !name.startsWith(".");
+}
+
+/**
+ * Resolves a folder path like ["project-images", "ICARUS-Lite"] to a directory
+ * on disk, as long as its root is a known image folder and every segment is
+ * safe. Returns null for anything that isn't rooted in `IMAGE_DIRS`.
+ */
+function resolveImageFolder(segments) {
+  const base = IMAGE_DIRS[segments[0]];
+  if (!base || !segments.slice(1).every(isSafeSegment)) return null;
+  return { dir: path.join(base, ...segments.slice(1)), folderPath: segments.join("/") };
+}
+
+/**
+ * Walks an image root and every subfolder beneath it (the picker browses
+ * subfolders like `project-images/ICARUS-Lite` the same as the root itself),
+ * collecting both the images found and the set of folder paths that exist —
+ * an empty subfolder still needs to show up as an upload target.
+ */
+async function scanImageDir(dir, folderPath, images, folders) {
+  let entries;
+  try {
+    entries = await readdir(dir, { withFileTypes: true });
+  } catch {
+    return; // Folder is optional — an empty gallery is a valid state.
   }
-  return images;
+  for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+    const absolute = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      const childPath = `${folderPath}/${entry.name}`;
+      folders.add(childPath);
+      await scanImageDir(absolute, childPath, images, folders);
+      continue;
+    }
+    if (!IMAGE_EXTS.has(path.extname(entry.name).toLowerCase())) continue;
+    const info = await stat(absolute);
+    images.push({ src: `/${folderPath}/${entry.name}`, folder: folderPath, name: entry.name, bytes: info.size, modified: info.mtimeMs });
+  }
+}
+
+async function scanImages() {
+  const images = [];
+  const folders = new Set(Object.keys(IMAGE_DIRS));
+  for (const [folder, dir] of Object.entries(IMAGE_DIRS)) {
+    await scanImageDir(dir, folder, images, folders);
+  }
+  return { images, folders: [...folders].sort() };
 }
 
 /** Strips a browser-supplied filename down to something safe to write. */
@@ -251,8 +293,16 @@ async function serveStatic(res, absolute) {
   }
 }
 
+function decodeSegment(raw) {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
 async function handleApi(req, res, url) {
-  const segments = url.pathname.split("/").filter(Boolean).slice(1); // drop "api"
+  const segments = url.pathname.split("/").filter(Boolean).map(decodeSegment).slice(1); // drop "api"
 
   if (req.method === "GET" && segments[0] === "files" && segments.length === 1) {
     const files = await Promise.all(
@@ -300,12 +350,16 @@ async function handleApi(req, res, url) {
   }
 
   if (req.method === "GET" && segments[0] === "images" && segments.length === 1) {
-    return sendJson(res, 200, { images: await listImages(), folders: Object.keys(IMAGE_DIRS) });
+    const { images, folders } = await scanImages();
+    return sendJson(res, 200, { images, folders });
   }
 
-  if (req.method === "POST" && segments[0] === "images" && segments.length === 2) {
-    const dir = IMAGE_DIRS[segments[1]];
-    if (!dir) return sendError(res, 404, `Unknown image folder "${segments[1]}".`);
+  // Both routes address a folder by every segment after "images", e.g.
+  // /api/images/project-images/ICARUS-Lite — which lets the picker upload
+  // into, and delete from, subfolders exactly as it does the root folders.
+  if (req.method === "POST" && segments[0] === "images" && segments.length >= 2) {
+    const target = resolveImageFolder(segments.slice(1));
+    if (!target) return sendError(res, 404, `Unknown image folder "${segments.slice(1).join("/")}".`);
 
     const filename = sanitizeFilename(url.searchParams.get("name"));
     if (!filename) {
@@ -315,11 +369,28 @@ async function handleApi(req, res, url) {
     const body = await readBody(req, MAX_IMAGE_BYTES);
     if (body.length === 0) return sendError(res, 400, "The uploaded file was empty.");
 
-    await mkdir(dir, { recursive: true });
-    const name = await uniquePath(dir, filename);
-    await writeFile(path.join(dir, name), body);
-    console.log(`  uploaded ${segments[1]}/${name}`);
-    return sendJson(res, 201, { src: `/${segments[1]}/${name}`, folder: segments[1], name, bytes: body.length });
+    await mkdir(target.dir, { recursive: true });
+    const name = await uniquePath(target.dir, filename);
+    await writeFile(path.join(target.dir, name), body);
+    console.log(`  uploaded ${target.folderPath}/${name}`);
+    return sendJson(res, 201, { src: `/${target.folderPath}/${name}`, folder: target.folderPath, name, bytes: body.length });
+  }
+
+  if (req.method === "DELETE" && segments[0] === "images" && segments.length >= 3) {
+    const filename = segments[segments.length - 1];
+    const target = resolveImageFolder(segments.slice(1, -1));
+    if (!target || !isSafeSegment(filename) || !IMAGE_EXTS.has(path.extname(filename).toLowerCase())) {
+      return sendError(res, 404, "Unknown image.");
+    }
+
+    try {
+      await unlink(path.join(target.dir, filename));
+    } catch (error) {
+      if (error.code === "ENOENT") return sendError(res, 404, "That image is already gone.");
+      throw error;
+    }
+    console.log(`  deleted ${target.folderPath}/${filename}`);
+    return sendJson(res, 200, { ok: true });
   }
 
   return sendError(res, 404, "No such endpoint.");

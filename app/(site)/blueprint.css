@@ -195,6 +195,7 @@ html[data-theme="dark"] .bp {
   99.3% { stroke-dashoffset: var(--len); animation-timing-function: linear; }
   100% { stroke-dashoffset: var(--len); }
 }
+@keyframes bp-draw-in { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
 @keyframes bp-chase { to { stroke-dashoffset: -116; } }
 @keyframes bp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
@@ -295,18 +296,24 @@ html[data-theme="dark"] .bp {
 
 /* ---------------------------------------------------------------- hero --- */
 .bp-hero { position: relative; overflow: hidden; padding: clamp(48px, 8vw, 92px) 0 0; }
+/* The ribbon's containing block: without this, its `right` offset is measured
+   against .bp-hero's full viewport-spanning width instead of the capped,
+   centered text column, and it drifts away from the rule on wide screens. */
+.bp-hero .bp-shell { position: relative; }
 
 .bp-hero-ribbon {
   position: absolute;
-  top: -40px;
-  right: clamp(-140px, -6vw, -60px);
+  top: -90px;
+  /* Flush with .bp-shell's content edge — the same edge the rule under the
+     heading spans to, so the ribbon's right side always lines up with it. */
+  right: calc(var(--pad) - 150px);
   width: clamp(360px, 46vw, 640px);
   opacity: 0.1;
   pointer-events: none;
 }
 .bp-hero-ribbon path {
   stroke-dasharray: 600;
-  animation: bp-draw 3.4s cubic-bezier(0.5, 0, 0.2, 1) 0.4s both;
+  animation: bp-draw-in 1.7s cubic-bezier(0.5, 0, 0.2, 1) 0.4s both;
   --len: 600;
 }
 
@@ -452,6 +459,31 @@ html[data-theme="dark"] .bp {
   color: var(--ink-soft);
 }
 .bp-bullets li::marker { color: var(--accent); }
+.bp-bullet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  padding: 4px 12px 4px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  transition: transform 0.3s var(--ease), filter 0.3s ease, box-shadow 0.3s ease;
+}
+.bp-bullet-link svg { transition: transform 0.3s var(--ease); }
+.bp-bullet-link:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.18);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.bp-bullet-link:hover svg { transform: translate(2px, -2px); }
+.bp-bullet-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* -------------------------------------------------------------- pills --- */
 .bp-skill-group + .bp-skill-group { margin-top: 26px; }
@@ -640,10 +672,66 @@ html[data-theme="dark"] .bp {
 .bp-table tbody tr:hover { background: color-mix(in srgb, var(--ink) 3%, transparent); }
 .bp-table a { display: inline-flex; align-items: center; gap: 5px; }
 
+/* ------------------------------------------------------- page spine --- */
+/* Runs the height of .hp-list (the content sections PageSpine wraps — see
+   components/blueprint/PageSpine.tsx), so it starts level with "01 Summary"
+   and ends where the footer begins, and tracks scroll progress across that
+   span. Positioned just left of the shell's own content edge — same
+   centering math .bp-shell uses internally, nudged into the padding gutter —
+   the same way the project list's own spine sits (see .pj-spine). Home page
+   only — see .hp below. */
+.hp-list { position: relative; }
+.hp-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(max(var(--pad), calc((100% - var(--shell)) / 2 + var(--pad))) - 12px);
+  width: 2px;
+  z-index: 30;
+  pointer-events: none;
+}
+.hp-spine-track { position: absolute; inset: 0; background: var(--rule); }
+.hp-spine-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+/* ----------------------------------------------------------- back to top --- */
+.bp-top {
+  position: fixed;
+  left: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
+}
+.bp-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.bp-top:hover { border-color: var(--accent); }
+.bp-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 /* ------------------------------------------------------------ badge --- */
 .bp-badge {
   position: fixed;
-  left: clamp(14px, 2vw, 24px);
+  right: clamp(14px, 2vw, 24px);
   bottom: clamp(14px, 2vw, 24px);
   z-index: 40;
   display: inline-flex;
@@ -659,6 +747,7 @@ html[data-theme="dark"] .bp {
   transition: border-color 0.38s ease, background-color 0.38s ease, transform 0.38s var(--ease);
 }
 .bp-badge:hover { border-color: var(--accent); transform: translateY(-2px); }
+
 .bp-badge-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
 .bp-badge-dot::after {
   content: "";

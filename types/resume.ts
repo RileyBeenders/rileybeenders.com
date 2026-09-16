@@ -134,6 +134,7 @@ export type ResumeVisibility = {
   experienceProofButtons: boolean;
   projectsSection: boolean;
   proofIndex: boolean;
+  openToRelocation: boolean;
 };
 
 /** Five colors a palette is built from — the rest of the token set is derived from these (see lib/palette.ts). */

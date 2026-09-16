@@ -1,0 +1,15 @@
+{
+  "hero": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "tagline": "Email is the fastest way to reach me."
+  },
+  "details": {
+    "title": "Details",
+    "description": [
+      "I try to respond within a day or two — feel free to include a bit of context on what you’d like to talk about."
+    ],
+    "linkedinLabel": "riley-beenders",
+    "githubLabel": "RileyBeenders"
+  }
+}

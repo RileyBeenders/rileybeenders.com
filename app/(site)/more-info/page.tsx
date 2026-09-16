@@ -92,7 +92,7 @@ export default function MoreInfoPage() {
             <Reveal><p className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</p></Reveal>
             <Reveal delay={0.06}>
               <div>
-                <p className="bp-prose">{data.ganttSection.intro}</p>
+                {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
                 <GanttChart chart={chart} />
                 <JobsTable columns={columns} rows={rows} />
               </div>

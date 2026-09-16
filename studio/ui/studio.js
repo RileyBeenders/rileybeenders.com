@@ -6,7 +6,7 @@
  * refused if the file changed on disk underneath you.
  */
 
-import { SCHEMAS } from "./schema.js";
+import { SCHEMAS, RAIL } from "./schema.js";
 import { el, renderFields, normalize } from "./fields.js";
 
 const SITE_URL = "http://localhost:3000";
@@ -107,19 +107,44 @@ async function loadDoc(key) {
 
 /* -------------------------------------------------------------- rail ----- */
 
+/**
+ * The rail is a table of contents for the site: one group per page, in the
+ * order a visitor reads them (see RAIL in schema.js), with a divider wherever
+ * the page changes. Only files the server actually serves are shown.
+ */
 function paintRail() {
+  const served = new Set(state.files.map((file) => file.key));
   dom.rail.replaceChildren(
-    ...state.files.map((file) => {
-      const doc = state.docs[file.key];
-      return el("button", {
-        type: "button",
-        class: `rail-item${file.key === state.activeKey ? " is-active" : ""}`,
-        onClick: () => selectFile(file.key)
-      },
-        el("span", { class: "rail-name" }, file.label),
-        doc?.dirty ? el("span", { class: "rail-dot", title: "Unsaved changes" }) : null);
+    ...RAIL.flatMap((group) => {
+      const keys = group.keys.filter((key) => served.has(key) && schemaFor(key));
+      if (keys.length === 0) return [];
+      return el("div", { class: "rail-group", role: "group", "aria-label": group.page }, ...keys.map(railItem));
     })
   );
+}
+
+function railItem(key) {
+  const schema = schemaFor(key);
+  const doc = state.docs[key];
+  return el("button", {
+    type: "button",
+    class: `rail-item${key === state.activeKey ? " is-active" : ""}`,
+    onClick: () => selectFile(key)
+  },
+    schema.icon === "gear" ? gearIcon() : null,
+    el("span", { class: "rail-name" }, schema.label),
+    doc?.dirty ? el("span", { class: "rail-dot", title: "Unsaved changes" }) : null);
+}
+
+/** Lucide's settings cog — the same icon family as the theme toggle. */
+function gearIcon() {
+  return el("svg", {
+    class: "rail-icon", width: 14, height: 14, viewBox: "0 0 24 24", fill: "none",
+    stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round",
+    "aria-hidden": "true"
+  },
+    el("path", { d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" }),
+    el("circle", { cx: 12, cy: 12, r: 3 }));
 }
 
 /* --------------------------------------------------------------- list ---- */
@@ -454,6 +479,11 @@ async function refreshImages() {
   state.imageFolders = payload.folders;
 }
 
+/** A folder path, as segments the API can address individually. */
+const folderSegments = (folderPath) => folderPath.split("/").filter(Boolean);
+
+const NEW_FOLDER = "__new__";
+
 /** Resolves to a `/folder/name.png` path, or null if dismissed. */
 function openImagePicker(current) {
   return new Promise((resolve) => {
@@ -467,55 +497,127 @@ function openImagePicker(current) {
     };
 
     const grid = el("div", { class: "picker-grid" });
+    const filter = el("select", { class: "f-input f-select f-input--short" });
+
+    function paintFilterOptions() {
+      const previous = filter.value;
+      filter.replaceChildren(
+        el("option", { value: "" }, "All folders"),
+        ...state.imageFolders.map((name) => el("option", { value: name }, name))
+      );
+      filter.value = state.imageFolders.includes(previous) ? previous : "";
+    }
+    paintFilterOptions();
+    filter.addEventListener("change", paintGrid);
 
     function paintGrid() {
+      const images = state.images.filter((image) => !filter.value || image.folder === filter.value);
+
       grid.replaceChildren(
-        ...state.images.map((image) => el("button", {
-          type: "button",
-          class: `picker-item${image.src === current ? " is-active" : ""}`,
-          onClick: () => finish(image.src)
-        },
-          el("img", { src: image.src, alt: "", loading: "lazy" }),
-          el("span", { class: "picker-name" }, image.name),
-          el("span", { class: "picker-meta" }, `${image.folder} · ${Math.round(image.bytes / 1024)} KB`)))
+        ...images.map((image) => {
+          const select = el("button", {
+            type: "button",
+            class: "picker-select",
+            onClick: () => finish(image.src)
+          },
+            el("img", { src: image.src, alt: "", loading: "lazy" }),
+            el("span", { class: "picker-name" }, image.name),
+            el("span", { class: "picker-meta" }, `${image.folder} · ${Math.round(image.bytes / 1024)} KB`));
+
+          const remove = el("button", {
+            type: "button",
+            class: "picker-remove",
+            title: `Delete ${image.name}`,
+            "aria-label": `Delete ${image.name}`,
+            onClick: async (event) => {
+              event.stopPropagation();
+              if (!window.confirm(`Delete "${image.name}" from ${image.folder}? This can't be undone.`)) return;
+              try {
+                const parts = [...folderSegments(image.folder), image.name].map(encodeURIComponent).join("/");
+                await api(`/api/images/${parts}`, { method: "DELETE" });
+                await refreshImages();
+                paintFolderOptions();
+                paintFilterOptions();
+                paintGrid();
+                toast(`Deleted ${image.src}`);
+              } catch (error) {
+                toast(error.message, "error");
+              }
+            }
+          }, "×");
+
+          return el("div", { class: `picker-item${image.src === current ? " is-active" : ""}` }, select, remove);
+        })
       );
-      if (state.images.length === 0) {
-        grid.replaceChildren(el("p", { class: "f-empty" }, "No images yet — upload one below."));
+      if (images.length === 0) {
+        grid.replaceChildren(el("p", { class: "f-empty" }, filter.value ? `No images in ${filter.value} yet.` : "No images yet — upload one below."));
       }
     }
     paintGrid();
 
-    const folder = el("select", { class: "f-input f-select f-input--short" },
-      ...state.imageFolders.map((name) => el("option", { value: name }, name)));
+    const folder = el("select", { class: "f-input f-select f-input--short" });
+    const newFolder = el("input", {
+      type: "text",
+      class: "f-input f-input--mono f-input--short",
+      placeholder: "project-images/NewFolder",
+      hidden: true
+    });
+
+    function paintFolderOptions() {
+      const previous = folder.value;
+      folder.replaceChildren(
+        ...state.imageFolders.map((name) => el("option", { value: name }, name)),
+        el("option", { value: NEW_FOLDER }, "+ New subfolder…")
+      );
+      folder.value = state.imageFolders.includes(previous) ? previous : state.imageFolders[0] || NEW_FOLDER;
+      newFolder.hidden = folder.value !== NEW_FOLDER;
+    }
+    paintFolderOptions();
+    folder.addEventListener("change", () => { newFolder.hidden = folder.value !== NEW_FOLDER; });
 
     const file = el("input", { type: "file", accept: "image/*", class: "f-file" });
     file.addEventListener("change", async () => {
       const chosen = file.files?.[0];
       if (!chosen) return;
+
+      const target = folder.value === NEW_FOLDER ? newFolder.value.trim().replace(/^\/+|\/+$/g, "") : folder.value;
+      if (!target) {
+        toast("Give the new subfolder a path, e.g. project-images/NewFolder", "error");
+        return;
+      }
+
       try {
-        const uploaded = await api(`/api/images/${folder.value}?name=${encodeURIComponent(chosen.name)}`, {
+        const parts = folderSegments(target).map(encodeURIComponent).join("/");
+        const uploaded = await api(`/api/images/${parts}?name=${encodeURIComponent(chosen.name)}`, {
           method: "POST",
           headers: { "content-type": chosen.type || "application/octet-stream" },
           body: chosen
         });
         await refreshImages();
+        paintFolderOptions();
+        paintFilterOptions();
         paintGrid();
         toast(`Uploaded ${uploaded.src}`);
         finish(uploaded.src);
       } catch (error) {
         toast(error.message, "error");
+      } finally {
+        file.value = "";
       }
     });
 
     dom.modal.replaceChildren(
       el("div", { class: "picker" },
         el("div", { class: "picker-head" },
-          el("h2", {}, "Choose an image"),
+          el("div", { class: "picker-head-title" },
+            el("h2", {}, "Choose an image"),
+            filter),
           el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: () => finish(null) }, "Close")),
         grid,
         el("div", { class: "picker-foot" },
           el("span", { class: "f-label f-label--inline" }, "Upload into"),
           folder,
+          newFolder,
           file))
     );
 
@@ -551,7 +653,8 @@ async function boot() {
     // Projects and proofs load up front so the cross-link dropdowns are filled
     // in no matter which file you open first.
     await Promise.all([loadDoc("projects"), loadDoc("proofs")]);
-    await selectFile("projects");
+    // Open on page one, the same place a visitor starts.
+    await selectFile(RAIL[0].keys[0]);
   } catch (error) {
     dom.detail.replaceChildren(el("p", { class: "f-empty f-empty--pane" }, `Could not reach the Studio server: ${error.message}`));
   }

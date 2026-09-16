@@ -295,36 +295,6 @@
 
 .pj-outro { padding: clamp(56px, 12vh, 132px) 0 clamp(80px, 14vh, 160px); }
 
-/* ----------------------------------------------------------- back to top --- */
-
-.pj-top {
-  position: fixed;
-  left: clamp(14px, 2vw, 24px);
-  bottom: clamp(14px, 2vw, 24px);
-  z-index: 45;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--white) 92%, transparent);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
-}
-.pj-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.pj-top:hover { border-color: var(--accent); }
-.pj-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
 /* ------------------------------------------------------------- lightbox --- */
 
 .pj-lightbox {

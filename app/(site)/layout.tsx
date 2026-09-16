@@ -11,6 +11,7 @@ import {
 } from "next/font/google";
 import resumeData from "@/data/resumeData";
 import { BpNav } from "@/components/blueprint/BpNav";
+import { BpFixedRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
@@ -126,10 +127,7 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
         <BpNav />
         {children}
-        <div className="bp-badge">
-          <span className="bp-badge-dot" aria-hidden="true" />
-          Open to relocation
-        </div>
+        <BpFixedRelocationBadge />
       </div>
     </ThemeProvider>
   );

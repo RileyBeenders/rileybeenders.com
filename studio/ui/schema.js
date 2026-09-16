@@ -7,8 +7,12 @@
  * the form picks it up — there is no separate UI to update.
  *
  * Layout hints are optional and change nothing on disk: `span: "half"` or
- * `"third"` lets a short field share its row, and `prose: true` gives a
- * textarea room to write in plus a running word count.
+ * `"third"` lets a short field share its row, `prose: true` gives a textarea
+ * room to write in plus a running word count, and `multiline: true` turns a
+ * string list's rows into textareas for paragraphs.
+ *
+ * RAIL, at the bottom, arranges the schemas in the editor's sidebar in the
+ * order the site reads them.
  */
 
 /** Repeatable bullet rows, shared by projects and experience. */
@@ -273,9 +277,96 @@ export const SCHEMAS = {
     fields: [{ name: "summary", type: "textarea", label: "Summary", rows: 12, required: true, prose: true }]
   },
 
+  contact: {
+    label: "Contact",
+    shape: "object",
+    description: "The contact page. The email, LinkedIn and GitHub addresses themselves come from Site Settings → Person.",
+    fields: [
+      {
+        name: "hero",
+        type: "group",
+        label: "Hero",
+        fields: [
+          { name: "eyebrow", type: "text", label: "Eyebrow", required: true, span: "half", help: "The small label above the headline." },
+          { name: "title", type: "text", label: "Headline", required: true, span: "half" },
+          { name: "tagline", type: "text", label: "Tagline", required: true }
+        ]
+      },
+      {
+        name: "details",
+        type: "group",
+        label: "Details",
+        help: "The section under the hero: a short intro, then the Email, LinkedIn and GitHub cards.",
+        fields: [
+          { name: "title", type: "text", label: "Section title", required: true, span: "half" },
+          { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true },
+          { name: "linkedinLabel", type: "text", label: "LinkedIn link text", required: true, span: "half", help: "Shown on the card; the address is Site Settings → Person → LinkedIn." },
+          { name: "githubLabel", type: "text", label: "GitHub link text", required: true, span: "half", help: "Shown on the card; the address is Site Settings → Person → GitHub." }
+        ]
+      }
+    ]
+  },
+
+  moreInfo: {
+    label: "More Info",
+    shape: "object",
+    description: "The About page: who you are, why this site exists, and the application tracker.",
+    fields: [
+      {
+        name: "aboutHeader",
+        type: "group",
+        label: "Header",
+        help: "The headline and the intro under it.",
+        fields: [
+          { name: "title", type: "text", label: "Headline", required: true },
+          { name: "description", type: "stringList", label: "Intro paragraphs", multiline: true, always: true }
+        ]
+      },
+      {
+        name: "aboutMe",
+        type: "group",
+        label: "About me",
+        fields: [
+          { name: "title", type: "text", label: "Section title", required: true },
+          { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true }
+        ]
+      },
+      {
+        name: "aboutSite",
+        type: "group",
+        label: "About this site",
+        fields: [
+          { name: "title", type: "text", label: "Section title", required: true },
+          { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true },
+          {
+            name: "readMore",
+            type: "group",
+            label: "Read more link",
+            help: "Leave both blank to hide the link.",
+            fields: [
+              { name: "label", type: "text", label: "Label", span: "half", placeholder: "Read more" },
+              { name: "href", type: "text", label: "URL", span: "half", placeholder: "https://…" }
+            ]
+          }
+        ]
+      },
+      {
+        name: "ganttSection",
+        type: "group",
+        label: "Application tracker",
+        help: "The chart itself is drawn from data/more-info/gantt.md, which is still edited by hand.",
+        fields: [
+          { name: "title", type: "text", label: "Section title", required: true },
+          { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." }
+        ]
+      }
+    ]
+  },
+
   header: {
     label: "Site Settings",
     shape: "object",
+    icon: "gear",
     description: "Who the site is about, and which parts of it are switched on.",
     fields: [
       {
@@ -314,7 +405,8 @@ export const SCHEMAS = {
           { name: "experienceProjectButtons", type: "boolean", label: "Project links on resume bullets", default: false, always: true, span: "half" },
           { name: "experienceProofButtons", type: "boolean", label: "Proof links on resume bullets", default: false, always: true, span: "half" },
           { name: "projectsSection", type: "boolean", label: "Projects page", default: true, always: true, span: "half" },
-          { name: "proofIndex", type: "boolean", label: "Proof index", default: false, always: true, span: "half" }
+          { name: "proofIndex", type: "boolean", label: "Proof index", default: false, always: true, span: "half" },
+          { name: "openToRelocation", type: "boolean", label: "\"Open to relocation\" badge", default: true, always: true, span: "half" }
         ]
       },
       {
@@ -351,3 +443,17 @@ export const SCHEMAS = {
     ]
   }
 };
+
+/**
+ * The editor's sidebar, read like the site is: the home page top to bottom,
+ * then each further page in nav order, then the settings that apply to all of
+ * them. One group per page — the rail draws a divider wherever the page
+ * changes. A schema that isn't listed here doesn't appear.
+ */
+export const RAIL = [
+  { page: "Home", keys: ["summary", "experience", "skills", "education"] },
+  { page: "Projects", keys: ["projects", "proofs"] },
+  { page: "Contact", keys: ["contact"] },
+  { page: "More Info", keys: ["moreInfo"] },
+  { page: "Site settings", keys: ["header"] }
+];
