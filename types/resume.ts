@@ -17,6 +17,8 @@ export type ProofPoint = {
 
 export type ResumeBullet = {
   text: string;
+  /** Exact words or phrases that receive the active palette accent on interaction. */
+  emphasis?: string[];
   proofId?: string;
   projectId?: string;
 };

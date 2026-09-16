@@ -13,6 +13,15 @@ const HOP_SPRING = { type: "spring", stiffness: 170, damping: 18, mass: 1 } as c
 const ROLL_KEYFRAMES = [0, -14, 10, -5, 0];
 const ROLL_TWEEN = { duration: 0.6, ease: "easeInOut" } as const;
 
+const LABEL = "Open to relocation";
+/** Typewriter cycle: rapid type-in → caret blinks → letters fall away a couple at a time → brief empty beat → repeat. */
+const TYPE_MS = 40;
+const TYPE_JITTER_MS = 35; // random extra per keystroke so it reads as typed, not metronomic
+const HOLD_MS = 2600;
+const DELETE_MS = 160;
+const DELETE_CHUNK = 2;
+const EMPTY_MS = 1000;
+
 // document.documentElement.clientWidth/Height (not window.innerWidth/innerHeight) — these exclude the
 // scrollbar, matching the box position:fixed's right/bottom offsets are actually measured against.
 function clampPx(min: number, viewportFraction: number, max: number) {
@@ -72,11 +81,64 @@ function useHeroRestingSpot() {
   return spot;
 }
 
+type TypePhase = "typing" | "holding" | "deleting" | "empty";
+
+/**
+ * Drives the looping type / hold / delete cycle. Each phase schedules a single
+ * timeout for its next step and re-runs when `count` or `phase` moves, so
+ * unmounting (or `active` flipping off) always has exactly one timer to clear.
+ */
+function useTypewriter(text: string, active: boolean) {
+  const [count, setCount] = useState(0);
+  const [phase, setPhase] = useState<TypePhase>("typing");
+
+  useEffect(() => {
+    if (!active) return;
+    let id: ReturnType<typeof setTimeout>;
+    if (phase === "typing") {
+      id = setTimeout(() => {
+        const next = count + 1;
+        setCount(next);
+        if (next >= text.length) setPhase("holding");
+      }, TYPE_MS + Math.random() * TYPE_JITTER_MS);
+    } else if (phase === "holding") {
+      id = setTimeout(() => setPhase("deleting"), HOLD_MS);
+    } else if (phase === "deleting") {
+      id = setTimeout(() => {
+        const next = Math.max(0, count - DELETE_CHUNK);
+        setCount(next);
+        if (next === 0) setPhase("empty");
+      }, DELETE_MS);
+    } else {
+      id = setTimeout(() => setPhase("typing"), EMPTY_MS);
+    }
+    return () => clearTimeout(id);
+  }, [active, phase, count, text]);
+
+  return {
+    shown: active ? text.slice(0, count) : text,
+    // The caret only blinks while resting — a real caret sits solid mid-keystroke.
+    blinking: phase === "holding" || phase === "empty"
+  };
+}
+
 function BadgeLabel() {
+  const reduced = useReducedMotion();
+  const animate = !reduced;
+  const { shown, blinking } = useTypewriter(LABEL, animate);
+
   return (
     <>
       <span className="bp-badge-dot" aria-hidden="true" />
-      Open to relocation
+      <span className="bp-badge-type">
+        {/* Invisible full label reserves the width so the badge never resizes mid-cycle. */}
+        <span className="bp-badge-type-ghost" aria-hidden="true">{LABEL}</span>
+        <span className="bp-badge-type-live" aria-hidden="true">
+          {shown}
+          {animate ? <span className="bp-badge-caret" data-blink={blinking || undefined} /> : null}
+        </span>
+        <span className="sr-only">{LABEL}</span>
+      </span>
     </>
   );
 }

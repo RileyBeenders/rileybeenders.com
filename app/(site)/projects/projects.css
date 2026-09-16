@@ -110,6 +110,36 @@
   max-width: 58ch;
 }
 .pj-bullets li::marker { color: var(--accent); }
+.pj-bullet-content {
+  display: inline-block;
+  transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+}
+.pj-bullet-emphasis {
+  color: inherit;
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: 0;
+  transition:
+    color 0.28s var(--ease),
+    -webkit-text-stroke-color 0.28s var(--ease),
+    -webkit-text-stroke-width 0.28s var(--ease);
+}
+.pj-bullets li:hover .pj-bullet-content,
+.pj-bullets li:focus-within .pj-bullet-content {
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.pj-bullets li:hover .pj-bullet-emphasis,
+.pj-bullets li:focus-within .pj-bullet-emphasis {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+  -webkit-text-stroke-width: var(--bullet-accent-stroke);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-bullet-content { transition-duration: 0.01ms; }
+  .pj-bullets li:hover .pj-bullet-content,
+  .pj-bullets li:focus-within .pj-bullet-content { transform: none; }
+}
 
 /* -------------------------------------------------------------- toggle --- */
 
@@ -327,6 +357,17 @@
   width: auto;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.04);
+  /* The original file is fetched only now, and it can be several megabytes:
+     fade it in once it has actually arrived rather than painting it in strips. */
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.pj-lb-figure img.is-loaded { opacity: 1; }
+.pj-lb-loading {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 }
 .pj-lb-figure figcaption {
   display: flex;
@@ -375,5 +416,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pj-lightbox { animation: none; }
+  .pj-lb-figure img { transition: none; }
   .pj-toggle-icon { transition: none; }
 }

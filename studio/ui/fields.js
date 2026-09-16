@@ -124,6 +124,104 @@ function textControl(field, value, ctx) {
   return fieldShell(field, control, count);
 }
 
+/**
+ * A plain-text bullet editor with selection-based accent phrases. Phrases are
+ * stored separately from the copy, keeping the JSON safe and easy to edit.
+ */
+function emphasisTextControl(field, value, ctx) {
+  const id = nextId();
+  const emphasisName = field.emphasisName || "emphasis";
+  const control = el("textarea", {
+    id,
+    class: "f-input f-textarea f-emphasis-textarea",
+    rows: field.rows || 3,
+    value: value[field.name] ?? "",
+    placeholder: field.placeholder || ""
+  });
+  const addButton = el("button", {
+    type: "button",
+    class: "f-btn f-btn--quiet f-emphasis-add",
+    disabled: true
+  }, icon("add"), " Accent selection");
+  const phraseList = el("div", { class: "f-emphasis-phrases", "aria-live": "polite" });
+  const selectionHint = el("span", { class: "f-emphasis-hint" }, "Select text above to add a phrase");
+
+  const phrases = () => Array.isArray(value[emphasisName]) ? value[emphasisName] : [];
+  const selectedText = () => control.value.slice(control.selectionStart, control.selectionEnd).trim();
+
+  function paintSelection() {
+    const selection = selectedText();
+    const canAdd = selection !== "" && !phrases().includes(selection);
+    addButton.disabled = !canAdd;
+    selectionHint.textContent = selection === ""
+      ? "Select text above to add a phrase"
+      : canAdd
+        ? `Ready: “${selection}”`
+        : "That phrase is already emphasized";
+  }
+
+  function paintPhrases() {
+    const current = phrases();
+    phraseList.replaceChildren(
+      ...(current.length === 0
+        ? [el("span", { class: "f-emphasis-empty" }, "No accent phrases yet")]
+        : current.map((phrase) => {
+            const found = control.value.includes(phrase);
+            const remove = el("button", {
+              type: "button",
+              class: "f-emphasis-remove",
+              title: `Remove accent from “${phrase}”`,
+              "aria-label": `Remove accent from ${phrase}`,
+              onClick: () => {
+                const next = phrases().filter((entry) => entry !== phrase);
+                if (next.length > 0) value[emphasisName] = next;
+                else delete value[emphasisName];
+                paintPhrases();
+                paintSelection();
+                ctx.onEdit();
+              }
+            }, phrase, el("span", { "aria-hidden": "true" }, "×"));
+            return el("span", {
+              class: `f-emphasis-chip${found ? "" : " is-missing"}`,
+              title: found ? "Accented on bullet hover" : "This phrase no longer appears in the bullet"
+            }, remove);
+          }))
+    );
+  }
+
+  control.addEventListener("input", () => {
+    value[field.name] = control.value;
+    paintPhrases();
+    paintSelection();
+    ctx.onEdit();
+  });
+  for (const eventName of ["select", "keyup", "mouseup"]) {
+    control.addEventListener(eventName, paintSelection);
+  }
+  addButton.addEventListener("mousedown", (event) => event.preventDefault());
+  addButton.addEventListener("click", () => {
+    const selection = selectedText();
+    if (selection === "" || phrases().includes(selection)) return;
+    value[emphasisName] = [...phrases(), selection];
+    paintPhrases();
+    paintSelection();
+    ctx.onEdit();
+  });
+
+  paintPhrases();
+  paintSelection();
+
+  return el("div", { class: fieldClass(field) },
+    el("label", { class: "f-label", for: id },
+      field.label,
+      field.required ? el("span", { class: "f-required", title: "Required" }, "*") : null),
+    el("div", { class: "f-emphasis-editor" },
+      control,
+      el("div", { class: "f-emphasis-tools" }, addButton, selectionHint),
+      phraseList),
+    field.help ? el("p", { class: "f-help" }, field.help) : null);
+}
+
 function numberControl(field, value, ctx) {
   const id = nextId();
   const control = el("input", {
@@ -389,6 +487,7 @@ const CONTROLS = {
   text: textControl,
   slug: textControl,
   textarea: textControl,
+  emphasisText: emphasisTextControl,
   number: numberControl,
   boolean: booleanControl,
   ref: refControl,
@@ -430,6 +529,16 @@ export function normalize(fields, value) {
     const keep = field.always || field.required;
 
     switch (field.type) {
+      case "emphasisText": {
+        const text = isBlank(raw) ? "" : String(raw).trim();
+        if (text !== "" || keep) out[field.name] = text;
+        const emphasisName = field.emphasisName || "emphasis";
+        const phrases = (Array.isArray(value[emphasisName]) ? value[emphasisName] : [])
+          .map((entry) => String(entry).trim())
+          .filter((entry, index, list) => entry !== "" && list.indexOf(entry) === index);
+        if (phrases.length > 0) out[emphasisName] = phrases;
+        break;
+      }
       case "stringList": {
         const list = (Array.isArray(raw) ? raw : []).map((entry) => String(entry).trim()).filter((entry) => entry !== "");
         if (list.length > 0 || keep) out[field.name] = list;
@@ -464,7 +573,7 @@ export function normalize(fields, value) {
     }
   }
 
-  const known = new Set(fields.map((field) => field.name));
+  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : [])]));
   for (const [key, raw] of Object.entries(value)) {
     if (!known.has(key)) out[key] = raw;
   }

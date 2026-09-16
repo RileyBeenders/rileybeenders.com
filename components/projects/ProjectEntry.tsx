@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type { ProjectView } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
 
 type ProjectEntryProps = {
   view: ProjectView;
@@ -18,6 +19,14 @@ const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 /** How far the media column drifts against the text column as the entry scrolls past — a classic parallax read of depth, with no pinning involved. */
 const PARALLAX_RANGE = 56;
+
+function ProjectBullet({ text, emphasis }: { text: string; emphasis?: string[] }) {
+  return (
+    <span className="pj-bullet-content">
+      <EmphasizedText text={text} phrases={emphasis} className="pj-bullet-emphasis" />
+    </span>
+  );
+}
 
 const bulletListVariants = {
   hidden: {},
@@ -117,7 +126,9 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               {project.bullets.length > 0 && (
                 reduced ? (
                   <ul className="pj-bullets">
-                    {project.bullets.map((bullet) => <li key={bullet.text}>{bullet.text}</li>)}
+                    {project.bullets.map((bullet) => (
+                      <li key={bullet.text}><ProjectBullet {...bullet} /></li>
+                    ))}
                   </ul>
                 ) : (
                   <motion.ul
@@ -128,7 +139,9 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
                     variants={bulletListVariants}
                   >
                     {project.bullets.map((bullet) => (
-                      <motion.li key={bullet.text} variants={bulletItemVariants}>{bullet.text}</motion.li>
+                      <motion.li key={bullet.text} variants={bulletItemVariants}>
+                        <ProjectBullet {...bullet} />
+                      </motion.li>
                     ))}
                   </motion.ul>
                 )
