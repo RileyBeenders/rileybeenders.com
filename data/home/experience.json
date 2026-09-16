@@ -1,6 +1,6 @@
 [
   {
-    "company": "Proteor / Proteor Printing Solutions",
+    "company": "Proteor",
     "role": "Lead, Research & Development Engineer",
     "location": "Coplay, PA",
     "start": "January 2025",
@@ -13,6 +13,9 @@
       },
       {
         "text": "Led the ICARUS-Lite from product development through commercialization, contributing to increased revenue and the addition of approximately five new roles."
+      },
+      {
+        "text": "Conduct technical interviews as Hiring Manager, driving engineering hiring decisions alongside core Lead, R&D Engineer responsibilities."
       },
       {
         "text": "Developed an automated LabVIEW system that collects nine data points every 15 ms from multiple laser sensors over Modbus and charts tolerance data for internal quality control and end-customer use.",

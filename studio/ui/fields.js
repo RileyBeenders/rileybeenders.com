@@ -306,12 +306,16 @@ function stringListControl(field, value, ctx) {
   const list = Array.isArray(value[field.name]) ? value[field.name] : (value[field.name] = []);
 
   const rows = list.map((entry, index) => {
-    const input = el("input", { type: "text", class: "f-input", value: entry ?? "" });
+    // `multiline` lists hold paragraphs, so each row is a textarea that grows
+    // with what's in it rather than a one-line input.
+    const input = field.multiline
+      ? el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "" })
+      : el("input", { type: "text", class: "f-input", value: entry ?? "" });
     input.addEventListener("input", () => {
       list[index] = input.value;
       ctx.onEdit();
     });
-    return el("div", { class: "f-row" },
+    return el("div", { class: `f-row${field.multiline ? " f-row--multiline" : ""}` },
       input,
       el("div", { class: "f-row-tools" },
         iconButton("up", "Move up", () => { moveItem(list, index, index - 1); ctx.onStructureChange(); }, index === 0),

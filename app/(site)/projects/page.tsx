@@ -5,7 +5,7 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
 import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
-import { BackToTop } from "@/components/projects/BackToTop";
+import { BackToTop } from "@/components/blueprint/BackToTop";
 import "./projects.css";
 
 export const metadata: Metadata = {

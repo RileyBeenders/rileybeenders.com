@@ -33,8 +33,18 @@ ui/
 ## Adding a field
 
 Add it to `ui/schema.js` in the position it should occupy in the JSON, and to
-the matching type in `types/resume.ts`. The form picks it up — there is no
-separate UI to update.
+the matching type under `types/`. The form picks it up — there is no separate
+UI to update.
+
+## Adding a file
+
+1. List it in `FILES` in `server.mjs`. That is the allow-list, so nothing else
+   can be read or written.
+2. Describe its fields in `SCHEMAS` in `ui/schema.js`.
+3. Slot it into `RAIL` in `ui/schema.js` under the page it belongs to. The rail
+   reads the way the site does — the home page top to bottom, then each further
+   page in nav order, then Site Settings — and draws a divider wherever the
+   page changes.
 
 Field order in a schema **is** key order on disk, and optional fields that are
 empty are left out, so an entry you did not touch saves back byte-for-byte

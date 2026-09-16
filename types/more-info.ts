@@ -21,7 +21,8 @@ export type MoreInfoAboutSite = {
 
 export type MoreInfoGanttSection = {
   title: string;
-  intro: string;
+  /** Optional lead-in above the chart; omitted when there is nothing to say. */
+  intro?: string;
 };
 
 export type MoreInfoData = {

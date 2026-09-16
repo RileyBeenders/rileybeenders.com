@@ -11,10 +11,11 @@
     "github": "https://github.com/RileyBeenders"
   },
   "visibility": {
-    "experienceProjectButtons": false,
+    "experienceProjectButtons": true,
     "experienceProofButtons": false,
     "projectsSection": true,
-    "proofIndex": false
+    "proofIndex": false,
+    "openToRelocation": true
   },
   "theme": {
     "paletteId": "electric",
