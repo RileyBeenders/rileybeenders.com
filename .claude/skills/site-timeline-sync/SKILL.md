@@ -46,6 +46,8 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
    ```
    `screenshotId` is optional and must match an `id` in `feature.screenshots`.
 
+   Four optional keys are for the rare entry that isn't a commit — a resume going out, a reply coming back. `"mark": "star"` draws the dot as an accent star instead of a circle sized by the diff. `id` gives an entry a handle; a later entry with `"linkFrom": "<that id>"` is joined to it by a line arrowed at the later dot, captioned with the days between the two dates (`linkLabel` overrides that caption). Keep this for moments that genuinely answer each other — the axis lifts a linked pair above every stem it spans, and a third pair would crowd it.
+
 5. **Move the present.** There is at most one `"era": "present"` entry: the work in progress right now, with no `hash`. When that work lands, give the entry its hash, set `era` to `past`, and write a new present entry only if something else is genuinely underway — otherwise leave the page with no present entry (the timeline's "now" marker still shows today). Never leave a present entry describing finished work.
 
 6. **Promote or prune the future.** `"era": "future"` entries are plans with a target month (`YYYY-MM-01`). When one ships, convert it to a past entry with the real date and hash (or delete it and write the past entry fresh). If a plan is dropped, delete it. Keep the future to three to five items that are grounded in the repo — hidden projects in `projects.json`, `README_TODO.md`, an unfinished Studio section — not aspirations.

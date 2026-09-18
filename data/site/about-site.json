@@ -191,6 +191,16 @@
         "deletions": 3
       },
       {
+        "date": "2026-08-01",
+        "era": "past",
+        "id": "k2-resume-out",
+        "title": "Tailored resume submitted to K2 Space",
+        "summary": "Application 003, Principal Electro-Mechanical Manufacturing Engineer: the posting goes through the resume builder and the PDF it writes is submitted the same day.",
+        "tags": [
+          "goal"
+        ]
+      },
+      {
         "date": "2026-08-02",
         "era": "past",
         "hash": "e250a16",
@@ -215,6 +225,17 @@
         "files": 2830,
         "insertions": 448026,
         "deletions": 321
+      },
+      {
+        "date": "2026-08-08",
+        "era": "past",
+        "mark": "star",
+        "linkFrom": "k2-resume-out",
+        "title": "K2 Space reached out to schedule interview",
+        "summary": "An email lands asking to set up an interview — the fastest reply of any application in the tracker, and the first end-to-end proof that a resume written from this site's data gets read.",
+        "tags": [
+          "goal"
+        ]
       },
       {
         "date": "2026-08-17",
