@@ -14,6 +14,13 @@ Full annotated tree of `rileybeenders.com` on the **`main`** branch (post Bluepr
   sync-charts/SKILL.md         # name: sync-charts — README ↔ gantt.md tracker sync
   design-guidelines/           # name: design-guidelines — light/dark reference design-token systems
     SKILL.md, DESIGN.md, design-light.md, design-dark.md
+  motion-design/               # name: motion-design — what to animate and how much (svelte-bits catalog, thresholds); junctioned into .claude/skills
+    SKILL.md, references/component-catalog.md
+  motion-fluidity/             # name: motion-fluidity — framer-motion + CSS grammar and copy-ready recipes; junctioned
+    SKILL.md, references/grammar-map.md, references/recipes.md
+  motion-layout/               # name: motion-layout — nav / hero / grid / card composition patterns; junctioned
+    SKILL.md, references/svelte-bits-layouts.md
+  site-timeline-sync/SKILL.md  # name: site-timeline-sync — keeps /about-this-site current from git; junctioned
   skills/                      # 13 vendored, non-repo-specific frontend/design-taste skills (see .agents/README.md)
 
 .obsidian/                     # NOT the site's config — this Obsidian vault lives inside it
@@ -29,9 +36,13 @@ app/
     layout.tsx                 # loads Instrument Serif + Spectral (next/font/google), blueprint.css, renders <BpNav> + "Open to relocation" badge
     blueprint.css              # the entire site design system, all scoped under .bp
     page.tsx                   # / — home (server component): hero + Summary/Experience/Toolchain/Education + footer
-    projects/page.tsx          # /projects — hero + <BpComingSoon> (case studies not published yet)
+    projects/page.tsx          # /projects — hero + one <ProjectEntry> per published project in <ProjectListSpine> (BpComingSoon fallback)
+    projects/projects.css      # .pj-* — entry layout, gallery, lightbox, case study, the per-project date box
+    projects/feature.css       # .ft-* / .tl-* — the About page's stats, timeline, pillars, pinned screenshots (loaded by both routes)
+    about-this-site/page.tsx   # /about-this-site — the site as its own case study (hero + date bar, story, deep-dive)
+    about-this-site/about-site.css  # .as-* page layout + the large date-bar variant
     contact/page.tsx           # /contact — hero + <BpActions> + a contact card row
-    more-info/page.tsx         # /more-info — About copy + "Read more" link + <GanttChart> + <JobsTable>
+    more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable>
   api/resume-pdf/route.ts      # Node-runtime API route: generates the live resume PDF on demand
 
 components/
@@ -43,6 +54,24 @@ components/
     BpActions.tsx              # Download PDF (3-state) / Email / LinkedIn / GitHub button row (client)
     BpComingSoon.tsx           # animated "case studies in progress" placeholder + optional teaser queue (client)
     Reveal.tsx                 # framer-motion scroll-entrance wrapper (rise or rule variant), respects reduced motion
+    CountUp.tsx                # number springs to its value on view (About page stats)
+    WordReveal.tsx             # word-by-word blur-in for eyebrows/headings
+    ScrollWords.tsx            # scroll-scrubbed word brightening for one short passage
+  about-site/
+    AboutSiteStory.tsx         # the About page's "01 The site" section (summary, bullets, gallery, case-study toggle)
+  projects/
+    ProjectEntry.tsx           # one project: rule + date box, text column, media column, case-study toggle
+    ProjectListSpine.tsx       # scroll-filled hairline spine behind the project list
+    ProjectDateBox.tsx         # boxed date range; "ongoing" turns its underline into a running progress bar
+    CaseStudy.tsx              # expanded case-study markup, shared with the About page
+    ProjectGallery.tsx         # 4:3 next/image grid with clip-path wipes; opens the Lightbox
+    Lightbox.tsx               # full-screen original-image viewer (portal, keyboard nav)
+    ProjectFeature.tsx         # the deep-dive composer (owns the shared Lightbox) — About page only
+    feature/
+      FeatureStats.tsx         # CountUp tiles with a CSS stagger and cursor spotlight
+      FeatureTimeline.tsx      # time-scaled commit timeline: dots by date, past/present/future, card, mobile list
+      FeaturePillars.tsx       # three expandable cards with screenshot thumbnails
+      FeatureScreenshots.tsx   # screenshots with numbered pins, callouts, legend; tall images scroll in a frame
 
 data/
   header.json                  # site-wide metadata: person, visibility flags, siteMode ("resume"), resumePdfPath
@@ -57,15 +86,27 @@ data/
     gantt.md                   # hand-authored mermaid Gantt block + markdown tracker table
     more-info.json             # About Me / About the Site copy + the aboutSite.readMore link
   projects/
-    projects.json              # case-study projects — only name/type/order consumed today
-    proofs.json                # evidence entries — imported then pruned to [] at runtime
+    projects.json              # case-study projects (summary, bullets, images, additionalInfo, optional dates); hidden ones carry visible:false
+    proofs.json                # evidence entries — the case-study detail layer buildProofView reads
+  site/
+    about-site.json            # /about-this-site content: hero, dates, story, case study, stats, timeline, pillars, screenshots (Studio: About this site)
 
 lib/
   gantt.ts                     # parseGanttFile(): splits gantt.md into {chart, columns, rows}
+  projects.ts                  # buildProofView() / buildProjectViews(): the shapes ProjectEntry and the About page consume
+  dates.ts                     # ISO date helpers: isIsoDate, parseIsoDate (UTC), formatDate, daysBetween, todayIso
+  useInViewOnce.ts             # once-only IntersectionObserver hook for CSS-stagger reveals
+  useSpotlight.ts              # writes --sx/--sy on pointer move for the .bp-spot cursor wash
+  site.ts                      # REPO_URL for timeline commit links
 
 types/
   more-info.ts                 # MoreInfoData shape (matches more-info.json), incl. MoreInfoReadMore
-  resume.ts                    # ResumeData + nested types; still holds the unused ComingSoon* schema
+  resume.ts                    # ResumeData + nested types (Project, ProjectDates, the ProjectFeature/Timeline/Screenshot types); still holds the unused ComingSoon* schema
+  about-site.ts                # AboutSiteData (matches data/site/about-site.json)
+
+scripts/
+  capture-site-screenshots.mjs # playwright-core (machine Chrome/Edge) recapture of the About page's screenshots; needs the dev server (+ Studio)
+  site-stats.mjs               # git-derived stats + key-commit candidates for the About page; --write refreshes the data file
 
 ResumeBuilder/
   downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + trigger-download the live PDF
@@ -79,7 +120,9 @@ design/                        # Blueprint Press design source — a Claude Desi
   Main.dc.html, Mark.dc.html, Interactions.dc.html, canvas.json   # the published export and the 5 rejected "earlier sketches" artboards were removed as stale clutter; regenerate the export by re-publishing if needed
 
 public/
-  project-artifacts/*.svg      # abstract diagram assets (from the old drawer design; not currently referenced by any route)
+  project-artifacts/*.svg      # abstract diagram assets — ProjectGallery's fallback for projects without photos
+  project-images/ICARUS-Lite/, ICARUS-Pro/   # project photos, edited via the Studio's image picker
+  project-images/rileybeenders-com/           # the About page's screenshots of the site itself (written by scripts/capture-site-screenshots.mjs)
   project-images/IcarusLiteRender.png
   README.md                    # one-line note: no static resume.pdf needed, /api/resume-pdf covers it
 

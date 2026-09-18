@@ -1,0 +1,580 @@
+/* ==========================================================================
+   Projects — featured deep-dive (.ft-*) and the commit timeline (.tl-*)
+   Loaded by app/(site)/projects/page.tsx next to projects.css. Everything
+   here follows blueprint.css: --ease for every eased transition, hairlines
+   in --rule, paper and ink, the site's 860px breakpoint. Reduced motion is
+   handled by blueprint.css's blanket rule plus a few explicit final states.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- shell --- */
+
+.ft { margin-top: clamp(40px, 6vh, 64px); }
+
+.ft-head { margin-top: clamp(22px, 3vh, 30px); max-width: 64ch; }
+.ft-eyebrow { display: block; }
+.ft-intro {
+  margin-top: 14px;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.ft-block { margin-top: clamp(40px, 6vh, 64px); }
+.ft-block-title {
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ft-block-note { margin-top: 8px; font-size: 14px; color: var(--muted); }
+
+/* ---------------------------------------------------------------- stats --- */
+
+.ft-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+.ft-stat {
+  padding: 18px 18px 16px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: transform 0.44s var(--ease), border-color 0.44s ease, opacity 0.5s var(--ease);
+}
+.ft-stat:hover { transform: translateY(-3px); border-color: var(--ink); }
+
+/* Tiles arrive 60ms apart, capped at the sixth so late ones don't wait. */
+.ft-stats[data-stagger] .ft-stat {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-delay: calc(min(var(--i, 0), 6) * 60ms);
+}
+.ft-stats[data-stagger].is-in .ft-stat { opacity: 1; transform: none; }
+.ft-stats[data-stagger].is-in .ft-stat:hover { transform: translateY(-3px); transition-delay: 0s; }
+
+.ft-stat-value {
+  font-family: var(--bp-font-header), Georgia, serif;
+  font-size: clamp(34px, 3.4vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ft-stat-suffix { font-size: 0.6em; color: var(--accent); margin-left: 2px; }
+.ft-stat-label {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ft-stat-note { margin-top: 4px; font-size: 13px; color: var(--faint); }
+
+/* ------------------------------------------------------------- timeline --- */
+
+.tl { margin-top: clamp(22px, 3vh, 30px); }
+
+/* The axis: a relative box with the track at its vertical center and room
+   above and below for stems, dots, and labels. Everything inside is placed
+   by --x (percent of the axis), set from the entry's date. */
+.tl-axis {
+  position: relative;
+  height: 236px;
+  margin-inline: 4px;
+}
+.tl-axis:focus-within { outline: none; }
+
+.tl-eras { position: absolute; top: 0; left: 0; right: 0; height: 16px; }
+.tl-era {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.tl-eras .tl-era:first-child { transform: none; }
+.tl-era--future { transform: translateX(-100%); }
+.tl-era--now { color: var(--accent); }
+
+.tl-track { position: absolute; left: 0; right: 0; top: 50%; height: 2px; }
+.tl-track-past { position: absolute; left: 0; top: 0; height: 2px; background: var(--rule); }
+.tl-track-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.8s var(--ease) 0.15s;
+}
+.tl.is-in .tl-track-fill { transform: scaleX(1); }
+.tl-track-future {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--faint) 0 6px, transparent 6px 13px);
+}
+
+/* Today. A solid accent point with a ring that breathes outward. */
+.tl-now {
+  position: absolute;
+  top: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.tl-now-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  animation: tl-ring 2.6s var(--ease) 1.2s infinite;
+}
+@keyframes tl-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  70%, 100% { transform: scale(2.3); opacity: 0; }
+}
+
+/* Month ticks sit on the line; their labels drop to the bottom of the axis,
+   clear of any below-axis dot even at the longer stem depth. */
+.tl-tick { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--rule); }
+.tl-tick-label {
+  position: absolute;
+  top: 104px;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* A dot is a button: stem, mark, and a label that shows on hover or when
+   selected. Above-axis dots hang from the line; below-axis dots stand on it.
+   --depth lengthens the stem when two dots on one side would otherwise touch. */
+.tl-dot {
+  position: absolute;
+  left: var(--x);
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transition-delay: calc(var(--i, 0) * 45ms + 450ms);
+  z-index: 1;
+}
+.tl-dot--above { transform: translate(-50%, calc(-100% + 1px)) translateY(8px); }
+.tl-dot--below { transform: translate(-50%, 1px) translateY(-8px); }
+.tl.is-in .tl-dot--above { opacity: 1; transform: translate(-50%, calc(-100% + 1px)); }
+.tl.is-in .tl-dot--below { opacity: 1; transform: translate(-50%, 1px); }
+.tl-dot:focus-visible { outline: none; }
+.tl-dot:focus-visible .tl-dot-mark { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.tl-dot-stem { width: 1px; height: calc(22px * var(--depth, 1)); background: var(--rule); }
+.tl-dot--above .tl-dot-stem { order: 3; }
+.tl-dot--below .tl-dot-stem { order: 1; }
+
+.tl-dot-mark {
+  order: 2;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  transition: transform 0.34s var(--ease), background-color 0.34s ease, border-color 0.34s ease;
+}
+.tl-dot--present .tl-dot-mark { background: var(--accent); border-color: var(--accent); }
+.tl-dot--future .tl-dot-mark { background: var(--paper); border-style: dashed; border-color: var(--muted); }
+.tl-dot:hover .tl-dot-mark,
+.tl-dot.is-active .tl-dot-mark { transform: scale(1.3); border-color: var(--accent); }
+.tl-dot.is-active .tl-dot-mark { background: var(--accent); }
+.tl-dot--future.is-active .tl-dot-mark { background: var(--paper); border-style: solid; }
+
+.tl-dot-label {
+  position: absolute;
+  left: 50%;
+  padding: 3px 7px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+  pointer-events: none;
+}
+.tl-dot--above .tl-dot-label { bottom: calc(100% + 6px); }
+.tl-dot--below .tl-dot-label { top: calc(100% + 6px); }
+.tl-dot:hover .tl-dot-label,
+.tl-dot:focus-visible .tl-dot-label,
+.tl-dot.is-active .tl-dot-label { opacity: 1; transform: translate(-50%, 0); }
+.tl-dot.is-active .tl-dot-label { border-color: var(--ink); }
+
+/* The selected entry's card. Fixed minimum height so switching dots doesn't
+   push the pillars up and down. */
+.tl-card-slot { min-height: 168px; margin-top: 8px; }
+.tl-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px clamp(20px, 3vw, 40px);
+  align-items: start;
+  padding: 6px 0 6px 20px;
+  border-left: 2px solid var(--ink);
+}
+.tl-card--present { border-left-color: var(--accent); }
+.tl-card--future { border-left-style: dashed; border-left-color: var(--muted); }
+.tl-card > :not(.tl-card-shot) { grid-column: 1; }
+
+.tl-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tl-badge {
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+.tl-badge--present { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.tl-badge--future { border-style: dashed; }
+.tl-hash {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+  transition: color 0.28s ease, border-color 0.28s ease;
+}
+.tl-hash:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+.tl-card-title {
+  margin-top: 10px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.tl-card-summary { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 62ch; }
+
+.tl-card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 14px; }
+.tl-tag {
+  padding: 3px 9px;
+  border: 1px solid var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pill-text);
+}
+.tl-size {
+  display: inline-flex;
+  gap: 10px;
+  margin-left: auto;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.tl-size-add { color: #2e7d4f; }
+.tl-size-del { color: var(--accent); }
+html[data-theme="dark"] .tl-size-add { color: #6cc48e; }
+
+/* A thumbnail beside the card, opening the full screenshot. */
+.tl-card-shot {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: clamp(160px, 18vw, 240px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  text-align: left;
+}
+.tl-card-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: border-color 0.34s ease, transform 0.44s var(--ease);
+}
+.tl-card-shot:hover img { border-color: var(--ink); transform: translateY(-2px); }
+.tl-card-shot span { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.tl-card-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* The vertical list: hidden on desktop (the axis is the control), shown
+   under 860px with every entry open. */
+.tl-list { display: none; list-style: none; margin: 0; padding: 0; }
+
+/* -------------------------------------------------------------- pillars --- */
+
+.ft-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: clamp(18px, 3vh, 26px);
+}
+.ft-pillar {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  overflow: hidden;
+  transition: transform 0.44s var(--ease), border-color 0.44s ease, opacity 0.5s var(--ease);
+}
+.ft-pillar:hover { transform: translateY(-3px); border-color: var(--ink); }
+.ft-pillars[data-stagger] .ft-pillar {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.ft-pillars[data-stagger].is-in .ft-pillar { opacity: 1; transform: none; }
+.ft-pillars[data-stagger].is-in .ft-pillar:hover { transform: translateY(-3px); transition-delay: 0s; }
+
+.ft-pillar-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.ft-pillar-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.7s var(--ease);
+}
+.ft-pillar-shot:hover img { transform: scale(1.03); }
+.ft-pillar-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.ft-pillar-body { padding: 18px 20px 20px; }
+.ft-pillar-eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
+.ft-pillar-title {
+  margin-top: 8px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(22px, 2vw, 26px);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.ft-pillar-lead { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.ft-pillar-more p { margin-top: 12px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.ft-pillar-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.28s ease;
+}
+.ft-pillar-toggle:hover { color: var(--accent); }
+.ft-pillar-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* ---------------------------------------------------------- screenshots --- */
+
+.ft-shots { display: grid; gap: clamp(32px, 5vh, 48px); margin-top: clamp(18px, 3vh, 26px); }
+.ft-shot { margin: 0; }
+
+.ft-shot-frame { position: relative; border: 1px solid var(--rule); background: var(--white); }
+.ft-shot-frame.is-tall { max-height: min(720px, 78vh); overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule) var(--white); }
+.ft-shot-canvas { position: relative; }
+.ft-shot-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.ft-shot-open img { display: block; width: 100%; height: auto; }
+.ft-shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Pins. Percent-positioned so they track the image at any width; a ring
+   expands once when the figure is first seen, staggered by --i. */
+.ft-pin-wrap { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
+.ft-pin-wrap.is-open { z-index: 3; }
+.ft-pin {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 0.34s var(--ease), box-shadow 0.34s ease;
+}
+.ft-pin:hover,
+.ft-pin-wrap.is-open .ft-pin { transform: scale(1.12); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22); }
+.ft-pin:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.ft-pin-num { position: relative; z-index: 1; }
+.ft-pin-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+.ft-shot.is-in .ft-pin-ring { animation: ft-ping 1.4s var(--ease) calc(var(--i, 0) * 140ms + 500ms) 1 both; }
+@keyframes ft-ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* The callout: below-right of the pin by default, flipped to the other
+   side near the image's right or bottom edges (data-flip-x / data-flip-y). */
+.ft-callout {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  min-width: 200px;
+  max-width: 260px;
+  padding: 10px 12px 11px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  box-shadow: 0 8px 24px rgba(11, 26, 43, 0.12);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translate(-8px, -4px) scale(0.97);
+  transform-origin: top left;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  pointer-events: none;
+}
+.ft-callout strong { display: block; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.ft-callout p { margin: 0; }
+.ft-pin-wrap[data-flip-x] .ft-callout { left: auto; right: 50%; transform: translate(8px, -4px) scale(0.97); transform-origin: top right; }
+.ft-pin-wrap[data-flip-y] .ft-callout { top: auto; bottom: calc(100% + 10px); transform: translate(-8px, 4px) scale(0.97); transform-origin: bottom left; }
+.ft-pin-wrap[data-flip-x][data-flip-y] .ft-callout { transform: translate(8px, 4px) scale(0.97); transform-origin: bottom right; }
+.ft-pin-wrap.is-open .ft-callout { opacity: 1; pointer-events: auto; transform: translate(-8px, 0) scale(1); }
+.ft-pin-wrap[data-flip-x].is-open .ft-callout { transform: translate(8px, 0) scale(1); }
+.ft-pin-wrap[data-flip-y].is-open .ft-callout { transform: translate(-8px, 0) scale(1); }
+.ft-pin-wrap[data-flip-x][data-flip-y].is-open .ft-callout { transform: translate(8px, 0) scale(1); }
+
+.ft-shot-caption { margin-top: 12px; }
+.ft-shot-title {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ft-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; margin: 8px 0 0; padding: 0; }
+.ft-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 0.28s ease;
+}
+.ft-legend-num {
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease;
+}
+.ft-legend-item:hover,
+.ft-legend-item.is-on { color: var(--ink); }
+.ft-legend-item.is-on .ft-legend-num { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.ft-legend-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* --------------------------------------------------------------- narrow --- */
+
+@media (max-width: 860px) {
+  .ft-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* The axis needs width to breathe; below it the list takes over. */
+  .tl-axis,
+  .tl-card-slot { display: none; }
+  .tl-list { display: block; position: relative; padding-left: 26px; }
+  .tl-list::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--rule);
+  }
+  .tl-list-item { position: relative; padding: 4px 0 26px; }
+  .tl-list-item:last-child { padding-bottom: 0; }
+  .tl-list-mark {
+    position: absolute;
+    left: -26px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .tl-list-item--present .tl-list-mark { background: var(--accent); border-color: var(--accent); }
+  .tl-list-item--future .tl-list-mark { background: var(--paper); border-style: dashed; border-color: var(--muted); }
+  .tl-list .tl-card-title { font-size: 20px; }
+  .tl-list .tl-size { margin-left: 0; width: 100%; }
+
+  .ft-pillars { grid-template-columns: minmax(0, 1fr); }
+  .tl-card { grid-template-columns: minmax(0, 1fr); }
+  .tl-card-shot { grid-column: 1; grid-row: auto; width: 100%; }
+  .ft-callout { min-width: 160px; max-width: 220px; }
+}
+
+/* ------------------------------------------------------- reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-track-fill { transform: scaleX(1); }
+  .tl-dot { opacity: 1; }
+  .tl-dot--above { transform: translate(-50%, calc(-100% + 1px)); }
+  .tl-dot--below { transform: translate(-50%, 1px); }
+  .ft-stats[data-stagger] .ft-stat,
+  .ft-pillars[data-stagger] .ft-pillar { opacity: 1; transform: none; }
+  .ft-pin-ring { display: none; }
+}

@@ -1,0 +1,605 @@
+{
+  "hero": {
+    "eyebrow": "Meta · Design · Agents",
+    "title": "About this site",
+    "tagline": "The site as its own case study: how it was designed, the agents that maintain it, and how far it has come in a short time."
+  },
+  "dates": {
+    "start": "2026-06-28",
+    "ongoing": true
+  },
+  "summary": "The site you are reading. A resume-shaped evidence layer built from scratch, then handed a set of AI agent skills that tailor resumes, keep its documentation honest, and now carry its motion language. It started on June 28, 2026 and has not stopped moving.",
+  "bullets": [
+    {
+      "text": "Designed the Blueprint Press system: paper, ink, hairline rules, a fixed blueprint grid, and one easing curve shared by every transition, with ten palettes and a dark mode switchable from a local Studio.",
+      "emphasis": [
+        "Blueprint Press",
+        "one easing curve"
+      ]
+    },
+    {
+      "text": "Built a library of repository agent skills that generate job-targeted resume PDFs, keep an Obsidian vault in sync with the code, and distill a motion vocabulary from svelte-bits into this site's own restrained style.",
+      "emphasis": [
+        "agent skills",
+        "motion vocabulary"
+      ]
+    },
+    {
+      "text": "Went from a single resume JSON to a data-driven Next.js site with a content editor, analytics, a social card, and a job-application tracker, deploying continuously the whole way.",
+      "emphasis": [
+        "single resume JSON",
+        "deploying continuously"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "src": "/project-images/rileybeenders-com/home-hero-light.png",
+      "alt": "The home page hero in light mode: the eyebrow, the two-line name, a hairline rule, and the action row over the blueprint grid.",
+      "caption": "Home · Blueprint Press · light"
+    },
+    {
+      "src": "/project-images/rileybeenders-com/home-hero-dark.png",
+      "alt": "The same hero in dark mode, navy paper with pale ink.",
+      "caption": "Home · dark mode"
+    }
+  ],
+  "caseStudy": {
+    "title": "RileyBeenders.com",
+    "subtitle": "A portfolio that stays readable as a resume, and a workbench for the agents that maintain it",
+    "problem": "A PDF resume is the document recruiters expect, but it flattens every project into two lines. I wanted a site that reads like that resume at rest and opens into the evidence behind each line, without turning into a marketing page.",
+    "rootCause": "Early versions kept content, layout, and styling tangled in one file, so every visual change risked the content and every content change risked the layout. Splitting the data layer from the design, then giving each its own editor and its own agent procedures, is what let the site move fast without breaking.",
+    "constraints": [
+      "Stay recognizable as a resume: no hero video, no marketing voice",
+      "Every claim on the site must trace to real work in the data files",
+      "Content edits must not require touching code",
+      "Motion must be subtle enough to survive a recruiter's ten-second scan",
+      "Ship continuously from a solo workflow"
+    ],
+    "approach": [
+      "Started from a scaffold in June and put a Coming Soon page live to learn deployment first",
+      "Split the resume JSON into focused files and merged them at build time",
+      "Designed Blueprint Press as a /v3 preview beside the old design, then promoted it and deleted the old one",
+      "Added a local Studio that edits the JSON with a schema-driven form and safe writes",
+      "Wrote repository agent skills for resume tailoring, vault sync, chart sync, and design tokens",
+      "Distilled a motion language from svelte-bits into three skills, then applied it here"
+    ],
+    "designDecisions": [
+      "One easing curve site-wide so every animation reads as the same hand",
+      "No pinning or scroll-jacking on the projects page; depth comes from parallax and a scroll-filled spine",
+      "Dark mode as a token swap on paper and ink, not a second design",
+      "The Studio runs outside the Next app on localhost only, so it can never be deployed by accident",
+      "Agent skills live in the repo as plain markdown so any tool can follow them, not just one"
+    ],
+    "impact": [
+      "Every project on the site is linked from a line of the resume, with a case study a click away",
+      "Content, palette, and typography change from a browser form with a byte-stable git diff",
+      "Tailored resume PDFs are generated from the same data the site renders",
+      "The vault documents the site well enough that an agent can pick up work cold"
+    ],
+    "tools": [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "framer-motion",
+      "Vercel",
+      "Claude Code",
+      "Obsidian",
+      "Playwright"
+    ]
+  },
+  "feature": {
+    "eyebrow": "A living project",
+    "intro": "This page is the one part of the site that documents itself. The numbers below come from the repository, the timeline is the commit history with the noise removed, and an agent skill refreshes both as the site grows.",
+    "stats": [
+      {
+        "label": "Commits",
+        "value": 117,
+        "note": "on main and its version branches"
+      },
+      {
+        "label": "Days in motion",
+        "value": 81,
+        "note": "since the first commit"
+      },
+      {
+        "label": "Agent skills",
+        "value": 21,
+        "note": "7 repo procedures, 14 registered"
+      },
+      {
+        "label": "Vault notes",
+        "value": 33,
+        "note": "kept in sync by an agent"
+      },
+      {
+        "label": "Applications tracked",
+        "value": 16,
+        "note": "each with a tailored PDF"
+      },
+      {
+        "label": "Projects queued",
+        "value": 8,
+        "note": "written, hidden, waiting"
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2026-06-28",
+        "era": "past",
+        "hash": "14c5bde",
+        "title": "Genesis",
+        "summary": "An interactive resume scaffold lands: one big resume JSON, a Next.js app, and a fixed lucide-react import. Nineteen files.",
+        "tags": [
+          "launch",
+          "data"
+        ],
+        "files": 19,
+        "insertions": 2130,
+        "deletions": 2
+      },
+      {
+        "date": "2026-07-10",
+        "era": "past",
+        "hash": "52a069a",
+        "title": "Coming Soon, and learning to deploy",
+        "summary": "A holding page goes up so the deployment and reverse-proxy questions get answered before the design does.",
+        "tags": [
+          "launch"
+        ],
+        "files": 10,
+        "insertions": 1493,
+        "deletions": 686
+      },
+      {
+        "date": "2026-07-20",
+        "era": "past",
+        "hash": "62e43ef",
+        "title": "The data split",
+        "summary": "One JSON becomes a folder of focused files (header, summary, experience, skills, education, projects, proofs), merged at build time. Every later feature depends on this.",
+        "tags": [
+          "data"
+        ],
+        "files": 15,
+        "insertions": 1091,
+        "deletions": 2305
+      },
+      {
+        "date": "2026-07-31",
+        "era": "past",
+        "hash": "81b334c",
+        "title": "LIVE!",
+        "summary": "V1.0 declared complete, a Download PDF button wired up, and the site goes public the same day.",
+        "tags": [
+          "launch"
+        ],
+        "files": 1840,
+        "insertions": 223393,
+        "deletions": 8
+      },
+      {
+        "date": "2026-07-31",
+        "era": "past",
+        "hash": "3eec2c9",
+        "title": "First application submitted",
+        "summary": "The reason the site exists starts working: the first job application goes out with a resume built from the same data, and the tracker begins.",
+        "tags": [
+          "goal"
+        ],
+        "files": 963,
+        "insertions": 222787,
+        "deletions": 3
+      },
+      {
+        "date": "2026-08-02",
+        "era": "past",
+        "hash": "e250a16",
+        "title": "The first agent instructions",
+        "summary": "\"Implemented AI\": a SKILL.md tells any coding agent how to generate a tailored resume PDF from a job posting. The agent layer begins.",
+        "tags": [
+          "agents"
+        ],
+        "files": 4,
+        "insertions": 347,
+        "deletions": 0
+      },
+      {
+        "date": "2026-08-02",
+        "era": "past",
+        "hash": "569bad2",
+        "title": "Version 2.0 on main",
+        "summary": "Analytics, speed insights, and the application archive move onto main. The largest commit in the history by file count.",
+        "tags": [
+          "launch"
+        ],
+        "files": 2830,
+        "insertions": 448026,
+        "deletions": 321
+      },
+      {
+        "date": "2026-08-17",
+        "era": "past",
+        "hash": "77ea20d",
+        "title": "Sitewide update",
+        "summary": "Version 2.1: a pass over every page while applications keep going out in the background.",
+        "tags": [
+          "design"
+        ],
+        "files": 27,
+        "insertions": 2668,
+        "deletions": 670
+      },
+      {
+        "date": "2026-08-22",
+        "era": "past",
+        "hash": "71fe57e",
+        "title": "The vault joins the repo",
+        "summary": "An Obsidian vault documenting every route, component, data file, and pipeline is checked in, with a vault-sync skill that makes agents keep it current.",
+        "tags": [
+          "agents",
+          "docs"
+        ],
+        "files": 36,
+        "insertions": 2132,
+        "deletions": 0
+      },
+      {
+        "date": "2026-08-27",
+        "era": "past",
+        "hash": "73c552e",
+        "title": "Blueprint Press previewed at /v3",
+        "summary": "A new design direction: paper and ink, hairline rules, a blueprint grid texture, Instrument Serif and Spectral. Built beside the old design so both could be compared live.",
+        "tags": [
+          "design"
+        ],
+        "files": 27,
+        "insertions": 13854,
+        "deletions": 19,
+        "screenshotId": "home-full"
+      },
+      {
+        "date": "2026-08-27",
+        "era": "past",
+        "hash": "f7214c2",
+        "title": "Blueprint Press goes live, classic retired",
+        "summary": "The new design is promoted to the root, the old one is deleted so the site has one set of URLs, and a favicon and social card land the same day.",
+        "tags": [
+          "design",
+          "launch"
+        ],
+        "files": 20,
+        "insertions": 37,
+        "deletions": 3413
+      },
+      {
+        "date": "2026-08-28",
+        "era": "past",
+        "hash": "d269f8a",
+        "title": "Vault and agent rework",
+        "summary": "One bundled SKILL.md is split into self-contained procedures, each matching its folder, with a README that routes between them.",
+        "tags": [
+          "agents",
+          "docs"
+        ],
+        "files": 46,
+        "insertions": 912,
+        "deletions": 808
+      },
+      {
+        "date": "2026-09-12",
+        "era": "past",
+        "hash": "1efda07",
+        "title": "Dark mode",
+        "summary": "Paper and ink swap to navy and pale; everything else stays. A theme toggle in the nav, remembered per device.",
+        "tags": [
+          "design"
+        ],
+        "files": 9,
+        "insertions": 224,
+        "deletions": 36,
+        "screenshotId": "home-dark"
+      },
+      {
+        "date": "2026-09-12",
+        "era": "past",
+        "hash": "72823d7",
+        "title": "The Studio",
+        "summary": "A local, dependency-free content editor that reads and writes the data files through a schema-driven form, with backups, atomic writes, and conflict checks. The projects page is rebuilt alongside it.",
+        "tags": [
+          "studio"
+        ],
+        "files": 23,
+        "insertions": 3302,
+        "deletions": 38,
+        "screenshotId": "studio"
+      },
+      {
+        "date": "2026-09-12",
+        "era": "past",
+        "hash": "6e7dc86",
+        "title": "Themes and fonts from the Studio",
+        "summary": "Ten palettes plus custom colors, and three font roles, all chosen from a form and applied site-wide as CSS tokens.",
+        "tags": [
+          "studio",
+          "design"
+        ],
+        "files": 25,
+        "insertions": 1607,
+        "deletions": 21
+      },
+      {
+        "date": "2026-09-13",
+        "era": "past",
+        "hash": "4206ad9",
+        "title": "Agent skills reworked",
+        "summary": "Thirteen generic frontend-design skills are vendored in with a lock file, and every repo procedure is registered so any agent can find it.",
+        "tags": [
+          "agents"
+        ],
+        "files": 49,
+        "insertions": 15152,
+        "deletions": 11693
+      },
+      {
+        "date": "2026-09-13",
+        "era": "past",
+        "hash": "32a51c7",
+        "title": "Projects page: calm, then in motion",
+        "summary": "The pinned, scroll-jacked project panel is replaced by an editorial flow, then given its motion: staggered bullets, media parallax, a scroll-filled spine, and photo wipes.",
+        "tags": [
+          "design",
+          "motion"
+        ],
+        "files": 5,
+        "insertions": 194,
+        "deletions": 55,
+        "screenshotId": "projects"
+      },
+      {
+        "date": "2026-09-16",
+        "era": "past",
+        "hash": "6526179",
+        "title": "First project published",
+        "summary": "ICARUS-Lite goes live with six photos and a full case study, and resume bullets gain reactive action words that take the accent on hover.",
+        "tags": [
+          "content"
+        ],
+        "files": 50,
+        "insertions": 13493,
+        "deletions": 299
+      },
+      {
+        "date": "2026-09-17",
+        "era": "present",
+        "title": "A motion language, and this page",
+        "summary": "Three skills distilled from svelte-bits (what to animate, how to build it, how to compose it) are written, then used to build the page you are reading: the date bar, the timeline, the stats, the pins on the screenshots.",
+        "tags": [
+          "agents",
+          "motion",
+          "content"
+        ],
+        "screenshotId": "feature"
+      },
+      {
+        "date": "2026-10-01",
+        "era": "future",
+        "title": "ExtrusionLine Studio",
+        "summary": "The LabVIEW metrology project is written and hidden in the Studio, waiting on its two proofs (Modbus negotiation, hands-free start) before it publishes.",
+        "tags": [
+          "content"
+        ]
+      },
+      {
+        "date": "2026-10-01",
+        "era": "future",
+        "title": "PROTEOR Print and the network",
+        "summary": "Remote printer operations and the Ubiquiti network project follow, in the order the resume lists them.",
+        "tags": [
+          "content"
+        ]
+      },
+      {
+        "date": "2026-10-15",
+        "era": "future",
+        "title": "The tracker returns",
+        "summary": "The application timeline and table come back to More Info once the Studio can edit them, so the job search stays visible on the site that supports it.",
+        "tags": [
+          "data",
+          "studio"
+        ]
+      },
+      {
+        "date": "2026-11-01",
+        "era": "future",
+        "title": "Resume PDFs from the site itself",
+        "summary": "The custom-resume skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
+        "tags": [
+          "agents",
+          "data"
+        ]
+      }
+    ],
+    "pillars": [
+      {
+        "eyebrow": "Design",
+        "title": "Blueprint Press",
+        "body": [
+          "The site is set on paper with ink, a red accent, and hairline rules, over a fixed blueprint grid you can see through the page. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
+          "Dark mode swaps paper and ink to navy and pale and changes nothing else. Ten palettes and three font roles are chosen from the Studio and written as CSS tokens, so the whole system re-tunes from a form without a code change.",
+          "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top."
+        ],
+        "screenshotId": "home-full"
+      },
+      {
+        "eyebrow": "Agents",
+        "title": "Skills in the repository",
+        "body": [
+          "Standing instructions for any AI coding agent live in .agents/ as plain markdown, one folder per procedure, routed by a README. custom-resume builds a job-targeted PDF from a posting and the site's data. vault-sync keeps an Obsidian vault of 33 notes matching the code in the same session as any change. sync-charts keeps the application tracker identical in two places.",
+          "Thirteen generic frontend-design skills are vendored in with a lock file so drift upstream is detectable, and registered as first-class Claude Code skills.",
+          "The newest three, motion-design, motion-fluidity, and motion-layout, were distilled from the svelte-bits component library and translated into this site's system: numeric subtlety thresholds, a rated catalog of every effect, and copy-ready recipes. This entry is their first use."
+        ],
+        "screenshotId": "studio"
+      },
+      {
+        "eyebrow": "Goal",
+        "title": "A resume that shows its work",
+        "body": [
+          "The PDF stays the official application document. The site is the evidence layer behind it: each line of the resume links to a project, and each project opens into the problem, the approach, and what changed.",
+          "Along the way the site became a hub for the search itself. Applications are tracked with tailored PDFs, and the vault holds a page per application comparing what the site claimed at the time against what it claims now.",
+          "Eighty-one days from a single JSON file to this. The timeline above is the honest version of that sentence."
+        ],
+        "screenshotId": "projects"
+      }
+    ],
+    "screenshots": [
+      {
+        "id": "home-full",
+        "src": "/project-images/rileybeenders-com/home-full-light.png",
+        "alt": "The full home page in light mode, top to bottom: hero, summary, experience, toolchain, education, footer.",
+        "caption": "Home, top to bottom",
+        "hotspots": [
+          {
+            "x": 50,
+            "y": 0.6,
+            "label": "Sticky nav",
+            "detail": "Hairline border, 82% paper with a 12px blur, and an accent underline that grows under the active link."
+          },
+          {
+            "x": 22,
+            "y": 6,
+            "label": "Hero",
+            "detail": "Eyebrow, two-line name, rule, tagline, and actions arrive in sequence on one shared curve. A faint B-bowl draws behind the heading."
+          },
+          {
+            "x": 11,
+            "y": 32,
+            "label": "Page spine",
+            "detail": "A hairline track down the left that fills with the accent as you scroll, spring-damped so it settles instead of tracking the scrollbar."
+          },
+          {
+            "x": 40,
+            "y": 24,
+            "label": "Reactive bullets",
+            "detail": "Resume bullets take the accent on their action words when hovered; the ones with a case study carry a View Project link."
+          },
+          {
+            "x": 50,
+            "y": 91,
+            "label": "Certificates",
+            "detail": "Hairline cards that lift 5px and grow an accent bar along the bottom on hover."
+          }
+        ]
+      },
+      {
+        "id": "home-dark",
+        "src": "/project-images/rileybeenders-com/home-hero-dark.png",
+        "alt": "The home hero in dark mode.",
+        "caption": "Dark mode is a token swap, not a second design",
+        "hotspots": [
+          {
+            "x": 86.5,
+            "y": 3.7,
+            "label": "Theme toggle",
+            "detail": "A 44px switch in the nav; the thumb slides 20px and turns accent. Remembered per device."
+          },
+          {
+            "x": 55,
+            "y": 55,
+            "label": "Same grid",
+            "detail": "The blueprint texture is drawn from the ink token at 4.5% and 8.5%, so it inverts with the theme for free."
+          }
+        ]
+      },
+      {
+        "id": "projects",
+        "src": "/project-images/rileybeenders-com/projects-light.png",
+        "alt": "The projects page showing the ICARUS-Lite entry with its photo grid and bullets.",
+        "caption": "Projects · ICARUS-Lite entry",
+        "hotspots": [
+          {
+            "x": 10.8,
+            "y": 30,
+            "label": "Spine",
+            "detail": "The project list's own scroll-filled spine, mirroring the home page."
+          },
+          {
+            "x": 19,
+            "y": 24,
+            "label": "Entry",
+            "detail": "Index, title, subtitle, and rule reveal in sequence; bullets stagger in 90ms apart."
+          },
+          {
+            "x": 71,
+            "y": 55,
+            "label": "Media column",
+            "detail": "Drifts 56px against the text as you scroll. Each photo uncovers bottom-to-top and opens a full-screen viewer. Every other entry swaps sides."
+          },
+          {
+            "x": 19,
+            "y": 73,
+            "label": "Case study toggle",
+            "detail": "Expands the problem, constraints, approach, decisions, and impact in place, height animated from zero to auto."
+          }
+        ]
+      },
+      {
+        "id": "studio",
+        "src": "/project-images/rileybeenders-com/studio.png",
+        "alt": "The Studio content editor showing the projects form.",
+        "caption": "Studio · localhost only, with this page open",
+        "hotspots": [
+          {
+            "x": 4.6,
+            "y": 53.5,
+            "label": "Rail",
+            "detail": "Files in the order the site reads them: home page top to bottom, then each page, then site settings. This page has its own entry."
+          },
+          {
+            "x": 50,
+            "y": 36,
+            "label": "Schema-driven form",
+            "detail": "Field order in the schema is key order on disk, so an untouched entry saves back byte-for-byte identical."
+          },
+          {
+            "x": 59,
+            "y": 57,
+            "label": "Ongoing",
+            "detail": "One switch keeps the date bar on the page reading → Present and moving."
+          },
+          {
+            "x": 50,
+            "y": 78,
+            "label": "This page",
+            "detail": "Summary, bullets, gallery, case study, stats, the timeline, pillars, and screenshot pins are all edited here."
+          }
+        ]
+      },
+      {
+        "id": "feature",
+        "src": "/project-images/rileybeenders-com/feature-timeline.png",
+        "alt": "This project's timeline, with dots sized by commit size along a time axis and a card open for one commit.",
+        "caption": "This page's timeline",
+        "hotspots": [
+          {
+            "x": 8,
+            "y": 20,
+            "label": "Time axis",
+            "detail": "Dots are placed by date, not by index, so quiet weeks read as space. Bigger dots are bigger commits."
+          },
+          {
+            "x": 64,
+            "y": 20,
+            "label": "Present",
+            "detail": "Today's marker breathes; the dashed stretch beyond it holds what's planned."
+          },
+          {
+            "x": 20,
+            "y": 60,
+            "label": "Card",
+            "detail": "Click any dot, or use the arrow keys: the card swaps in place with the commit's summary, hash, and size."
+          }
+        ]
+      }
+    ]
+  }
+}

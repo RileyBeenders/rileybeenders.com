@@ -60,6 +60,15 @@ The blueprint-grid texture is four stacked `linear-gradient`s on `.bp` (`16px` f
 
 One breakpoint: **`max-width: 860px`** — `.bp-section-grid` and `.bp-hero-place` go single-column/left-aligned, the nav stacks and its links scroll horizontally, `.bp-soon-type` hides. Everything else scales fluidly through `clamp()`. There is no separate mobile transform-disable step anymore (no 3D tilt exists).
 
+## Additions for the date boxes and the About page (2026-09-17)
+
+- **`blueprint.css`** — `.bp-spot` (a faint radial ink wash, 5% ink, following `--sx/--sy` set by `lib/useSpotlight.ts`; pointer-only via `(hover: hover) and (pointer: fine)`), and `.bp-nav-link--gradient` + `@keyframes bp-nav-gradient` for the About tab (see [[Blueprint Nav and Mark]]).
+- **`projects/projects.css`** — a `dates` block: `.pj-entry-rule` (the opening/closing rule that hosts a date box), `.pj-dates` and its corner/inline positions, the `--ongoing` progress bar (`pj-dates-fill` to 92% over 1.6s, `pj-dates-chase` sweep every 2.8s), and the narrow-screen fallback.
+- **`projects/feature.css`** — new file, loaded by both `/projects` and `/about-this-site`: `.ft-*` (deep-dive shell, stats tiles, pillars, screenshot frames, pins, callouts, legend) and `.tl-*` (the timeline axis, eras, track/fill/now marker, ticks, dots with `--x/--i/--depth/--size`, the card, the mobile list). All eased motion on `--ease`; amplitudes inside the `motion-design` thresholds (rises ≤ 16px, lifts 3px, staggers 45–70ms); a reduced-motion block pins final states.
+- **`about-this-site/about-site.css`** — page layout only (`.as-*`) and the `pj-dates--large` hero variant.
+
+Full component detail in [[About This Site Page]] and [[Projects Route (BpComingSoon)]].
+
 ## Related
 - [[Blueprint Nav and Mark]]
 - [[Blueprint UI Components]]

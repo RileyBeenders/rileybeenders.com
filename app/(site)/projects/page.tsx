@@ -7,6 +7,7 @@ import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import "./projects.css";
+import "./feature.css";
 
 export const metadata: Metadata = {
   title: "Projects | Riley Beenders",
@@ -53,7 +54,7 @@ export default function ProjectsPage() {
           </Reveal>
           <Reveal delay={0.38}>
             <p className="bp-prose pj-intro-prose">
-              {views.length} projects — the problem each one started from, the decisions
+              {views.length === 1 ? "One project" : `${views.length} projects`} — the problem each one started from, the decisions
               behind it, and what changed as a result. Open a case study for the full
               story.
             </p>

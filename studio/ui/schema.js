@@ -130,6 +130,59 @@ const FONT_OPTIONS = [
   { value: "ibm-plex-mono", label: "IBM Plex Mono — monospace, engineering feel" }
 ];
 
+/** A numbered pin on a screenshot; coordinates are percentages so they survive any display size. */
+const HOTSPOT_FIELDS = [
+  { name: "x", type: "number", label: "X %", span: "third", help: "0 = left edge, 100 = right edge." },
+  { name: "y", type: "number", label: "Y %", span: "third", help: "0 = top edge, 100 = bottom edge." },
+  { name: "label", type: "text", label: "Label", required: true, span: "third" },
+  { name: "detail", type: "textarea", label: "Detail", rows: 2 }
+];
+
+const SCREENSHOT_FIELDS = [
+  { name: "id", type: "slug", label: "ID", required: true, span: "third", help: "Referenced by timeline entries and pillars." },
+  { name: "src", type: "image", label: "Image", required: true },
+  { name: "alt", type: "text", label: "Alt text", required: true },
+  { name: "caption", type: "text", label: "Caption" },
+  { name: "hotspots", type: "objectList", label: "Pins", itemLabel: "Pin", fields: HOTSPOT_FIELDS }
+];
+
+const TIMELINE_FIELDS = [
+  { name: "date", type: "text", label: "Date", required: true, span: "third", placeholder: "2026-07-31", help: "ISO date. A future target month works too (2026-10-01)." },
+  {
+    name: "era",
+    type: "select",
+    label: "Era",
+    span: "third",
+    options: [
+      { value: "past", label: "Past (shipped)" },
+      { value: "present", label: "Present (in progress)" },
+      { value: "future", label: "Future (planned)" }
+    ]
+  },
+  { name: "hash", type: "text", label: "Commit", span: "third", placeholder: "81b334c", help: "Short git hash, when this is a real commit." },
+  { name: "title", type: "text", label: "Title", required: true },
+  { name: "summary", type: "textarea", label: "Summary", rows: 3, required: true },
+  { name: "tags", type: "stringList", label: "Tags", help: "design, agents, data, launch, studio, motion, content…" },
+  { name: "files", type: "number", label: "Files", span: "third" },
+  { name: "insertions", type: "number", label: "Lines added", span: "third" },
+  { name: "deletions", type: "number", label: "Lines removed", span: "third" },
+  { name: "screenshotId", type: "text", label: "Screenshot ID", help: "One of the screenshot IDs below, shown beside this entry." }
+];
+
+const STAT_FIELDS = [
+  { name: "label", type: "text", label: "Label", required: true, span: "half" },
+  { name: "value", type: "number", label: "Value", required: true, span: "third" },
+  { name: "suffix", type: "text", label: "Suffix", span: "third", placeholder: "+" },
+  { name: "note", type: "text", label: "Note" }
+];
+
+const PILLAR_FIELDS = [
+  { name: "eyebrow", type: "text", label: "Eyebrow", span: "half" },
+  { name: "title", type: "text", label: "Title", required: true, span: "half" },
+  { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true, help: "The first paragraph shows at rest; the rest open on demand." },
+  { name: "screenshotId", type: "text", label: "Screenshot ID" }
+];
+
 const CUSTOM_PALETTE_MODE_FIELDS = [
   { name: "paper", type: "color", label: "Background", span: "third", always: true },
   { name: "white", type: "color", label: "Surface", span: "third", always: true },
@@ -191,6 +244,30 @@ export const SCHEMAS = {
           { name: "impact", type: "stringList", label: "Impact" },
           { name: "tools", type: "stringList", label: "Tools" },
           { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
+        ]
+      },
+      {
+        name: "dates",
+        type: "group",
+        label: "Dates",
+        help: "When the work happened. Shown in a small box on the project entry; leave Start blank to hide it.",
+        fields: [
+          { name: "start", type: "text", label: "Start", span: "third", placeholder: "2026-06-28", help: "ISO date (formatted on the site) or free text." },
+          { name: "end", type: "text", label: "End", span: "third", placeholder: "2026-09-01", help: "Leave blank while Ongoing is on." },
+          { name: "ongoing", type: "boolean", label: "Ongoing", span: "third", default: false, omitWhenDefault: true, help: "Reads \"→ Present\" and animates the box's underline as a progress bar." },
+          {
+            name: "position",
+            type: "select",
+            label: "Position",
+            span: "third",
+            options: [
+              { value: "", label: "Top right (default)" },
+              { value: "top-left", label: "Top left" },
+              { value: "bottom-right", label: "Bottom right" },
+              { value: "bottom-left", label: "Bottom left" },
+              { value: "inline", label: "Inline, under the subtitle" }
+            ]
+          }
         ]
       }
     ]
@@ -379,6 +456,71 @@ export const SCHEMAS = {
     ]
   },
 
+  aboutSite: {
+    label: "About this site",
+    shape: "object",
+    description: "The site as its own case study: hero, the running date bar, summary and bullets, screenshots, the case study, and the deep-dive (stats, commit timeline, pillars, annotated screenshots). The site-timeline-sync agent skill refreshes the stats and timeline from git.",
+    fields: [
+      {
+        name: "hero",
+        type: "group",
+        label: "Hero",
+        fields: [
+          { name: "eyebrow", type: "text", label: "Eyebrow", required: true, span: "half" },
+          { name: "title", type: "text", label: "Headline", required: true, span: "half" },
+          { name: "tagline", type: "text", label: "Tagline", required: true }
+        ]
+      },
+      {
+        name: "dates",
+        type: "group",
+        label: "Dates",
+        help: "Shown as the running date bar under the headline. Start is the first commit.",
+        fields: [
+          { name: "start", type: "text", label: "Start", span: "third", placeholder: "2026-06-28", required: true },
+          { name: "end", type: "text", label: "End", span: "third", help: "Leave blank while Ongoing is on." },
+          { name: "ongoing", type: "boolean", label: "Ongoing", span: "third", default: false, omitWhenDefault: true, help: "Reads \"→ Present\" and keeps the bar moving." }
+        ]
+      },
+      { name: "summary", type: "textarea", label: "Summary", rows: 4, required: true },
+      { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
+      { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true, always: true },
+      {
+        name: "caseStudy",
+        type: "group",
+        label: "Case study",
+        help: "Opens under the bullets, like a project's case study.",
+        fields: [
+          { name: "title", type: "text", label: "Title" },
+          { name: "subtitle", type: "text", label: "Subtitle" },
+          { name: "problem", type: "textarea", label: "Problem", rows: 4 },
+          { name: "rootCause", type: "textarea", label: "Root cause", rows: 3 },
+          { name: "constraints", type: "stringList", label: "Constraints" },
+          { name: "approach", type: "stringList", label: "Approach" },
+          { name: "designDecisions", type: "stringList", label: "Design decisions" },
+          { name: "impact", type: "stringList", label: "Impact" },
+          { name: "tools", type: "stringList", label: "Tools" },
+          { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
+        ]
+      },
+      {
+        name: "feature",
+        type: "group",
+        label: "Deep-dive",
+        help: "Stats count up on view; timeline entries are placed by date (past, present, future); pillars expand in place; screenshot pins are percent coordinates.",
+        always: true,
+        fields: [
+          { name: "eyebrow", type: "text", label: "Eyebrow", span: "half", placeholder: "A living project" },
+          { name: "intro", type: "textarea", label: "Intro", rows: 3 },
+          { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
+          { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },
+          { name: "pillars", type: "objectList", label: "Pillars", itemLabel: "Pillar", fields: PILLAR_FIELDS },
+          { name: "screenshots", type: "objectList", label: "Screenshots", itemLabel: "Screenshot", fields: SCREENSHOT_FIELDS, gallery: true }
+        ]
+      }
+    ]
+  },
+
   header: {
     label: "Site Settings",
     shape: "object",
@@ -471,5 +613,6 @@ export const RAIL = [
   { page: "Projects", keys: ["projects", "proofs"] },
   { page: "Contact", keys: ["contact"] },
   { page: "More Info", keys: ["moreInfo"] },
+  { page: "About this site", keys: ["aboutSite"] },
   { page: "Site settings", keys: ["header"] }
 ];
