@@ -45,6 +45,10 @@ Not React components, but the same monogram, hand-tuned for tiny sizes / crawler
 
 See [[Design System (Blueprint Press)]] and `assets/fonts/README.md`.
 
+## The About-this-site link (2026-09-17)
+
+`NAV` has a fifth entry, `{ label: "About this site", href: "/about-this-site", gradient: true }`. The `gradient` flag adds `bp-nav-link--gradient`: the label's flat color is replaced by a `background-clip: text` sweep of the palette's own inks (`--ink → --accent → --blue → --ink`, `background-size: 300%`, 9s linear, 4.5s on hover) so the tab stands out from the others without leaving the palette. The active/hover underline still comes from the shared `::after`. The blanket reduced-motion rule freezes the sweep on its first frame. Only this link uses it. See [[About This Site Page]].
+
 ## Related
 - [[Routes Overview]]
 - [[Blueprint UI Components]]

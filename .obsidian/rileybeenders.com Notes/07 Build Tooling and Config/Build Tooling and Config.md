@@ -78,6 +78,10 @@ Then open `http://localhost:3000`. On Windows PowerShell, if script execution is
 
 No explicit deployment config (no `vercel.json`), but strong indirect evidence of **Vercel** hosting: `@vercel/analytics` and `@vercel/speed-insights` are both mounted in the root `app/layout.tsx`, and `app/api/resume-pdf/route.ts` sets `CDN-Cache-Control` and `Vercel-CDN-Cache-Control` headers (meaningful only on Vercel's edge).
 
+## `scripts/` and `playwright-core` (2026-09-17)
+
+`package.json` gained one devDependency, `playwright-core`, used only by `scripts/capture-site-screenshots.mjs` to drive the machine's own Chrome or Edge headlessly (`channel: "chrome"` → `"msedge"`; no browser download). The new top-level `scripts/` folder holds that capture script and `scripts/site-stats.mjs` (git-derived stats and key-commit candidates for the About page). Both are plain Node ESM, run with `node scripts/<name>.mjs`, and are not part of the Next build. See [[About This Site Page]].
+
 ## Related
 - [[Architecture and Data Flow]]
 - [[Routes Overview]]

@@ -32,6 +32,10 @@ Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (n
 
 16 applications, IDs 001–016, spanning Disney (×6), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. Statuses range from "Waiting for Reply" to "Interview Process" to "No Longer in Consideration." Full per-application file references live in [[Job Application Tracker]].
 
+## `aboutSite.readMore` (2026-09-17)
+
+The "About this site" section's link is now `{ "label": "Read the full story", "href": "/about-this-site" }`, pointing at the site's own [[About This Site Page]] instead of the GitHub `.agents` folder. The More Info page renders a leading-slash href as an in-tab `next/link` and any other href as an external new-tab link, so the Studio field accepts either.
+
 ## Related
 - [[Job Application Tracker]]
 - [[GanttChart JobsTable and gantt.ts]]

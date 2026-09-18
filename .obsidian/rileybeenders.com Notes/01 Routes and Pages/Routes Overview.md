@@ -9,9 +9,10 @@ All routes are Next.js App Router server components. None use dynamic segments �
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
 | `/` | `app/(site)/page.tsx` | Editorial one-page resume (hero + 4 numbered sections + footer) | "Riley Beenders \| R&D, Electromechanical and Automation Engineer" (root layout) |
-| `/projects` | `app/(site)/projects/page.tsx` | Hero + [[Projects Route (BpComingSoon)\|BpComingSoon]] | "Projects \| Riley Beenders" |
+| `/projects` | `app/(site)/projects/page.tsx` | Hero + one [[Projects Route (BpComingSoon)\|ProjectEntry]] per published project inside `ProjectListSpine` (falls back to `BpComingSoon` when none) | "Projects \| Riley Beenders" |
 | `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + contact card row | "Contact \| Riley Beenders" |
-| `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read more" link + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] | "More Info \| Riley Beenders" |
+| `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] | "More Info \| Riley Beenders" |
+| `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
 | `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → PDF binary, no HTML | n/a |
 
 Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes Next wires up automatically). See [[Design System (Blueprint Press)]].
@@ -26,7 +27,7 @@ Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `open
 
 - Loads **Instrument Serif** (display, incl. italic) and **Spectral** (body, weights 300–600) via `next/font/google`, exposed as `--bp-font-display` / `--bp-font-body`.
 - Imports `app/(site)/blueprint.css`.
-- Wraps children in `<div class="bp {font vars}">`, rendering `<BpNav />` (see [[Blueprint Nav and Mark]]) above `{children}` and a fixed `.bp-badge` "Open to relocation" pill below.
+- Wraps children in `<div class="bp {font vars}">`, rendering `<BpNav />` (see [[Blueprint Nav and Mark]]; five links — Home, Projects, Contact, More Info, About this site) above `{children}` and a fixed `.bp-badge` "Open to relocation" pill below.
 - Sets its own `metadata` (`title` / `description`) — the More Info / Projects / Contact pages override `title` per-route from their own `export const metadata`.
 
 ## `/` — `app/(site)/page.tsx`
@@ -44,7 +45,11 @@ Every block is wrapped in `<Reveal>` for a staggered scroll entrance. There is n
 
 ## `/projects` — `app/(site)/projects/page.tsx`
 
-Sorts `resumeData.projects` by `order`, takes the first 6, maps them to `{ name, type }`, and passes them to `<BpComingSoon teasers={...} />` after a hero. This is the only use of `resumeData.projects` in the app. See [[Projects Route (BpComingSoon)]].
+Builds `buildProjectViews(resumeData.projects, resumeData.proofs)` and renders a hero, then `<ProjectListSpine>` wrapping one `<ProjectEntry view index total />` per published project (summary, bullets, gallery, an optional date box, and the case study behind a toggle), a `.pj-outro` footer, and `<BackToTop />`. The intro line pluralizes ("One project — …" / "N projects — …"). With nothing published it falls back to the hero + `<BpComingSoon />`. Imports `projects.css` and `feature.css`. See [[Projects Route (BpComingSoon)]].
+
+## `/about-this-site` — `app/(site)/about-this-site/page.tsx`
+
+Server component reading `data/site/about-site.json` and `todayIso()`; renders the hero with the running date bar, `<AboutSiteStory>`, `<ProjectFeature>` (stats · timeline · pillars · screenshots), an outro, and `<BackToTop />`. Imports the projects stylesheets plus `about-site.css`. Fully documented in [[About This Site Page]].
 
 ## `/contact` — `app/(site)/contact/page.tsx`
 
@@ -56,7 +61,7 @@ The only involved server component:
 
 1. Imports `data/more-info/more-info.json` (typed `MoreInfoData`) for the About copy.
 2. When `ganttSection.visible` is not `false`, reads `data/more-info/gantt.md` off disk with `fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8")` — **not** imported as a module — and parses the raw text via `parseGanttFile()` from `lib/gantt.ts`. It skips the file read when the tracker is hidden.
-3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` "Read more" link (`aboutSite.readMore`, currently → `https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents`, opens in a new tab) — and, when `ganttSection.visible` is not `false`, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`. Studio's **Show on live site** switch writes that visibility field and controls both tracker views together; when off, the page also skips reading/parsing `gantt.md`.
+3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` link (`aboutSite.readMore`, currently "Read the full story" → `/about-this-site`; a path starting with `/` renders as a `next/link` in the same tab, anything else as an external `<a target="_blank">`) — and, when `ganttSection.visible` is not `false`, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`. Studio's **Show on live site** switch writes that visibility field and controls both tracker views together; when off, the page also skips reading/parsing `gantt.md`.
 
 Because it uses `fs`, this page can't be statically exported without the file present at build time (fine on Vercel). See [[More Info and Gantt Data]].
 
@@ -71,6 +76,8 @@ Full generator detail in [[Resume PDF Pipeline]].
 
 ## Related
 - [[Architecture and Data Flow]]
+- [[About This Site Page]]
 - [[Blueprint Nav and Mark]]
 - [[Blueprint UI Components]]
+- [[Projects Route (BpComingSoon)]]
 - [[Home]]

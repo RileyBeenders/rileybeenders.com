@@ -141,6 +141,81 @@
   .pj-bullets li:focus-within .pj-bullet-content { transform: none; }
 }
 
+/* --------------------------------------------------------------- dates --- */
+
+/* The opening rule owns the date box: the box sits on the line with paper
+   behind it, so the hairline reads as passing through a tag. Bottom corners
+   get a closing rule of their own (.pj-entry-rule--close). */
+.pj-entry-rule { position: relative; }
+.pj-entry-rule--close { margin-top: clamp(28px, 4vh, 40px); }
+
+.pj-dates {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 7px 12px 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: border-color 0.34s ease, color 0.34s ease;
+}
+.pj-dates:hover { border-color: var(--ink); color: var(--ink); }
+.pj-dates-range { display: inline-flex; align-items: baseline; gap: 8px; }
+.pj-dates-arrow { color: var(--faint); }
+.pj-dates--ongoing .pj-dates-range > :last-child { color: var(--accent); }
+
+/* Corner positions: centered on the rule, pulled in from the shell edge. */
+.pj-dates--top-right,
+.pj-dates--top-left,
+.pj-dates--bottom-right,
+.pj-dates--bottom-left {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.pj-dates--top-right,
+.pj-dates--bottom-right { right: 0; }
+.pj-dates--top-left,
+.pj-dates--bottom-left { left: 0; }
+.pj-dates--inline { margin-top: 14px; }
+
+/* The underline. Static projects show a hairline; ongoing ones fill it most
+   of the way on view, then a lighter band keeps sweeping along it — the site
+   is still moving. Under reduced motion the fill snaps to its resting state
+   and the sweep runs once, off-track. */
+.pj-dates-bar {
+  position: relative;
+  display: block;
+  height: 2px;
+  background: var(--rule);
+  overflow: hidden;
+}
+.pj-dates-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.pj-dates--ongoing.is-in .pj-dates-fill { animation: pj-dates-fill 1.6s var(--ease) 0.2s both; }
+.pj-dates:not(.pj-dates--ongoing) .pj-dates-fill { transform: scaleX(1); background: var(--rule); }
+.pj-dates-chase {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 28%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--paper) 70%, var(--accent)), transparent);
+  transform: translateX(-100%);
+}
+.pj-dates--ongoing.is-in .pj-dates-chase { animation: pj-dates-chase 2.8s ease-in-out 1.9s infinite; }
+@keyframes pj-dates-fill { to { transform: scaleX(0.92); } }
+@keyframes pj-dates-chase { to { transform: translateX(400%); } }
+
 /* -------------------------------------------------------------- toggle --- */
 
 .pj-toggle {
@@ -408,6 +483,10 @@
 
 @media (max-width: 860px) {
   .pj-entry-grid { grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 5vh, 34px); }
+  .pj-dates--top-right,
+  .pj-dates--top-left,
+  .pj-dates--bottom-right,
+  .pj-dates--bottom-left { position: static; transform: none; margin-top: 14px; }
   /* The desktop zigzag is a visual-only touch — mobile always reads text,
      then photos, top to bottom, regardless of which project it is. */
   .pj-entry--reverse .pj-entry-text,
