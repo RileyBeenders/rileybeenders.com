@@ -28,7 +28,8 @@ tags: [agents, automation, meta]
     SKILL.md
     references/svelte-bits-layouts.md
   site-timeline-sync/SKILL.md  # name: site-timeline-sync — keeps /about-this-site current
-  skills/                      # vendored, non-repo-specific skills (13 folders) — see README.md
+  skills/                      # vendored, non-repo-specific skills (14 folders) — see README.md
+    impeccable/                # the design entry point: SKILL.md, reference/<command>.md, scripts/impeccable (+ detector), agents/*.toml
 ```
 
 Previously this was one file (`.agents/SKILL.md`) bundling all three procedures under a single `name: custom-resume` frontmatter. It was split so each `SKILL.md`'s `name` matches its folder and each file is self-contained (no cross-file anchor links) — which also clears the VS Code skill-lint warnings.
@@ -66,7 +67,7 @@ A narrower, chart-only counterpart to `vault-sync`. The Job Application Tracker'
 
 ### `design-guidelines`
 
-Points at two reference design-token systems (`design-light.md` — Tesla; `design-dark.md` — Bugatti, both sourced verbatim from an external reference collection) via a router file, `DESIGN.md`, so a light/dark component build pulls tokens from the matching file without mixing the two. Triggers on any styling/restyling task, or building the light/dark toggle for the in-progress Studio theme setting. These are **not** the live design system — that's [[Design System (Blueprint Press)]] — they're reference material for future theme-aware work. This folder previously lived at `design/DESIGN.md` + `design/design-dark.md` + `design/design-light.md`; it moved here so it's discoverable the same way the other procedures are, and so its relative links (`DESIGN.md` → `design-light.md`/`design-dark.md`) travel together as one unit.
+Points at two reference design-token systems (`design-light.md` — Tesla; `design-dark.md` — Bugatti, both sourced verbatim from an external reference collection) via a router file, `DESIGN.md`, so a light/dark component build pulls tokens from the matching file without mixing the two. Triggers on any styling/restyling task, or building the light/dark toggle for the in-progress Studio theme setting. These are **not** the live design system — that's [[Design System (Blueprint Press)]], specified machine-readably in the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]]) — they're the reference material the Electric preset was seeded from. The skill file and the router now both say so, since the folder's `DESIGN.md` was being mistaken for the site's own. This folder previously lived at `design/DESIGN.md` + `design/design-dark.md` + `design/design-light.md`; it moved here so it's discoverable the same way the other procedures are, and so its relative links (`DESIGN.md` → `design-light.md`/`design-dark.md`) travel together as one unit.
 
 ### `motion-design`, `motion-fluidity`, `motion-layout`
 
@@ -84,9 +85,9 @@ Added 2026-09-17 with the [[About This Site Page]]. Keeps `data/site/about-site.
 
 ## Vendored skill library (`.agents/skills/`)
 
-Separate from the eight procedures above: `.agents/skills/` holds 13 generic (non-repo-specific) frontend/visual-design skills mirrored from the `Leonxlnx/taste-skill` GitHub collection, tracked in the repo-root `skills-lock.json` (source repo, exact file path, and content hash per skill). They cover brand-kit boards, image-generation-driven frontend design, several named "taste" aesthetics (minimalist, industrial-brutalist, high-end-visual-design, gpt-taste), image-to-code, and a Stitch-specific `DESIGN.md` generator. The full list with one-line descriptions lives in `.agents/README.md` and is meant to be kept current there whenever a skill is added or removed — this note only records that the folder exists and why.
+Separate from the eight procedures above: `.agents/skills/` holds 14 generic (non-repo-specific) frontend/visual-design skills tracked in the repo-root `skills-lock.json` (source repo, exact file path, and content hash per skill). Thirteen are single-file taste guides mirrored from the `Leonxlnx/taste-skill` GitHub collection — brand-kit boards, image-generation-driven frontend design, several named "taste" aesthetics (minimalist, industrial-brutalist, high-end-visual-design, gpt-taste), image-to-code, and a Stitch-specific `DESIGN.md` generator. The fourteenth, **`impeccable`** (from `pbakaus/impeccable`, added 2026-09-18), is a full skill folder with a command set, a launcher, a bundled anti-pattern detector, and subagent definitions, and it is the one design skill that reads this repo's own `PRODUCT.md` / `DESIGN.md`; it is the entry point for design work and has its own note, [[Impeccable Design Workflow]]. The full list with one-line descriptions lives in `.agents/README.md` and is meant to be kept current there whenever a skill is added or removed — this note only records that the folder exists and why.
 
-The same 13 (plus an unrelated accessibility/compliance skill, `web-design-guidelines`, from a different source) are also registered as first-class Claude Code skills. `.agents/skills/` exists so a non-Claude-Code agent can read the same instructions as plain files; Claude Code itself should invoke them directly by name via its `Skill` tool rather than reading the copy here.
+The same 14 (plus an unrelated accessibility/compliance skill, `web-design-guidelines`, from a different source) are also registered as first-class Claude Code skills. `.agents/skills/` exists so a non-Claude-Code agent can read the same instructions as plain files; Claude Code itself should invoke them directly by name via its `Skill` tool rather than reading the copy here.
 
 Read the live instructions directly in `.agents/`; the mappings and templates are maintained there, not here.
 

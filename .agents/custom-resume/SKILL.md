@@ -51,6 +51,7 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
 8. Validate before delivery.
    - Require exactly the selected number of pages, each at 612 x 792 points.
    - Render the page and inspect it for clipping, overlap, malformed glyphs, and inconsistent spacing.
+   - Apply the design craft floor to that render (`.agents/skills/impeccable/reference/craft-floor.md`, its **Verify** list, read as a printed document rather than a web page). The PDF keeps its own ATS-safe identity (navy headings, Arial, single column) and does not follow the site's `DESIGN.md`, but the same floor holds: one consistent scale of heading, body, and label sizes; more space above a heading than below it; a body measure that does not run edge to edge in a single column of 12pt Arial; dates and numerals aligned so a scanner and a human read the same column; hyperlinks visibly styled (blue, underlined) and nothing else styled like a link; no orphaned heading at a page bottom; no widowed single line of a bullet on the next page. Do not run impeccable's HTML detector on the PDF; it only reads markup.
    - Confirm the phone, email, website, and LinkedIn URI annotations work.
    - Confirm all linked text is blue and underlined.
    - Confirm the final text contains the supported target keywords and none of the unsupported claims identified during the evidence audit.

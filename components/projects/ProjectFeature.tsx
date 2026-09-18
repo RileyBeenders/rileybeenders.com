@@ -70,10 +70,13 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
       {hasTimeline && (
         <div className="ft-block">
           <Reveal><h3 className="ft-block-title">Timeline</h3></Reveal>
-          <Reveal delay={0.06}>
-            <p className="ft-block-note">Key commits, placed by date. Click a dot, or use the arrow keys.</p>
-          </Reveal>
-          <FeatureTimeline entries={feature.timeline!} screenshots={screenshots} today={today} onOpenScreenshot={openScreenshot} />
+          <FeatureTimeline
+            entries={feature.timeline!}
+            screenshots={screenshots}
+            today={today}
+            note="Key commits, placed by date, playing through in order. Click a dot, or use the arrow keys, to take over."
+            onOpenScreenshot={openScreenshot}
+          />
         </div>
       )}
 
