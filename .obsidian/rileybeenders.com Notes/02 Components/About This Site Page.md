@@ -4,7 +4,7 @@ tags: [component, routes, data, agents]
 
 # About This Site Page
 
-`/about-this-site` is the site as its own case study — the one page that documents itself. It has its own nav tab (the only link drawn in an animated gradient), its own data file, its own Studio entry, and an agent procedure (`site-timeline-sync`) that keeps its numbers and timeline current. Added 2026-09-17, built with the three `motion-*` skills as their first real use.
+`/about-this-site` is the site as its own case study — the one page that documents itself. It has its own nav tab (the only link drawn in an animated gradient), its own data file, its own Studio entry, and an agent procedure (`site-timeline-sync`) that keeps its numbers and timeline current. Added 2026-09-17, built with the three `motion-*` skills as their first real use; revised 2026-09-18 to replace the pinned-screenshot section with live "Behind the site" demos and to show every capture in the theme the visitor is *not* using.
 
 ## Route — `app/(site)/about-this-site/page.tsx`
 
@@ -17,14 +17,26 @@ Server component. Imports `data/site/about-site.json` (typed `AboutSiteData`, `t
 
 ## The deep-dive — `components/projects/ProjectFeature.tsx` + `feature/`
 
-`ProjectFeature` owns the one `Lightbox` every screenshot trigger opens (timeline card thumbnails, pillar thumbnails, the screenshot figures), converting `feature.screenshots` into `ProjectImage[]`. It opens with a hairline rule, `feature.eyebrow` via `WordReveal`, `feature.intro` via `ScrollWords`, then four blocks, each rendered only if its data exists:
+`ProjectFeature` owns the one `Lightbox` every screenshot trigger opens (timeline card thumbnails, pillar thumbnails), converting `feature.screenshots` into `ProjectImage[]` — picking, like the thumbnails, the capture from the *other* theme (`useTheme()`; light site → `srcDark`). It takes `paletteId` (Site Settings) so the Studio replica starts on the site's real palette. It opens with a hairline rule, `feature.eyebrow` via `WordReveal`, `feature.intro` via `ScrollWords`, then four blocks, each rendered only if its data exists:
 
 | Block | Component | What it does |
 |---|---|---|
 | Stats | `feature/FeatureStats.tsx` | Hairline tiles (`repeat(auto-fit, minmax(160px, 1fr))`) arriving 60ms apart via `useInViewOnce` + a CSS `--i` stagger; each number is a `CountUp`; tiles take the `.bp-spot` cursor wash. |
 | Timeline | `feature/FeatureTimeline.tsx` | The centerpiece — see below. |
 | Pillars | `feature/FeaturePillars.tsx` | Three hairline cards (`eyebrow`, `title`, first paragraph at rest, "Read more" opens the rest with `AnimatePresence` height-auto), a 16:9 screenshot thumbnail on top that opens the viewer, `.bp-spot` on hover, 70ms stagger. One column under 860px. |
-| Screenshots | `feature/FeatureScreenshots.tsx` | Each screenshot in a hairline frame with numbered pins at percent coordinates. Hover/focus a pin (or its legend line) shows the callout; click keeps it open; `Escape` or clicking the frame closes it. Pins ring once (`ft-ping`, 140ms stagger) when the figure first scrolls in. Callouts flip left past 60% width and up past 65% height. An image taller than 1.25:1 (the full-page home capture) gets a scrolling frame (`is-tall`, `max-height: min(720px, 78vh)`), with pins anchored to an inner `.ft-shot-canvas` so they scroll with the image. |
+| Behind the site | `feature/FeatureBackend.tsx` | One row per backend tool (`feature.backend.items`): a live replica on one side, the notes (eyebrow, title, paragraphs, a hairline list of one-liners) on the other, sides alternating (`ft-back-row--reverse`); notes-then-demo stacked under 860px. The replicas are in `feature/demos/` — see below. Replaced the pinned-screenshot "On screen" section on 2026-09-18, which took the page from ~7400px to ~4800px tall. |
+
+### The demos — `feature/demos/`
+
+Real, scoped-down versions of the tools they stand for, in paper and hairlines (`.dm-*` in `feature.css`):
+
+- **`ResumeDemo.tsx`** (`demo: "resume"`) — a posting card of keyword chips beside a miniature one-page resume whose lines are real bullets from `experience.json` (`matches[]`: `keyword` → `line`). Hovering or focusing a chip lights its line (accent dot, ink text); a hairline connector labelled `custom-resume` joins the two. "Generate PDF" is the site's own `.bp-btn--solid` (sheen included): it disables, walks the lines 240ms apart the way the skill matches evidence, then shows the three checks the skill runs before delivery (page size, every keyword backed, links verified) 140ms apart; "Run it again" resets. Reduced motion skips straight to the checks.
+- **`StudioDemo.tsx`** (`demo: "studio"`) — a miniature Studio window (brand, file name, Saved / Unsaved changes / Saving… status, a Save button that enables when dirty; a rail with Site Settings active; a Palette radio group of every preset in `lib/palettes.ts` drawn as paper/ink/accent swatches; an "Open to relocation" switch) beside a miniature of the home hero recolored live from the chosen preset's tokens for the visitor's current light/dark mode (`--p-*` custom properties, 0.4s transitions like the real theme swap). The switch shows/hides the preview's badge. Starts on the site's real palette (`paletteId` from `resumeData.theme`).
+- **`SkillsDemo.tsx`** (`demo: "skills"`) — the repo's skill router: procedures down the left as a mono rail (`skills[]`: `name`, `trigger`, `does`), an accent indicator that springs between them (`layoutId`), and a card that swaps in place (`AnimatePresence mode="wait"`) with what triggers the skill and what it does. It advances every 4.2s with a hairline progress cue until the visitor hovers, clicks, or arrows through it, then it's theirs. Reduced motion: no auto-advance, no cue, instant swap.
+
+### Themed captures — `feature/ThemedShot.tsx`
+
+Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `ThemedShot` renders both `<img>`s and `.ft-themed` in `feature.css` shows the one for the theme the visitor is *not* in (`html[data-theme]`, stamped before hydration, so the swap is hydration-safe and flips instantly with the nav toggle). Used by the timeline card thumbnail and the pillar thumbnails; the lightbox makes the same choice in JS. The two hero images in the page's own gallery are exempt — they are the light/dark comparison.
 
 ### The timeline
 
@@ -46,18 +58,18 @@ Under 860px the axis and card are hidden and `.tl-list` — a vertical list of e
 | `lib/useInViewOnce.ts` | Class-toggle sibling of `Reveal`'s `viewport.once`: `{ ref, inView }`, falls open without `IntersectionObserver`. |
 | `lib/useSpotlight.ts` | `onPointerMove` handler writing `--sx/--sy` on the element for `.bp-spot` (see [[Design System (Blueprint Press)]]). No React state per move. |
 | `lib/site.ts` | `REPO_URL` for commit links. |
-| `scripts/capture-site-screenshots.mjs` | Recaptures the page's screenshots with `playwright-core` driving the machine's Chrome/Edge (no download) at 1440×900 @2x: home hero light/dark, full-page home, projects, the About hero, this page's own timeline, and the Studio with this page open. Hides the Next dev badge, waits for fonts and non-lazy images (bounded at 4s). Needs `npm run dev` (and `npm run studio` for the Studio shot). |
+| `scripts/capture-site-screenshots.mjs` | Recaptures the page's screenshots with `playwright-core` driving the machine's Chrome/Edge (no download) at 1440×900 @2x, each in **both** themes via the real toggles (the nav switch; `#theme-toggle` in the Studio): home hero, full-page home, projects, this page's own timeline, and the Studio with this page open — ten files, `<name>-light.png` / `<name>-dark.png`. Hides the Next dev badge, waits for fonts and non-lazy images (bounded at 4s), removes the earlier single-theme files. Needs `npm run dev` (and `npm run studio` for the Studio shots). |
 | `scripts/site-stats.mjs` | Computes the six stats from git and the repo, lists commits since the last hashed timeline entry with key-commit candidates and JSON skeletons; `--write` refreshes the stats in the data file by label; `--json` for machines. |
 
 ## Data — `data/site/about-site.json`
 
-Shape (`types/about-site.ts` → `AboutSiteData`): `hero { eyebrow, title, tagline }`, `dates` (`ProjectDates`), `summary`, `bullets` (`ResumeBullet[]`), `images` (`ProjectImage[]`), optional `caseStudy` (`ProjectAdditionalInfo`), `feature` (`ProjectFeature`: `eyebrow`, `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`). The feature types live in `types/resume.ts` next to `Project` (`ProjectStat`, `TimelineEntry` with `era: "past" | "present" | "future"`, `FeaturePillar`, `FeatureScreenshot` + `ScreenshotHotspot`). Screenshots are served from `public/project-images/rileybeenders-com/`.
+Shape (`types/about-site.ts` → `AboutSiteData`): `hero { eyebrow, title, tagline }`, `dates` (`ProjectDates`), `summary`, `bullets` (`ResumeBullet[]`), `images` (`ProjectImage[]`), optional `caseStudy` (`ProjectAdditionalInfo`), `feature` (`ProjectFeature`: `eyebrow`, `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`, `backend { eyebrow, intro, items[] }`). The feature types live in `types/resume.ts` next to `Project` (`ProjectStat`, `TimelineEntry` with `era: "past" | "present" | "future"`, `FeaturePillar`, `FeatureScreenshot` with `src` + `srcDark`, `FeatureBackend` / `BackendItem` with `demo: "resume" | "studio" | "skills"`, `BackendMatch`, `BackendSkill`). Screenshots are served from `public/project-images/rileybeenders-com/` as `<name>-light.png` / `<name>-dark.png`.
 
 Edited in the Studio under **About this site** (rail group after More Info; `aboutSite` in `server.mjs` `FILES` and `schema.js`), which round-trips the file byte-for-byte. Refreshed by the `site-timeline-sync` procedure — see [[Repository Agent Skills (.agents)]].
 
 ## Nav
 
-`BpNav` gained `{ label: "About this site", href: "/about-this-site", gradient: true }`; the `gradient` flag adds `.bp-nav-link--gradient`, a `background-clip: text` sweep of `--ink → --accent → --blue → --ink` (9s linear, 4.5s on hover) in place of the flat color every other link uses. See [[Blueprint Nav and Mark]]. More Info's "Read more" link now points here (`/about-this-site`, rendered as a `next/link` since it's a site path).
+`BpNav` gained `{ label: "About this site", href: "/about-this-site", gradient: true }`; the `gradient` flag adds `.bp-nav-link--gradient`, a `background-clip: text` sweep of `--ink → --accent → --blue → --ink` (9s linear, 4.5s on hover) in place of the flat color every other link uses. Five links no longer fit one phone-width row, so under 860px the links wrap onto a second line (`flex-wrap`, labels `nowrap`) instead of scrolling the last tab off-screen. See [[Blueprint Nav and Mark]]. More Info's "Read more" link now points here (`/about-this-site`, rendered as a `next/link` since it's a site path).
 
 ## Related
 - [[Projects Route (BpComingSoon)]]

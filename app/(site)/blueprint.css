@@ -171,6 +171,7 @@ html[data-theme="dark"] .bp {
   padding: 6px 2px;
   font-size: 15px;
   color: var(--muted);
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 .bp-nav-link::after {
@@ -849,7 +850,8 @@ html[data-theme="dark"] .bp {
   .bp-hero-place { text-align: left; }
   .bp-nav-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
   .bp-nav-right { width: 100%; }
-  .bp-nav-links { flex: 1 1 auto; min-width: 0; overflow-x: auto; }
+  /* Five links no longer fit one phone-width row: wrap onto a second line rather than hide the last tab off-screen. */
+  .bp-nav-links { flex: 1 1 auto; min-width: 0; flex-wrap: wrap; row-gap: 2px; }
   .bp-soon-type { display: none; }
 }
 

@@ -1,15 +1,17 @@
-// Captures the screenshots the About-this-site page shows —
-// the site documenting itself. Run with the dev server (and optionally the
-// Studio) already up:
+// Captures the screenshots the About-this-site page shows — the site
+// documenting itself — in BOTH themes, because the page shows each capture
+// in the theme the visitor is *not* using. Run with the dev server (and
+// optionally the Studio) already up:
 //
 //   npm run dev            # :3000
-//   npm run studio         # :3001, optional — the Studio shot is skipped if it's down
+//   npm run studio         # :3001, optional — the Studio shots are skipped if it's down
 //   node scripts/capture-site-screenshots.mjs
 //
-// Output goes to public/project-images/rileybeenders-com/. Uses playwright-core
-// with the machine's own Chrome (or Edge), so nothing downloads. Sizes are
-// fixed so recaptures line up with the pins in data/site/about-site.json.
-import { mkdirSync, existsSync } from "node:fs";
+// Output goes to public/project-images/rileybeenders-com/ as <name>-light.png
+// and <name>-dark.png. Uses playwright-core with the machine's own Chrome (or
+// Edge), so nothing downloads. Sizes are fixed so recaptures stay comparable;
+// the ids in data/site/about-site.json point at these names.
+import { mkdirSync, existsSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright-core";
 
@@ -17,6 +19,9 @@ const SITE = process.env.SITE_URL ?? "http://localhost:3000";
 const STUDIO = process.env.STUDIO_URL ?? "http://localhost:3001";
 const OUT = path.resolve("public/project-images/rileybeenders-com");
 const VIEWPORT = { width: 1440, height: 900 };
+const CLIP = { x: 0, y: 0, width: VIEWPORT.width, height: VIEWPORT.height };
+/** Earlier single-theme names; removed so the folder only holds what the page references. */
+const STALE = ["about-hero-light.png", "studio.png", "feature-timeline.png"];
 
 mkdirSync(OUT, { recursive: true });
 
@@ -56,6 +61,22 @@ async function hideDevTools(page) {
   await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root] { display: none !important; }" });
 }
 
+/** Flips the site's theme through its real nav switch, so React state and the DOM stamp agree. */
+async function setSiteTheme(page, theme) {
+  const current = await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  if (current === theme) return;
+  await page.getByRole("switch", { name: theme === "dark" ? /switch to dark mode/i : /switch to light mode/i }).click();
+  await page.waitForTimeout(700); // the 0.4s color transitions
+}
+
+/** The Studio has its own toggle (#theme-toggle) and its own data-theme stamp. */
+async function setStudioTheme(page, theme) {
+  const current = await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  if (current === theme) return;
+  await page.locator("#theme-toggle").click();
+  await page.waitForTimeout(500);
+}
+
 async function reachable(url) {
   try {
     const res = await fetch(url, { method: "GET" });
@@ -77,13 +98,22 @@ async function shoot(name, fn) {
   console.log("  captured", path.relative(process.cwd(), file));
 }
 
+/** Captures `fn` in both themes as <name>-light.png and <name>-dark.png, leaving the page in light. */
+async function shootBoth(name, fn, setTheme = setSiteTheme) {
+  await setTheme(page, "light");
+  await shoot(`${name}-light`, fn);
+  await setTheme(page, "dark");
+  await shoot(`${name}-dark`, fn);
+  await setTheme(page, "light");
+}
+
 // ---------------------------------------------------------------- home ---
 await page.goto(`${SITE}/`, { waitUntil: "networkidle" });
 await hideDevTools(page);
 await settle(page);
-await shoot("home-hero-light", (file) => page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1440, height: 900 } }));
+await shootBoth("home-hero", (file) => page.screenshot({ path: file, clip: CLIP }));
 
-// Scroll through once so every Reveal has fired, then back to the top for a full-page capture.
+// Scroll through once so every Reveal has fired, then back to the top for the full-page captures.
 await page.evaluate(async () => {
   const step = window.innerHeight * 0.6;
   for (let y = 0; y < document.body.scrollHeight; y += step) {
@@ -93,38 +123,29 @@ await page.evaluate(async () => {
   window.scrollTo(0, 0);
 });
 await settle(page, 1200);
-await shoot("home-full-light", (file) => page.screenshot({ path: file, fullPage: true }));
-
-// Dark mode via the nav toggle, so the screenshot shows exactly what a visitor gets.
-await page.getByRole("switch", { name: /switch to dark mode/i }).click();
-await page.waitForTimeout(700);
-await shoot("home-hero-dark", (file) => page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1440, height: 900 } }));
-await page.getByRole("switch", { name: /switch to light mode/i }).click();
+await shootBoth("home-full", (file) => page.screenshot({ path: file, fullPage: true }));
 
 // ------------------------------------------------------------ projects ---
 await page.goto(`${SITE}/projects`, { waitUntil: "networkidle" });
 await hideDevTools(page);
 await settle(page);
-// The ICARUS-Lite entry sits below the featured one; scroll to it twice — once to
-// trigger lazy images, once more after they have sized the page — so its reveals fire in place.
-const icarus = page.locator("#project-icarus-lite");
-await icarus.scrollIntoViewIfNeeded();
+// Scroll to the first entry twice — once to trigger lazy images, once more after they have sized the page — so its reveals fire in place.
+const first = page.locator(".pj-entry").first();
+await first.scrollIntoViewIfNeeded();
 await settle(page, 800);
-await icarus.evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 }));
+await first.evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 }));
 await settle(page, 1800);
-await shoot("projects-light", (file) => page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1440, height: 900 } }));
+await shootBoth("projects", (file) => page.screenshot({ path: file, clip: CLIP }));
 
 // ---------------------------------------------------------- about page ---
 await page.goto(`${SITE}/about-this-site`, { waitUntil: "networkidle" });
 await hideDevTools(page);
 await settle(page);
-await shoot("about-hero-light", (file) => page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1440, height: 900 } }));
-// The page's own timeline — captured after its fill and dot stagger have played.
 const timeline = page.locator(".as .tl");
 if (await timeline.count()) {
   await timeline.scrollIntoViewIfNeeded();
-  await settle(page, 2600);
-  await shoot("feature-timeline", (file) => timeline.screenshot({ path: file }));
+  await settle(page, 2600); // the track fill and dot stagger
+  await shootBoth("feature-timeline", (file) => timeline.screenshot({ path: file }));
 }
 
 // -------------------------------------------------------------- studio ---
@@ -138,11 +159,19 @@ if (await reachable(STUDIO)) {
     await aboutEntry.click();
     await page.waitForTimeout(900);
   }
-  await shoot("studio", (file) => page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1440, height: 900 } }));
+  await shootBoth("studio", (file) => page.screenshot({ path: file, clip: CLIP }), setStudioTheme);
 } else {
   console.log("  skipped studio (not running at", STUDIO + ")");
 }
 
+for (const name of STALE) {
+  const file = path.join(OUT, name);
+  if (existsSync(file)) {
+    unlinkSync(file);
+    console.log("  removed stale", path.relative(process.cwd(), file));
+  }
+}
+
 await browser.close();
 console.log(`done: ${shots.length} screenshot${shots.length === 1 ? "" : "s"} in ${path.relative(process.cwd(), OUT)}`);
-if (!existsSync(path.join(OUT, "studio.png"))) console.log("  note: studio.png missing — start `npm run studio` and re-run to capture it.");
+if (!existsSync(path.join(OUT, "studio-light.png"))) console.log("  note: studio captures missing — start `npm run studio` and re-run to capture them.");

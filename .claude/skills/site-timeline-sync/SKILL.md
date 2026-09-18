@@ -7,7 +7,7 @@ description: Keep the "About this site" page (data/site/about-site.json) current
 
 One of several repository agent procedures — see `.agents/README.md` for the set.
 
-`/about-this-site` is the one page that documents the site itself: a running date bar, a stats strip, a commit timeline (past · present · future), three pillars, and annotated screenshots. All of it lives in `data/site/about-site.json` (editable in the Studio under **About this site**) and renders through `app/(site)/about-this-site/page.tsx`. This procedure keeps that file honest without turning it into a changelog.
+`/about-this-site` is the one page that documents the site itself: a running date bar, a stats strip, a commit timeline (past · present · future), three pillars, and a "Behind the site" section of live demos (the resume formatter, the Studio, the agent skills). All of it lives in `data/site/about-site.json` (editable in the Studio under **About this site**) and renders through `app/(site)/about-this-site/page.tsx`. This procedure keeps that file honest without turning it into a changelog.
 
 The page's value is that it's *curated*. Twenty-three entries tell the story of eighty days; a hundred would bury it. When in doubt, leave a commit out.
 
@@ -52,13 +52,15 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 
 7. **Keep the rest of the page in step.** If the commit changed a fact stated in `summary`, `bullets`, `caseStudy`, or a pillar's `body` (a count of skills, a palette name, "no pinning"), fix that sentence. Don't rewrite prose that's still true.
 
-8. **Recapture screenshots when the UI changed.** With `npm run dev` (and `npm run studio` for the Studio shot) running:
+8. **Recapture screenshots when the UI changed.** With `npm run dev` (and `npm run studio` for the Studio shots) running:
    ```bash
    node scripts/capture-site-screenshots.mjs
    ```
-   It rewrites `public/project-images/rileybeenders-com/*.png` at fixed sizes. Then check every pin on the affected screenshot still points at the right thing — pins are percent coordinates in `feature.screenshots[].hotspots`, and a layout change (a project reordered, a section added) moves what's under them. Open `/about-this-site` and hover each pin, or read the new PNG and re-measure.
+   It rewrites `public/project-images/rileybeenders-com/<name>-light.png` and `<name>-dark.png` at fixed sizes — every capture exists in both themes because the page shows each one in the theme the visitor is *not* using (`src` is the light capture, `srcDark` the dark one). If you add a screenshot, add both files and both keys. The only captures that keep their own theme are the two hero images in the page's gallery (`images`), which are the light/dark comparison on purpose.
 
-9. **Verify and hand off.** `npm run typecheck`, then load `/about-this-site` and confirm: the new dot sits where its date belongs, the card reads well, the date bar still says → Present, and nothing in the Studio's About-this-site form shows an empty required field. Then run `vault-sync` — `data/site/**`, `app/(site)/about-this-site/**`, and `components/about-site/**` map to the vault's notes on the About page and data layer.
+9. **Keep the demos honest.** The three "Behind the site" rows (`feature.backend.items`) each render a live replica beside notes: `resume` lights a real resume line per posting keyword (`matches[]` — keep each `line` a bullet that actually exists in `data/home/experience.json`), `studio` uses the real preset palettes from `lib/palettes.ts` so it needs no data, and `skills` lists procedures (`skills[]`: `name`, `trigger`, `does`). When a skill is added, removed, or renamed under `.agents/`, update that list so the router on the page matches the router in the repo. The prose there is in Riley's own words — refresh facts, don't rewrite voice.
+
+10. **Verify and hand off.** `npm run typecheck`, then load `/about-this-site` in both themes and confirm: the new dot sits where its date belongs, the card reads well, thumbnails show the *other* theme's capture, the date bar still says → Present, and nothing in the Studio's About-this-site form shows an empty required field. Then run `vault-sync` — `data/site/**`, `app/(site)/about-this-site/**`, and `components/about-site/**` map to the vault's notes on the About page and data layer.
 
 ## Shape reference
 
@@ -74,7 +76,8 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 | `feature.stats[]` | `label`, `value`, optional `suffix`, `note`. Labels the script refreshes: Commits, Days in motion, Agent skills, Vault notes, Applications tracked, Projects queued. |
 | `feature.timeline[]` | Entries as above, in date order. |
 | `feature.pillars[]` | `eyebrow`, `title`, `body[]` (first paragraph shows at rest), optional `screenshotId`. |
-| `feature.screenshots[]` | `id`, `src`, `alt`, `caption`, `hotspots[]` of `{ x, y, label, detail }` in percent. |
+| `feature.screenshots[]` | `id`, `src` (light capture), `srcDark` (dark capture), `alt`, `caption`. Thumbnails for timeline entries and pillars; the page inverts them against the visitor's theme. |
+| `feature.backend` | `eyebrow`, `intro`, `items[]` of `{ demo: "resume" \| "studio" \| "skills", eyebrow, title, body[], notes[], matches[], skills[] }` — the live-demo rows. |
 
 ## What "brief" means here
 

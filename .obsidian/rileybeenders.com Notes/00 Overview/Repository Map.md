@@ -71,7 +71,12 @@ components/
       FeatureStats.tsx         # CountUp tiles with a CSS stagger and cursor spotlight
       FeatureTimeline.tsx      # time-scaled commit timeline: dots by date, past/present/future, card, mobile list
       FeaturePillars.tsx       # three expandable cards with screenshot thumbnails
-      FeatureScreenshots.tsx   # screenshots with numbered pins, callouts, legend; tall images scroll in a frame
+      FeatureBackend.tsx       # "Behind the site" rows: a live demo beside notes, sides alternating
+      ThemedShot.tsx           # a capture shown in the theme the visitor is NOT using (light site → dark shot)
+      demos/
+        ResumeDemo.tsx         # posting keywords → real resume lines; Generate PDF walks them and shows the skill's checks
+        StudioDemo.tsx         # mini Studio (real preset palettes, badge switch, save states) recoloring a mini site
+        SkillsDemo.tsx         # the repo's skill router: rail of procedures, trigger + what-it-does, auto-advances until touched
 
 data/
   header.json                  # site-wide metadata: person, visibility flags, siteMode ("resume"), resumePdfPath
@@ -89,7 +94,7 @@ data/
     projects.json              # case-study projects (summary, bullets, images, additionalInfo, optional dates); hidden ones carry visible:false
     proofs.json                # evidence entries — the case-study detail layer buildProofView reads
   site/
-    about-site.json            # /about-this-site content: hero, dates, story, case study, stats, timeline, pillars, screenshots (Studio: About this site)
+    about-site.json            # /about-this-site content: hero, dates, story, case study, stats, timeline, pillars, light+dark screenshots, the Behind-the-site rows (Studio: About this site)
 
 lib/
   gantt.ts                     # parseGanttFile(): splits gantt.md into {chart, columns, rows}
@@ -105,7 +110,7 @@ types/
   about-site.ts                # AboutSiteData (matches data/site/about-site.json)
 
 scripts/
-  capture-site-screenshots.mjs # playwright-core (machine Chrome/Edge) recapture of the About page's screenshots; needs the dev server (+ Studio)
+  capture-site-screenshots.mjs # playwright-core (machine Chrome/Edge) recapture of the About page's screenshots in both themes; needs the dev server (+ Studio)
   site-stats.mjs               # git-derived stats + key-commit candidates for the About page; --write refreshes the data file
 
 ResumeBuilder/
@@ -122,7 +127,7 @@ design/                        # Blueprint Press design source — a Claude Desi
 public/
   project-artifacts/*.svg      # abstract diagram assets — ProjectGallery's fallback for projects without photos
   project-images/ICARUS-Lite/, ICARUS-Pro/   # project photos, edited via the Studio's image picker
-  project-images/rileybeenders-com/           # the About page's screenshots of the site itself (written by scripts/capture-site-screenshots.mjs)
+  project-images/rileybeenders-com/           # the About page's captures of the site itself, <name>-light.png + <name>-dark.png (written by scripts/capture-site-screenshots.mjs)
   project-images/IcarusLiteRender.png
   README.md                    # one-line note: no static resume.pdf needed, /api/resume-pdf covers it
 

@@ -72,7 +72,7 @@ export default function MoreInfoPage() {
                 {data.aboutSite.readMore && (
                   // A site path stays in the tab; anything else (GitHub, etc.) opens a new one.
                   data.aboutSite.readMore.href.startsWith("/") ? (
-                    <Link className="bp-link bp-readmore" href={data.aboutSite.readMore.href}>
+                    <Link className="bp-link bp-readmore" href={data.aboutSite.readMore.href} suppressHydrationWarning>
                       {data.aboutSite.readMore.label}
                       <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                         <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -84,6 +84,7 @@ export default function MoreInfoPage() {
                       href={data.aboutSite.readMore.href}
                       target="_blank"
                       rel="noreferrer"
+                      suppressHydrationWarning
                     >
                       {data.aboutSite.readMore.label}
                       <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
