@@ -40,7 +40,7 @@
     },
     {
       "src": "/project-images/rileybeenders-com/home-hero-dark.png",
-      "alt": "The same hero in dark mode, navy paper with pale ink.",
+      "alt": "The same hero in dark mode: the palette's dark paper and light ink.",
       "caption": "Home · dark mode"
     }
   ],
@@ -311,7 +311,7 @@
         "era": "past",
         "hash": "1efda07",
         "title": "Dark mode",
-        "summary": "Paper and ink swap to navy and pale; everything else stays. A theme toggle in the nav, remembered per device.",
+        "summary": "Paper and ink swap to the palette's dark pair; everything else stays. A theme toggle in the nav, remembered per device.",
         "tags": [
           "design"
         ],
@@ -445,8 +445,8 @@
         "eyebrow": "Design",
         "title": "Blueprint Press",
         "body": [
-          "The site is set on paper with ink, a red accent, and hairline rules, over a fixed blueprint grid you can see through the page. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
-          "Dark mode swaps paper and ink to navy and pale and changes nothing else. Ten palettes and three font roles are chosen from the Studio and written as CSS tokens, so the whole system re-tunes from a form without a code change.",
+          "The site is set on paper with ink, one accent, and hairline rules, over a fixed blueprint grid you can see through the page. Which colors those are is not fixed in the code: paper, ink, and accent are CSS tokens, filled from whichever palette is chosen in the Studio's Site Settings, so the page re-inks itself from a form. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
+          "Dark mode swaps in the palette's own dark paper and ink and changes nothing else. Ten palettes plus custom colors, and three font roles, are all Studio settings, so the whole system re-tunes without a code change.",
           "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top."
         ],
         "screenshotId": "home-full"

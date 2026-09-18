@@ -96,5 +96,6 @@ When the ask is broad ("add subtle animations throughout"), don't sprinkle. Do t
 
 - `motion-fluidity` (`.agents/motion-fluidity/SKILL.md`) — implementation grammar and recipes.
 - `motion-layout` (`.agents/motion-layout/SKILL.md`) — nav, hero, grid, and card composition patterns.
-- `design-guidelines` (`.agents/design-guidelines/SKILL.md`) — color/type tokens if a new surface is needed.
+- `design-guidelines` (`.agents/design-guidelines/SKILL.md`) — the Tesla/Bugatti reference tokens; the live tokens are the repo-root `DESIGN.md`.
+- `impeccable` (`.agents/skills/impeccable/SKILL.md`) — `$impeccable animate` is the generic version of this procedure; on this site it defers to the thresholds and catalog here. Its craft floor adds two rules this file assumes: one authored motion moment per surface rather than an identical entrance on every section, and no looping ambient effect (typewriter, sheen, ping) that does not convey state. `impeccable detect` will not catch motion; the placement audit above is the check.
 - `vault-sync` (`.agents/vault-sync/SKILL.md`) — required after any change under `components/` or `app/`.

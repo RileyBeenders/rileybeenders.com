@@ -46,7 +46,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Resume PDF Pipeline]] — the live `/api/resume-pdf` generator and the static template-mockup script
 
 ### Styling
-- [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers
+- [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers; the machine-readable spec is the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]])
 
 ### Job Search Tracking
 - [[Job Application Tracker]] — how applications, tailored resumes, and references are tracked and stored, with links to a deep-dive page per application (`06 Job Search Tracking/Applications/`) covering the posting itself and a skills-match comparison that's frozen at application time versus kept current now
@@ -56,6 +56,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 
 ### Agents & Automation
 - [[Repository Agent Skills (.agents)]] — the eight repo agent procedures: `custom-resume`, Vault Sync (this vault's self-updating skill), Sync Charts, Design Guidelines, the three `motion-*` skills, and `site-timeline-sync`
+- [[Impeccable Design Workflow]] — the `impeccable` design skill: `PRODUCT.md`, the repo-root `DESIGN.md` + `.impeccable/design.json`, the detector, the standing interview decisions (refinement inside Blueprint Press, not a redesign), and the critique history
 
 ## Known gaps / WIP notes worth remembering
 

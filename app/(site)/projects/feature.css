@@ -73,7 +73,6 @@
 /* ------------------------------------------------------------- timeline --- */
 
 .tl {
-  margin-top: clamp(22px, 3vh, 30px);
   /* Stem length per depth level: 22px at the line, another 18px each level out.
      The connector between a linked pair repeats the same calc (a custom
      property can't hold it — var() resolves where it's declared, not where
@@ -82,12 +81,87 @@
   --tl-stem-step: 18px;
 }
 
+/* The note and the tour's one control share a row: note on the left, the
+   control on the right, over the "Future" end of the axis. */
+.tl-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+.tl-head .ft-block-note { margin-top: 0; }
+.tl-tour-slot { flex: none; margin-left: auto; }
+
+/* The tour control: a round pause/play button wearing the dwell as a ring.
+   The hairline circle is the track; the ink arc over it fills clockwise from
+   twelve as the entry's time runs out, painted per frame by the component
+   (the circle has pathLength 1, so its dash offset is one minus the
+   progress). Pausing holds the arc and dims it. The label to the left says
+   which way it's going and where it is. */
+.tl-tour { display: inline-flex; align-items: center; gap: 12px; }
+.tl-tour-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tl-tour-count {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+.tl-tour-count::before { content: "·"; margin-right: 8px; }
+.tl-tour-btn {
+  position: relative;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.42s var(--ease);
+}
+.tl-tour-btn:hover { color: var(--accent); transform: translateY(-2px); }
+.tl-tour-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tl-tour-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+.tl-tour-ring circle { fill: none; }
+.tl-tour-track { stroke: var(--rule); stroke-width: 1; }
+.tl-tour-fill {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke 0.3s ease;
+}
+.tl-tour-btn[data-state="paused"] .tl-tour-fill { stroke: var(--muted); }
+.tl-tour-icon { position: relative; display: block; }
+
 /* The axis: a relative box with the track at its vertical center and room
    above and below for stems, dots, and labels. Everything inside is placed
    by --x (percent of the axis), set from the entry's date. */
 .tl-axis {
   position: relative;
   height: 272px;
+  margin-top: clamp(22px, 3vh, 30px);
   margin-inline: 4px;
 }
 .tl-axis:focus-within { outline: none; }
@@ -905,8 +979,9 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 
   /* The axis needs width to breathe; below it the list takes over. */
   .tl-axis,
-  .tl-card-slot { display: none; }
-  .tl-list { display: block; position: relative; padding-left: 26px; }
+  .tl-card-slot,
+  .tl-tour-slot { display: none; }
+  .tl-list { display: block; position: relative; margin-top: clamp(22px, 3vh, 30px); padding-left: 26px; }
   .tl-list::before {
     content: "";
     position: absolute;

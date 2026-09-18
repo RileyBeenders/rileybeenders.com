@@ -54,7 +54,11 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 
 7. **Keep the rest of the page in step.** If the commit changed a fact stated in `summary`, `bullets`, `caseStudy`, or a pillar's `body` (a count of skills, a palette name, "no pinning"), fix that sentence. Don't rewrite prose that's still true.
 
-8. **Recapture screenshots when the UI changed.** With `npm run dev` (and `npm run studio` for the Studio shots) running:
+8. **Recapture screenshots when the UI changed.** A capture on this page is the site's portrait of itself, so it should not immortalize a defect. Before recapturing, run impeccable's detector over the UI files the commit touched and fix what is mechanical (the repo-root `DESIGN.md` is what it compares against):
+   ```bash
+   sh .agents/skills/impeccable/scripts/impeccable detect --json <changed .css/.tsx files>
+   ```
+   Advisory hits on the blueprint grid are expected (it is the committed surface); warnings are not. If the commit changed a whole surface, run `$impeccable audit` on it first. Then, with `npm run dev` (and `npm run studio` for the Studio shots) running:
    ```bash
    node scripts/capture-site-screenshots.mjs
    ```
@@ -89,4 +93,5 @@ The timeline reads as a story someone scrolls in a minute. Every entry earns its
 
 - `vault-sync` (`.agents/vault-sync/SKILL.md`) — required afterwards.
 - `motion-design` / `motion-fluidity` / `motion-layout` — if the sync involves changing how the page moves rather than what it says.
+- `impeccable` (`.agents/skills/impeccable/SKILL.md`) — the detector in step 8, and `$impeccable critique /about-this-site` when the page's own design is what changed; its `PRODUCT.md` records that this page is the site's self-documentation and must stay curated.
 - `custom-resume` — unrelated, but the applications count on this page comes from the same tracker it reads.
