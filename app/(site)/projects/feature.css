@@ -72,14 +72,22 @@
 
 /* ------------------------------------------------------------- timeline --- */
 
-.tl { margin-top: clamp(22px, 3vh, 30px); }
+.tl {
+  margin-top: clamp(22px, 3vh, 30px);
+  /* Stem length per depth level: 22px at the line, another 18px each level out.
+     The connector between a linked pair repeats the same calc (a custom
+     property can't hold it — var() resolves where it's declared, not where
+     it's used) so it lands on its dots' centre line. */
+  --tl-stem: 22px;
+  --tl-stem-step: 18px;
+}
 
 /* The axis: a relative box with the track at its vertical center and room
    above and below for stems, dots, and labels. Everything inside is placed
    by --x (percent of the axis), set from the entry's date. */
 .tl-axis {
   position: relative;
-  height: 236px;
+  height: 272px;
   margin-inline: 4px;
 }
 .tl-axis:focus-within { outline: none; }
@@ -145,7 +153,7 @@
 .tl-tick { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--rule); }
 .tl-tick-label {
   position: absolute;
-  top: 104px;
+  top: 122px;
   left: 0;
   transform: translateX(-50%);
   font-size: 10px;
@@ -182,7 +190,11 @@
 .tl-dot:focus-visible { outline: none; }
 .tl-dot:focus-visible .tl-dot-mark { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.tl-dot-stem { width: 1px; height: calc(22px * var(--depth, 1)); background: var(--rule); }
+.tl-dot-stem {
+  width: 1px;
+  height: calc(var(--tl-stem) + var(--tl-stem-step) * (var(--depth, 1) - 1));
+  background: var(--rule);
+}
 .tl-dot--above .tl-dot-stem { order: 3; }
 .tl-dot--below .tl-dot-stem { order: 1; }
 
@@ -202,6 +214,76 @@
 .tl-dot.is-active .tl-dot-mark { background: var(--accent); }
 .tl-dot--future.is-active .tl-dot-mark { background: var(--paper); border-style: solid; }
 
+/* A star, not a dot: an entry whose weight isn't in its diff. Always the accent
+   colour, so it reads as the one thing on the axis that isn't a commit. */
+.tl-dot--star .tl-dot-mark {
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+.tl-dot--star:hover .tl-dot-mark,
+.tl-dot--star.is-active .tl-dot-mark {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+.tl-dot--star:focus-visible .tl-dot-mark { outline-offset: 5px; }
+
+/* The connector between a linked pair: a dimension line from the earlier dot to
+   the later one, arrow on the later end, with the days between them above it.
+   Both dots are forced above the axis at a depth past everything the line
+   spans, so it never crosses a stem. */
+.tl-link {
+  position: absolute;
+  left: calc(var(--from) + var(--from-size) / 2 + 3px);
+  /* Splits the difference between the two marks' centres — a small dot and a
+     star don't share one. */
+  bottom: calc(50% - 1px + var(--tl-stem) + var(--tl-stem-step) * (var(--depth, 1) - 1) + (var(--from-size) + var(--to-size)) / 4);
+  width: calc(var(--to) - var(--from) - var(--from-size) / 2 - var(--to-size) / 2 - 6px);
+  height: 1.5px;
+  z-index: 1;
+}
+/* The line draws itself towards the star. The clip box is opened vertically so
+   it doesn't cut the arrowhead off a 1.5px line; the caption sits outside it,
+   free to be wider than the line, and fades in once the line arrives. */
+.tl-link-line {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  clip-path: inset(-6px 100% -6px 0);
+  transition: clip-path 0.7s var(--ease) 1.1s;
+}
+.tl.is-in .tl-link-line { clip-path: inset(-6px -2px -6px 0); }
+/* The arrowhead, tip landing on the line's right end just short of the star. */
+.tl-link-line::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 7px solid var(--accent);
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  transform: translateY(-50%);
+}
+.tl-link-label {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  transform: translateX(-50%);
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease) 1.6s;
+}
+.tl.is-in .tl-link-label { opacity: 1; }
+
 .tl-dot-label {
   position: absolute;
   left: 50%;
@@ -219,6 +301,8 @@
 }
 .tl-dot--above .tl-dot-label { bottom: calc(100% + 6px); }
 .tl-dot--below .tl-dot-label { top: calc(100% + 6px); }
+/* Above a connector endpoint sits its caption, so the label steps over it. */
+.tl-dot--linked .tl-dot-label { bottom: calc(100% + 22px); }
 .tl-dot:hover .tl-dot-label,
 .tl-dot:focus-visible .tl-dot-label,
 .tl-dot.is-active .tl-dot-label { opacity: 1; transform: translate(-50%, 0); }
@@ -276,6 +360,22 @@
   letter-spacing: -0.01em;
   color: var(--ink);
 }
+/* The axis connector said in words, so the pair still reads as a pair in the
+   card and in the mobile list, where there is no axis to draw it on. */
+.tl-card-link {
+  display: flex;
+  /* Start-aligned, so the rule keeps to the first line when the text wraps. */
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.tl-card-link-rule { flex: 0 0 22px; height: 1.5px; margin-top: 7px; background: var(--accent); }
+.tl-card-link b { font-weight: 600; }
+
 .tl-card-summary { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 62ch; }
 
 .tl-card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 14px; }
@@ -830,6 +930,16 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   }
   .tl-list-item--present .tl-list-mark { background: var(--accent); border-color: var(--accent); }
   .tl-list-item--future .tl-list-mark { background: var(--paper); border-style: dashed; border-color: var(--muted); }
+  .tl-list-item--star .tl-list-mark {
+    left: -29px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 0;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
   .tl-list .tl-card-title { font-size: 20px; }
   .tl-list .tl-size { margin-left: 0; width: 100%; }
 
@@ -861,6 +971,8 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   .tl-dot { opacity: 1; }
   .tl-dot--above { transform: translate(-50%, calc(-100% + 1px)); }
   .tl-dot--below { transform: translate(-50%, 1px); }
+  .tl-link-line { clip-path: inset(-6px -2px -6px 0); transition: none; }
+  .tl-link-label { opacity: 1; transition: none; }
   .ft-stats[data-stagger] .ft-stat,
   .ft-pillars[data-stagger] .ft-pillar { opacity: 1; transform: none; }
   .dm-checks li { opacity: 1; transform: none; animation: none; }

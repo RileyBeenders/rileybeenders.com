@@ -82,10 +82,15 @@ export type ProjectStat = {
 
 export type TimelineEra = "past" | "present" | "future";
 
+/** A dot's shape. `star` marks a moment whose weight isn't in its diff. */
+export type TimelineMark = "dot" | "star";
+
 export type TimelineEntry = {
   /** ISO date. Future entries can be a target month (YYYY-MM-01); they render as "planned". */
   date: string;
   era: TimelineEra;
+  /** Stable handle. Only needed when another entry points a connector back at this one. */
+  id?: string;
   title: string;
   summary: string;
   /** Short git hash, when the entry is a real commit. */
@@ -96,6 +101,12 @@ export type TimelineEntry = {
   deletions?: number;
   /** A screenshot from `feature.screenshots` to show beside this entry. */
   screenshotId?: string;
+  /** Defaults to a dot sized by the commit. */
+  mark?: TimelineMark;
+  /** The `id` of an earlier entry. Draws a line from its dot to this one, arrow pointing here. */
+  linkFrom?: string;
+  /** Caption on that line. Defaults to the gap between the two dates, e.g. "7 days". */
+  linkLabel?: string;
 };
 
 /**

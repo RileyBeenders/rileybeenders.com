@@ -189,7 +189,20 @@ const TIMELINE_FIELDS = [
   { name: "files", type: "number", label: "Files", span: "third" },
   { name: "insertions", type: "number", label: "Lines added", span: "third" },
   { name: "deletions", type: "number", label: "Lines removed", span: "third" },
-  { name: "screenshotId", type: "text", label: "Screenshot ID", help: "One of the screenshot IDs below, shown beside this entry." }
+  { name: "screenshotId", type: "text", label: "Screenshot ID", help: "One of the screenshot IDs below, shown beside this entry." },
+  {
+    name: "mark",
+    type: "select",
+    label: "Dot",
+    span: "third",
+    options: [
+      { value: "", label: "Dot (sized by the commit)" },
+      { value: "star", label: "Star (a moment, not a commit)" }
+    ]
+  },
+  { name: "id", type: "slug", label: "Entry ID", span: "third", help: "Only needed if another entry connects back to this one." },
+  { name: "linkFrom", type: "text", label: "Connect from", span: "third", help: "The entry ID this one answers. Draws a line from that dot to this one." },
+  { name: "linkLabel", type: "text", label: "Connector caption", placeholder: "7 days", help: "Rides on that line. Empty uses the gap between the two dates." }
 ];
 
 const STAT_FIELDS = [

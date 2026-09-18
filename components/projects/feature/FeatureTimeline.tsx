@@ -15,6 +15,10 @@ const EASE = [0.22, 0.9, 0.28, 1] as const;
 const PAD = 4;
 /** Two dots on the same side of the axis closer than this (in % of the axis) get a longer stem so they don't touch. */
 const CROWD = 2.6;
+/** How far out a stem is allowed to go. Past this the axis would run into the era row or the month labels. */
+const MAX_DEPTH = 3;
+/** A day, for the gap a connector reports between its two dots. */
+const DAY = 86_400_000;
 
 const ERA_LABEL = { past: "Shipped", present: "In progress", future: "Planned" } as const;
 
@@ -25,12 +29,18 @@ type Placed = {
   x: number;
   /** above or below the axis, and how far. */
   side: "above" | "below";
-  depth: 1 | 2;
+  depth: number;
   /** Dot diameter in px, from the commit's size. */
   size: number;
 };
 
+/** A drawn connection between two dots, arrow pointing at `to`. */
+type Link = { from: Placed; to: Placed; label: string };
+
 type Tick = { x: number; label: string };
+
+/** A claimed stretch of one depth level on one side, for resolving crowding. */
+type Slot = { side: "above" | "below"; depth: number; from: number; to: number };
 
 function timeOf(entry: TimelineEntry): number {
   return isIsoDate(entry.date) ? parseIsoDate(entry.date).getTime() : Number.NaN;
@@ -38,9 +48,15 @@ function timeOf(entry: TimelineEntry): number {
 
 /** 8px for nothing, up to 14px for the biggest commits — log-scaled so the 448k-line merge doesn't dwarf everything. */
 function dotSize(entry: TimelineEntry): number {
+  if (entry.mark === "star") return 18;
   const lines = (entry.insertions ?? 0) + (entry.deletions ?? 0);
   if (!lines) return 8;
   return 8 + 6 * Math.min(1, Math.log10(lines + 1) / 6);
+}
+
+function gapLabel(from: Placed, to: Placed): string {
+  const days = Math.round(Math.abs(timeOf(to.entry) - timeOf(from.entry)) / DAY);
+  return days === 1 ? "1 day" : `${days} days`;
 }
 
 function layout(entries: TimelineEntry[], today: string) {
@@ -56,12 +72,50 @@ function layout(entries: TimelineEntry[], today: string) {
     .map((entry, index) => ({ entry, index, t: timeOf(entry) }))
     .sort((a, b) => a.t - b.t || a.index - b.index);
 
-  const placed: Placed[] = [];
-  sorted.forEach(({ entry, index, t }, order) => {
-    const x = toX(t);
-    const side: Placed["side"] = order % 2 === 0 ? "above" : "below";
-    const crowded = placed.some((p) => p.side === side && p.depth === 1 && Math.abs(p.x - x) < CROWD);
-    placed.push({ entry, index, x, side, depth: crowded ? 2 : 1, size: dotSize(entry) });
+  // Date and side. Dots alternate above and below so same-week commits stay apart.
+  const placed: Placed[] = sorted.map(({ entry, index, t }, order) => ({
+    entry,
+    index,
+    x: toX(t),
+    side: order % 2 === 0 ? "above" : "below",
+    depth: 1,
+    size: dotSize(entry)
+  }));
+
+  // A linked pair is one unit: both dots hang above the axis, where a connector
+  // and its caption have the room the month labels take up below.
+  const byId = new Map(placed.filter((p) => p.entry.id).map((p) => [p.entry.id!, p]));
+  const links: Link[] = [];
+  placed.forEach((to) => {
+    const from = to.entry.linkFrom ? byId.get(to.entry.linkFrom) : undefined;
+    // The arrow is drawn left to right, so it only works pointing forward in time.
+    if (!from || from === to || from.x >= to.x) return;
+    from.side = "above";
+    to.side = "above";
+    links.push({ from, to, label: to.entry.linkLabel ?? gapLabel(from, to) });
+  });
+
+  // Depth. A dot drops a level when it would touch one already at that level on
+  // its side; a linked pair goes past everything its connector spans, so no
+  // stem crosses the line.
+  const taken: Slot[] = [];
+  const clear = (slot: Slot) =>
+    !taken.some((t) => t.side === slot.side && t.depth === slot.depth && slot.from - CROWD < t.to && slot.to + CROWD > t.from);
+
+  const paired = new Set(links.flatMap((link) => [link.from, link.to]));
+  placed.forEach((p) => {
+    if (paired.has(p)) return;
+    const slot: Slot = { side: p.side, depth: 1, from: p.x, to: p.x };
+    while (slot.depth < MAX_DEPTH && !clear(slot)) slot.depth += 1;
+    p.depth = slot.depth;
+    taken.push(slot);
+  });
+  links.forEach((link) => {
+    const under = taken.filter((t) => t.side === "above" && link.from.x - CROWD < t.to && link.to.x + CROWD > t.from);
+    const depth = Math.min(MAX_DEPTH, Math.max(0, ...under.map((t) => t.depth)) + 1);
+    link.from.depth = depth;
+    link.to.depth = depth;
+    taken.push({ side: "above", depth, from: link.from.x, to: link.to.x });
   });
 
   // One tick per month boundary inside the range; the year shows on the first and whenever it changes.
@@ -78,7 +132,7 @@ function layout(entries: TimelineEntry[], today: string) {
     cursor.setUTCMonth(cursor.getUTCMonth() + 1);
   }
 
-  return { placed, ticks, nowX: toX(now) };
+  return { placed, links, ticks, nowX: toX(now) };
 }
 
 type FeatureTimelineProps = {
@@ -93,15 +147,26 @@ type FeatureTimelineProps = {
  * The commit history as a time axis: dots placed by date (quiet weeks read
  * as space), sized by how much a commit changed, above and below the line so
  * same-day commits never overlap. The solid stretch is the past and fills on
- * view; a dashed stretch beyond today holds what's planned. Selecting a dot
- * swaps its card in below. Under 860px the axis gives way to a vertical list
- * of every entry, which is also the reading order for assistive tech.
+ * view; a dashed stretch beyond today holds what's planned. Two entries that
+ * answer each other — a resume going out, the reply coming back — are joined
+ * by a line arrowed at the second, captioned with the days between them.
+ * Selecting a dot swaps its card in below. Under 860px the axis gives way to a
+ * vertical list of every entry, which is also the reading order for assistive
+ * tech; there the pair is joined by a line in the card instead.
  */
 export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot }: FeatureTimelineProps) {
   const reduced = useReducedMotion();
   const { ref, inView } = useInViewOnce<HTMLDivElement>(0.3);
   const cardId = useId();
-  const { placed, ticks, nowX } = useMemo(() => layout(entries, today), [entries, today]);
+  const { placed, links, ticks, nowX } = useMemo(() => layout(entries, today), [entries, today]);
+
+  // Every card reads its own relation, so the connection survives the mobile list.
+  const relations = useMemo(
+    () => new Map(links.map((link) => [link.to.index, { label: link.label, fromTitle: link.from.entry.title }])),
+    [links]
+  );
+  // Both ends of a connector hold their hover label higher, clear of its caption.
+  const linked = useMemo(() => new Set(links.flatMap((link) => [link.from.index, link.to.index])), [links]);
 
   // Open on the present entry; failing that, the most recent shipped one.
   const initial = placed.find((p) => p.entry.era === "present") ?? [...placed].reverse().find((p) => p.entry.era === "past") ?? placed[0];
@@ -152,6 +217,25 @@ export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot 
           ))}
         </div>
 
+        {/* Drawn before the dots so they sit on top of both ends of the line. */}
+        {links.map((link) => (
+          <span
+            key={`link-${link.from.index}-${link.to.index}`}
+            className="tl-link"
+            aria-hidden="true"
+            style={{
+              ["--from" as string]: `${link.from.x}%`,
+              ["--to" as string]: `${link.to.x}%`,
+              ["--from-size" as string]: `${link.from.size}px`,
+              ["--to-size" as string]: `${link.to.size}px`,
+              ["--depth" as string]: link.to.depth
+            }}
+          >
+            <span className="tl-link-line" />
+            <span className="tl-link-label">{link.label}</span>
+          </span>
+        ))}
+
         {placed.map((p, order) => {
           const active = p.index === selected;
           return (
@@ -159,7 +243,7 @@ export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot 
               type="button"
               key={`${p.entry.date}-${p.index}`}
               data-order={order}
-              className={`tl-dot tl-dot--${p.entry.era} tl-dot--${p.side}${active ? " is-active" : ""}`}
+              className={`tl-dot tl-dot--${p.entry.era} tl-dot--${p.side}${p.entry.mark === "star" ? " tl-dot--star" : ""}${linked.has(p.index) ? " tl-dot--linked" : ""}${active ? " is-active" : ""}`}
               style={{ ["--x" as string]: `${p.x}%`, ["--i" as string]: order, ["--depth" as string]: p.depth, ["--size" as string]: `${p.size}px` }}
               aria-pressed={active}
               aria-controls={cardId}
@@ -186,7 +270,7 @@ export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot 
             exit={reduced ? undefined : { opacity: 0, y: -6 }}
             transition={{ duration: 0.36, ease: EASE }}
           >
-            <TimelineCard entry={current.entry} screenshot={shot} onOpenScreenshot={onOpenScreenshot} />
+            <TimelineCard entry={current.entry} screenshot={shot} relation={relations.get(current.index)} onOpenScreenshot={onOpenScreenshot} />
           </motion.article>
         </AnimatePresence>
       </div>
@@ -194,9 +278,9 @@ export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot 
       {/* --------------------------------------------------- mobile list --- */}
       <ol className="tl-list">
         {placed.map((p) => (
-          <li className={`tl-list-item tl-list-item--${p.entry.era}`} key={`list-${p.entry.date}-${p.index}`}>
+          <li className={`tl-list-item tl-list-item--${p.entry.era}${p.entry.mark === "star" ? " tl-list-item--star" : ""}`} key={`list-${p.entry.date}-${p.index}`}>
             <span className="tl-list-mark" aria-hidden="true" />
-            <TimelineCard entry={p.entry} screenshot={p.entry.screenshotId ? screenshots.find((s) => s.id === p.entry.screenshotId) : undefined} onOpenScreenshot={onOpenScreenshot} compact />
+            <TimelineCard entry={p.entry} screenshot={p.entry.screenshotId ? screenshots.find((s) => s.id === p.entry.screenshotId) : undefined} relation={relations.get(p.index)} onOpenScreenshot={onOpenScreenshot} compact />
           </li>
         ))}
       </ol>
@@ -207,11 +291,14 @@ export function FeatureTimeline({ entries, screenshots, today, onOpenScreenshot 
 function TimelineCard({
   entry,
   screenshot,
+  relation,
   onOpenScreenshot,
   compact = false
 }: {
   entry: TimelineEntry;
   screenshot?: FeatureScreenshot;
+  /** What the axis draws as a connector, said in words for the card and the mobile list. */
+  relation?: { label: string; fromTitle: string };
   onOpenScreenshot: (id: string) => void;
   compact?: boolean;
 }) {
@@ -231,6 +318,12 @@ function TimelineCard({
         )}
       </p>
       <h4 className="tl-card-title">{entry.title}</h4>
+      {relation && (
+        <p className="tl-card-link">
+          <span className="tl-card-link-rule" aria-hidden="true" />
+          <span><b>{relation.label}</b> after {relation.fromTitle}</span>
+        </p>
+      )}
       <p className="tl-card-summary">{entry.summary}</p>
       {(entry.tags?.length || hasSize) && (
         <p className="tl-card-foot">
