@@ -6,6 +6,7 @@ import type { FeatureScreenshot, TimelineEntry } from "@/types/resume";
 import { formatDate, isIsoDate, parseIsoDate } from "@/lib/dates";
 import { REPO_URL } from "@/lib/site";
 import { useInViewOnce } from "@/lib/useInViewOnce";
+import { ThemedShot } from "@/components/projects/feature/ThemedShot";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -222,8 +223,9 @@ function TimelineCard({
           {formatDate(entry.date, entry.era === "future" ? "month" : "long")}
         </time>
         <span className={`tl-badge tl-badge--${entry.era}`}>{ERA_LABEL[entry.era]}</span>
+        {/* suppressHydrationWarning: like every other anchor on the site — a browser extension can stamp attributes onto <a> before hydration. */}
         {entry.hash && (
-          <a className="tl-hash" href={`${REPO_URL}/commit/${entry.hash}`} target="_blank" rel="noreferrer">
+          <a className="tl-hash" href={`${REPO_URL}/commit/${entry.hash}`} target="_blank" rel="noreferrer" suppressHydrationWarning>
             {entry.hash}
           </a>
         )}
@@ -244,8 +246,7 @@ function TimelineCard({
       )}
       {screenshot && !compact && (
         <button type="button" className="tl-card-shot" onClick={() => onOpenScreenshot(screenshot.id)} aria-label={`View screenshot: ${screenshot.caption ?? screenshot.alt}`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={screenshot.src} alt="" loading="lazy" />
+          <ThemedShot shot={screenshot} />
           <span>{screenshot.caption ?? "View screenshot"}</span>
         </button>
       )}

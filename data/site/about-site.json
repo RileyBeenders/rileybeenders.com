@@ -455,151 +455,140 @@
       {
         "id": "home-full",
         "src": "/project-images/rileybeenders-com/home-full-light.png",
-        "alt": "The full home page in light mode, top to bottom: hero, summary, experience, toolchain, education, footer.",
-        "caption": "Home, top to bottom",
-        "hotspots": [
-          {
-            "x": 50,
-            "y": 0.6,
-            "label": "Sticky nav",
-            "detail": "Hairline border, 82% paper with a 12px blur, and an accent underline that grows under the active link."
-          },
-          {
-            "x": 22,
-            "y": 6,
-            "label": "Hero",
-            "detail": "Eyebrow, two-line name, rule, tagline, and actions arrive in sequence on one shared curve. A faint B-bowl draws behind the heading."
-          },
-          {
-            "x": 11,
-            "y": 32,
-            "label": "Page spine",
-            "detail": "A hairline track down the left that fills with the accent as you scroll, spring-damped so it settles instead of tracking the scrollbar."
-          },
-          {
-            "x": 40,
-            "y": 24,
-            "label": "Reactive bullets",
-            "detail": "Resume bullets take the accent on their action words when hovered; the ones with a case study carry a View Project link."
-          },
-          {
-            "x": 50,
-            "y": 91,
-            "label": "Certificates",
-            "detail": "Hairline cards that lift 5px and grow an accent bar along the bottom on hover."
-          }
-        ]
+        "srcDark": "/project-images/rileybeenders-com/home-full-dark.png",
+        "alt": "The full home page, top to bottom: hero, summary, experience, toolchain, education, footer.",
+        "caption": "Home, top to bottom"
       },
       {
         "id": "home-dark",
-        "src": "/project-images/rileybeenders-com/home-hero-dark.png",
-        "alt": "The home hero in dark mode.",
-        "caption": "Dark mode is a token swap, not a second design",
-        "hotspots": [
-          {
-            "x": 86.5,
-            "y": 3.7,
-            "label": "Theme toggle",
-            "detail": "A 44px switch in the nav; the thumb slides 20px and turns accent. Remembered per device."
-          },
-          {
-            "x": 55,
-            "y": 55,
-            "label": "Same grid",
-            "detail": "The blueprint texture is drawn from the ink token at 4.5% and 8.5%, so it inverts with the theme for free."
-          }
-        ]
+        "src": "/project-images/rileybeenders-com/home-hero-light.png",
+        "srcDark": "/project-images/rileybeenders-com/home-hero-dark.png",
+        "alt": "The home hero — paper and ink swap with the theme; nothing else changes.",
+        "caption": "The hero in the other theme"
       },
       {
         "id": "projects",
         "src": "/project-images/rileybeenders-com/projects-light.png",
+        "srcDark": "/project-images/rileybeenders-com/projects-dark.png",
         "alt": "The projects page showing the ICARUS-Lite entry with its photo grid and bullets.",
-        "caption": "Projects · ICARUS-Lite entry",
-        "hotspots": [
-          {
-            "x": 10.8,
-            "y": 30,
-            "label": "Spine",
-            "detail": "The project list's own scroll-filled spine, mirroring the home page."
-          },
-          {
-            "x": 19,
-            "y": 24,
-            "label": "Entry",
-            "detail": "Index, title, subtitle, and rule reveal in sequence; bullets stagger in 90ms apart."
-          },
-          {
-            "x": 71,
-            "y": 55,
-            "label": "Media column",
-            "detail": "Drifts 56px against the text as you scroll. Each photo uncovers bottom-to-top and opens a full-screen viewer. Every other entry swaps sides."
-          },
-          {
-            "x": 19,
-            "y": 73,
-            "label": "Case study toggle",
-            "detail": "Expands the problem, constraints, approach, decisions, and impact in place, height animated from zero to auto."
-          }
-        ]
+        "caption": "Projects · ICARUS-Lite entry"
       },
       {
         "id": "studio",
-        "src": "/project-images/rileybeenders-com/studio.png",
-        "alt": "The Studio content editor showing the projects form.",
-        "caption": "Studio · localhost only, with this page open",
-        "hotspots": [
-          {
-            "x": 4.6,
-            "y": 53.5,
-            "label": "Rail",
-            "detail": "Files in the order the site reads them: home page top to bottom, then each page, then site settings. This page has its own entry."
-          },
-          {
-            "x": 50,
-            "y": 36,
-            "label": "Schema-driven form",
-            "detail": "Field order in the schema is key order on disk, so an untouched entry saves back byte-for-byte identical."
-          },
-          {
-            "x": 59,
-            "y": 57,
-            "label": "Ongoing",
-            "detail": "One switch keeps the date bar on the page reading → Present and moving."
-          },
-          {
-            "x": 50,
-            "y": 78,
-            "label": "This page",
-            "detail": "Summary, bullets, gallery, case study, stats, the timeline, pillars, and screenshot pins are all edited here."
-          }
-        ]
+        "src": "/project-images/rileybeenders-com/studio-light.png",
+        "srcDark": "/project-images/rileybeenders-com/studio-dark.png",
+        "alt": "The Studio content editor with this page's form open.",
+        "caption": "Studio · localhost only, with this page open"
       },
       {
         "id": "feature",
-        "src": "/project-images/rileybeenders-com/feature-timeline.png",
-        "alt": "This project's timeline, with dots sized by commit size along a time axis and a card open for one commit.",
-        "caption": "This page's timeline",
-        "hotspots": [
-          {
-            "x": 8,
-            "y": 20,
-            "label": "Time axis",
-            "detail": "Dots are placed by date, not by index, so quiet weeks read as space. Bigger dots are bigger commits."
-          },
-          {
-            "x": 64,
-            "y": 20,
-            "label": "Present",
-            "detail": "Today's marker breathes; the dashed stretch beyond it holds what's planned."
-          },
-          {
-            "x": 20,
-            "y": 60,
-            "label": "Card",
-            "detail": "Click any dot, or use the arrow keys: the card swaps in place with the commit's summary, hash, and size."
-          }
-        ]
+        "src": "/project-images/rileybeenders-com/feature-timeline-light.png",
+        "srcDark": "/project-images/rileybeenders-com/feature-timeline-dark.png",
+        "alt": "This page's timeline: dots placed by date along an axis, with one commit's card open.",
+        "caption": "This page's timeline"
       }
-    ]
+    ],
+    "backend": {
+      "eyebrow": "Behind the site",
+      "intro": "None of this is on the live site. It runs on my machine and in the repository, and it is most of why the site can keep moving.",
+      "items": [
+        {
+          "demo": "resume",
+          "eyebrow": "Automatic resume formatter",
+          "title": "One posting in, one page out",
+          "body": [
+            "The PDF is still the document that gets submitted. When I apply somewhere, an agent reads the posting, pulls the matching evidence out of the same data this site renders, and writes a one-page PDF in the site's format. Anything the data can't back up is left out, not softened.",
+            "The live Download PDF button on the home page is the same generator running on demand, so the resume on the site is never a stale file."
+          ],
+          "notes": [
+            "Reads the posting PDF and data/**/*.json",
+            "Fact-only: unsupported claims are excluded",
+            "Checks page count, links, and layout before delivery"
+          ],
+          "matches": [
+            {
+              "keyword": "LabVIEW",
+              "line": "Built an automated LabVIEW QC system for real-time tolerance monitoring"
+            },
+            {
+              "keyword": "CAN bus",
+              "line": "Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging"
+            },
+            {
+              "keyword": "Kubernetes",
+              "line": "Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM"
+            },
+            {
+              "keyword": "Linear motors",
+              "line": "Researched high-speed linear motors moving a 30 kg payload at 3 m/s with 5-micron accuracy"
+            },
+            {
+              "keyword": "DFM",
+              "line": "Led the design and development of the ICARUS-Lite, owning mechanical, electrical, and software design"
+            }
+          ]
+        },
+        {
+          "demo": "studio",
+          "eyebrow": "Studio environment",
+          "title": "Edit the site from a form, not a code editor",
+          "body": [
+            "Every word, image, palette, and font on this site comes from JSON files. The Studio is a small local editor that reads and writes them through a form built from a schema, so a content change never means opening a code file.",
+            "It only runs on this machine, backs up every save, and writes back byte-for-byte what it read plus the one thing that changed, so the git diff is just that change."
+          ],
+          "notes": [
+            "Ten palettes plus custom colors, three font roles",
+            "Hidden projects keep their write-up until they publish",
+            "Never deployed: it is not part of the site"
+          ]
+        },
+        {
+          "demo": "skills",
+          "eyebrow": "Custom agent skills",
+          "title": "Standing instructions any agent can follow",
+          "body": [
+            "The repository carries its own instructions for AI coding agents, written as plain markdown so any tool can follow them. Each one is a procedure I would otherwise have to remember: how to tailor a resume, how to keep the documentation honest, how motion on this site should feel.",
+            "They are the reason a fresh session can pick up work cold and still do it the way I would."
+          ],
+          "notes": [
+            "Plain markdown in the repo, one folder per procedure",
+            "Registered as first-class skills so they trigger on ordinary requests",
+            "A vault of notes is kept current in the same session as any change"
+          ],
+          "skills": [
+            {
+              "name": "custom-resume",
+              "trigger": "\"Tailor a resume for this posting\"",
+              "does": "Reads the job PDF and the site's data, keeps only the claims the data supports, and writes a one-page PDF in the site's format."
+            },
+            {
+              "name": "vault-sync",
+              "trigger": "Any change to the site's code, data, or config",
+              "does": "Updates the notes that describe the part of the site that changed, in the same session, before the task is done."
+            },
+            {
+              "name": "sync-charts",
+              "trigger": "Editing the application tracker",
+              "does": "Keeps the tracker's chart and table identical in the two places they live."
+            },
+            {
+              "name": "motion-design",
+              "trigger": "\"Add some subtle motion\"",
+              "does": "Decides what should move and how much, using a catalog of effects rated for this site's restrained style."
+            },
+            {
+              "name": "motion-fluidity",
+              "trigger": "Writing any animation",
+              "does": "Builds it with the site's one easing curve and reduced-motion branch, from copy-ready recipes."
+            },
+            {
+              "name": "site-timeline-sync",
+              "trigger": "After a meaningful commit",
+              "does": "Refreshes this page's numbers from git and adds only the commits that mattered to the timeline."
+            }
+          ]
+        }
+      ]
+    }
   }
 }

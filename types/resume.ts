@@ -98,20 +98,52 @@ export type TimelineEntry = {
   screenshotId?: string;
 };
 
-export type ScreenshotHotspot = {
-  /** Percent of the image width/height, 0–100. */
-  x: number;
-  y: number;
-  label: string;
-  detail?: string;
-};
-
+/**
+ * A capture of the site itself. `src` is the light-theme capture; `srcDark`
+ * the dark one. The About page shows the *opposite* of the visitor's theme
+ * (light site → dark shot) so the thumbnails read as a different surface.
+ */
 export type FeatureScreenshot = {
   id: string;
   src: string;
+  srcDark?: string;
   alt: string;
   caption?: string;
-  hotspots?: ScreenshotHotspot[];
+};
+
+/** Which live demo a "Behind the site" row renders beside its notes. */
+export type BackendDemo = "resume" | "studio" | "skills";
+
+/** resume demo: a posting keyword and the real resume line it matches. */
+export type BackendMatch = {
+  keyword: string;
+  line: string;
+};
+
+/** skills demo: one procedure in the mini router. */
+export type BackendSkill = {
+  name: string;
+  trigger: string;
+  does: string;
+};
+
+export type BackendItem = {
+  demo: BackendDemo;
+  eyebrow?: string;
+  title: string;
+  /** Paragraphs shown beside the demo. */
+  body: string[];
+  /** Short one-line notes under the paragraphs. */
+  notes?: string[];
+  matches?: BackendMatch[];
+  skills?: BackendSkill[];
+};
+
+/** The tools that never appear on the live site: the resume formatter, the Studio, the agent skills. */
+export type FeatureBackend = {
+  eyebrow?: string;
+  intro?: string;
+  items: BackendItem[];
 };
 
 export type FeaturePillar = {
@@ -130,6 +162,7 @@ export type ProjectFeature = {
   timeline?: TimelineEntry[];
   pillars?: FeaturePillar[];
   screenshots?: FeatureScreenshot[];
+  backend?: FeatureBackend;
 };
 
 export type Project = {

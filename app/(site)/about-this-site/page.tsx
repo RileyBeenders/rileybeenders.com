@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import aboutSiteData from "@/data/site/about-site.json";
+import resumeData from "@/data/resumeData";
 import type { AboutSiteData } from "@/types/about-site";
 import type { Project } from "@/types/resume";
 import { buildProofView } from "@/lib/projects";
@@ -61,7 +62,7 @@ export default function AboutThisSitePage() {
 
       <section className="bp-section as-deep">
         <div className="bp-shell">
-          <ProjectFeature feature={data.feature} projectName={data.hero.title} today={today} />
+          <ProjectFeature feature={data.feature} projectName={data.hero.title} today={today} paletteId={resumeData.theme.paletteId} />
         </div>
       </section>
 

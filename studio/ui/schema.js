@@ -130,20 +130,43 @@ const FONT_OPTIONS = [
   { value: "ibm-plex-mono", label: "IBM Plex Mono — monospace, engineering feel" }
 ];
 
-/** A numbered pin on a screenshot; coordinates are percentages so they survive any display size. */
-const HOTSPOT_FIELDS = [
-  { name: "x", type: "number", label: "X %", span: "third", help: "0 = left edge, 100 = right edge." },
-  { name: "y", type: "number", label: "Y %", span: "third", help: "0 = top edge, 100 = bottom edge." },
-  { name: "label", type: "text", label: "Label", required: true, span: "third" },
-  { name: "detail", type: "textarea", label: "Detail", rows: 2 }
-];
-
 const SCREENSHOT_FIELDS = [
   { name: "id", type: "slug", label: "ID", required: true, span: "third", help: "Referenced by timeline entries and pillars." },
-  { name: "src", type: "image", label: "Image", required: true },
+  { name: "src", type: "image", label: "Light-theme capture", required: true, help: "Shown when the visitor is in dark mode (the page inverts)." },
+  { name: "srcDark", type: "image", label: "Dark-theme capture", help: "Shown when the visitor is in light mode. Falls back to the light capture if empty." },
   { name: "alt", type: "text", label: "Alt text", required: true },
-  { name: "caption", type: "text", label: "Caption" },
-  { name: "hotspots", type: "objectList", label: "Pins", itemLabel: "Pin", fields: HOTSPOT_FIELDS }
+  { name: "caption", type: "text", label: "Caption" }
+];
+
+const BACKEND_MATCH_FIELDS = [
+  { name: "keyword", type: "text", label: "Posting keyword", required: true, span: "third" },
+  { name: "line", type: "text", label: "Resume line it matches", required: true }
+];
+
+const BACKEND_SKILL_FIELDS = [
+  { name: "name", type: "text", label: "Skill", required: true, span: "third" },
+  { name: "trigger", type: "text", label: "Triggers on", required: true, help: "The kind of request or change that runs it, in your words." },
+  { name: "does", type: "textarea", label: "What it does", rows: 2, required: true }
+];
+
+const BACKEND_ITEM_FIELDS = [
+  {
+    name: "demo",
+    type: "select",
+    label: "Live demo",
+    span: "third",
+    options: [
+      { value: "resume", label: "Resume formatter (posting → PDF)" },
+      { value: "studio", label: "Studio (palette picker + preview)" },
+      { value: "skills", label: "Agent skills (mini router)" }
+    ]
+  },
+  { name: "eyebrow", type: "text", label: "Eyebrow", span: "third" },
+  { name: "title", type: "text", label: "Title", required: true, span: "third" },
+  { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true },
+  { name: "notes", type: "stringList", label: "Side notes", help: "Short one-liners listed under the paragraphs." },
+  { name: "matches", type: "objectList", label: "Resume demo: keyword matches", itemLabel: "Match", fields: BACKEND_MATCH_FIELDS, help: "Only the resume demo reads these." },
+  { name: "skills", type: "objectList", label: "Skills demo: procedures", itemLabel: "Skill", fields: BACKEND_SKILL_FIELDS, help: "Only the skills demo reads these." }
 ];
 
 const TIMELINE_FIELDS = [
@@ -459,7 +482,7 @@ export const SCHEMAS = {
   aboutSite: {
     label: "About this site",
     shape: "object",
-    description: "The site as its own case study: hero, the running date bar, summary and bullets, screenshots, the case study, and the deep-dive (stats, commit timeline, pillars, annotated screenshots). The site-timeline-sync agent skill refreshes the stats and timeline from git.",
+    description: "The site as its own case study: hero, the running date bar, summary and bullets, screenshots, the case study, and the deep-dive (stats, commit timeline, pillars, and the Behind-the-site demos). The site-timeline-sync agent skill refreshes the stats and timeline from git.",
     fields: [
       {
         name: "hero",
@@ -515,7 +538,18 @@ export const SCHEMAS = {
           { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
           { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },
           { name: "pillars", type: "objectList", label: "Pillars", itemLabel: "Pillar", fields: PILLAR_FIELDS },
-          { name: "screenshots", type: "objectList", label: "Screenshots", itemLabel: "Screenshot", fields: SCREENSHOT_FIELDS, gallery: true }
+          { name: "screenshots", type: "objectList", label: "Screenshots", itemLabel: "Screenshot", fields: SCREENSHOT_FIELDS, gallery: true, help: "Thumbnails for timeline entries and pillars. Each has a light and a dark capture; the page shows the opposite of the visitor's theme." },
+          {
+            name: "backend",
+            type: "group",
+            label: "Behind the site",
+            help: "The tools visitors never see, each with a small live demo beside your notes.",
+            fields: [
+              { name: "eyebrow", type: "text", label: "Eyebrow", span: "half" },
+              { name: "intro", type: "textarea", label: "Intro", rows: 2 },
+              { name: "items", type: "objectList", label: "Rows", itemLabel: "Row", fields: BACKEND_ITEM_FIELDS, always: true }
+            ]
+          }
         ]
       }
     ]

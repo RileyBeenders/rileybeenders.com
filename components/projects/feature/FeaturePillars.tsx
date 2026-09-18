@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type { FeaturePillar, FeatureScreenshot } from "@/types/resume";
 import { useInViewOnce } from "@/lib/useInViewOnce";
 import { useSpotlight } from "@/lib/useSpotlight";
+import { ThemedShot } from "@/components/projects/feature/ThemedShot";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -65,8 +66,7 @@ function Pillar({
     <article className="ft-pillar bp-spot" style={{ ["--i" as string]: index }} onPointerMove={onSpotMove}>
       {screenshot && (
         <button type="button" className="ft-pillar-shot" onClick={() => onOpenScreenshot(screenshot.id)} aria-label={`View screenshot: ${screenshot.caption ?? screenshot.alt}`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={screenshot.src} alt="" loading="lazy" />
+          <ThemedShot shot={screenshot} />
         </button>
       )}
       <div className="ft-pillar-body">
