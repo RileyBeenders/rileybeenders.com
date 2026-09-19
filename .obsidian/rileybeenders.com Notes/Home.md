@@ -28,13 +28,14 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Repository Map]] — annotated full file tree
 
 ### Routes & Pages
-- [[Routes Overview]] — every route, its file, and what it renders
+- [[Routes Overview]] — every route, its file, and what it renders (now including `/about-this-site`)
 
 ### Components
 - [[Blueprint Nav and Mark]] — the sticky `BpNav` header, the `BpMark` RB monogram, and the static favicon/apple-icon
 - [[Blueprint UI Components]] — `BpActions` (Download/Email/LinkedIn/GitHub), `Reveal` (scroll entrance), `BpComingSoon` (projects placeholder)
 - [[GanttChart JobsTable and gantt.ts]] — the client mermaid Gantt chart, the tracker table, and the shared parser
-- [[Projects Route (BpComingSoon)]] — what `/projects` renders today and what it replaced
+- [[Projects Route (BpComingSoon)]] — the projects page: `ProjectEntry`, spine, gallery, lightbox, the optional per-project date box
+- [[About This Site Page]] — `/about-this-site`: the running date bar, `CountUp` stats, the time-scaled commit timeline, pillars, pinned screenshots, and the scripts and Studio entry behind them
 
 ### Data Layer
 - [[Data Layer and Types]] — types, the `resumeData.ts` merge pipeline, `header.json`, the dead "coming soon" schema
@@ -45,7 +46,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Resume PDF Pipeline]] — the live `/api/resume-pdf` generator and the static template-mockup script
 
 ### Styling
-- [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers
+- [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers; the machine-readable spec is the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]])
 
 ### Job Search Tracking
 - [[Job Application Tracker]] — how applications, tailored resumes, and references are tracked and stored, with links to a deep-dive page per application (`06 Job Search Tracking/Applications/`) covering the posting itself and a skills-match comparison that's frozen at application time versus kept current now
@@ -54,12 +55,13 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Build Tooling and Config]] — package.json, tsconfig, next.config, running locally
 
 ### Agents & Automation
-- [[Repository Agent Skills (.agents)]] — the three repo agent procedures: `custom-resume`, Vault Sync (this vault's self-updating skill), and Sync Charts
+- [[Repository Agent Skills (.agents)]] — the eight repo agent procedures: `custom-resume`, Vault Sync (this vault's self-updating skill), Sync Charts, Design Guidelines, the three `motion-*` skills, and `site-timeline-sync`
+- [[Impeccable Design Workflow]] — the `impeccable` design skill: `PRODUCT.md`, the repo-root `DESIGN.md` + `.impeccable/design.json`, the detector, the standing interview decisions (refinement inside Blueprint Press, not a redesign), and the critique history
 
 ## Known gaps / WIP notes worth remembering
 
 - `types/resume.ts` still declares the full `ComingSoonContent` schema and `ResumeData.siteMode` / `comingSoon`, but **nothing reads any of it** on `main` — `header.json` has `siteMode: "resume"` and no `comingSoon`, and the root `app/layout.tsx` uses a static title/description. It is dead code, not a dormant feature. See [[Data Layer and Types]].
-- `data/projects/proofs.json` (17 entries) is imported by `resumeData.ts` and then pruned to `[]` at runtime (`visibility.proofIndex` and `experienceProofButtons` are both `false`), and no component renders proofs anyway. `data/projects/projects.json` is kept, but only each project's `name`/`type`/`order` is consumed — by the `/projects` teaser list. `bullets`, `additionalInfo`, `images`, `proofId` on projects are currently unrendered. See [[Career Content]].
+- `data/projects/proofs.json` is loaded whenever the Projects page is on (it is the case-study detail layer `buildProofView` reads), but the standalone proof index and the resume's proof buttons stay off (`visibility.proofIndex` / `experienceProofButtons` are `false`). See [[Career Content]] and [[Projects Route (BpComingSoon)]].
 - `data/projects/projects.json` entry `unifi-network` is a placeholder (empty bullets, literal `"title": "title"` / `"constraint01"` strings). Not currently rendered, but flag it if asked to "finish" project content.
 - The Job Application Tracker's Gantt chart + table exists in **two** hand-maintained places that can drift: `README.md` and `data/more-info/gantt.md`. See [[Job Application Tracker]] and the Sync Charts procedure in [[Repository Agent Skills (.agents)]].
 - `README.md`'s own prose still describes the old "mouse-driven 3D motion / expandable information drawers" design — that file was not updated for the reskin.

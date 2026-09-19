@@ -8,7 +8,7 @@
       "Engineering Documentation and BOM Control",
       "FDM, FGF, MJF, and SLS Design",
       "Fixture and Tooling Design",
-      "Geometric Dimensioning & Toleranceing (GD&T)",
+      "Geometric Dimensioning & Tolerancing (GD&T)",
       "Lean Manufacturing",
       "Lean Six Sigma",
       "Product Development and Commercialization",
@@ -26,7 +26,6 @@
     "items": [
       "Autodesk Inventor",
       "CATIA",
-      "Fixture and Tooling Design",
       "Fusion 360",
       "GitHub",
       "LabVIEW",

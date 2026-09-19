@@ -24,6 +24,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "playwright-core": "^1.63.0",
     "typescript": "latest"
   }
 }

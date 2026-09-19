@@ -28,6 +28,14 @@ See [[Resume PDF Pipeline]] for what happens after the click.
 - `whileInView` with `viewport={{ once: true, amount: 0.25, margin: "0px 0px -80px 0px" }}` — fires once, slightly before the element is fully in view.
 - One shared easing curve (`[0.22, 0.9, 0.28, 1]`) so all page motion reads as a single hand — the same curve is `--ease` in `blueprint.css`.
 
+## `Reveal` variants (2026-09-18)
+
+`Reveal` grew two more `as` values alongside `rise` and `rule`: `fade` (opacity only, optional `blur` prop capped at 6px, 0.7s) and `slide` (18px in from `from="left" | "right"`, 0.72s). Same curve, same `viewport` defaults, same plain-`div` reduced-motion branch. The About page uses `fade` for its behind-the-site demos so a live replica doesn't lurch into place.
+
+## `CountUp`, `WordReveal`, `ScrollWords` (2026-09-17)
+
+Three more `components/blueprint/` motion primitives, added with the About-this-site page and taken from the `motion-fluidity` skill's recipes: `CountUp` (a number that springs to its value on view), `WordReveal` (word-by-word blur-in for headings; its only call site, the About page's feature eyebrow, was removed on 2026-09-18, so it is currently an unused primitive kept for the recipes), and `ScrollWords` (a passage whose words brighten as it scrolls up the viewport). All three branch on `useReducedMotion()` to static markup. Details in [[About This Site Page]]. `lib/useInViewOnce.ts` and `lib/useSpotlight.ts` are their CSS-side companions.
+
 ## `components/blueprint/BpComingSoon.tsx`
 
 `"use client"`. The entire content of `/projects` today. Props: `{ teasers?: { name: string; type: string }[] }` (the projects page passes the top 6 projects by `order`).

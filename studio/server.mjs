@@ -41,6 +41,7 @@ const FILES = {
   proofs: { file: "data/projects/proofs.json", label: "Proofs", shape: "array" },
   contact: { file: "data/contact/contact.json", label: "Contact", shape: "object" },
   moreInfo: { file: "data/more-info/more-info.json", label: "More Info", shape: "object" },
+  aboutSite: { file: "data/site/about-site.json", label: "About this site", shape: "object" },
   header: { file: "data/header.json", label: "Site Settings", shape: "object" }
 };
 

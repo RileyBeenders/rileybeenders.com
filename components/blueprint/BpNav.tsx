@@ -9,7 +9,9 @@ const NAV = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/projects" },
   { label: "Contact", href: "/contact" },
-  { label: "More Info", href: "/more-info" }
+  { label: "More Info", href: "/more-info" },
+  // The one link whose label is drawn in a slow, in-palette gradient sweep instead of a flat color.
+  { label: "About this site", href: "/about-this-site", gradient: true }
 ];
 
 export function BpNav() {
@@ -28,7 +30,11 @@ export function BpNav() {
             {NAV.map((item) => (
               <Link
                 key={item.href}
-                className={pathname === item.href ? "bp-nav-link is-active" : "bp-nav-link"}
+                className={[
+                  "bp-nav-link",
+                  pathname === item.href ? "is-active" : "",
+                  "gradient" in item && item.gradient ? "bp-nav-link--gradient" : ""
+                ].filter(Boolean).join(" ")}
                 href={item.href}
                 aria-current={pathname === item.href ? "page" : undefined}
                 suppressHydrationWarning

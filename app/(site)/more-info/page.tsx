@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
+import Link from "next/link";
 import moreInfoData from "@/data/more-info/more-info.json";
 import { GanttChart } from "@/components/GanttChart";
 import { JobsTable } from "@/components/JobsTable";
@@ -25,7 +26,6 @@ export default function MoreInfoPage() {
     <main>
       <section className="bp-hero" style={{ paddingBottom: 8 }}>
         <div className="bp-shell">
-          <Reveal delay={0.05}><p className="bp-eyebrow">About</p></Reveal>
           <h1 style={{ fontSize: "clamp(44px, 8vw, 96px)" }}>
             <Reveal delay={0.14}><span style={{ display: "block" }}>{data.aboutHeader.title}</span></Reveal>
           </h1>
@@ -46,7 +46,7 @@ export default function MoreInfoPage() {
         <div className="bp-shell">
           <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
           <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">01&nbsp;&nbsp;{data.aboutMe.title}</p></Reveal>
+            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.aboutMe.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
                 {data.aboutMe.description.map((paragraph) => (
@@ -62,24 +62,35 @@ export default function MoreInfoPage() {
         <div className="bp-shell">
           <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
           <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">02&nbsp;&nbsp;{data.aboutSite.title}</p></Reveal>
+            <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;{data.aboutSite.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
                 {data.aboutSite.description.map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
                 {data.aboutSite.readMore && (
-                  <a
-                    className="bp-link bp-readmore"
-                    href={data.aboutSite.readMore.href}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {data.aboutSite.readMore.label}
-                    <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
+                  // A site path stays in the tab; anything else (GitHub, etc.) opens a new one.
+                  data.aboutSite.readMore.href.startsWith("/") ? (
+                    <Link className="bp-link bp-readmore" href={data.aboutSite.readMore.href} suppressHydrationWarning>
+                      {data.aboutSite.readMore.label}
+                      <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <a
+                      className="bp-link bp-readmore"
+                      href={data.aboutSite.readMore.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      suppressHydrationWarning
+                    >
+                      {data.aboutSite.readMore.label}
+                      <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  )
                 )}
               </div>
             </Reveal>
@@ -92,7 +103,7 @@ export default function MoreInfoPage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</p></Reveal>
+              <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
                   {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}

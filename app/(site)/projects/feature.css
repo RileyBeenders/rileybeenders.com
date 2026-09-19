@@ -1,0 +1,1054 @@
+/* ==========================================================================
+   Projects — the About page's deep-dive (.ft-*), the commit timeline (.tl-*), and the behind-the-site demos (.dm-*)
+   Loaded by app/(site)/projects/page.tsx next to projects.css. Everything
+   here follows blueprint.css: --ease for every eased transition, hairlines
+   in --rule, paper and ink, the site's 860px breakpoint. Reduced motion is
+   handled by blueprint.css's blanket rule plus a few explicit final states.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- shell --- */
+
+.ft { margin-top: clamp(40px, 6vh, 64px); }
+
+.ft-head { margin-top: clamp(22px, 3vh, 30px); max-width: 64ch; }
+.ft-intro {
+  margin-top: 0;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.ft-block { margin-top: clamp(40px, 6vh, 64px); }
+.ft-block-title {
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ft-block-note { margin-top: 8px; font-size: 14px; color: var(--muted); }
+
+/* ---------------------------------------------------------------- stats --- */
+
+.ft-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+.ft-stat {
+  padding: 18px 18px 16px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: transform 0.44s var(--ease), border-color 0.44s ease, opacity 0.5s var(--ease);
+}
+.ft-stat:hover { transform: translateY(-3px); border-color: var(--ink); }
+
+/* Tiles arrive 60ms apart, capped at the sixth so late ones don't wait. */
+.ft-stats[data-stagger] .ft-stat {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-delay: calc(min(var(--i, 0), 6) * 60ms);
+}
+.ft-stats[data-stagger].is-in .ft-stat { opacity: 1; transform: none; }
+.ft-stats[data-stagger].is-in .ft-stat:hover { transform: translateY(-3px); transition-delay: 0s; }
+
+.ft-stat-value {
+  font-family: var(--bp-font-header), Georgia, serif;
+  font-size: clamp(34px, 3.4vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ft-stat-suffix { font-size: 0.6em; color: var(--accent); margin-left: 2px; }
+.ft-stat-label {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ft-stat-note { margin-top: 4px; font-size: 13px; color: var(--faint); }
+
+/* ------------------------------------------------------------- timeline --- */
+
+.tl {
+  /* Stem length per depth level: 22px at the line, another 18px each level out.
+     The connector between a linked pair repeats the same calc (a custom
+     property can't hold it — var() resolves where it's declared, not where
+     it's used) so it lands on its dots' centre line. */
+  --tl-stem: 22px;
+  --tl-stem-step: 18px;
+}
+
+/* The note and the tour's one control share a row: note on the left, the
+   control on the right, over the "Future" end of the axis. */
+.tl-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+.tl-head .ft-block-note { margin-top: 0; }
+.tl-tour-slot { flex: none; margin-left: auto; }
+
+/* The tour control: a round pause/play button wearing the dwell as a ring.
+   The hairline circle is the track; the ink arc over it fills clockwise from
+   twelve as the entry's time runs out, painted per frame by the component
+   (the circle has pathLength 1, so its dash offset is one minus the
+   progress). Pausing holds the arc and dims it. The label to the left says
+   which way it's going and where it is. */
+.tl-tour { display: inline-flex; align-items: center; gap: 12px; }
+.tl-tour-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tl-tour-count {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+.tl-tour-count::before { content: "·"; margin-right: 8px; }
+.tl-tour-btn {
+  position: relative;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.42s var(--ease);
+}
+.tl-tour-btn:hover { color: var(--accent); transform: translateY(-2px); }
+.tl-tour-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tl-tour-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+.tl-tour-ring circle { fill: none; }
+.tl-tour-track { stroke: var(--rule); stroke-width: 1; }
+.tl-tour-fill {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke 0.3s ease;
+}
+.tl-tour-btn[data-state="paused"] .tl-tour-fill { stroke: var(--muted); }
+.tl-tour-icon { position: relative; display: block; }
+
+/* The axis: a relative box with the track at its vertical center and room
+   above and below for stems, dots, and labels. Everything inside is placed
+   by --x (percent of the axis), set from the entry's date. */
+.tl-axis {
+  position: relative;
+  height: 272px;
+  margin-top: clamp(22px, 3vh, 30px);
+  margin-inline: 4px;
+}
+.tl-axis:focus-within { outline: none; }
+
+.tl-eras { position: absolute; top: 0; left: 0; right: 0; height: 16px; }
+.tl-era {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.tl-eras .tl-era:first-child { transform: none; }
+.tl-era--future { transform: translateX(-100%); }
+.tl-era--now { color: var(--accent); }
+
+.tl-track { position: absolute; left: 0; right: 0; top: 50%; height: 2px; }
+.tl-track-past { position: absolute; left: 0; top: 0; height: 2px; background: var(--rule); }
+.tl-track-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.8s var(--ease) 0.15s;
+}
+.tl.is-in .tl-track-fill { transform: scaleX(1); }
+.tl-track-future {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--faint) 0 6px, transparent 6px 13px);
+}
+
+/* Today. A solid accent point with a ring that breathes outward. */
+.tl-now {
+  position: absolute;
+  top: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.tl-now-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  animation: tl-ring 2.6s var(--ease) 1.2s infinite;
+}
+@keyframes tl-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  70%, 100% { transform: scale(2.3); opacity: 0; }
+}
+
+/* Month ticks sit on the line; their labels drop to the bottom of the axis,
+   clear of any below-axis dot even at the longer stem depth. */
+.tl-tick { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--rule); }
+.tl-tick-label {
+  position: absolute;
+  top: 122px;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* A dot is a button: stem, mark, and a label that shows on hover or when
+   selected. Above-axis dots hang from the line; below-axis dots stand on it.
+   --depth lengthens the stem when two dots on one side would otherwise touch. */
+.tl-dot {
+  position: absolute;
+  left: var(--x);
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transition-delay: calc(var(--i, 0) * 45ms + 450ms);
+  z-index: 1;
+}
+.tl-dot--above { transform: translate(-50%, calc(-100% + 1px)) translateY(8px); }
+.tl-dot--below { transform: translate(-50%, 1px) translateY(-8px); }
+.tl.is-in .tl-dot--above { opacity: 1; transform: translate(-50%, calc(-100% + 1px)); }
+.tl.is-in .tl-dot--below { opacity: 1; transform: translate(-50%, 1px); }
+.tl-dot:focus-visible { outline: none; }
+.tl-dot:focus-visible .tl-dot-mark { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.tl-dot-stem {
+  width: 1px;
+  height: calc(var(--tl-stem) + var(--tl-stem-step) * (var(--depth, 1) - 1));
+  background: var(--rule);
+}
+.tl-dot--above .tl-dot-stem { order: 3; }
+.tl-dot--below .tl-dot-stem { order: 1; }
+
+.tl-dot-mark {
+  order: 2;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  transition: transform 0.34s var(--ease), background-color 0.34s ease, border-color 0.34s ease;
+}
+.tl-dot--present .tl-dot-mark { background: var(--accent); border-color: var(--accent); }
+.tl-dot--future .tl-dot-mark { background: var(--paper); border-style: dashed; border-color: var(--muted); }
+.tl-dot:hover .tl-dot-mark,
+.tl-dot.is-active .tl-dot-mark { transform: scale(1.3); border-color: var(--accent); }
+.tl-dot.is-active .tl-dot-mark { background: var(--accent); }
+.tl-dot--future.is-active .tl-dot-mark { background: var(--paper); border-style: solid; }
+
+/* A star, not a dot: an entry whose weight isn't in its diff. Always the accent
+   colour, so it reads as the one thing on the axis that isn't a commit. */
+.tl-dot--star .tl-dot-mark {
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+.tl-dot--star:hover .tl-dot-mark,
+.tl-dot--star.is-active .tl-dot-mark {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+.tl-dot--star:focus-visible .tl-dot-mark { outline-offset: 5px; }
+
+/* The connector between a linked pair: a dimension line from the earlier dot to
+   the later one, arrow on the later end, with the days between them above it.
+   Both dots are forced above the axis at a depth past everything the line
+   spans, so it never crosses a stem. */
+.tl-link {
+  position: absolute;
+  left: calc(var(--from) + var(--from-size) / 2 + 3px);
+  /* Splits the difference between the two marks' centres — a small dot and a
+     star don't share one. */
+  bottom: calc(50% - 1px + var(--tl-stem) + var(--tl-stem-step) * (var(--depth, 1) - 1) + (var(--from-size) + var(--to-size)) / 4);
+  width: calc(var(--to) - var(--from) - var(--from-size) / 2 - var(--to-size) / 2 - 6px);
+  height: 1.5px;
+  z-index: 1;
+}
+/* The line draws itself towards the star. The clip box is opened vertically so
+   it doesn't cut the arrowhead off a 1.5px line; the caption sits outside it,
+   free to be wider than the line, and fades in once the line arrives. */
+.tl-link-line {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  clip-path: inset(-6px 100% -6px 0);
+  transition: clip-path 0.7s var(--ease) 1.1s;
+}
+.tl.is-in .tl-link-line { clip-path: inset(-6px -2px -6px 0); }
+/* The arrowhead, tip landing on the line's right end just short of the star. */
+.tl-link-line::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 7px solid var(--accent);
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  transform: translateY(-50%);
+}
+.tl-link-label {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  transform: translateX(-50%);
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease) 1.6s;
+}
+.tl.is-in .tl-link-label { opacity: 1; }
+
+.tl-dot-label {
+  position: absolute;
+  left: 50%;
+  padding: 3px 7px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+  pointer-events: none;
+}
+.tl-dot--above .tl-dot-label { bottom: calc(100% + 6px); }
+.tl-dot--below .tl-dot-label { top: calc(100% + 6px); }
+/* Above a connector endpoint sits its caption, so the label steps over it. */
+.tl-dot--linked .tl-dot-label { bottom: calc(100% + 22px); }
+.tl-dot:hover .tl-dot-label,
+.tl-dot:focus-visible .tl-dot-label,
+.tl-dot.is-active .tl-dot-label { opacity: 1; transform: translate(-50%, 0); }
+.tl-dot.is-active .tl-dot-label { border-color: var(--ink); }
+
+/* The selected entry's card. Fixed minimum height so switching dots doesn't
+   push the pillars up and down. */
+.tl-card-slot { min-height: 168px; margin-top: 8px; }
+.tl-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px clamp(20px, 3vw, 40px);
+  align-items: start;
+  padding: 6px 0 6px 20px;
+  border-left: 2px solid var(--ink);
+}
+.tl-card--present { border-left-color: var(--accent); }
+.tl-card--future { border-left-style: dashed; border-left-color: var(--muted); }
+.tl-card > :not(.tl-card-shot) { grid-column: 1; }
+
+.tl-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tl-badge {
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+.tl-badge--present { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.tl-badge--future { border-style: dashed; }
+.tl-hash {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+  transition: color 0.28s ease, border-color 0.28s ease;
+}
+.tl-hash:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+.tl-card-title {
+  margin-top: 14px;
+  margin-bottom: 2px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+/* The axis connector said in words, so the pair still reads as a pair in the
+   card and in the mobile list, where there is no axis to draw it on. */
+.tl-card-link {
+  display: flex;
+  /* Start-aligned, so the rule keeps to the first line when the text wraps. */
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.tl-card-link-rule { flex: 0 0 22px; height: 1.5px; margin-top: 7px; background: var(--accent); }
+.tl-card-link b { font-weight: 600; }
+
+.tl-card-summary { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 62ch; }
+
+.tl-card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 14px; }
+.tl-tag {
+  padding: 3px 9px;
+  border: 1px solid var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pill-text);
+}
+.tl-size {
+  display: inline-flex;
+  gap: 10px;
+  margin-left: auto;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.tl-size-add { color: #2e7d4f; }
+.tl-size-del { color: var(--accent); }
+html[data-theme="dark"] .tl-size-add { color: #6cc48e; }
+
+/* A thumbnail beside the card, opening the full screenshot. */
+.tl-card-shot {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: clamp(160px, 18vw, 240px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  text-align: left;
+}
+.tl-card-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: border-color 0.34s ease, transform 0.44s var(--ease);
+}
+.tl-card-shot:hover img { border-color: var(--ink); transform: translateY(-2px); }
+.tl-card-shot span { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.tl-card-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* The vertical list: hidden on desktop (the axis is the control), shown
+   under 860px with every entry open. */
+.tl-list { display: none; list-style: none; margin: 0; padding: 0; }
+
+/* -------------------------------------------------------------- pillars --- */
+
+.ft-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: clamp(18px, 3vh, 26px);
+}
+.ft-pillar {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  overflow: hidden;
+  transition: transform 0.44s var(--ease), border-color 0.44s ease, opacity 0.5s var(--ease);
+}
+.ft-pillar:hover { transform: translateY(-3px); border-color: var(--ink); }
+.ft-pillars[data-stagger] .ft-pillar {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.ft-pillars[data-stagger].is-in .ft-pillar { opacity: 1; transform: none; }
+.ft-pillars[data-stagger].is-in .ft-pillar:hover { transform: translateY(-3px); transition-delay: 0s; }
+
+.ft-pillar-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.ft-pillar-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.7s var(--ease);
+}
+.ft-pillar-shot:hover img { transform: scale(1.03); }
+.ft-pillar-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.ft-pillar-body { padding: 18px 20px 20px; }
+.ft-pillar-title {
+  margin-top: 0;
+  margin-bottom: 2px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(22px, 2vw, 26px);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.ft-pillar-lead { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.ft-pillar-more p { margin-top: 12px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.ft-pillar-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.28s ease;
+}
+.ft-pillar-toggle:hover { color: var(--accent); }
+.ft-pillar-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* ------------------------------------------------------- themed captures --- */
+
+/* A capture of the site shown in the theme the visitor is *not* using. Both
+   images render; the html[data-theme] stamp (set before hydration) picks one,
+   so the swap is instant on the toggle and identical on both sides of
+   hydration. See components/projects/feature/ThemedShot.tsx. */
+.ft-themed { display: block; }
+.ft-themed img { display: block; }
+.ft-themed img[data-shows="light"] { display: none; }
+html[data-theme="dark"] .ft-themed img[data-shows="dark"] { display: none; }
+html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
+.ft-pillar-shot .ft-themed { height: 100%; }
+
+/* ------------------------------------------------------ behind the site --- */
+
+/* One row per backend tool: a live replica on one side, the notes on the
+   other, sides alternating. Rows are compact on purpose — the page has
+   already made its case by the time a visitor reaches them. */
+.ft-back { display: grid; gap: clamp(36px, 5vh, 56px); margin-top: clamp(22px, 3vh, 30px); }
+.ft-back-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(22px, 3.5vw, 48px);
+  align-items: center;
+}
+.ft-back-row--reverse .ft-back-demo { order: 2; }
+.ft-back-row--reverse .ft-back-notes { order: 1; }
+.ft-back-demo { min-width: 0; }
+.ft-back-notes { min-width: 0; }
+.ft-back-title {
+  margin-top: 0;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ft-back-body { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 48ch; }
+.ft-back-list { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.ft-back-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.ft-back-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ----------------------------------------------------------------- demos --- */
+
+/* Shared demo chrome. Every demo is paper, hairlines, and the site's own
+   type; interaction feedback is the accent, never a glow. */
+.dm { position: relative; font-size: 13px; color: var(--ink); }
+.dm-card {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  padding: 12px 14px 14px;
+  min-width: 0;
+}
+.dm-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.dm-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* --- resume formatter --- */
+.dm-resume-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1.25fr);
+  align-items: stretch;
+}
+.dm-posting-title {
+  margin-top: 6px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.dm-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.dm-chip {
+  padding: 5px 9px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 12px;
+  color: var(--pill-text);
+  cursor: pointer;
+  transition: transform 0.28s var(--ease), border-color 0.28s ease, color 0.28s ease, background-color 0.28s ease;
+}
+.dm-chip:hover,
+.dm-chip.is-on { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.dm-chip.is-read { border-color: var(--ink); color: var(--ink); }
+.dm-chip.is-read.is-on { border-color: var(--accent); color: var(--accent); }
+.dm-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The connector between posting and page: a hairline with the skill's name riding it. */
+.dm-resume-flow { position: relative; display: grid; place-items: center; }
+.dm-resume-flow-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--rule);
+}
+.dm-resume-flow-line::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  transform: rotate(45deg);
+}
+.dm-resume[data-phase="running"] .dm-resume-flow-line,
+.dm-resume[data-phase="running"] .dm-resume-flow-line::after { border-color: var(--accent); background: var(--accent); }
+.dm-resume-flow-label {
+  position: relative;
+  padding: 2px 4px;
+  background: var(--paper);
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transform: rotate(-90deg);
+  white-space: nowrap;
+}
+
+/* A tiny US-letter page, in paper with a hairline. */
+.dm-page { display: flex; flex-direction: column; }
+.dm-page-name {
+  font-family: var(--bp-font-header), Georgia, serif;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink);
+}
+.dm-page-rule { display: block; height: 1.5px; background: var(--ink); margin: 8px 0 10px; }
+.dm-page-lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.dm-page-lines li {
+  position: relative;
+  padding-left: 10px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+  transition: color 0.28s ease;
+}
+.dm-page-lines li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rule);
+  transition: background-color 0.28s ease, transform 0.28s var(--ease);
+}
+.dm-page-lines li.is-read { color: var(--ink-soft); }
+.dm-page-lines li.is-read::before { background: var(--ink); }
+.dm-page-lines li.is-lit { color: var(--ink); }
+.dm-page-lines li.is-lit::before { background: var(--accent); transform: scale(1.5); }
+
+.dm-resume-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 12px; }
+.dm-generate { padding: 9px 14px; font-size: 12px; letter-spacing: 0.12em; }
+.dm-checks { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 0; list-style: none; }
+.dm-checks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: dm-check-in 0.5s var(--ease) calc(var(--i, 0) * 140ms) both;
+}
+.dm-check-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 11px;
+}
+@keyframes dm-check-in { to { opacity: 1; transform: none; } }
+
+/* --- studio --- */
+.dm-studio { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.dm-studio-window { border: 1px solid var(--rule); background: var(--white); display: flex; flex-direction: column; min-width: 0; }
+.dm-studio-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.dm-studio-brand { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); }
+.dm-studio-file {
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.dm-studio-status { margin-left: auto; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color 0.28s ease; white-space: nowrap; }
+.dm-studio-status.is-dirty { color: var(--accent); }
+.dm-studio-status.is-saving { color: var(--muted); }
+.dm-studio-save {
+  padding: 4px 10px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.28s ease, transform 0.28s var(--ease);
+}
+.dm-studio-save:disabled { opacity: 0.35; cursor: default; }
+.dm-studio-save:not(:disabled):hover { transform: translateY(-1px); }
+.dm-studio-save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dm-studio-body { display: grid; grid-template-columns: 92px minmax(0, 1fr); flex: 1; }
+.dm-studio-rail { margin: 0; padding: 8px 0; list-style: none; border-right: 1px solid var(--rule); }
+.dm-studio-rail li { padding: 5px 10px; font-size: 11px; color: var(--muted); }
+.dm-studio-rail li.is-active { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.dm-studio-form { padding: 10px 12px 12px; display: grid; gap: 8px; align-content: start; }
+.dm-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.dm-swatch {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--sw-paper);
+  cursor: pointer;
+  transition: transform 0.28s var(--ease), border-color 0.28s ease;
+}
+.dm-swatch-ink,
+.dm-swatch-accent { position: absolute; border-radius: 50%; }
+.dm-swatch-ink { left: 4px; top: 4px; width: 8px; height: 8px; background: var(--sw-ink); }
+.dm-swatch-accent { right: 4px; bottom: 4px; width: 6px; height: 6px; background: var(--sw-accent); }
+.dm-swatch:hover { transform: translateY(-2px); border-color: var(--ink); }
+.dm-swatch.is-on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--accent); }
+.dm-swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dm-swatch-name { font-size: 12px; color: var(--ink-soft); }
+.dm-switch-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 6px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-soft); }
+.dm-switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 0.34s ease;
+}
+.dm-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 0.34s var(--ease), background-color 0.34s ease;
+}
+.dm-switch[aria-checked="true"] .dm-switch-thumb { transform: translateX(16px); background: var(--accent); }
+.dm-switch:hover { border-color: var(--ink); }
+.dm-switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The mini site, colored from the chosen preset's tokens (--p-*), changing with the same 0.4s the real theme swap uses. */
+.dm-studio-preview {
+  position: relative;
+  padding: 14px 14px 16px;
+  border: 1px solid var(--p-rule);
+  background-color: var(--p-paper);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--p-ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--p-ink) 5%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px;
+  color: var(--p-ink);
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  min-width: 0;
+}
+.dm-prev-nav { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--p-rule); }
+.dm-prev-mark { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--p-ink); }
+.dm-prev-links { display: flex; gap: 6px; margin-left: auto; }
+.dm-prev-links i { display: block; width: 14px; height: 3px; background: var(--p-muted); }
+.dm-prev-links i:first-child { background: var(--p-accent); }
+.dm-prev-name {
+  margin-top: 14px;
+  font-family: var(--bp-font-header), Georgia, serif;
+  font-size: 22px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--p-ink);
+}
+.dm-prev-rule { display: block; height: 1.5px; background: var(--p-ink); margin: 10px 0; }
+.dm-prev-actions { display: flex; gap: 5px; }
+.dm-prev-btn {
+  padding: 4px 7px;
+  border: 1px solid var(--p-ink);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p-ink);
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+.dm-prev-btn--solid { background: var(--p-accent); border-color: var(--p-accent); color: var(--p-paper); }
+.dm-prev-badge {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 3px 7px 3px 6px;
+  border: 1px solid var(--p-rule);
+  background: var(--p-paper);
+  font-size: 9px;
+  color: var(--p-ink);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.34s var(--ease), transform 0.34s var(--ease);
+}
+.dm-prev-badge::before { content: "●"; margin-right: 4px; color: var(--p-accent); }
+.dm-prev-badge.is-on { opacity: 1; transform: none; }
+
+/* --- skills --- */
+.dm-skills { display: grid; grid-template-columns: 148px minmax(0, 1fr); border: 1px solid var(--rule); background: var(--white); }
+.dm-skills-rail { display: flex; flex-direction: column; padding: 8px 0; border-right: 1px solid var(--rule); }
+.dm-skills-tab {
+  position: relative;
+  padding: 7px 12px;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.28s ease;
+}
+.dm-skills-tab:hover,
+.dm-skills-tab.is-active { color: var(--ink); }
+.dm-skills-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.dm-skills-line { position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--accent); }
+.dm-skills-card { position: relative; padding: 12px 14px 16px; min-height: 150px; }
+.dm-skills-card .dm-eyebrow + .dm-eyebrow,
+.dm-skills-trigger + .dm-eyebrow { margin-top: 12px; }
+.dm-skills-trigger {
+  margin-top: 4px;
+  font-family: var(--bp-font-subheader), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.dm-skills-does { margin-top: 4px; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+.dm-skills-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: dm-progress var(--hold, 4200ms) linear both;
+}
+@keyframes dm-progress { to { transform: scaleX(1); } }
+
+/* --------------------------------------------------------------- narrow --- */
+
+@media (max-width: 860px) {
+  .ft-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* The axis needs width to breathe; below it the list takes over. */
+  .tl-axis,
+  .tl-card-slot,
+  .tl-tour-slot { display: none; }
+  .tl-list { display: block; position: relative; margin-top: clamp(22px, 3vh, 30px); padding-left: 26px; }
+  .tl-list::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--rule);
+  }
+  .tl-list-item { position: relative; padding: 4px 0 26px; }
+  .tl-list-item:last-child { padding-bottom: 0; }
+  .tl-list-mark {
+    position: absolute;
+    left: -26px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .tl-list-item--present .tl-list-mark { background: var(--accent); border-color: var(--accent); }
+  .tl-list-item--future .tl-list-mark { background: var(--paper); border-style: dashed; border-color: var(--muted); }
+  .tl-list-item--star .tl-list-mark {
+    left: -29px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 0;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .tl-list .tl-card-title { font-size: 20px; }
+  .tl-list .tl-size { margin-left: 0; width: 100%; }
+
+  .ft-pillars { grid-template-columns: minmax(0, 1fr); }
+  .tl-card { grid-template-columns: minmax(0, 1fr); }
+  .tl-card-shot { grid-column: 1; grid-row: auto; width: 100%; }
+
+  /* Backend rows stack: notes first, then the demo, whichever side they were on. */
+  .ft-back-row { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .ft-back-row .ft-back-notes { order: 1; }
+  .ft-back-row .ft-back-demo { order: 2; }
+  .dm-resume-cols { grid-template-columns: minmax(0, 1fr); }
+  .dm-resume-flow { height: 40px; }
+  .dm-resume-flow-label { transform: none; }
+  .dm-resume-flow-line { left: 50%; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+  .dm-resume-flow-line::after { right: auto; left: -3px; top: auto; bottom: -1px; transform: rotate(135deg); }
+  .dm-studio { grid-template-columns: minmax(0, 1fr); }
+  .dm-studio-body { grid-template-columns: 80px minmax(0, 1fr); }
+  .dm-skills { grid-template-columns: minmax(0, 1fr); }
+  .dm-skills-rail { flex-direction: row; flex-wrap: wrap; padding: 6px; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .dm-skills-tab { padding: 5px 8px; }
+  .dm-skills-line { left: 4px; right: 4px; top: auto; bottom: 0; width: auto; height: 2px; }
+}
+
+/* ------------------------------------------------------- reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-track-fill { transform: scaleX(1); }
+  .tl-dot { opacity: 1; }
+  .tl-dot--above { transform: translate(-50%, calc(-100% + 1px)); }
+  .tl-dot--below { transform: translate(-50%, 1px); }
+  .tl-link-line { clip-path: inset(-6px -2px -6px 0); transition: none; }
+  .tl-link-label { opacity: 1; transition: none; }
+  .ft-stats[data-stagger] .ft-stat,
+  .ft-pillars[data-stagger] .ft-pillar { opacity: 1; transform: none; }
+  .dm-checks li { opacity: 1; transform: none; animation: none; }
+  .dm-skills-progress { display: none; }
+}

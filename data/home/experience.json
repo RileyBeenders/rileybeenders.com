@@ -97,19 +97,31 @@
     "bullets": [
       {
         "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
-        "proofId": "unifi-network"
+        "proofId": "unifi-network",
+        "emphasis": [
+          "technology strategy"
+        ]
       },
       {
         "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
-        "proofId": "gen3-poseidon"
+        "proofId": "gen3-poseidon",
+        "emphasis": [
+          "Gen3 POSEIDON"
+        ]
       },
       {
         "text": "Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM for orders, inventory, tasks, projects, and customer interactions, with dynamic BOM generation linked to purchasing.",
-        "proofId": "internal-erp"
+        "proofId": "internal-erp",
+        "emphasis": [
+          "redundant Kubernetes cluster"
+        ]
       },
       {
         "text": "Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.",
-        "proofId": "nonplanar-research"
+        "proofId": "nonplanar-research",
+        "emphasis": [
+          "30 kg payload at 3 m/s"
+        ]
       }
     ]
   },
@@ -122,15 +134,24 @@
     "bullets": [
       {
         "text": "Improved thermal and acoustic performance through enclosure redesign and component placement, including custom tooling with local fabricators for large-radius aluminum-panel bends.",
-        "proofId": "modular-controls"
+        "proofId": "modular-controls",
+        "emphasis": [
+          "thermal and acoustic performance"
+        ]
       },
       {
         "text": "Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging while supporting larger, modular machines.",
-        "proofId": "modular-controls"
+        "proofId": "modular-controls",
+        "emphasis": [
+          "multi-board CAN-bus control architecture"
+        ]
       },
       {
         "text": "Developed independently testable electronics enclosures that could be installed in minutes and coordinated custom harnesses, panel designs, and hardware improvements with vendors.",
-        "proofId": "modular-controls"
+        "proofId": "modular-controls",
+        "emphasis": [
+          "installed in minutes"
+        ]
       }
     ]
   },
@@ -143,15 +164,24 @@
     "bullets": [
       {
         "text": "Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.",
-        "proofId": "kratos"
+        "proofId": "kratos",
+        "emphasis": [
+          "Kratos"
+        ]
       },
       {
         "text": "Developed next-generation ICARUS and POSEIDON models with higher-performance components and expanded motion safety through NEMA 34 motors, planetary gearboxes, and power-failure brakes.",
-        "proofId": "gen3-poseidon"
+        "proofId": "gen3-poseidon",
+        "emphasis": [
+          "ICARUS and POSEIDON"
+        ]
       },
       {
         "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
-        "proofId": "kraken"
+        "proofId": "kraken",
+        "emphasis": [
+          "THE KRAKEN"
+        ]
       }
     ]
   },
@@ -164,11 +194,17 @@
     "bullets": [
       {
         "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.",
-        "proofId": "product-reliability"
+        "proofId": "product-reliability",
+        "emphasis": [
+          "early product reliability"
+        ]
       },
       {
         "text": "Tuned, calibrated, and optimized print parameters while documenting design limitations and opportunities for product improvement.",
-        "proofId": "product-reliability"
+        "proofId": "product-reliability",
+        "emphasis": [
+          "print parameters"
+        ]
       }
     ]
   },
@@ -180,10 +216,16 @@
     "end": "Present",
     "bullets": [
       {
-        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories."
+        "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",
+        "emphasis": [
+          "automotive clients"
+        ]
       },
       {
-        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic."
+        "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
+        "emphasis": [
+          "face shields"
+        ]
       }
     ]
   },
@@ -195,10 +237,16 @@
     "end": "January 2021",
     "bullets": [
       {
-        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information."
+        "text": "Operated lifts and assisted thousands of guests with ticketing, weather, and slope information.",
+        "emphasis": [
+          "thousands of guests"
+        ]
       },
       {
-        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns."
+        "text": "Performed motor and control safety checks and supported the maintenance team during lift breakdowns.",
+        "emphasis": [
+          "safety checks"
+        ]
       }
     ]
   },
@@ -210,13 +258,22 @@
     "end": "August 2019",
     "bullets": [
       {
-        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings."
+        "text": "Built network infrastructure and deployed more than 750 wireless access points across six school buildings.",
+        "emphasis": [
+          "750 wireless access points"
+        ]
       },
       {
-        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry."
+        "text": "Accelerated deployment of more than 2,500 Chromebooks by developing an Arduino-based tool to automate setup-data entry.",
+        "emphasis": [
+          "2,500 Chromebooks"
+        ]
       },
       {
-        "text": "Coordinated final device distribution with school administrators."
+        "text": "Coordinated final device distribution with school administrators.",
+        "emphasis": [
+          "school administrators"
+        ]
       }
     ]
   }

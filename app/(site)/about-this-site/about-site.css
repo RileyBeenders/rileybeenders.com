@@ -1,0 +1,27 @@
+/* ==========================================================================
+   About this site — page-level layout (.as-*)
+   Everything else on the page comes from projects.css (entry layout, gallery,
+   case study, date box) and feature.css (stats, timeline, pillars, screenshots).
+   ========================================================================== */
+
+.as-hero { padding-bottom: 8px; }
+.as-dates { margin-top: 22px; }
+.as-tagline { margin-top: 26px; max-width: 60ch; }
+
+/* The hero-sized date bar: same box, larger type, a heavier underline. */
+.pj-dates--large {
+  gap: 9px;
+  padding: 11px 18px 13px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+}
+.pj-dates--large .pj-dates-bar { height: 3px; }
+.pj-dates--large.pj-dates--inline { margin-top: 0; }
+
+.as-story .pj-entry-grid { margin-top: clamp(22px, 3vh, 30px); }
+.as-story-grid--text-only { grid-template-columns: minmax(0, 1fr); }
+
+/* The deep-dive opens with its own rule inside ProjectFeature; the section
+   above already ends with breathing room, so this one starts flush. */
+.as-deep { padding-top: 0; }
+.as-deep .ft { margin-top: 0; }

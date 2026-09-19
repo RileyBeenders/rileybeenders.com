@@ -1,5 +1,7 @@
 # Design System — Light/Dark Pairing
 
+> This is the router for two *reference* token systems. The site's own design system — the one `impeccable` and its detector read — is the `DESIGN.md` at the repository root. Start there; use this file only when you need the Tesla / Bugatti source material the Electric preset was seeded from.
+
 This project uses two reference design systems, switched by color-scheme mode:
 
 - **Light mode:** [design-light.md](./design-light.md) — Tesla's design system (radical minimalism, white canvas, single electric-blue accent, Universal Sans typography).

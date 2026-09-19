@@ -1,16 +1,12 @@
 export type ContactHero = {
-  eyebrow: string;
   title: string;
   tagline: string;
 };
 
 export type ContactDetails = {
   title: string;
+  /** The paragraph(s) under the section index; the email address is printed after them from header.json. */
   description: string[];
-  /** Link text for the LinkedIn card; the address itself is `person.linkedin` in header.json. */
-  linkedinLabel: string;
-  /** Link text for the GitHub card; the address itself is `person.github` in header.json. */
-  githubLabel: string;
 };
 
 export type ContactData = {

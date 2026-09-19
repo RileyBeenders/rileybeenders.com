@@ -19,8 +19,8 @@
       "Additionally, this site serves as a central hub for all of my career data, allowing me to use AI agents to analyze my job search, identify trends, and generate actionable insights that can improve my chances of landing the right role."
     ],
     "readMore": {
-      "label": "Read more",
-      "href": "https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents"
+      "label": "Read the full story",
+      "href": "/about-this-site"
     }
   },
   "ganttSection": {
