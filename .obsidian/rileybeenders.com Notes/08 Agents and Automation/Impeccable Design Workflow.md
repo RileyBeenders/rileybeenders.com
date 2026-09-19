@@ -52,7 +52,15 @@ See the section below for each run; the snapshots themselves live in `.impeccabl
 
 ### 2026-09-18 — first run, site and Studio
 
-Recorded after the first critique pass; see the git commit that introduced this note for the report, and `.impeccable/critique/` for the snapshots.
+Both critiques ran dual-agent (a design review and a detector/browser-evidence agent, isolated from each other). Snapshots: `.impeccable/critique/2026-09-19T00-30-47Z__app-site-page-tsx.md` and `…__studio-ui-index-html.md`.
+
+**Site: 22/32 (Acceptable, 69%; heuristics 7 and 10 n/a on a Read surface).** Specificity verdict: split — the bones authored (the one-stroke B, the 16/96 ruling, the index column, the spine, the date box on the hairline, the timeline's dimension line, the live demos), the trim category-default (twelve eyebrows, tracked uppercase on 25+ selectors, ten infinite animations at rest, identical hover lifts, a 9.5px accent chip as the only evidence link). P0: the grey ramp failed contrast in both themes (`faint` 2.3–2.5:1, `muted` 3.9:1). P1: the eyebrows and loops; the 151px phone nav and the badge crowding the name; four typographic faults (faux-bold serif, an undefined font variable, a split drop cap, no measure); the evidence link. P2: copy where the data is thin; sixteen sub-11px sizes on the About page. The detector's `gradient-text` warning agreed with the review; its `side-tab` warning is a CSS arrowhead and its grid advisories are the committed surface.
+
+**Studio: 23/40 (Acceptable, 58%).** A well-built generic three-pane admin wearing the site's palette, with a product-specific data story underneath. P0: the workspace was not viewport-locked (all three panes 6,786px tall). P1: focus rings, names, and live semantics (24 unnamed controls); contrast (help text 2.5–3.7:1); the long form's lack of structure. P2: drift from the site's world (17 radii, a green second hue, an emoji favicon); the one-state save lifecycle. P3: picker defaults and 469 transitions on every theme toggle.
+
+**Riley's decisions:** remove every eyebrow; keep all the idle motion (only the gradient text becomes a plain link); approve the four copy fixes (Skills rename/dedupe/typo, the under-development note, one set of contact links, the footer title block); label hidden Studio entries "Draft".
+
+**What shipped** is recorded in [[Design System (Blueprint Press)]] ("The impeccable polish pass") and [[Build Tooling and Config]] ("The Studio's own design"). After the batch the detector reports no warnings on the site beyond the arrowhead false positive, no color drift (the insertion green and lightbox scrim are now documented tokens), and only fluid-scale advisories; the Studio scan is down to its grid advisory. Both snapshots stay open until `$impeccable polish` re-runs and closes them; a second `$impeccable critique` is the way to see the score move.
 
 ## Related
 - [[Repository Agent Skills (.agents)]]

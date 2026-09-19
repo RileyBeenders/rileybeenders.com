@@ -97,6 +97,9 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               {project.summary && (
                 <Reveal delay={0.26}><p className="pj-summary">{project.summary}</p></Reveal>
               )}
+              {project.status && (
+                <Reveal delay={0.3}><p className="pj-status">{project.status}</p></Reveal>
+              )}
 
               {project.bullets.length > 0 && (
                 reduced ? (

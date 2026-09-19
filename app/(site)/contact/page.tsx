@@ -19,7 +19,6 @@ export default function ContactPage() {
     <main>
       <section className="bp-hero" style={{ paddingBottom: 8 }}>
         <div className="bp-shell">
-          <Reveal delay={0.05}><p className="bp-eyebrow">{data.hero.eyebrow}</p></Reveal>
           <h1 style={{ fontSize: "clamp(48px, 9vw, 116px)" }}>
             <Reveal delay={0.14}><span style={{ display: "block" }}>{data.hero.title}</span></Reveal>
           </h1>
@@ -45,35 +44,16 @@ export default function ContactPage() {
         <div className="bp-shell">
           <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
           <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">01&nbsp;&nbsp;{data.details.title}</p></Reveal>
+            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.details.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
                 {data.details.description.map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
-                <div className="bp-certs" style={{ marginTop: 30 }}>
-                  <div className="bp-cert">
-                    <h4>Email</h4>
-                    <a className="bp-link" href={`mailto:${person.email}`} suppressHydrationWarning>
-                      {person.email}
-                    </a>
-                    <div className="bp-cert-bar" aria-hidden="true" />
-                  </div>
-                  <div className="bp-cert">
-                    <h4>LinkedIn</h4>
-                    <a className="bp-link" href={person.linkedin} target="_blank" rel="noreferrer" suppressHydrationWarning>
-                      {data.details.linkedinLabel}
-                    </a>
-                    <div className="bp-cert-bar" aria-hidden="true" />
-                  </div>
-                  <div className="bp-cert">
-                    <h4>GitHub</h4>
-                    <a className="bp-link" href={person.github} target="_blank" rel="noreferrer" suppressHydrationWarning>
-                      {data.details.githubLabel}
-                    </a>
-                    <div className="bp-cert-bar" aria-hidden="true" />
-                  </div>
-                </div>
+                {/* The address itself, spelled out once, so it can be read and copied without the button. */}
+                <p className="bp-prose" style={{ marginTop: 20 }}>
+                  <a href={`mailto:${person.email}`} suppressHydrationWarning>{person.email}</a>
+                </p>
               </div>
             </Reveal>
           </div>

@@ -70,8 +70,7 @@ function Pillar({
         </button>
       )}
       <div className="ft-pillar-body">
-        {pillar.eyebrow && <p className="ft-pillar-eyebrow">{pillar.eyebrow}</p>}
-        <h4 className="ft-pillar-title">{pillar.title}</h4>
+        <h3 className="ft-pillar-title">{pillar.title}</h3>
         <p className="ft-pillar-lead">{lead}</p>
 
         {rest.length > 0 && (

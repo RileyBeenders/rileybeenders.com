@@ -107,7 +107,6 @@ export function StudioDemo({ initialPaletteId }: { initialPaletteId: string }) {
           <span className="dm-prev-mark" />
           <span className="dm-prev-links"><i /><i /><i /><i /></span>
         </div>
-        <p className="dm-prev-eyebrow">R&amp;D · Electromechanical · Automation</p>
         <p className="dm-prev-name">Riley<br />Beenders</p>
         <span className="dm-prev-rule" />
         <div className="dm-prev-actions">

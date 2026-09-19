@@ -26,7 +26,6 @@ export default function MoreInfoPage() {
     <main>
       <section className="bp-hero" style={{ paddingBottom: 8 }}>
         <div className="bp-shell">
-          <Reveal delay={0.05}><p className="bp-eyebrow">About</p></Reveal>
           <h1 style={{ fontSize: "clamp(44px, 8vw, 96px)" }}>
             <Reveal delay={0.14}><span style={{ display: "block" }}>{data.aboutHeader.title}</span></Reveal>
           </h1>
@@ -47,7 +46,7 @@ export default function MoreInfoPage() {
         <div className="bp-shell">
           <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
           <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">01&nbsp;&nbsp;{data.aboutMe.title}</p></Reveal>
+            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.aboutMe.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
                 {data.aboutMe.description.map((paragraph) => (
@@ -63,7 +62,7 @@ export default function MoreInfoPage() {
         <div className="bp-shell">
           <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
           <div className="bp-section-grid">
-            <Reveal><p className="bp-section-index">02&nbsp;&nbsp;{data.aboutSite.title}</p></Reveal>
+            <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;{data.aboutSite.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
                 {data.aboutSite.description.map((paragraph) => (
@@ -104,7 +103,7 @@ export default function MoreInfoPage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</p></Reveal>
+              <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
                   {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}

@@ -14,18 +14,21 @@ function fromSeeds(light: PaletteSeeds, dark: PaletteSeeds) {
 
 // Exact current site colors — hand-tuned, so Default stays pixel-identical
 // rather than running through the derived ramp like the generated presets below.
+// muted and faint were re-derived at the 2026-09-18 ramp weights (0.36 / 0.50) so
+// small text on this preset clears 4.5:1 too; every other value is untouched.
 const DEFAULT_LIGHT: PaletteTokens = {
   paper: "#fbfbf9",
   white: "#ffffff",
   ink: "#0b1a2b",
   inkSoft: "#46545f",
-  muted: "#6f7d88",
-  faint: "#97a3ac",
+  muted: "#616b75",
+  faint: "#838b92",
   rule: "#d9dee3",
   accent: "#e3342f",
   blue: "#2f86c4",
   prose: "#26333f",
-  pillText: "#4a5c6b"
+  pillText: "#4a5c6b",
+  onAccent: "#fbfbf9"
 };
 
 const DEFAULT_DARK: PaletteTokens = {
@@ -33,13 +36,14 @@ const DEFAULT_DARK: PaletteTokens = {
   white: "#142a3d",
   ink: "#eef3f7",
   inkSoft: "#b7c4d1",
-  muted: "#8b9aa8",
-  faint: "#5b6b79",
+  muted: "#9da5ad",
+  faint: "#7e8791",
   rule: "#24384a",
   accent: "#ff6b62",
   blue: "#5aa9e6",
   prose: "#d7e0e8",
-  pillText: "#a9b8c5"
+  pillText: "#a9b8c5",
+  onAccent: "#0d1b2a"
 };
 
 export const PRESET_PALETTES: Palette[] = [

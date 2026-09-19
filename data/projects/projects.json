@@ -4,7 +4,8 @@
     "id": "icarus-lite",
     "order": 1,
     "type": "Industrial Design",
-    "summary": "A compact, purpose-built industrial printer designed to automate prosthetic and orthotic production with minimal customer setup. [Project page is currently under development -- More details to come soon! ]",
+    "summary": "A compact, purpose-built industrial printer designed to automate prosthetic and orthotic production with minimal customer setup.",
+    "status": "Project page under development. More details to come soon.",
     "images": [
       {
         "src": "/project-images/ICARUS-Lite/Three_Outside--21-.jpg",

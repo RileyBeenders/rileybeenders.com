@@ -34,8 +34,7 @@ export function FeatureBackend({ backend, paletteId }: { backend: FeatureBackend
             <Demo item={item} paletteId={paletteId} />
           </Reveal>
           <div className="ft-back-notes">
-            {item.eyebrow && <Reveal><p className="pj-eyebrow">{item.eyebrow}</p></Reveal>}
-            <Reveal delay={0.06}><h4 className="ft-back-title">{item.title}</h4></Reveal>
+            <Reveal delay={0.06}><h3 className="ft-back-title">{item.title}</h3></Reveal>
             {item.body.map((paragraph, i) => (
               <Reveal key={i} delay={0.1 + i * 0.05}><p className="ft-back-body">{paragraph}</p></Reveal>
             ))}

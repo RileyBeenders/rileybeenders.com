@@ -140,7 +140,6 @@ export type BackendSkill = {
 
 export type BackendItem = {
   demo: BackendDemo;
-  eyebrow?: string;
   title: string;
   /** Paragraphs shown beside the demo. */
   body: string[];
@@ -158,7 +157,6 @@ export type FeatureBackend = {
 };
 
 export type FeaturePillar = {
-  eyebrow?: string;
   title: string;
   /** Paragraphs. The first one shows at rest; the rest open on demand. */
   body: string[];
@@ -167,7 +165,6 @@ export type FeaturePillar = {
 
 /** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
 export type ProjectFeature = {
-  eyebrow?: string;
   intro?: string;
   stats?: ProjectStat[];
   timeline?: TimelineEntry[];
@@ -187,6 +184,8 @@ export type Project = {
   images?: ProjectImage[];
   additionalInfo?: ProjectAdditionalInfo;
   dates?: ProjectDates;
+  /** A short note on the state of the write-up ("Project page under development"), shown in small type under the summary. */
+  status?: string;
   /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
   visible?: boolean;
 };

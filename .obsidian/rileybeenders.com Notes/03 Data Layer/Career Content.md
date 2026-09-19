@@ -59,7 +59,7 @@ One degree: **BS, Electro-Mechanical Engineering**, Penn State University, Decem
 
 ## Skills (`data/home/skills.json`)
 
-Four categories, rendered on the home page as `03 Toolchain` pill groups: **Engineering** (DFM/DFA, GD&T, Lean Six Sigma, product development, process development, …), **Design & Software** (Inventor, CATIA, Fusion 360, LabVIEW, MATLAB, Python, SolidWorks, Siemens NX, LM Studio, oMLX, …), **Controls & Automation** (Allen Bradley PLCs, data logging, Git version control, workflow automation, Windows applications), **Infrastructure & Systems** (Docker, Proxmox, VLAN config, reverse proxy/firewall routing, DNS/subdomain config, Windows/Linux sysadmin).
+Four categories, rendered on the home page as `03 Skills` pill groups (the section was labelled "Toolchain" until 2026-09-18, when "Fixture and Tooling Design" was also deduplicated out of Design & Software and "Toleranceing" corrected): **Engineering** (DFM/DFA, GD&T, Lean Six Sigma, product development, process development, …), **Design & Software** (Inventor, CATIA, Fusion 360, LabVIEW, MATLAB, Python, SolidWorks, Siemens NX, LM Studio, oMLX, …), **Controls & Automation** (Allen Bradley PLCs, data logging, Git version control, workflow automation, Windows applications), **Infrastructure & Systems** (Docker, Proxmox, VLAN config, reverse proxy/firewall routing, DNS/subdomain config, Windows/Linux sysadmin).
 
 ## Summary (`data/home/summary.json`)
 

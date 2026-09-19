@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-18T20:01:24.335Z",
+  "generatedAt": "2026-09-19T00:54:18.982Z",
   "title": "Design System: Blueprint Press",
   "extensions": {
     "colorMeta": {
@@ -128,33 +128,35 @@
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted (45%)",
-        "canonical": "#7f8184",
+        "displayName": "Muted (36%)",
+        "canonical": "#6b6c70",
         "tonalRamp": [
-          "#262728",
-          "#464749",
-          "#66676a",
-          "#7f8184",
-          "#9fa1a3",
-          "#bfc0c2",
-          "#dfe0e0",
-          "#f5f5f5"
-        ]
+          "#202022",
+          "#3b3b3e",
+          "#56565a",
+          "#6b6c70",
+          "#909194",
+          "#b5b6b8",
+          "#dadadb",
+          "#f3f3f4"
+        ],
+        "note": "The floor for text: 5.2:1 on paper, 4.8:1 on the white sheet."
       },
       "faint": {
         "role": "neutral",
-        "displayName": "Faint (60%)",
-        "canonical": "#a2a3a6",
+        "displayName": "Faint (50%)",
+        "canonical": "#8b8d90",
         "tonalRamp": [
-          "#313132",
-          "#595a5b",
-          "#828285",
-          "#a2a3a6",
-          "#b9babc",
-          "#d1d1d3",
-          "#e8e8e9",
-          "#f8f8f8"
-        ]
+          "#2a2a2b",
+          "#4c4e4f",
+          "#6f7173",
+          "#8b8d90",
+          "#a8aaac",
+          "#c5c6c8",
+          "#e2e3e3",
+          "#f6f6f6"
+        ],
+        "note": "Rules, ticks, dots, scrollbars. Not for text."
       },
       "rule": {
         "role": "neutral",
@@ -230,6 +232,54 @@
           "#c8c8c8",
           "#ededed"
         ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "On Accent",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#4d4d4d",
+          "#8c8c8c",
+          "#cccccc",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ],
+        "note": "Whichever of paper or ink reads better on the accent; white on both Electric themes."
+      },
+      "insertion": {
+        "role": "semantic",
+        "displayName": "Insertion Green",
+        "canonical": "#2e7d4f",
+        "tonalRamp": [
+          "#0e2618",
+          "#19452b",
+          "#25643f",
+          "#2e7d4f",
+          "#629e7b",
+          "#97bea7",
+          "#cbdfd3",
+          "#eef5f1"
+        ],
+        "note": "The + line count on a timeline entry; #6cc48e in dark. Deletions use the accent."
+      },
+      "scrim": {
+        "role": "neutral",
+        "displayName": "Lightbox Scrim",
+        "canonical": "rgba(8, 16, 26, 0.93)",
+        "tonalRamp": [
+          "#020508",
+          "#04090e",
+          "#060d15",
+          "#08101a",
+          "#464c53",
+          "#84888d",
+          "#c1c3c6",
+          "#ebeced"
+        ],
+        "note": "The lightbox backdrop."
       }
     },
     "typographyMeta": {
@@ -285,23 +335,18 @@
     "shadows": [
       {
         "name": "hover-lift",
-        "value": "0 6px 18px rgba(11, 26, 43, 0.10)",
+        "value": "0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent)",
         "purpose": "Skill pills on hover, with a 3px rise."
       },
       {
         "name": "card-lift",
-        "value": "0 16px 34px rgba(11, 26, 43, 0.13)",
-        "purpose": "Cert and contact cards on hover, with a 5px rise."
+        "value": "0 16px 34px color-mix(in srgb, var(--ink) 13%, transparent)",
+        "purpose": "Cert cards on hover, with a 5px rise."
       },
       {
         "name": "floating-pill",
-        "value": "0 10px 28px rgba(11, 26, 43, 0.10)",
+        "value": "0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent)",
         "purpose": "The relocation badge and back-to-top control at rest."
-      },
-      {
-        "name": "accent-glow",
-        "value": "0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent)",
-        "purpose": "The bullet's project link on hover."
       }
     ],
     "motion": [
@@ -360,6 +405,10 @@
       {
         "name": "stack",
         "value": "860px"
+      },
+      {
+        "name": "print",
+        "value": "@media print"
       }
     ],
     "surfaces": [
@@ -385,7 +434,7 @@
       "refersTo": "button-solid",
       "description": "The Download PDF action; accent fill, ink wipe on hover, wait state when disabled.",
       "html": "<button class=\"ds-btn ds-btn--solid\" type=\"button\"><span>Download PDF</span><svg class=\"ds-arrow\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M8 2v11m0 0l-4.5-4.5M8 13l4.5-4.5\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
-      "css": ".ds-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;min-height:48px;border:1px solid var(--ink,#171a20);background:transparent;color:var(--ink,#171a20);font:500 15px/1.4 Spectral,Georgia,serif;cursor:pointer;transition:color .42s cubic-bezier(.22,.9,.28,1),transform .42s cubic-bezier(.22,.9,.28,1),border-color .42s ease}.ds-btn>*{position:relative;z-index:1}.ds-btn::before{content:\"\";position:absolute;inset:0;background:var(--ink,#171a20);transform:scaleX(0);transform-origin:left center;transition:transform .48s cubic-bezier(.22,.9,.28,1)}.ds-btn:hover{color:var(--paper,#fff);transform:translateY(-2px)}.ds-btn:hover::before{transform:scaleX(1)}.ds-btn--solid{background:var(--accent,#3e6ae1);border-color:var(--accent,#3e6ae1);color:var(--paper,#fff)}.ds-btn--solid:hover{border-color:var(--ink,#171a20)}.ds-btn--solid:disabled{cursor:wait;opacity:.75;transform:none}.ds-btn:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "css": ".ds-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;min-height:48px;border:1px solid var(--ink,#171a20);background:transparent;color:var(--ink,#171a20);font:500 15px/1.4 Spectral,Georgia,serif;cursor:pointer;transition:color .42s cubic-bezier(.22,.9,.28,1),transform .42s cubic-bezier(.22,.9,.28,1),border-color .42s ease}.ds-btn>*{position:relative;z-index:1}.ds-btn::before{content:\"\";position:absolute;inset:0;background:var(--ink,#171a20);transform:scaleX(0);transform-origin:left center;transition:transform .48s cubic-bezier(.22,.9,.28,1)}.ds-btn:hover{color:var(--paper,#fff);transform:translateY(-2px)}.ds-btn:hover::before{transform:scaleX(1)}.ds-btn--solid{background:var(--accent,#3e6ae1);border-color:var(--accent,#3e6ae1);color:var(--on-accent,#fff)}.ds-btn--solid:hover{border-color:var(--ink,#171a20)}.ds-btn--solid:disabled{cursor:wait;opacity:.75;transform:none}.ds-btn:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
     },
     {
       "name": "Inline link",
@@ -401,7 +450,7 @@
       "refersTo": "nav-link",
       "description": "Muted at rest, ink when active, a 2px accent underline scales in from the left.",
       "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link is-active\" href=\"#\" aria-current=\"page\">Home</a><a class=\"ds-nav-link\" href=\"#\">Projects</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
-      "css": ".ds-nav{display:flex;gap:28px;font:400 15px/1.4 Spectral,Georgia,serif}.ds-nav-link{position:relative;padding:6px 2px;color:var(--muted,#7f8184);text-decoration:none;transition:color .3s ease}.ds-nav-link::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .42s cubic-bezier(.22,.9,.28,1)}.ds-nav-link:hover,.ds-nav-link.is-active{color:var(--ink,#171a20)}.ds-nav-link:hover::after,.ds-nav-link.is-active::after{transform:scaleX(1)}.ds-nav-link:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "css": ".ds-nav{display:flex;gap:28px;font:400 15px/1.4 Spectral,Georgia,serif}.ds-nav-link{position:relative;padding:6px 2px;color:var(--muted,#6b6c70);text-decoration:none;transition:color .3s ease}.ds-nav-link::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .42s cubic-bezier(.22,.9,.28,1)}.ds-nav-link:hover,.ds-nav-link.is-active{color:var(--ink,#171a20)}.ds-nav-link:hover::after,.ds-nav-link.is-active::after{transform:scaleX(1)}.ds-nav-link:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
     },
     {
       "name": "Skill pill",
@@ -409,7 +458,7 @@
       "refersTo": "pill",
       "description": "A square white chip with a hairline border; lifts 3px and darkens on hover.",
       "html": "<span class=\"ds-pill\">LabVIEW</span> <span class=\"ds-pill\">Allen Bradley PLCs</span>",
-      "css": ".ds-pill{display:inline-block;padding:8px 16px;border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);color:var(--pill-text,#5a5c61);font:400 14px/1.4 Spectral,Georgia,serif;transition:transform .34s cubic-bezier(.22,.9,.28,1),border-color .34s ease,color .34s ease,box-shadow .34s ease}.ds-pill:hover{transform:translateY(-3px);border-color:var(--ink,#171a20);color:var(--ink,#171a20);box-shadow:0 6px 18px rgba(11,26,43,.1)}"
+      "css": ".ds-pill{display:inline-block;padding:8px 16px;border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);color:var(--pill-text,#5a5c61);font:400 14px/1.4 Spectral,Georgia,serif;transition:transform .34s cubic-bezier(.22,.9,.28,1),border-color .34s ease,color .34s ease,box-shadow .34s ease}.ds-pill:hover{transform:translateY(-3px);border-color:var(--ink,#171a20);color:var(--ink,#171a20);box-shadow:0 6px 18px color-mix(in srgb,var(--ink,#171a20) 10%,transparent)}"
     },
     {
       "name": "Cert card",
@@ -417,14 +466,14 @@
       "refersTo": "card",
       "description": "Square white card: serif title, muted issuer, faint uppercase date, an accent bar that wipes in on hover.",
       "html": "<div class=\"ds-card\"><h4>Lean Six Sigma Yellow Belt</h4><p class=\"ds-card-issuer\">Educate 360</p><p class=\"ds-card-date\">Issued June 2016</p><div class=\"ds-card-bar\" aria-hidden=\"true\"></div></div>",
-      "css": ".ds-card{border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);padding:18px 20px;max-width:300px;transition:transform .44s cubic-bezier(.22,.9,.28,1),box-shadow .44s ease,border-color .44s ease}.ds-card:hover{transform:translateY(-5px);border-color:var(--ink,#171a20);box-shadow:0 16px 34px rgba(11,26,43,.13)}.ds-card h4{margin:0;font:400 21px/1.2 \"Instrument Serif\",Georgia,serif;color:var(--ink,#171a20)}.ds-card-issuer{margin:5px 0 0;font:400 14px/1.5 Spectral,Georgia,serif;color:var(--muted,#7f8184)}.ds-card-date{margin:8px 0 0;font:400 12px/1.4 Spectral,Georgia,serif;letter-spacing:.1em;text-transform:uppercase;color:var(--faint,#a2a3a6)}.ds-card-bar{height:2px;margin-top:12px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.22,.9,.28,1)}.ds-card:hover .ds-card-bar{transform:scaleX(1)}"
+      "css": ".ds-card{border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);padding:18px 20px;max-width:300px;transition:transform .44s cubic-bezier(.22,.9,.28,1),box-shadow .44s ease,border-color .44s ease}.ds-card:hover{transform:translateY(-5px);border-color:var(--ink,#171a20);box-shadow:0 16px 34px color-mix(in srgb,var(--ink,#171a20) 13%,transparent)}.ds-card h4{margin:0;font:400 21px/1.2 \"Instrument Serif\",Georgia,serif;color:var(--ink,#171a20)}.ds-card-issuer{margin:5px 0 0;font:400 14px/1.5 Spectral,Georgia,serif;color:var(--muted,#7f8184)}.ds-card-date{margin:8px 0 0;font:400 12px/1.4 Spectral,Georgia,serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6b6c70)}.ds-card-bar{height:2px;margin-top:12px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.22,.9,.28,1)}.ds-card:hover .ds-card-bar{transform:scaleX(1)}"
     },
     {
       "name": "Section index",
       "kind": "custom",
       "refersTo": "section-index",
-      "description": "The uppercase accent label in the 190px margin column.",
-      "html": "<p class=\"ds-index\">02&nbsp;&nbsp;Experience</p>",
+      "description": "The section's h2: the uppercase accent label in the 190px margin column.",
+      "html": "<h2 class=\"ds-index\">02&nbsp;&nbsp;Experience</h2>",
       "css": ".ds-index{margin:0;padding-top:12px;font:400 16px/1.3 Spectral,Georgia,serif;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#3e6ae1)}"
     },
     {
@@ -441,18 +490,34 @@
       "refersTo": "floating-pill",
       "description": "The relocation badge: translucent white pill with blur, hairline border, soft shadow, accent dot.",
       "html": "<span class=\"ds-float\"><span class=\"ds-float-dot\" aria-hidden=\"true\"></span>Open to relocation</span>",
-      "css": ".ds-float{display:inline-flex;align-items:center;gap:11px;padding:11px 20px;border:1px solid var(--rule,#e1e1e2);border-radius:999px;background:color-mix(in srgb,var(--white,#f4f4f4) 92%,transparent);backdrop-filter:blur(10px);box-shadow:0 10px 28px rgba(11,26,43,.1);font:400 13px/1.4 Spectral,Georgia,serif;color:var(--ink,#171a20)}.ds-float-dot{width:9px;height:9px;border-radius:50%;background:var(--accent,#3e6ae1)}"
+      "css": ".ds-float{display:inline-flex;align-items:center;gap:11px;padding:11px 20px;border:1px solid var(--rule,#e1e1e2);border-radius:999px;background:color-mix(in srgb,var(--white,#f4f4f4) 92%,transparent);backdrop-filter:blur(10px);box-shadow:0 10px 28px color-mix(in srgb,var(--ink,#171a20) 10%,transparent);font:400 13px/1.4 Spectral,Georgia,serif;color:var(--ink,#171a20)}.ds-float-dot{width:9px;height:9px;border-radius:50%;background:var(--accent,#3e6ae1)}"
+    },
+    {
+      "name": "Evidence link",
+      "kind": "custom",
+      "refersTo": "bullet-link",
+      "description": "At the end of a resume bullet, naming the project it links to; part of the sentence, no fill, no radius.",
+      "html": "<span>Owned its mechanical, electrical, and software design. <a class=\"ds-evidence\" href=\"#\">see ICARUS-Lite<svg width=\"11\" height=\"11\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12L12 4m0 0H5.5M12 4v6.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></span>",
+      "css": ".ds-evidence{display:inline-flex;align-items:baseline;gap:5px;margin-left:8px;color:var(--accent,#3e6ae1);font:500 15px/1.5 Spectral,Georgia,serif;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:color-mix(in srgb,var(--accent,#3e6ae1) 45%,transparent);transition:text-decoration-color .3s ease}.ds-evidence svg{align-self:center;transition:transform .3s cubic-bezier(.22,.9,.28,1)}.ds-evidence:hover{text-decoration-color:var(--accent,#3e6ae1)}.ds-evidence:hover svg{transform:translate(2px,-2px)}"
+    },
+    {
+      "name": "Title block",
+      "kind": "custom",
+      "refersTo": "footer-block",
+      "description": "The footer's drawing title block: sheet, revision, typefaces, place.",
+      "html": "<dl class=\"ds-block\"><div><dt>Sheet</dt><dd>rileybeenders.com</dd></div><div><dt>Rev.</dt><dd>aaa1715 · 18 Sep 2026</dd></div><div><dt>Set in</dt><dd>Instrument Serif & Spectral · Electric</dd></div><div><dt>Drawn in</dt><dd>Bethlehem, PA</dd></div></dl>",
+      "css": ".ds-block{display:grid;min-width:260px;margin:0;border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);font:400 12px/1.4 Spectral,Georgia,serif;color:var(--muted,#6b6c70);font-variant-numeric:tabular-nums}.ds-block>div{display:flex;justify-content:space-between;gap:18px;padding:7px 12px}.ds-block>div+div{border-top:1px solid var(--rule,#e1e1e2)}.ds-block dt{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint,#8b8d90)}.ds-block dd{margin:0;text-align:right;color:var(--ink-soft,#515358)}"
     }
   ],
   "narrative": {
     "northStar": "The Blueprint Press",
-    "overview": "A resume printed on paper, over the drafting grid it was laid out on. The page is set on paper with ink, a single accent, and hairline rules, and a fixed blueprint grid shows through the whole page at a few percent of ink. Headings are Instrument Serif at regular weight, tight and large; running text is Spectral. Numbered section indexes sit in a narrow left column like the margin of an engineering drawing, and every card is a square hairline box on a slightly whiter sheet.\n\nThe voice is a document, not a campaign. At rest the home page reads top to bottom exactly like the PDF it complements; the design's job is to make the reading feel considered and to surface evidence without ever turning into a marketing page.\n\nEvery transition uses one easing curve so the motion reads as a single hand. Dark mode swaps paper and ink and changes nothing else. The palette is a Studio setting: five seeds per mode through a fixed tint ramp.",
+    "overview": "A resume printed on paper, over the drafting grid it was laid out on. The page is set on paper with ink, a single accent, and hairline rules, and a fixed blueprint grid shows through the whole page at a few percent of ink. Headings are Instrument Serif at regular weight, tight and large, with nothing above them: no kicker, no eyebrow, no category label. Running text is Spectral. Numbered section indexes sit in a narrow left column like the margin of an engineering drawing, and every card is a square hairline box on a slightly whiter sheet.\n\nThe voice is a document, not a campaign. At rest the home page reads top to bottom exactly like the PDF it complements; the design's job is to make the reading feel considered and to surface evidence without ever turning into a marketing page.\n\nEvery transition uses one easing curve so the motion reads as a single hand. Dark mode swaps paper and ink and changes nothing else. The palette is a Studio setting: five seeds per mode through a fixed tint ramp.",
     "keyCharacteristics": [
-      "Warm-neutral paper with one accent; the accent is used for indexes, eyebrows, the solid CTA, link underlines, active nav, hover bars, and the badge dot, never for surfaces.",
+      "Warm-neutral paper with one accent; the accent is used for indexes, the solid CTA, inline evidence links, link underlines, active nav, hover bars, and the badge dot, never for surfaces.",
       "Instrument Serif display at weight 400 only, Spectral body, both loaded through next/font; the three roles are Studio choices among eight preloaded faces.",
       "Square hairline cards on white (one step off paper), 1px rule borders, 2px ink rules under headings.",
       "A visible blueprint grid on the page background, fixed to the viewport.",
-      "Uppercase, tracked labels in Spectral for indexes, dates, eyebrows, and captions; the serif never appears in small caps.",
+      "Uppercase, tracked labels in Spectral for indexes, dates, and captions, never as a label above a heading; the serif never appears in small caps.",
       "One easing curve, one entrance pattern (Reveal), hover lifts of 2 to 5px, and a full prefers-reduced-motion opt-out."
     ],
     "rules": [
@@ -463,12 +528,12 @@
       },
       {
         "name": "The Ramp Rule",
-        "body": "Never hand-pick a gray. Secondary tones come from lib/palette.ts's ramp so all ten presets and any custom palette share one tonal rhythm.",
+        "body": "Never hand-pick a gray. Secondary tones come from lib/palette.ts's ramp (muted 0.36, faint 0.50) so all ten presets share one tonal rhythm. muted is the floor for text; faint is for lines and dots.",
         "section": "colors"
       },
       {
         "name": "The Hard-Copy Rule",
-        "body": "GanttChart.tsx, apple-icon.tsx, and opengraph-image.tsx carry literal copies of the active preset; a palette change must reach them by hand.",
+        "body": "GanttChart.tsx, icon.svg, apple-icon.tsx, and opengraph-image.tsx carry literal copies of the active preset; a palette change must reach them by hand.",
         "section": "colors"
       },
       {
@@ -485,16 +550,28 @@
         "name": "The Drawn Depth Rule",
         "body": "Rest states have no shadow. If an element needs separation at rest, it gets a hairline border or a whiter sheet, not a shadow.",
         "section": "elevation"
+      },
+      {
+        "name": "The No-Eyebrow Rule",
+        "body": "Nothing sits above a heading. A page title is the first line of its hero; a section's index is its heading; a card's title is its first line. The words a kicker would have carried go into a fact line beside the heading or into the heading itself.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "Prose runs at most 70 characters per line; dates and counts use tabular numerals.",
+        "section": "typography"
       }
     ],
     "dos": [
-      "Do put color only in the accent: indexes, eyebrows, the solid CTA, underlines, hover bars, the badge dot. Surfaces stay paper and white.",
+      "Do put color only in the accent: indexes, the solid CTA, evidence links, underlines, hover bars, the badge dot. Surfaces stay paper and white.",
       "Do derive every gray from the ramp in lib/palette.ts and every palette from five seeds, so all presets and dark mode keep the same rhythm.",
       "Do keep cards, buttons, and frames square with 1px rule borders; reserve 999px for small floating controls and 50% for dots.",
       "Do run every transition on --ease and every entrance through Reveal; keep hover lifts between 2 and 5px.",
       "Do honor prefers-reduced-motion by freezing on the final frame, never by hiding content.",
       "Do keep the index column, the hairline section rules, and the 2px ink rule under every page title; they are the page's structure.",
-      "Do put suppressHydrationWarning on every <a> and <Link>."
+      "Do put suppressHydrationWarning on every <a> and <Link>.",
+      "Do write section indexes as h2 and keep the heading outline unbroken (h1 title, h2 index, h3 entry, h4 detail).",
+      "Do theme the browser's own surfaces: ::selection, caret-color, accent-color, underline offset, scrollbars, tabular numerals."
     ],
     "donts": [
       "Don't synthesize a bold Instrument Serif; the face has none. Go larger instead.",
@@ -502,7 +579,10 @@
       "Don't add shadows at rest to cards or controls that are not floating over the page.",
       "Don't hand-write a gray or an accent tint; use the ramp or color-mix() from a token.",
       "Don't introduce a second breakpoint or a mobile-only layout; scale with clamp() and collapse at 860px.",
-      "Don't change the palette in blueprint.css alone; the active preset lives in data/header.json and is injected by app/(site)/layout.tsx, and three files carry hard copies of it."
+      "Don't change the palette in blueprint.css alone; the active preset lives in data/header.json and is injected by app/(site)/layout.tsx, and three files carry hard copies of it.",
+      "Don't put a kicker, eyebrow, or category label above any heading, on any page, in any card.",
+      "Don't set text in faint or below 11px; the miniature Studio preview on /about-this-site is the one decorative exception (aria-hidden, 9px).",
+      "Don't draw gradient text; emphasis is size, weight, or the accent."
     ]
   }
 }

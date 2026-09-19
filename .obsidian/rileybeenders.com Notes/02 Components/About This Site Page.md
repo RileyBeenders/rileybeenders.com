@@ -4,27 +4,27 @@ tags: [component, routes, data, agents]
 
 # About This Site Page
 
-`/about-this-site` is the site as its own case study — the one page that documents itself. It has its own nav tab (the only link drawn in an animated gradient), its own data file, its own Studio entry, and an agent procedure (`site-timeline-sync`) that keeps its numbers and timeline current. Added 2026-09-17, built with the three `motion-*` skills as their first real use; revised 2026-09-18 to replace the pinned-screenshot section with live "Behind the site" demos and to show every capture in the theme the visitor is *not* using.
+`/about-this-site` is the site as its own case study — the one page that documents itself. It has its own nav tab, its own data file, its own Studio entry, and an agent procedure (`site-timeline-sync`) that keeps its numbers and timeline current. Added 2026-09-17, built with the three `motion-*` skills as their first real use; revised 2026-09-18 to replace the pinned-screenshot section with live "Behind the site" demos and to show every capture in the theme the visitor is *not* using.
 
 ## Route — `app/(site)/about-this-site/page.tsx`
 
 Server component. Imports `data/site/about-site.json` (typed `AboutSiteData`, `types/about-site.ts`), imports `../projects/projects.css`, `../projects/feature.css`, and `./about-site.css`, and reads `todayIso()` once so the timeline's "now" is identical on server and client. Renders, inside `<main class="pj as">` (the `.pj` class hides the fixed relocation badge, since `BackToTop` takes that corner):
 
-1. **Hero** (`.bp-hero.as-hero`) — `hero.eyebrow`, `hero.title` as the `h1`, the running date bar (`<ProjectDateBox dates position="inline" size="large" />`), a rule, `hero.tagline`.
+1. **Hero** (`.bp-hero.as-hero`) — `hero.title` as the `h1` (the eyebrow field was removed 2026-09-18), the running date bar (`<ProjectDateBox dates position="inline" size="large" />`), a rule, `hero.tagline`.
 2. **`01 The site`** — `<AboutSiteStory>` (`components/about-site/AboutSiteStory.tsx`): summary, bullets with `EmphasizedText`, the gallery column (`ProjectGallery`, parallax like a project entry), and the case-study toggle opening `<CaseStudy>` built by `buildProofView()` from `caseStudy` (the page builds a minimal `Project` to call it).
 3. **Deep-dive** — `<ProjectFeature feature today projectName>` in a `.bp-section.as-deep`.
 4. Outro ("Still moving") and `<BackToTop />`.
 
 ## The deep-dive — `components/projects/ProjectFeature.tsx` + `feature/`
 
-`ProjectFeature` owns the one `Lightbox` every screenshot trigger opens (timeline card thumbnails, pillar thumbnails), converting `feature.screenshots` into `ProjectImage[]` — picking, like the thumbnails, the capture from the *other* theme (`useTheme()`; light site → `srcDark`). It takes `paletteId` (Site Settings) so the Studio replica starts on the site's real palette. It opens with a hairline rule, `feature.eyebrow` via `WordReveal`, `feature.intro` via `ScrollWords`, then four blocks, each rendered only if its data exists:
+`ProjectFeature` owns the one `Lightbox` every screenshot trigger opens (timeline card thumbnails, pillar thumbnails), converting `feature.screenshots` into `ProjectImage[]` — picking, like the thumbnails, the capture from the *other* theme (`useTheme()`; light site → `srcDark`). It takes `paletteId` (Site Settings) so the Studio replica starts on the site's real palette. It opens with a hairline rule and `feature.intro` via `ScrollWords` (the eyebrow above it, and `WordReveal` with it, were removed 2026-09-18), then four blocks, each rendered only if its data exists. The block titles ("Timeline", "What it's made of", "Behind the site") are `h2`s and the cards inside them `h3`s, so the page outlines h1 → h2 → h3 without a skipped level:
 
 | Block | Component | What it does |
 |---|---|---|
 | Stats | `feature/FeatureStats.tsx` | Hairline tiles (`repeat(auto-fit, minmax(160px, 1fr))`) arriving 60ms apart via `useInViewOnce` + a CSS `--i` stagger; each number is a `CountUp`; tiles take the `.bp-spot` cursor wash. |
 | Timeline | `feature/FeatureTimeline.tsx` | The centerpiece — see below. `ProjectFeature` passes it the block's `note` line, so the tour control can share that row. |
-| Pillars | `feature/FeaturePillars.tsx` | Three hairline cards (`eyebrow`, `title`, first paragraph at rest, "Read more" opens the rest with `AnimatePresence` height-auto), a 16:9 screenshot thumbnail on top that opens the viewer, `.bp-spot` on hover, 70ms stagger. One column under 860px. |
-| Behind the site | `feature/FeatureBackend.tsx` | One row per backend tool (`feature.backend.items`): a live replica on one side, the notes (eyebrow, title, paragraphs, a hairline list of one-liners) on the other, sides alternating (`ft-back-row--reverse`); notes-then-demo stacked under 860px. The replicas are in `feature/demos/` — see below. Replaced the pinned-screenshot "On screen" section on 2026-09-18, which took the page from ~7400px to ~4800px tall. |
+| Pillars | `feature/FeaturePillars.tsx` | Three hairline cards (`title` as an `h3`, first paragraph at rest, "Read more" opens the rest with `AnimatePresence` height-auto), a 16:9 screenshot thumbnail on top that opens the viewer, `.bp-spot` on hover, 70ms stagger. One column under 860px. |
+| Behind the site | `feature/FeatureBackend.tsx` | One row per backend tool (`feature.backend.items`): a live replica on one side, the notes (`h3` title, paragraphs, a hairline list of one-liners) on the other, sides alternating (`ft-back-row--reverse`); notes-then-demo stacked under 860px. The replicas are in `feature/demos/` — see below. Replaced the pinned-screenshot "On screen" section on 2026-09-18, which took the page from ~7400px to ~4800px tall. |
 
 ### The demos — `feature/demos/`
 
@@ -65,13 +65,13 @@ Under 860px the axis and card are hidden and `.tl-list` — a vertical list of e
 
 ## Data — `data/site/about-site.json`
 
-Shape (`types/about-site.ts` → `AboutSiteData`): `hero { eyebrow, title, tagline }`, `dates` (`ProjectDates`), `summary`, `bullets` (`ResumeBullet[]`), `images` (`ProjectImage[]`), optional `caseStudy` (`ProjectAdditionalInfo`), `feature` (`ProjectFeature`: `eyebrow`, `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`, `backend { eyebrow, intro, items[] }`). The feature types live in `types/resume.ts` next to `Project` (`ProjectStat`, `TimelineEntry` with `era: "past" | "present" | "future"`, `FeaturePillar`, `FeatureScreenshot` with `src` + `srcDark`, `FeatureBackend` / `BackendItem` with `demo: "resume" | "studio" | "skills"`, `BackendMatch`, `BackendSkill`). Screenshots are served from `public/project-images/rileybeenders-com/` as `<name>-light.png` / `<name>-dark.png`.
+Shape (`types/about-site.ts` → `AboutSiteData`): `hero { title, tagline }`, `dates` (`ProjectDates`), `summary`, `bullets` (`ResumeBullet[]`), `images` (`ProjectImage[]`), optional `caseStudy` (`ProjectAdditionalInfo`), `feature` (`ProjectFeature`: `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`, `backend { eyebrow, intro, items[] }` — `backend.eyebrow` is the block's heading text, "Behind the site", not a label above one). The feature types live in `types/resume.ts` next to `Project` (`ProjectStat`, `TimelineEntry` with `era: "past" | "present" | "future"`, `FeaturePillar`, `FeatureScreenshot` with `src` + `srcDark`, `FeatureBackend` / `BackendItem` with `demo: "resume" | "studio" | "skills"`, `BackendMatch`, `BackendSkill`). Screenshots are served from `public/project-images/rileybeenders-com/` as `<name>-light.png` / `<name>-dark.png`.
 
 Edited in the Studio under **About this site** (rail group after More Info; `aboutSite` in `server.mjs` `FILES` and `schema.js`), which round-trips the file byte-for-byte. Refreshed by the `site-timeline-sync` procedure — see [[Repository Agent Skills (.agents)]].
 
 ## Nav
 
-`BpNav` gained `{ label: "About this site", href: "/about-this-site", gradient: true }`; the `gradient` flag adds `.bp-nav-link--gradient`, a `background-clip: text` sweep of `--ink → --accent → --blue → --ink` (9s linear, 4.5s on hover) in place of the flat color every other link uses. Five links no longer fit one phone-width row, so under 860px the links wrap onto a second line (`flex-wrap`, labels `nowrap`) instead of scrolling the last tab off-screen. See [[Blueprint Nav and Mark]]. More Info's "Read more" link now points here (`/about-this-site`, rendered as a `next/link` since it's a site path).
+`BpNav` gained `{ label: "About this site", href: "/about-this-site" }`. It carried a gradient-text sweep for one day (2026-09-17 to 2026-09-18) before the impeccable critique removed it; the phone nav is now two rows with a scrolling link row. See [[Blueprint Nav and Mark]]. More Info's "Read more" link now points here (`/about-this-site`, rendered as a `next/link` since it's a site path).
 
 ## Related
 - [[Projects Route (BpComingSoon)]]

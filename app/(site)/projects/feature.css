@@ -11,9 +11,8 @@
 .ft { margin-top: clamp(40px, 6vh, 64px); }
 
 .ft-head { margin-top: clamp(22px, 3vh, 30px); max-width: 64ch; }
-.ft-eyebrow { display: block; }
 .ft-intro {
-  margin-top: 14px;
+  margin-top: 0;
   font-size: clamp(17px, 1.5vw, 21px);
   line-height: 1.55;
   color: var(--ink-soft);
@@ -170,7 +169,7 @@
 .tl-era {
   position: absolute;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--faint);
@@ -230,10 +229,10 @@
   top: 122px;
   left: 0;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--muted);
   white-space: nowrap;
 }
 
@@ -410,10 +409,10 @@
 .tl-badge {
   padding: 2px 8px;
   border: 1px solid var(--rule);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.16em;
 }
-.tl-badge--present { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.tl-badge--present { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .tl-badge--future { border-style: dashed; }
 .tl-hash {
   font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
@@ -427,7 +426,8 @@
 .tl-hash:hover { color: var(--ink); border-bottom-color: var(--ink); }
 
 .tl-card-title {
-  margin-top: 10px;
+  margin-top: 14px;
+  margin-bottom: 2px;
   font-family: var(--bp-font-subheader), Georgia, serif;
   font-size: clamp(22px, 2.2vw, 28px);
   line-height: 1.2;
@@ -553,9 +553,9 @@ html[data-theme="dark"] .tl-size-add { color: #6cc48e; }
 .ft-pillar-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 .ft-pillar-body { padding: 18px 20px 20px; }
-.ft-pillar-eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
 .ft-pillar-title {
-  margin-top: 8px;
+  margin-top: 0;
+  margin-bottom: 2px;
   font-family: var(--bp-font-subheader), Georgia, serif;
   font-size: clamp(22px, 2vw, 26px);
   line-height: 1.2;
@@ -611,7 +611,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 .ft-back-demo { min-width: 0; }
 .ft-back-notes { min-width: 0; }
 .ft-back-title {
-  margin-top: 8px;
+  margin-top: 0;
   font-family: var(--bp-font-subheader), Georgia, serif;
   font-size: clamp(22px, 2.2vw, 28px);
   line-height: 1.2;
@@ -649,13 +649,13 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   min-width: 0;
 }
 .dm-eyebrow {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
 }
 .dm-label {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -718,7 +718,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   padding: 2px 4px;
   background: var(--paper);
   font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--muted);
   transform: rotate(-90deg);
@@ -738,7 +738,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 .dm-page-lines li {
   position: relative;
   padding-left: 10px;
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.35;
   color: var(--muted);
   transition: color 0.28s ease;
@@ -779,8 +779,8 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   height: 16px;
   border-radius: 50%;
   background: var(--accent);
-  color: var(--paper);
-  font-size: 10px;
+  color: var(--on-accent);
+  font-size: 11px;
 }
 @keyframes dm-check-in { to { opacity: 1; transform: none; } }
 
@@ -794,17 +794,17 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   padding: 8px 10px;
   border-bottom: 1px solid var(--rule);
 }
-.dm-studio-brand { font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); }
+.dm-studio-brand { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); }
 .dm-studio-file {
   font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   min-width: 0;
 }
-.dm-studio-status { margin-left: auto; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); transition: color 0.28s ease; white-space: nowrap; }
+.dm-studio-status { margin-left: auto; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color 0.28s ease; white-space: nowrap; }
 .dm-studio-status.is-dirty { color: var(--accent); }
 .dm-studio-status.is-saving { color: var(--muted); }
 .dm-studio-save {
@@ -812,7 +812,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
@@ -892,9 +892,8 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 .dm-prev-links { display: flex; gap: 6px; margin-left: auto; }
 .dm-prev-links i { display: block; width: 14px; height: 3px; background: var(--p-muted); }
 .dm-prev-links i:first-child { background: var(--p-accent); }
-.dm-prev-eyebrow { margin-top: 12px; font-size: 7px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--p-accent); }
 .dm-prev-name {
-  margin-top: 4px;
+  margin-top: 14px;
   font-family: var(--bp-font-header), Georgia, serif;
   font-size: 22px;
   line-height: 0.95;
@@ -906,7 +905,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 .dm-prev-btn {
   padding: 4px 7px;
   border: 1px solid var(--p-ink);
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--p-ink);
@@ -920,7 +919,7 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   padding: 3px 7px 3px 6px;
   border: 1px solid var(--p-rule);
   background: var(--p-paper);
-  font-size: 8px;
+  font-size: 9px;
   color: var(--p-ink);
   opacity: 0;
   transform: translateY(4px);
