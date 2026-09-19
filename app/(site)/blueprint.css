@@ -20,13 +20,14 @@ html[data-theme="dark"] {
   --white: #ffffff;
   --ink: #0b1a2b;
   --ink-soft: #46545f;
-  --muted: #6f7d88;
-  --faint: #97a3ac;
+  --muted: #616b75;
+  --faint: #838b92;
   --rule: #d9dee3;
   --accent: #e3342f;
   --blue: #2f86c4;
   --prose: #26333f;
   --pill-text: #4a5c6b;
+  --on-accent: #fbfbf9;
 
   /* Studio's per-role font choices override these; these are the fallback if that override is ever missing. */
   --bp-font-header: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
@@ -59,13 +60,14 @@ html[data-theme="dark"] .bp {
   --white: #142a3d;
   --ink: #eef3f7;
   --ink-soft: #b7c4d1;
-  --muted: #8b9aa8;
-  --faint: #5b6b79;
+  --muted: #9da5ad;
+  --faint: #7e8791;
   --rule: #24384a;
   --accent: #ff6b62;
   --blue: #5aa9e6;
   --prose: #d7e0e8;
   --pill-text: #a9b8c5;
+  --on-accent: #0d1b2a;
 }
 
 .bp *,
@@ -92,6 +94,22 @@ html[data-theme="dark"] .bp {
 .bp-prose a,
 .bp-table a { color: var(--accent); }
 .bp p { margin: 0; }
+
+/* The parts of the page the site does not draw still carry its palette. */
+.bp ::selection { background: color-mix(in srgb, var(--accent) 24%, var(--paper)); color: var(--ink); }
+.bp { accent-color: var(--accent); caret-color: var(--accent); }
+.bp-prose a,
+.bp-table a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  transition: text-decoration-color 0.3s ease;
+}
+.bp-prose a:hover,
+.bp-table a:hover { text-decoration-color: var(--accent); }
+.bp-gantt,
+.bp-table-wrap { scrollbar-color: var(--faint) transparent; scrollbar-width: thin; }
 
 .bp-shell { max-width: var(--shell); margin: 0 auto; padding-inline: var(--pad); }
 
@@ -171,6 +189,7 @@ html[data-theme="dark"] .bp {
   padding: 6px 2px;
   font-size: 15px;
   color: var(--muted);
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 .bp-nav-link::after {
@@ -187,6 +206,23 @@ html[data-theme="dark"] .bp {
 .bp-nav-link:hover::after,
 .bp-nav-link.is-active::after { transform: scaleX(1); }
 .bp-nav-link.is-active { color: var(--ink); }
+
+/* One link — About this site — is set in a slow gradient sweep of the
+   palette's own inks (ink → accent → blue → ink) clipped to the text, in
+   place of the flat color the other links use. 9s per pass, linear so it
+   never looks like it is stopping; the blanket reduced-motion rule freezes
+   it on the first frame, which is a plain two-tone gradient. */
+.bp-nav-link--gradient {
+  background-image: linear-gradient(90deg, var(--ink) 0%, var(--accent) 30%, var(--blue) 55%, var(--ink) 80%, var(--accent) 100%);
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bp-nav-gradient 9s linear infinite;
+}
+.bp-nav-link--gradient:hover { animation-duration: 4.5s; }
+@keyframes bp-nav-gradient { to { background-position: 300% 50%; } }
 
 /* -------------------------------------------------------------- marks --- */
 @keyframes bp-draw {
@@ -248,7 +284,7 @@ html[data-theme="dark"] .bp {
 .bp-btn .bp-arrow { transition: transform 0.42s var(--ease); }
 .bp-btn:hover .bp-arrow { transform: translateX(5px); }
 
-.bp-btn--solid { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.bp-btn--solid { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .bp-btn--solid:hover { color: var(--paper); border-color: var(--ink); }
 .bp-btn--solid:disabled { cursor: wait; opacity: 0.75; transform: none; }
 .bp-btn--solid:disabled::before { transform: scaleX(0); }
@@ -361,6 +397,24 @@ html[data-theme="dark"] .bp {
   color: var(--muted);
   text-align: right;
 }
+/* Where the person is right now, from the first experience entry: a fact, not a
+   label. Two lines by design, the role and then the company and start, so the
+   role never breaks mid-phrase against the date; the gap above it keeps it off
+   the tracked location. */
+.bp-hero-now {
+  display: grid;
+  gap: 3px;
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 40ch;
+  text-wrap: balance;
+}
+.bp-hero-now-where { color: var(--muted); }
 
 .bp-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
 
@@ -376,15 +430,22 @@ html[data-theme="dark"] .bp {
   align-items: start;
   padding-top: 15px;
 }
-.bp-section-index {
+/* Written as h2 so the page outlines correctly; set in the body face per the Tracked Label Rule
+   (the .bp selector outranks the bare h2 rule above). */
+.bp .bp-section-index {
+  margin: 0;
+  font-family: var(--bp-font-body), Georgia, serif;
+  font-weight: 400;
   font-size: 16px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
   padding-top: 12px;
 }
+.bp-section-index a { color: inherit; }
 
 .bp-prose {
+  max-width: 70ch;
   font-size: clamp(18px, 1.55vw, 22px);
   line-height: 1.68;
   color: var(--prose);
@@ -434,11 +495,12 @@ html[data-theme="dark"] .bp {
   flex-wrap: wrap;
   gap: 12px 24px;
 }
-.bp-role h3 { font-size: clamp(26px, 3vw, 36px); line-height: 1.14; letter-spacing: -0.01em; font-weight: 700; }
+.bp-role h3 { font-size: clamp(28px, 3.2vw, 38px); line-height: 1.12; letter-spacing: -0.012em; font-weight: 400; }
 .bp-role-dates {
   font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
   color: var(--ink);
   white-space: nowrap;
 }
@@ -486,27 +548,22 @@ html[data-theme="dark"] .bp {
 }
 .bp-bullet-link {
   display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 10px;
-  padding: 4px 12px 4px 14px;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--paper);
-  font-size: 9.5px;
+  align-items: baseline;
+  gap: 5px;
+  margin-left: 8px;
+  padding: 0 0 1px;
+  color: var(--accent);
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  vertical-align: middle;
-  transition: transform 0.3s var(--ease), filter 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: text-decoration-color 0.3s ease, color 0.3s ease;
 }
-.bp-bullet-link svg { transition: transform 0.3s var(--ease); }
-.bp-bullet-link:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.18);
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
-}
+.bp-bullet-link svg { align-self: center; transition: transform 0.3s var(--ease); }
+.bp-bullet-link:hover { text-decoration-color: var(--accent); }
 .bp-bullet-link:hover svg { transform: translate(2px, -2px); }
 .bp-bullet-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
@@ -536,7 +593,26 @@ html[data-theme="dark"] .bp {
   transform: translateY(-3px);
   border-color: var(--ink);
   color: var(--ink);
-  box-shadow: 0 6px 18px rgba(11, 26, 43, 0.1);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+/* ----------------------------------------------------------- spotlight --- */
+/* A faint wash of ink follows the cursor across a card — light on paper, not
+   a lamp. Position comes from lib/useSpotlight.ts writing --sx/--sy on the
+   element; pointer-only, so touch devices never see a stuck highlight. */
+.bp-spot { position: relative; }
+.bp-spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(240px circle at var(--sx, 50%) var(--sy, 50%), color-mix(in srgb, var(--ink) 5%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .bp-spot:hover::before { opacity: 1; }
 }
 
 /* ---------------------------------------------------------- education --- */
@@ -558,11 +634,11 @@ html[data-theme="dark"] .bp {
 .bp-cert:hover {
   transform: translateY(-5px);
   border-color: var(--ink);
-  box-shadow: 0 16px 34px rgba(11, 26, 43, 0.13);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--ink) 13%, transparent);
 }
 .bp-cert h4 { font-family: var(--bp-font-subheader), Georgia, serif; font-weight: 400; font-size: 21px; line-height: 1.2; margin: 0; }
 .bp-cert-issuer { font-size: 14px; color: var(--muted); margin-top: 5px; }
-.bp-cert-date { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-top: 8px; }
+.bp-cert-date { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--muted); margin-top: 8px; }
 .bp-cert-bar {
   height: 2px;
   background: var(--accent);
@@ -586,7 +662,38 @@ html[data-theme="dark"] .bp {
 }
 .bp-footer-mark { display: flex; align-items: center; gap: 18px; }
 .bp-footer-note { font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 50ch; font-style: italic; }
-.bp-footer-url { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }
+
+/* The title block of a drawing: what this is, which revision, what it is set in, where it was made. */
+.bp-footer-block {
+  display: grid;
+  gap: 0;
+  min-width: 260px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.bp-footer-block > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 7px 12px;
+}
+.bp-footer-block > div + div { border-top: 1px solid var(--rule); }
+.bp-footer-block dt { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }
+.bp-footer-block dd { margin: 0; text-align: right; color: var(--ink-soft); }
+.bp-footer-block dd a { color: inherit; }
+.bp-footer-url { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+/* A page's last line, in the author's voice rather than a label's. */
+.bp-outro-lead {
+  font-family: var(--bp-font-header), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
 
 /* ------------------------------------------------------- coming soon --- */
 .bp-soon {
@@ -744,7 +851,7 @@ html[data-theme="dark"] .bp {
   border-radius: 999px;
   background: color-mix(in srgb, var(--white) 92%, transparent);
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent);
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -772,7 +879,7 @@ html[data-theme="dark"] .bp {
   border: 1px solid var(--rule);
   background: color-mix(in srgb, var(--white) 92%, transparent);
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 28px rgba(11, 26, 43, 0.1);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent);
   font-size: 13px;
   color: var(--ink);
   transition: border-color 0.38s ease, background-color 0.38s ease, transform 0.38s var(--ease);
@@ -811,10 +918,53 @@ html[data-theme="dark"] .bp {
   .bp-section-grid { grid-template-columns: 1fr; gap: 14px; }
   .bp-section-index { padding-top: 0; }
   .bp-hero-place { text-align: left; }
-  .bp-nav-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .bp-nav-right { width: 100%; }
-  .bp-nav-links { flex: 1 1 auto; min-width: 0; overflow-x: auto; }
+  .bp-hero-now { max-width: none; }
+  /* Two rows: the brand and the theme switch share the first, the five links
+     scroll on the second. The row's edges fade so a clipped last link reads as
+     "more", not as cut off. */
+  .bp-nav-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand toggle" "links links";
+    align-items: center;
+    gap: 6px 16px;
+    padding-block: 12px 0;
+  }
+  .bp-brand { grid-area: brand; }
+  .bp-nav-right { display: contents; }
+  .bp-theme-toggle { grid-area: toggle; }
+  .bp-nav-links {
+    grid-area: links;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin-inline: calc(var(--pad) * -1);
+    padding-inline: var(--pad);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(90deg, transparent, #000 var(--pad), #000 calc(100% - var(--pad)), transparent);
+  }
+  .bp-nav-links::-webkit-scrollbar { display: none; }
+  .bp-nav-link { flex: none; padding: 8px 14px 12px; font-size: 14px; }
+  .bp-nav-link:first-child { padding-left: 0; }
+  .bp-nav-link::after { bottom: 0; }
+  .bp-footer-block { width: 100%; }
   .bp-soon-type { display: none; }
+}
+
+/* The home page prints as the document it imitates: ink on paper, no chrome, no grid. */
+@media print {
+  .bp { background: #fff !important; color: #000 !important; }
+  .bp-nav, .bp-badge, .bp-top, .bp-hero-ribbon, .hp-spine, .bp-actions, .bp-sheen { display: none !important; }
+  .bp-hero { padding-top: 0; }
+  .bp-hero h1 { font-size: 56pt; }
+  .bp-section { padding: 16pt 0; }
+  .bp-section-grid { grid-template-columns: 100pt minmax(0, 1fr); gap: 16pt; }
+  .bp-role, .bp-cert, .bp-degree, .bp-skill-group { break-inside: avoid; }
+  .bp-prose, .bp-bullets, .bp-role-context, .bp-footer-note { color: #000; }
+  .bp-bullet-link { display: none; }
+  .bp-pill, .bp-cert, .bp-footer-block { border-color: #999; box-shadow: none; background: #fff; }
+  .bp-prose a::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #555; }
 }
 
 @media (prefers-reduced-motion: reduce) {

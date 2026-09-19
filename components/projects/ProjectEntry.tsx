@@ -1,11 +1,13 @@
 "use client";
 
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { ProjectView } from "@/lib/projects";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
+import { ProjectDateBox } from "@/components/projects/ProjectDateBox";
+import { CaseStudy } from "@/components/projects/CaseStudy";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 
 type ProjectEntryProps = {
@@ -45,6 +47,12 @@ const bulletItemVariants = {
  */
 export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
   const { project, images, proof } = view;
+  // The date box rides the opening rule by default; bottom corners get a closing rule of their own.
+  const datePosition = project.dates?.position ?? "top-right";
+  const dateBox = project.dates?.start ? <ProjectDateBox dates={project.dates} position={datePosition} /> : null;
+  const dateOnTop = dateBox && datePosition.startsWith("top");
+  const dateOnBottom = dateBox && datePosition.startsWith("bottom");
+  const dateInline = dateBox && datePosition === "inline";
   const [expanded, setExpanded] = useState(false);
   const reduced = useReducedMotion();
   const panelId = useId();
@@ -57,44 +65,7 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
   const mediaProgressSmooth = useSpring(mediaProgress, { stiffness: 220, damping: 36, mass: 0.4 });
   const mediaY = useTransform(mediaProgressSmooth, [0, 1], [PARALLAX_RANGE, -PARALLAX_RANGE]);
 
-  const caseStudy: ReactNode = proof && (
-    <div className="pj-case-study">
-      <p className="pj-eyebrow">Case study</p>
-      <h3 className="pj-proof-title">{proof.title}</h3>
-      {proof.subtitle && <p className="pj-proof-subtitle">{proof.subtitle}</p>}
-      {proof.summary && <p className="pj-proof-summary">{proof.summary}</p>}
-
-      {proof.sections.map((section) => (
-        <section className="pj-proof-section" key={section.label}>
-          <h4>{section.label}</h4>
-          {section.body && <p>{section.body}</p>}
-          {section.items && (
-            <ul>
-              {section.items.map((item) => <li key={item}>{item}</li>)}
-            </ul>
-          )}
-        </section>
-      ))}
-
-      {proof.tags.length > 0 && (
-        <div className="pj-proof-tags">
-          {proof.tags.map((tag) => <span className="pj-tag" key={tag}>{tag}</span>)}
-        </div>
-      )}
-
-      {proof.assets.length > 0 && (
-        <div className="pj-proof-assets">
-          {proof.assets.map((asset) => (
-            <figure key={asset.src}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset.src} alt={asset.alt} loading="lazy" />
-              <figcaption>{asset.label}</figcaption>
-            </figure>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  const caseStudy = proof && <CaseStudy proof={proof} />;
 
   return (
     <section
@@ -103,7 +74,10 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
       aria-label={project.name}
     >
       <div className="bp-shell">
-        <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
+        <div className="pj-entry-rule">
+          <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
+          {dateOnTop && <Reveal delay={0.3}>{dateBox}</Reveal>}
+        </div>
 
         <div className="pj-entry-grid">
           <div className="pj-entry-text">
@@ -117,10 +91,14 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               <Reveal delay={0.14}><p className="pj-subtitle">{project.type}</p></Reveal>
             )}
             <Reveal as="rule" delay={0.2}><div className="pj-head-rule" /></Reveal>
+            {dateInline && <Reveal delay={0.24}>{dateBox}</Reveal>}
 
             <div className="pj-body">
               {project.summary && (
                 <Reveal delay={0.26}><p className="pj-summary">{project.summary}</p></Reveal>
+              )}
+              {project.status && (
+                <Reveal delay={0.3}><p className="pj-status">{project.status}</p></Reveal>
               )}
 
               {project.bullets.length > 0 && (
@@ -204,6 +182,13 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               )}
             </AnimatePresence>
           )
+        )}
+
+        {dateOnBottom && (
+          <div className="pj-entry-rule pj-entry-rule--close">
+            <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
+            <Reveal delay={0.2}>{dateBox}</Reveal>
+          </div>
         )}
       </div>
     </section>

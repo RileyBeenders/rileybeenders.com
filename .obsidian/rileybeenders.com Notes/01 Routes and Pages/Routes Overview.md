@@ -9,9 +9,10 @@ All routes are Next.js App Router server components. None use dynamic segments �
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
 | `/` | `app/(site)/page.tsx` | Editorial one-page resume (hero + 4 numbered sections + footer) | "Riley Beenders \| R&D, Electromechanical and Automation Engineer" (root layout) |
-| `/projects` | `app/(site)/projects/page.tsx` | Hero + [[Projects Route (BpComingSoon)\|BpComingSoon]] | "Projects \| Riley Beenders" |
-| `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + contact card row | "Contact \| Riley Beenders" |
-| `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read more" link + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] | "More Info \| Riley Beenders" |
+| `/projects` | `app/(site)/projects/page.tsx` | Hero + one [[Projects Route (BpComingSoon)\|ProjectEntry]] per published project inside `ProjectListSpine` (falls back to `BpComingSoon` when none) | "Projects \| Riley Beenders" |
+| `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + a Details paragraph with the email address spelled out | "Contact \| Riley Beenders" |
+| `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] | "More Info \| Riley Beenders" |
+| `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
 | `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → PDF binary, no HTML | n/a |
 
 Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes Next wires up automatically). See [[Design System (Blueprint Press)]].
@@ -26,17 +27,17 @@ Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `open
 
 - Loads **Instrument Serif** (display, incl. italic) and **Spectral** (body, weights 300–600) via `next/font/google`, exposed as `--bp-font-display` / `--bp-font-body`.
 - Imports `app/(site)/blueprint.css`.
-- Wraps children in `<div class="bp {font vars}">`, rendering `<BpNav />` (see [[Blueprint Nav and Mark]]) above `{children}` and a fixed `.bp-badge` "Open to relocation" pill below.
+- Wraps children in `<div class="bp {font vars}">`, rendering `<BpNav />` (see [[Blueprint Nav and Mark]]; five links — Home, Projects, Contact, More Info, About this site) above `{children}` and a fixed `.bp-badge` "Open to relocation" pill below.
 - Sets its own `metadata` (`title` / `description`) — the More Info / Projects / Contact pages override `title` per-route from their own `export const metadata`.
 
 ## `/` — `app/(site)/page.tsx`
 
 Server component, `data = resumeData`. Renders:
 
-1. **Hero** (`.bp-hero`) — a decorative one-continuous-stroke ribbon SVG, eyebrow "R&D · Electromechanical · Automation", `h1` "Riley / Beenders", a rule, `data.person.title` + location + red "Open to relocation", and `<BpActions data={data} />`.
+1. **Hero** (`.bp-hero`) — a decorative one-continuous-stroke ribbon SVG, `h1` "Riley / Beenders", a rule, then a meta row: `data.person.title` in italic on the left and, on the right, the uppercase location over an italic fact line built from `experience[0]` ("Lead, Research & Development Engineer, Proteor, since January 2025", `.bp-hero-now`). No eyebrow above the name since 2026-09-18 (see the No-Eyebrow Rule in [[Design System (Blueprint Press)]]). Then `<BpActions data={data} />`.
 2. **`01 Summary`** — `data.summary` with a `.bp-dropcap` on the first character.
 3. **`02 Experience`** — `data.experience.map(...)` → `.bp-role` articles (role, `start — end`, `company · location`, optional `context`, `bullets`). No proof/project chips.
-4. **`03 Toolchain`** — `data.skills.map(...)` → `.bp-skill-group` with `.bp-pill` tags per `group.items`.
+4. **`03 Skills`** (labelled "Toolchain" until 2026-09-18) — `data.skills.map(...)` → `.bp-skill-group` with `.bp-pill` tags per `group.items`.
 5. **`04 Education`** — `data.education.degrees` then, if any, `data.education.certificates` as `.bp-cert` cards (each with an optional `.bp-link` "Show credential" external link + diagonal arrow).
 6. **Footer** — `<BpMark id="footer" animated float />` and a note about the monogram's single-stroke construction.
 
@@ -44,11 +45,15 @@ Every block is wrapped in `<Reveal>` for a staggered scroll entrance. There is n
 
 ## `/projects` — `app/(site)/projects/page.tsx`
 
-Sorts `resumeData.projects` by `order`, takes the first 6, maps them to `{ name, type }`, and passes them to `<BpComingSoon teasers={...} />` after a hero. This is the only use of `resumeData.projects` in the app. See [[Projects Route (BpComingSoon)]].
+Builds `buildProjectViews(resumeData.projects, resumeData.proofs)` and renders a hero, then `<ProjectListSpine>` wrapping one `<ProjectEntry view index total />` per published project (summary, bullets, gallery, an optional date box, and the case study behind a toggle), a `.pj-outro` footer, and `<BackToTop />`. The intro line pluralizes ("One project — …" / "N projects — …"). With nothing published it falls back to the hero + `<BpComingSoon />`. Imports `projects.css` and `feature.css`. See [[Projects Route (BpComingSoon)]].
+
+## `/about-this-site` — `app/(site)/about-this-site/page.tsx`
+
+Server component reading `data/site/about-site.json` and `todayIso()`; renders the hero with the running date bar, `<AboutSiteStory>`, `<ProjectFeature>` (stats · timeline · pillars · screenshots), an outro, and `<BackToTop />`. Imports the projects stylesheets plus `about-site.css`. Fully documented in [[About This Site Page]].
 
 ## `/contact` — `app/(site)/contact/page.tsx`
 
-Fully static aside from `person` off `resumeData`. Hero ("Get in touch"), `<BpActions data={resumeData} />`, then a `01 Details` section with a paragraph and a `.bp-certs` grid of three `.bp-cert` cards: Email (`mailto:`), LinkedIn, GitHub — each a `.bp-link`.
+Fully static aside from `person` off `resumeData`. Hero ("Get in touch", no eyebrow), `<BpActions data={resumeData} />`, then a `01 Details` section with the `details.description` paragraph(s) and the email address printed once as a `mailto:` link in prose. The three Email / LinkedIn / GitHub cards that duplicated the button row were removed on 2026-09-18 (the impeccable critique's "same three links twice on one screen"), and with them `ContactDetails.linkedinLabel` / `githubLabel` and `ContactHero.eyebrow` left `types/contact.ts`, `data/contact/contact.json`, and the Studio schema.
 
 ## `/more-info` — `app/(site)/more-info/page.tsx`
 
@@ -56,7 +61,7 @@ The only involved server component:
 
 1. Imports `data/more-info/more-info.json` (typed `MoreInfoData`) for the About copy.
 2. When `ganttSection.visible` is not `false`, reads `data/more-info/gantt.md` off disk with `fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8")` — **not** imported as a module — and parses the raw text via `parseGanttFile()` from `lib/gantt.ts`. It skips the file read when the tracker is hidden.
-3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` "Read more" link (`aboutSite.readMore`, currently → `https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents`, opens in a new tab) — and, when `ganttSection.visible` is not `false`, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`. Studio's **Show on live site** switch writes that visibility field and controls both tracker views together; when off, the page also skips reading/parsing `gantt.md`.
+3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` link (`aboutSite.readMore`, currently "Read the full story" → `/about-this-site`; a path starting with `/` renders as a `next/link` in the same tab, anything else as an external `<a target="_blank">`) — and, when `ganttSection.visible` is not `false`, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` and `<JobsTable columns={columns} rows={rows} />`. Studio's **Show on live site** switch writes that visibility field and controls both tracker views together; when off, the page also skips reading/parsing `gantt.md`.
 
 Because it uses `fs`, this page can't be statically exported without the file present at build time (fine on Vercel). See [[More Info and Gantt Data]].
 
@@ -71,6 +76,8 @@ Full generator detail in [[Resume PDF Pipeline]].
 
 ## Related
 - [[Architecture and Data Flow]]
+- [[About This Site Page]]
 - [[Blueprint Nav and Mark]]
 - [[Blueprint UI Components]]
+- [[Projects Route (BpComingSoon)]]
 - [[Home]]

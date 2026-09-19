@@ -51,9 +51,9 @@ function fieldClass(field, type = field.type) {
   return `f-field f-field--${type}${field.span ? ` f-field--${field.span}` : ""}`;
 }
 
-function fieldShell(field, control, extra) {
+function fieldShell(field, control, extra, forId = control.id) {
   return el("div", { class: fieldClass(field) },
-    el("label", { class: "f-label", for: control.id || undefined },
+    el("label", { class: "f-label", for: forId || undefined },
       field.label,
       field.required ? el("span", { class: "f-required", title: "Required" }, "*") : null),
     control,
@@ -115,7 +115,7 @@ function textControl(field, value, ctx) {
 
   control.addEventListener("input", () => {
     value[field.name] = field.type === "slug"
-      ? control.value.replace(/\s+/g, "-")
+      ? control.value.replace(/\s+/g, "-").toLowerCase()
       : control.value;
     paintCount();
     ctx.onEdit();
@@ -325,7 +325,7 @@ function imageControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)));
+  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), undefined, id);
 }
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
@@ -354,7 +354,7 @@ function colorControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-color-row" }, swatch, text));
+  return fieldShell(field, el("div", { class: "f-color-row" }, swatch, text), undefined, id);
 }
 
 /**
@@ -407,8 +407,8 @@ function stringListControl(field, value, ctx) {
     // `multiline` lists hold paragraphs, so each row is a textarea that grows
     // with what's in it rather than a one-line input.
     const input = field.multiline
-      ? el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "" })
-      : el("input", { type: "text", class: "f-input", value: entry ?? "" });
+      ? el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` })
+      : el("input", { type: "text", class: "f-input", value: entry ?? "", "aria-label": `${field.label} ${index + 1}` });
     input.addEventListener("input", () => {
       list[index] = input.value;
       ctx.onEdit();
@@ -431,28 +431,51 @@ function stringListControl(field, value, ctx) {
     field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
 
+/** Cards the user opened stay open across repaints; a new card opens on its own. */
+const openCards = new WeakSet();
+
+/** The card's own words as its title: the image's alt or caption, a bullet's first line, a match's keyword. */
+function cardSummary(field, entry, index) {
+  const label = `${field.itemLabel || "Item"} ${index + 1}`;
+  const text = [entry.alt, entry.caption, entry.text, entry.name, entry.title, entry.keyword, entry.label, entry.src?.split("/").pop()]
+    .find((v) => typeof v === "string" && v.trim() !== "");
+  if (!text) return el("h3", { class: "f-card-title" }, label, " ", el("small", {}, "· empty"));
+  const short = text.length > 72 ? text.slice(0, 70).trimEnd() + "…" : text;
+  return el("h3", { class: "f-card-title", title: text }, short, " ", el("small", {}, `· ${label}`));
+}
+
 function objectListControl(field, value, ctx) {
   const list = Array.isArray(value[field.name]) ? value[field.name] : (value[field.name] = []);
 
   const cards = list.map((entry, index) => {
     const thumb = field.gallery && entry.src
-      ? el("div", { class: "f-card-thumb" }, el("img", { src: entry.src, alt: "", loading: "lazy" }))
+      ? el("div", { class: "f-card-thumb" }, el("img", { src: entry.src, alt: "", loading: "lazy", decoding: "async" }))
       : null;
+    // Open when there is little to hide, when the user opened it, or when it was just added.
+    const open = list.length <= 2 || openCards.has(entry);
 
-    return el("div", { class: "f-card" },
-      el("div", { class: "f-card-head" },
+    const card = el("details", { class: "f-card", open: open || undefined },
+      el("summary", { class: "f-card-head" },
+        el("svg", { class: "f-card-caret", width: 12, height: 12, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" },
+          el("path", { d: "M6 3l5 5-5 5", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round" })),
         thumb,
-        el("span", { class: "f-card-title" }, `${field.itemLabel || "Item"} ${index + 1}`),
-        el("div", { class: "f-row-tools" },
+        cardSummary(field, entry, index),
+        // Buttons inside a <summary> would also toggle it; the tools swallow the default action.
+        el("div", { class: "f-row-tools", onClick: (event) => event.preventDefault() },
           iconButton("up", "Move up", () => { moveItem(list, index, index - 1); ctx.onStructureChange(); }, index === 0),
           iconButton("down", "Move down", () => { moveItem(list, index, index + 1); ctx.onStructureChange(); }, index === list.length - 1),
-          iconButton("remove", "Remove", () => { list.splice(index, 1); ctx.onStructureChange(); }))),
+          iconButton("remove", "Remove", () => { list.splice(index, 1); openCards.delete(entry); ctx.onStructureChange(); }))),
       el("div", { class: "f-card-body" }, renderFields(field.fields, entry, ctx)));
+    card.addEventListener("toggle", () => { if (card.open) openCards.add(entry); else openCards.delete(entry); });
+    if (open) openCards.add(entry);
+    return card;
   });
 
   const add = el("button", { type: "button", class: "f-btn f-btn--quiet" }, icon("add"), ` Add ${(field.itemLabel || "item").toLowerCase()}`);
   add.addEventListener("click", () => {
-    list.push(blankFrom(field.fields));
+    const blank = blankFrom(field.fields);
+    list.push(blank);
+    openCards.add(blank);
     ctx.onStructureChange();
   });
 

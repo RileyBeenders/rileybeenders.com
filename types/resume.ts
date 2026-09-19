@@ -59,6 +59,120 @@ export type Education = {
   certificates: EducationCertificate[];
 };
 
+/** Where a project's date box sits on its entry. The top/bottom corners ride the entry's hairline rule like a tag; inline sits under the subtitle. */
+export type ProjectDatePosition = "top-right" | "top-left" | "bottom-right" | "bottom-left" | "inline";
+
+export type ProjectDates = {
+  /** ISO date (YYYY-MM-DD) or free text. ISO dates are formatted for display and used for day counts. */
+  start: string;
+  /** Omit while `ongoing`; otherwise ISO or free text. */
+  end?: string;
+  /** The project is still moving: the box reads "→ Present" and its underline runs as an indeterminate progress bar. */
+  ongoing?: boolean;
+  position?: ProjectDatePosition;
+};
+
+export type ProjectStat = {
+  label: string;
+  value: number;
+  /** Shown after the number, e.g. "+" or " days". */
+  suffix?: string;
+  note?: string;
+};
+
+export type TimelineEra = "past" | "present" | "future";
+
+/** A dot's shape. `star` marks a moment whose weight isn't in its diff. */
+export type TimelineMark = "dot" | "star";
+
+export type TimelineEntry = {
+  /** ISO date. Future entries can be a target month (YYYY-MM-01); they render as "planned". */
+  date: string;
+  era: TimelineEra;
+  /** Stable handle. Only needed when another entry points a connector back at this one. */
+  id?: string;
+  title: string;
+  summary: string;
+  /** Short git hash, when the entry is a real commit. */
+  hash?: string;
+  tags?: string[];
+  files?: number;
+  insertions?: number;
+  deletions?: number;
+  /** A screenshot from `feature.screenshots` to show beside this entry. */
+  screenshotId?: string;
+  /** Defaults to a dot sized by the commit. */
+  mark?: TimelineMark;
+  /** The `id` of an earlier entry. Draws a line from its dot to this one, arrow pointing here. */
+  linkFrom?: string;
+  /** Caption on that line. Defaults to the gap between the two dates, e.g. "7 days". */
+  linkLabel?: string;
+};
+
+/**
+ * A capture of the site itself. `src` is the light-theme capture; `srcDark`
+ * the dark one. The About page shows the *opposite* of the visitor's theme
+ * (light site → dark shot) so the thumbnails read as a different surface.
+ */
+export type FeatureScreenshot = {
+  id: string;
+  src: string;
+  srcDark?: string;
+  alt: string;
+  caption?: string;
+};
+
+/** Which live demo a "Behind the site" row renders beside its notes. */
+export type BackendDemo = "resume" | "studio" | "skills";
+
+/** resume demo: a posting keyword and the real resume line it matches. */
+export type BackendMatch = {
+  keyword: string;
+  line: string;
+};
+
+/** skills demo: one procedure in the mini router. */
+export type BackendSkill = {
+  name: string;
+  trigger: string;
+  does: string;
+};
+
+export type BackendItem = {
+  demo: BackendDemo;
+  title: string;
+  /** Paragraphs shown beside the demo. */
+  body: string[];
+  /** Short one-line notes under the paragraphs. */
+  notes?: string[];
+  matches?: BackendMatch[];
+  skills?: BackendSkill[];
+};
+
+/** The tools that never appear on the live site: the resume formatter, the Studio, the agent skills. */
+export type FeatureBackend = {
+  eyebrow?: string;
+  intro?: string;
+  items: BackendItem[];
+};
+
+export type FeaturePillar = {
+  title: string;
+  /** Paragraphs. The first one shows at rest; the rest open on demand. */
+  body: string[];
+  screenshotId?: string;
+};
+
+/** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
+export type ProjectFeature = {
+  intro?: string;
+  stats?: ProjectStat[];
+  timeline?: TimelineEntry[];
+  pillars?: FeaturePillar[];
+  screenshots?: FeatureScreenshot[];
+  backend?: FeatureBackend;
+};
+
 export type Project = {
   id: string;
   name: string;
@@ -69,6 +183,9 @@ export type Project = {
   proofId?: string;
   images?: ProjectImage[];
   additionalInfo?: ProjectAdditionalInfo;
+  dates?: ProjectDates;
+  /** A short note on the state of the write-up ("Project page under development"), shown in small type under the summary. */
+  status?: string;
   /** Omit or set true to publish. `false` keeps the history but hides it on the site. */
   visible?: boolean;
 };
@@ -81,7 +198,8 @@ export type ProjectAdditionalInfo = {
   approach: string[];
   impact: string[];
   tools: string[];
-  assets: ProofAsset[];
+  /** Diagrams. Optional in practice: the Studio drops the key when the list is empty. */
+  assets?: ProofAsset[];
   /** Why the design went the way it did — the trade-offs behind the approach. */
   designDecisions?: string[];
   /** What was actually wrong underneath the symptom the project started from. */

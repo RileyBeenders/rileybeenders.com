@@ -16,7 +16,7 @@ Riley Beenders — R&D and electromechanical engineer focused on product develop
 
 ## Core features
 
-1. **Home** (`/`) — a one-page editorial resume: hero (name, title, location, action buttons), then numbered sections `01 Summary`, `02 Experience`, `03 Toolchain`, `04 Education`, and a footer with the animated monogram. Server component, no client resume logic. See [[Routes Overview]].
+1. **Home** (`/`) — a one-page editorial resume: hero (name, title, location, action buttons), then numbered sections `01 Summary`, `02 Experience`, `03 Skills`, `04 Education`, and a footer with the animated monogram and a drawing-style title block (sheet, revision, typefaces, place). Server component, no client resume logic. See [[Routes Overview]].
 2. **Projects** (`/projects`) — currently a placeholder: a hero plus `BpComingSoon`, an animated "case studies in progress" panel that lists the top project names as a "queued for publish" teaser. No project detail UI exists on `main`. See [[Projects Route (BpComingSoon)]].
 3. **Contact** (`/contact`) — hero, the shared `BpActions` button row, and a contact card (email / LinkedIn / GitHub).
 4. **More Info** (`/more-info`) — About Me / About the Site copy, a "Read more" link to the `.agents/` folder on GitHub, and a **live job-application Gantt chart + tracker table**, rendered client-side with `mermaid`. See [[More Info and Gantt Data]].

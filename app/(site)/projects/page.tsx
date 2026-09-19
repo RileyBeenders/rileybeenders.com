@@ -7,6 +7,7 @@ import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import "./projects.css";
+import "./feature.css";
 
 export const metadata: Metadata = {
   title: "Projects | Riley Beenders",
@@ -24,7 +25,6 @@ export default function ProjectsPage() {
       <main>
         <section className="bp-hero" style={{ paddingBottom: 8 }}>
           <div className="bp-shell">
-            <Reveal delay={0.05}><p className="bp-eyebrow">Selected Work</p></Reveal>
             <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
               <Reveal delay={0.14}><span style={{ display: "block" }}>Projects</span></Reveal>
             </h1>
@@ -44,7 +44,6 @@ export default function ProjectsPage() {
     <main className="pj">
       <section className="bp-hero pj-intro">
         <div className="bp-shell">
-          <Reveal delay={0.05}><p className="bp-eyebrow">Selected Work</p></Reveal>
           <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
             <Reveal delay={0.14}><span style={{ display: "block" }}>Projects</span></Reveal>
           </h1>
@@ -53,9 +52,9 @@ export default function ProjectsPage() {
           </Reveal>
           <Reveal delay={0.38}>
             <p className="bp-prose pj-intro-prose">
-              {views.length} projects — the problem each one started from, the decisions
-              behind it, and what changed as a result. Open a case study for the full
-              story.
+              {views.length === 1
+                ? "One project so far: the problem it started from, the decisions behind it, and what changed as a result. Open the case study for the full story."
+                : `${views.length} projects: the problem each one started from, the decisions behind it, and what changed as a result. Open a case study for the full story.`}
             </p>
           </Reveal>
         </div>
@@ -69,10 +68,10 @@ export default function ProjectsPage() {
 
       <footer className="pj-outro">
         <div className="bp-shell">
-          <p className="bp-eyebrow">That's everything, for now</p>
+          <p className="bp-outro-lead">That's everything, for now.</p>
           <p className="bp-prose" style={{ marginTop: 18 }}>
-            Every project above is linked from a line on the resume. Each case study
-            goes a layer deeper — design decisions, root causes, and measured results.
+            {views.length === 1 ? "This project is" : "Every project above is"} linked from a line on the resume, and
+            the case study goes a layer deeper: design decisions, root causes, and measured results.
           </p>
         </div>
       </footer>

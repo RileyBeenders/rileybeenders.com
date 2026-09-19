@@ -8,13 +8,19 @@ import { BpHeroRelocationBadge } from "@/components/blueprint/BpRelocationBadge"
 import { PageSpine } from "@/components/blueprint/PageSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { getBuildStamp } from "@/lib/build-stamp";
 
 export default function HomePage() {
   const data = resumeData;
-  const summaryRest = data.summary.slice(1);
+  // A drop cap only when the summary opens with a whole word ("Riley…"), never
+  // when it would orphan an apostrophe ("I'm" → "I" + "'m").
+  const dropCap = /^[A-Za-z][A-Za-z]/.test(data.summary);
+  const summaryRest = dropCap ? data.summary.slice(1) : data.summary;
   const siteLinkLabel = "RileyBeenders.com";
   const [summaryBeforeLink, summaryAfterLink] = summaryRest.split(siteLinkLabel);
   const projectsById = new Map(data.projects.map((project) => [project.id, project]));
+  const current = data.experience[0];
+  const stamp = getBuildStamp();
 
   return (
     <main className="hp">
@@ -24,10 +30,6 @@ export default function HomePage() {
 
         <div className="bp-shell">
           <HeroRibbon />
-
-          <Reveal delay={0.05}>
-            <p className="bp-eyebrow">R&amp;D · Electromechanical · Automation</p>
-          </Reveal>
 
           <h1>
             <Reveal delay={0.14}><span style={{ display: "block" }}>Riley</span></Reveal>
@@ -43,6 +45,12 @@ export default function HomePage() {
               <p className="bp-hero-tagline">{data.person.title}</p>
               <div className="bp-hero-place">
                 <span>{data.person.location}</span>
+                {current && (
+                  <span className="bp-hero-now">
+                    <span className="bp-hero-now-role">{current.role}</span>
+                    <span className="bp-hero-now-where">{current.company}, since {current.start}</span>
+                  </span>
+                )}
               </div>
             </div>
           </Reveal>
@@ -55,15 +63,15 @@ export default function HomePage() {
 
       <PageSpine>
         {/* --------------------------------------------------------- summary */}
-        <section className="bp-section">
+        <section className="bp-section" id="summary">
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">01&nbsp;&nbsp;Summary</p></Reveal>
+              <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;Summary</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
                   <p className="bp-prose">
-                    <span className="bp-dropcap">{data.summary.slice(0, 1)}</span>
+                    {dropCap && <span className="bp-dropcap">{data.summary.slice(0, 1)}</span>}
                     {summaryBeforeLink}
                     <a href="https://www.rileybeenders.com" target="_blank" rel="noreferrer" suppressHydrationWarning>
                       {siteLinkLabel}
@@ -77,11 +85,11 @@ export default function HomePage() {
         </section>
 
         {/* ------------------------------------------------------ experience */}
-        <section className="bp-section">
+        <section className="bp-section" id="experience">
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">02&nbsp;&nbsp;Experience</p></Reveal>
+              <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;Experience</h2></Reveal>
               <div className="bp-roles">
                 {data.experience.map((job, index) => (
                   <Reveal key={`${job.company}-${job.start}`} delay={Math.min(index, 3) * 0.06}>
@@ -108,11 +116,11 @@ export default function HomePage() {
                                   <Link
                                     href={`/projects#project-${project.id}`}
                                     className="bp-bullet-link"
-                                    aria-label={`View the ${project.name} project`}
+                                    aria-label={`See the ${project.name} project`}
                                     suppressHydrationWarning
                                   >
-                                    <span>View Project</span>
-                                    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                    <span>see {project.name}</span>
+                                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                       <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                   </Link>
@@ -132,11 +140,11 @@ export default function HomePage() {
         </section>
 
         {/* ------------------------------------------------------- toolchain */}
-        <section className="bp-section">
+        <section className="bp-section" id="skills">
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">03&nbsp;&nbsp;Toolchain</p></Reveal>
+              <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;Skills</h2></Reveal>
               <div>
                 {data.skills.map((group, index) => (
                   <Reveal key={group.category} delay={Math.min(index, 3) * 0.06}>
@@ -156,11 +164,11 @@ export default function HomePage() {
         </section>
 
         {/* ------------------------------------------------------- education */}
-        <section className="bp-section">
+        <section className="bp-section" id="education">
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><p className="bp-section-index">04&nbsp;&nbsp;Education</p></Reveal>
+              <Reveal><h2 className="bp-section-index">04&nbsp;&nbsp;Education</h2></Reveal>
               <div>
                 {data.education.degrees.map((degree) => (
                   <Reveal key={`${degree.school}-${degree.degree}`}>
@@ -217,7 +225,22 @@ export default function HomePage() {
                 for the next challenge.
               </p>
             </div>
-            <span className="bp-footer-url">rileybeenders.com</span>
+            <dl className="bp-footer-block" aria-label="About this page">
+              <div>
+                <dt>Sheet</dt>
+                <dd><a href="https://rileybeenders.com" suppressHydrationWarning>rileybeenders.com</a></dd>
+              </div>
+              {stamp.commit && (
+                <div>
+                  <dt>Rev.</dt>
+                  <dd>{stamp.commit} · {stamp.date}</dd>
+                </div>
+              )}
+              <div>
+                <dt>Drawn in</dt>
+                <dd>{data.person.location}</dd>
+              </div>
+            </dl>
           </div>
         </div>
       </footer>

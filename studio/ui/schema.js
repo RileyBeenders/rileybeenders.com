@@ -130,6 +130,93 @@ const FONT_OPTIONS = [
   { value: "ibm-plex-mono", label: "IBM Plex Mono — monospace, engineering feel" }
 ];
 
+const SCREENSHOT_FIELDS = [
+  { name: "id", type: "slug", label: "ID", required: true, span: "third", help: "Referenced by timeline entries and pillars." },
+  { name: "src", type: "image", label: "Light-theme capture", required: true, help: "Shown when the visitor is in dark mode (the page inverts)." },
+  { name: "srcDark", type: "image", label: "Dark-theme capture", help: "Shown when the visitor is in light mode. Falls back to the light capture if empty." },
+  { name: "alt", type: "text", label: "Alt text", required: true },
+  { name: "caption", type: "text", label: "Caption" }
+];
+
+const BACKEND_MATCH_FIELDS = [
+  { name: "keyword", type: "text", label: "Posting keyword", required: true, span: "third" },
+  { name: "line", type: "text", label: "Resume line it matches", required: true }
+];
+
+const BACKEND_SKILL_FIELDS = [
+  { name: "name", type: "text", label: "Skill", required: true, span: "third" },
+  { name: "trigger", type: "text", label: "Triggers on", required: true, help: "The kind of request or change that runs it, in your words." },
+  { name: "does", type: "textarea", label: "What it does", rows: 2, required: true }
+];
+
+const BACKEND_ITEM_FIELDS = [
+  {
+    name: "demo",
+    type: "select",
+    label: "Live demo",
+    span: "third",
+    options: [
+      { value: "resume", label: "Resume formatter (posting → PDF)" },
+      { value: "studio", label: "Studio (palette picker + preview)" },
+      { value: "skills", label: "Agent skills (mini router)" }
+    ]
+  },
+  { name: "title", type: "text", label: "Title", required: true, span: "half" },
+  { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true },
+  { name: "notes", type: "stringList", label: "Side notes", help: "Short one-liners listed under the paragraphs." },
+  { name: "matches", type: "objectList", label: "Resume demo: keyword matches", itemLabel: "Match", fields: BACKEND_MATCH_FIELDS, help: "Only the resume demo reads these." },
+  { name: "skills", type: "objectList", label: "Skills demo: procedures", itemLabel: "Skill", fields: BACKEND_SKILL_FIELDS, help: "Only the skills demo reads these." }
+];
+
+const TIMELINE_FIELDS = [
+  { name: "date", type: "text", label: "Date", required: true, span: "third", placeholder: "2026-07-31", help: "ISO date. A future target month works too (2026-10-01)." },
+  {
+    name: "era",
+    type: "select",
+    label: "Era",
+    span: "third",
+    options: [
+      { value: "past", label: "Past (shipped)" },
+      { value: "present", label: "Present (in progress)" },
+      { value: "future", label: "Future (planned)" }
+    ]
+  },
+  { name: "hash", type: "text", label: "Commit", span: "third", placeholder: "81b334c", help: "Short git hash, when this is a real commit." },
+  { name: "title", type: "text", label: "Title", required: true },
+  { name: "summary", type: "textarea", label: "Summary", rows: 3, required: true },
+  { name: "tags", type: "stringList", label: "Tags", help: "design, agents, data, launch, studio, motion, content…" },
+  { name: "files", type: "number", label: "Files", span: "third" },
+  { name: "insertions", type: "number", label: "Lines added", span: "third" },
+  { name: "deletions", type: "number", label: "Lines removed", span: "third" },
+  { name: "screenshotId", type: "text", label: "Screenshot ID", help: "One of the screenshot IDs below, shown beside this entry." },
+  {
+    name: "mark",
+    type: "select",
+    label: "Dot",
+    span: "third",
+    options: [
+      { value: "", label: "Dot (sized by the commit)" },
+      { value: "star", label: "Star (a moment, not a commit)" }
+    ]
+  },
+  { name: "id", type: "slug", label: "Entry ID", span: "third", help: "Only needed if another entry connects back to this one." },
+  { name: "linkFrom", type: "text", label: "Connect from", span: "third", help: "The entry ID this one answers. Draws a line from that dot to this one." },
+  { name: "linkLabel", type: "text", label: "Connector caption", placeholder: "7 days", help: "Rides on that line. Empty uses the gap between the two dates." }
+];
+
+const STAT_FIELDS = [
+  { name: "label", type: "text", label: "Label", required: true, span: "half" },
+  { name: "value", type: "number", label: "Value", required: true, span: "third" },
+  { name: "suffix", type: "text", label: "Suffix", span: "third", placeholder: "+" },
+  { name: "note", type: "text", label: "Note" }
+];
+
+const PILLAR_FIELDS = [
+  { name: "title", type: "text", label: "Title", required: true },
+  { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true, help: "The first paragraph shows at rest; the rest open on demand." },
+  { name: "screenshotId", type: "text", label: "Screenshot ID" }
+];
+
 const CUSTOM_PALETTE_MODE_FIELDS = [
   { name: "paper", type: "color", label: "Background", span: "third", always: true },
   { name: "white", type: "color", label: "Surface", span: "third", always: true },
@@ -172,6 +259,7 @@ export const SCHEMAS = {
       { name: "type", type: "text", label: "Category", placeholder: "Motion Control / Product Platform" },
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
+      { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
       { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true },
       { name: "proofId", type: "ref", source: "proofs", label: "Proof", help: "The write-up that slides in after this project." },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
@@ -191,6 +279,30 @@ export const SCHEMAS = {
           { name: "impact", type: "stringList", label: "Impact" },
           { name: "tools", type: "stringList", label: "Tools" },
           { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
+        ]
+      },
+      {
+        name: "dates",
+        type: "group",
+        label: "Dates",
+        help: "When the work happened. Shown in a small box on the project entry; leave Start blank to hide it.",
+        fields: [
+          { name: "start", type: "text", label: "Start", span: "third", placeholder: "2026-06-28", help: "ISO date (formatted on the site) or free text." },
+          { name: "end", type: "text", label: "End", span: "third", placeholder: "2026-09-01", help: "Leave blank while Ongoing is on." },
+          { name: "ongoing", type: "boolean", label: "Ongoing", span: "third", default: false, omitWhenDefault: true, help: "Reads \"→ Present\" and animates the box's underline as a progress bar." },
+          {
+            name: "position",
+            type: "select",
+            label: "Position",
+            span: "third",
+            options: [
+              { value: "", label: "Top right (default)" },
+              { value: "top-left", label: "Top left" },
+              { value: "bottom-right", label: "Bottom right" },
+              { value: "bottom-left", label: "Bottom left" },
+              { value: "inline", label: "Inline, under the subtitle" }
+            ]
+          }
         ]
       }
     ]
@@ -295,8 +407,7 @@ export const SCHEMAS = {
         type: "group",
         label: "Hero",
         fields: [
-          { name: "eyebrow", type: "text", label: "Eyebrow", required: true, span: "half", help: "The small label above the headline." },
-          { name: "title", type: "text", label: "Headline", required: true, span: "half" },
+          { name: "title", type: "text", label: "Headline", required: true },
           { name: "tagline", type: "text", label: "Tagline", required: true }
         ]
       },
@@ -304,7 +415,7 @@ export const SCHEMAS = {
         name: "details",
         type: "group",
         label: "Details",
-        help: "The section under the hero: a short intro, then the Email, LinkedIn and GitHub cards.",
+        help: "The section under the hero: a short intro, then the email address spelled out from Site Settings → Person.",
         fields: [
           { name: "title", type: "text", label: "Section title", required: true, span: "half" },
           { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true },
@@ -374,6 +485,81 @@ export const SCHEMAS = {
           },
           { name: "title", type: "text", label: "Section title", required: true },
           { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." }
+        ]
+      }
+    ]
+  },
+
+  aboutSite: {
+    label: "About this site",
+    shape: "object",
+    description: "The site as its own case study: hero, the running date bar, summary and bullets, screenshots, the case study, and the deep-dive (stats, commit timeline, pillars, and the Behind-the-site demos). The site-timeline-sync agent skill refreshes the stats and timeline from git.",
+    fields: [
+      {
+        name: "hero",
+        type: "group",
+        label: "Hero",
+        fields: [
+          { name: "title", type: "text", label: "Headline", required: true },
+          { name: "tagline", type: "text", label: "Tagline", required: true }
+        ]
+      },
+      {
+        name: "dates",
+        type: "group",
+        label: "Dates",
+        help: "Shown as the running date bar under the headline. Start is the first commit.",
+        fields: [
+          { name: "start", type: "text", label: "Start", span: "third", placeholder: "2026-06-28", required: true },
+          { name: "end", type: "text", label: "End", span: "third", help: "Leave blank while Ongoing is on." },
+          { name: "ongoing", type: "boolean", label: "Ongoing", span: "third", default: false, omitWhenDefault: true, help: "Reads \"→ Present\" and keeps the bar moving." }
+        ]
+      },
+      { name: "summary", type: "textarea", label: "Summary", rows: 4, required: true },
+      { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
+      { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true, always: true },
+      {
+        name: "caseStudy",
+        type: "group",
+        label: "Case study",
+        help: "Opens under the bullets, like a project's case study.",
+        fields: [
+          { name: "title", type: "text", label: "Title" },
+          { name: "subtitle", type: "text", label: "Subtitle" },
+          { name: "problem", type: "textarea", label: "Problem", rows: 4 },
+          { name: "rootCause", type: "textarea", label: "Root cause", rows: 3 },
+          { name: "constraints", type: "stringList", label: "Constraints" },
+          { name: "approach", type: "stringList", label: "Approach" },
+          { name: "designDecisions", type: "stringList", label: "Design decisions" },
+          { name: "impact", type: "stringList", label: "Impact" },
+          { name: "tools", type: "stringList", label: "Tools" },
+          { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
+        ]
+      },
+      {
+        name: "feature",
+        type: "group",
+        label: "Deep-dive",
+        help: "Stats count up on view; timeline entries are placed by date (past, present, future); pillars expand in place; screenshot pins are percent coordinates.",
+        always: true,
+        fields: [
+          { name: "eyebrow", type: "text", label: "Eyebrow", span: "half", placeholder: "A living project" },
+          { name: "intro", type: "textarea", label: "Intro", rows: 3 },
+          { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
+          { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },
+          { name: "pillars", type: "objectList", label: "Pillars", itemLabel: "Pillar", fields: PILLAR_FIELDS },
+          { name: "screenshots", type: "objectList", label: "Screenshots", itemLabel: "Screenshot", fields: SCREENSHOT_FIELDS, gallery: true, help: "Thumbnails for timeline entries and pillars. Each has a light and a dark capture; the page shows the opposite of the visitor's theme." },
+          {
+            name: "backend",
+            type: "group",
+            label: "Behind the site",
+            help: "The tools visitors never see, each with a small live demo beside your notes.",
+            fields: [
+              { name: "eyebrow", type: "text", label: "Eyebrow", span: "half" },
+              { name: "intro", type: "textarea", label: "Intro", rows: 2 },
+              { name: "items", type: "objectList", label: "Rows", itemLabel: "Row", fields: BACKEND_ITEM_FIELDS, always: true }
+            ]
+          }
         ]
       }
     ]
@@ -467,9 +653,10 @@ export const SCHEMAS = {
  * changes. A schema that isn't listed here doesn't appear.
  */
 export const RAIL = [
-  { page: "Home", keys: ["summary", "experience", "skills", "education"] },
-  { page: "Projects", keys: ["projects", "proofs"] },
-  { page: "Contact", keys: ["contact"] },
-  { page: "More Info", keys: ["moreInfo"] },
-  { page: "Site settings", keys: ["header"] }
+  { page: "Home", path: "/", keys: ["summary", "experience", "skills", "education"] },
+  { page: "Projects", path: "/projects", keys: ["projects", "proofs"] },
+  { page: "Contact", path: "/contact", keys: ["contact"] },
+  { page: "More Info", path: "/more-info", keys: ["moreInfo"] },
+  { page: "About this site", path: "/about-this-site", keys: ["aboutSite"] },
+  { page: "Site settings", path: "/", keys: ["header"] }
 ];

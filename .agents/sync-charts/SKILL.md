@@ -49,6 +49,10 @@ Every run ends with a report to the user, even when nothing needed to change:
 
 Keep the report itemized (a short bulleted list per change), not a single vague sentence like "the tables were updated."
 
+## Design check
+
+The chart is also a rendered surface on `/more-info` (when `data/more-info/more-info.json`'s `ganttSection.visible` is on). `components/GanttChart.tsx` bakes its colors into mermaid's `themeVariables` because mermaid cannot read CSS variables — the repo-root `DESIGN.md` calls this the **Hard-Copy Rule**. Whenever the chart's look changes (a status color, bar or font size, the active palette preset in `data/header.json`), sync those hard-coded values to the active preset's tokens in `lib/palettes.ts` for both themes, then run `sh .agents/skills/impeccable/scripts/impeccable detect --json components/GanttChart.tsx components/JobsTable.tsx` and load `/more-info` in both themes. Content-only edits to the gantt block (dates, durations, statuses) need none of this.
+
 ## Related procedure
 
 This is a narrower, chart-only counterpart to `vault-sync` (`.agents/vault-sync/SKILL.md`). If the winning content also needs to reach the Obsidian vault notes, the normal `vault-sync` rules still apply after the mismatch is fixed.

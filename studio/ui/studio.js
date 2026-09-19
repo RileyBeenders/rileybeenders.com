@@ -27,6 +27,7 @@ const dom = {
   listPane: document.querySelector("#list-pane"),
   listBody: document.querySelector("#list-body"),
   listTitle: document.querySelector("#list-title"),
+  listCount: document.querySelector("#list-count"),
   listActions: document.querySelector("#list-actions"),
   detail: document.querySelector("#detail"),
   docTitle: document.querySelector("#doc-title"),
@@ -36,7 +37,9 @@ const dom = {
   status: document.querySelector("#status"),
   themeToggle: document.querySelector("#theme-toggle"),
   toast: document.querySelector("#toast"),
-  modal: document.querySelector("#modal")
+  modal: document.querySelector("#modal"),
+  confirm: document.querySelector("#confirm"),
+  siteLink: document.querySelector("#site-link")
 };
 
 /* ------------------------------------------------------------------ api --- */
@@ -52,6 +55,46 @@ async function api(path, options) {
 }
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
+
+/** Counts the leaf values that differ between two JSON trees — "3 fields changed" for a save toast. */
+function countChanges(before, after) {
+  if (before === after) return 0;
+  const isObject = (v) => v !== null && typeof v === "object";
+  if (!isObject(before) || !isObject(after)) return 1;
+  const keys = new Set([...Object.keys(before), ...Object.keys(after)]);
+  let total = 0;
+  for (const key of keys) total += countChanges(before[key], after[key]);
+  return total;
+}
+
+const timeOfDay = (ms) => new Date(ms).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+
+/**
+ * The Studio's own yes/no, in place of window.confirm. Resolves true when the
+ * user takes the action, false on Cancel or Escape.
+ */
+function confirmDialog({ title, body, action = "Continue", danger = false }) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      dom.confirm.close();
+      dom.confirm.replaceChildren();
+      resolve(value);
+    };
+    const ok = el("button", { type: "button", class: `f-btn ${danger ? "f-btn--danger" : "f-btn--solid"}`, onClick: () => finish(true) }, action);
+    dom.confirm.replaceChildren(
+      el("div", { class: "confirm-body" }, el("h2", {}, title), body ? el("p", {}, body) : null),
+      el("div", { class: "confirm-foot" },
+        el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: () => finish(false) }, "Cancel"),
+        ok)
+    );
+    dom.confirm.addEventListener("close", () => finish(false), { once: true });
+    dom.confirm.showModal();
+    ok.focus();
+  });
+}
 
 function toast(message, tone = "ok") {
   dom.toast.textContent = message;
@@ -100,8 +143,22 @@ async function loadDoc(key) {
     data: payload.data,
     original: clone(payload.data),
     revision: payload.revision,
-    dirty: false
+    dirty: false,
+    savedAt: null
   };
+  // A copy kept across a reload after a refused save comes back as unsaved work.
+  let stash = null;
+  try { stash = sessionStorage.getItem(`studio-stash:${key}`); } catch {}
+  if (stash) {
+    try {
+      state.docs[key].data = JSON.parse(stash);
+      state.docs[key].dirty = true;
+      sessionStorage.removeItem(`studio-stash:${key}`);
+      toast(`Your unsaved copy of ${payload.file} was restored. The file on disk had changed underneath it, so check before saving.`);
+    } catch {
+      // A stash that will not parse is not worth more than the file on disk.
+    }
+  }
   return state.docs[key];
 }
 
@@ -129,6 +186,7 @@ function railItem(key) {
   return el("button", {
     type: "button",
     class: `rail-item${key === state.activeKey ? " is-active" : ""}`,
+    "aria-current": key === state.activeKey ? "page" : undefined,
     onClick: () => selectFile(key)
   },
     schema.icon === "gear" ? gearIcon() : null,
@@ -167,6 +225,15 @@ function paintList() {
 
   const selected = state.selection[key] ?? 0;
 
+  // The list's real shape, said once: how many are on the site, how many are drafts.
+  if (schema.visibilityField) {
+    const drafts = doc.data.filter((entry) => isHidden(schema, entry)).length;
+    const live = doc.data.length - drafts;
+    dom.listCount.textContent = doc.data.length === 0 ? "" : `${live} on the site · ${drafts} ${drafts === 1 ? "draft" : "drafts"}`;
+  } else {
+    dom.listCount.textContent = doc.data.length === 0 ? "" : `${doc.data.length} ${doc.data.length === 1 ? "entry" : "entries"}`;
+  }
+
   dom.listBody.replaceChildren(
     ...doc.data.map((entry, index) => {
       const hidden = isHidden(schema, entry);
@@ -174,9 +241,21 @@ function paintList() {
         el("button", {
           type: "button",
           class: "list-open",
-          onClick: () => { state.selection[key] = index; paintList(); paintDetail(); }
+          "aria-current": index === selected ? "true" : undefined,
+          title: "Alt+↑ / Alt+↓ moves this entry",
+          onClick: () => { state.selection[key] = index; paintList(); paintDetail(); },
+          onKeydown: (event) => {
+            if (!event.altKey || (event.key !== "ArrowUp" && event.key !== "ArrowDown")) return;
+            event.preventDefault();
+            reorder(index, event.key === "ArrowUp" ? index - 1 : index + 1);
+            dom.listBody.querySelectorAll(".list-open")[state.selection[key]]?.focus();
+          }
         },
-          el("span", { class: "list-name" }, schema.title(entry)),
+          el("span", { class: "list-name" },
+            el("span", { class: "list-name-text" }, schema.title(entry)),
+            schema.visibilityField
+              ? (hidden ? el("span", { class: "list-draft" }, "Draft") : el("span", { class: "list-live", title: "On the site", "aria-label": "on the site" }))
+              : null),
           el("span", { class: "list-sub" }, schema.subtitle ? schema.subtitle(entry) : "")),
         el("div", { class: "list-tools" },
           schema.visibilityField
@@ -198,6 +277,7 @@ function paintList() {
             type: "button",
             class: "f-icon-btn",
             title: "Move up",
+            "aria-label": `Move ${schema.title(entry)} up`,
             disabled: index === 0,
             onClick: () => reorder(index, index - 1)
           }, arrow("up")),
@@ -205,6 +285,7 @@ function paintList() {
             type: "button",
             class: "f-icon-btn",
             title: "Move down",
+            "aria-label": `Move ${schema.title(entry)} down`,
             disabled: index === doc.data.length - 1,
             onClick: () => reorder(index, index + 1)
           }, arrow("down"))));
@@ -292,7 +373,7 @@ function uniqueId(list, field, candidate) {
   }
 }
 
-function deleteEntry() {
+async function deleteEntry() {
   const schema = schemaFor(state.activeKey);
   const doc = activeDoc();
   const index = state.selection[state.activeKey] ?? 0;
@@ -301,9 +382,15 @@ function deleteEntry() {
 
   const label = schema.title(entry);
   const hint = schema.visibilityField
-    ? "\n\nTo keep the history instead, switch it off with the eye icon."
+    ? "To keep the write-up and only take it off the site, switch it off with the eye icon instead."
     : "";
-  if (!window.confirm(`Delete "${label}"? This removes it from the JSON when you save.${hint}`)) return;
+  const ok = await confirmDialog({
+    title: `Delete "${label}"?`,
+    body: `It leaves ${doc.file} when you save.${hint ? "\n" + hint : ""}`,
+    action: "Delete",
+    danger: true
+  });
+  if (!ok) return;
 
   doc.data.splice(index, 1);
   state.selection[state.activeKey] = Math.max(0, index - 1);
@@ -328,40 +415,87 @@ function paintDetail() {
   };
 
   if (schema.shape === "object") {
+    const form = el("div", { class: "f-form f-form--page" }, renderFields(schema.fields, doc.data, ctx));
     dom.detail.replaceChildren(
       el("div", { class: "detail-head" },
         el("div", {},
           el("h2", {}, schema.label),
           schema.description ? el("p", { class: "detail-desc" }, schema.description) : null)),
-      el("div", { class: "f-form f-form--page" }, renderFields(schema.fields, doc.data, ctx))
+      withIndex(form)
     );
   } else {
     const index = state.selection[key] ?? 0;
     const entry = doc.data[index];
     if (!entry) {
-      dom.detail.replaceChildren(el("p", { class: "f-empty f-empty--pane" }, "Nothing here yet. Use “+ New” to start one."));
+      dom.detail.replaceChildren(el("p", { class: "f-empty f-empty--pane" },
+        `Nothing here yet. “+ New” adds the first ${schema.label.toLowerCase()} entry; it shows on the site once it has a name and is switched on.`));
       return;
     }
+    const form = el("div", { class: "f-form" }, renderFields(schema.fields, entry, ctx));
     dom.detail.replaceChildren(
       el("div", { class: "detail-head" },
         el("h2", {}, schema.title(entry)),
-        isHidden(schema, entry) ? el("span", { class: "tag tag--off" }, "Hidden from the site") : el("span", { class: "tag" }, "Live")),
-      el("div", { class: "f-form" }, renderFields(schema.fields, entry, ctx))
+        schema.visibilityField
+          ? (isHidden(schema, entry) ? el("span", { class: "tag tag--off" }, "Draft · not on the site") : el("span", { class: "tag" }, "On the site"))
+          : null),
+      withIndex(form)
     );
   }
 
   dom.detail.scrollTop = scrollTop;
 }
 
-function paintChrome() {
+/**
+ * A long form gets a margin index (the site's section-index pattern): one link
+ * per top-level field or group, so the gallery, the bullets, and the dates are
+ * a click away instead of a scroll. Short forms stay as they are.
+ */
+function withIndex(form) {
+  const sections = Array.from(form.children).map((node) => {
+    if (!node.matches(".f-group, .f-field--list, .f-field--textarea, .f-field--emphasisText, .f-field--palette")) return null;
+    const label = node.querySelector(".f-label, .f-legend");
+    return label ? { node, text: label.textContent.replace(/\*\s*$/, "").trim() } : null;
+  }).filter(Boolean);
+  if (sections.length < 3) return el("div", { class: "detail-body" }, form);
+
+  const links = sections.map(({ node, text }, i) => {
+    node.id = `field-${i}-${text.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    return el("a", { href: `#${node.id}`, onClick: (event) => { event.preventDefault(); node.scrollIntoView({ block: "start" }); } }, text);
+  });
+  return el("div", { class: "detail-body has-index" },
+    el("nav", { class: "detail-index", "aria-label": "Sections of this entry" }, ...links),
+    form);
+}
+
+function paintChrome(phase = doc_phase(activeDoc())) {
   const doc = activeDoc();
   const schema = schemaFor(state.activeKey);
   dom.docTitle.textContent = schema.label;
   dom.docPath.textContent = doc.file;
-  dom.saveBtn.disabled = !doc.dirty;
-  dom.revertBtn.disabled = !doc.dirty;
-  dom.status.textContent = doc.dirty ? "Unsaved changes" : "Saved";
-  dom.status.className = doc.dirty ? "status is-dirty" : "status";
+  dom.saveBtn.disabled = phase !== "dirty";
+  dom.revertBtn.disabled = phase !== "dirty";
+  dom.status.textContent =
+    phase === "saving" ? "Saving…"
+    : phase === "dirty" ? "Unsaved changes"
+    : doc.savedAt ? `Saved ${timeOfDay(doc.savedAt)}`
+    : "Saved";
+  dom.status.className = `status${phase === "dirty" ? " is-dirty" : phase === "saving" ? " is-saving" : ""}`;
+  paintSiteLink();
+}
+
+const doc_phase = (doc) => (doc?.dirty ? "dirty" : "saved");
+
+/** "Open on the site" points at the page this file renders, and at the entry when it has an anchor. */
+function paintSiteLink() {
+  const group = RAIL.find((g) => g.keys.includes(state.activeKey));
+  let href = SITE_URL + (group?.path ?? "/");
+  const schema = schemaFor(state.activeKey);
+  const doc = activeDoc();
+  if (state.activeKey === "projects" && schema?.shape === "array") {
+    const entry = doc?.data?.[state.selection[state.activeKey] ?? 0];
+    if (entry?.id) href += `#project-${entry.id}`;
+  }
+  dom.siteLink.href = href;
 }
 
 /* ------------------------------------------------------------ file nav --- */
@@ -390,8 +524,13 @@ async function save() {
   const doc = activeDoc();
   if (!doc?.dirty) return;
 
-  dom.saveBtn.disabled = true;
+  paintChrome("saving");
   const payload = normalizeDoc(key, doc.data);
+  const changes = countChanges(doc.original, payload);
+  const schema = schemaFor(key);
+  const subject = schema.shape === "array"
+    ? (doc.data.length === 1 ? schema.title(doc.data[0]) : schema.label)
+    : schema.label;
 
   try {
     const result = await api(`/api/file/${key}`, {
@@ -400,24 +539,33 @@ async function save() {
       body: JSON.stringify({ data: payload, revision: doc.revision })
     });
     doc.revision = result.revision;
+    doc.savedAt = result.savedAt ?? Date.now();
     doc.data = payload;
     doc.original = clone(payload);
     doc.dirty = false;
+    sessionStorage.removeItem(`studio-stash:${key}`);
     paintChrome();
     paintRail();
     paintList();
     paintDetail();
-    toast(`Saved ${doc.file}`);
+    toast(`Saved ${subject}: ${changes} ${changes === 1 ? "field" : "fields"} changed. The site picks it up on its own.`);
   } catch (error) {
-    dom.saveBtn.disabled = false;
+    paintChrome();
+    if (/changed on disk/i.test(error.message)) {
+      // The file moved underneath us. Keep this copy across the reload so nothing is lost.
+      try { sessionStorage.setItem(`studio-stash:${key}`, JSON.stringify(doc.data)); } catch {}
+      toast(`${doc.file} changed on disk since it was loaded. Your unsaved copy is kept: reload to see the newer file, then check it before saving.`, "error");
+      return;
+    }
     toast(error.message, "error");
   }
 }
 
-function revert() {
+async function revert() {
   const doc = activeDoc();
   if (!doc?.dirty) return;
-  if (!window.confirm("Discard every change since the last save?")) return;
+  const ok = await confirmDialog({ title: "Discard every change since the last save?", body: `${doc.file} goes back to what is on disk.`, action: "Discard", danger: true });
+  if (!ok) return;
   doc.data = clone(doc.original);
   doc.dirty = false;
   paintChrome();
@@ -499,8 +647,9 @@ function openImagePicker(current) {
     const grid = el("div", { class: "picker-grid" });
     const filter = el("select", { class: "f-input f-select f-input--short" });
 
+    const currentFolder = state.images.find((image) => image.src === current)?.folder ?? "";
     function paintFilterOptions() {
-      const previous = filter.value;
+      const previous = filter.value || currentFolder;
       filter.replaceChildren(
         el("option", { value: "" }, "All folders"),
         ...state.imageFolders.map((name) => el("option", { value: name }, name))
@@ -531,7 +680,8 @@ function openImagePicker(current) {
             "aria-label": `Delete ${image.name}`,
             onClick: async (event) => {
               event.stopPropagation();
-              if (!window.confirm(`Delete "${image.name}" from ${image.folder}? This can't be undone.`)) return;
+              const ok = await confirmDialog({ title: `Delete ${image.name}?`, body: `It is removed from ${image.folder} on disk. This can't be undone.`, action: "Delete", danger: true });
+              if (!ok) return;
               try {
                 const parts = [...folderSegments(image.folder), image.name].map(encodeURIComponent).join("/");
                 await api(`/api/images/${parts}`, { method: "DELETE" });
@@ -552,6 +702,7 @@ function openImagePicker(current) {
       if (images.length === 0) {
         grid.replaceChildren(el("p", { class: "f-empty" }, filter.value ? `No images in ${filter.value} yet.` : "No images yet — upload one below."));
       }
+      grid.querySelector(".picker-item.is-active")?.scrollIntoView({ block: "center" });
     }
     paintGrid();
 
@@ -569,7 +720,8 @@ function openImagePicker(current) {
         ...state.imageFolders.map((name) => el("option", { value: name }, name)),
         el("option", { value: NEW_FOLDER }, "+ New subfolder…")
       );
-      folder.value = state.imageFolders.includes(previous) ? previous : state.imageFolders[0] || NEW_FOLDER;
+      const preferred = previous || currentFolder;
+      folder.value = state.imageFolders.includes(preferred) ? preferred : state.imageFolders[0] || NEW_FOLDER;
       newFolder.hidden = folder.value !== NEW_FOLDER;
     }
     paintFolderOptions();
@@ -618,7 +770,8 @@ function openImagePicker(current) {
           el("span", { class: "f-label f-label--inline" }, "Upload into"),
           folder,
           newFolder,
-          file))
+          file,
+          el("span", { class: "f-file-note" }, "Images only, up to 16 MB. An existing name is never overwritten.")))
     );
 
     dom.modal.addEventListener("close", () => finish(null), { once: true });
@@ -644,8 +797,6 @@ async function boot() {
   window.addEventListener("beforeunload", (event) => {
     if (Object.values(state.docs).some((doc) => doc.dirty)) event.preventDefault();
   });
-
-  document.querySelector("#site-link").href = SITE_URL;
 
   try {
     const [{ files }] = await Promise.all([api("/api/files"), refreshImages()]);

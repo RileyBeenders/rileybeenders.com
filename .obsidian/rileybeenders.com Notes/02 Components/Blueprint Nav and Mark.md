@@ -45,6 +45,10 @@ Not React components, but the same monogram, hand-tuned for tiny sizes / crawler
 
 See [[Design System (Blueprint Press)]] and `assets/fonts/README.md`.
 
+## The About-this-site link (2026-09-17)
+
+`NAV` has a fifth entry, `{ label: "About this site", href: "/about-this-site" }`. It was drawn in a 9s `background-clip: text` gradient sweep from 2026-09-17 to 2026-09-18; the impeccable critique flagged gradient text (it also disappears in forced-colors mode, since it relies on `-webkit-text-fill-color: transparent`), so all five links are flat color again and `bp-nav-link--gradient` is gone. Under 860px the bar is now two rows (a CSS grid with `grid-template-areas: "brand toggle" "links links"`): the brand and the theme switch share the first row, and the five links sit on one horizontally scrolling row (`overflow-x: auto`, hidden scrollbar, a `mask-image` fade at both edges so a clipped last tab reads as "more"). That took the phone nav from 151px tall to about 95px. See [[About This Site Page]].
+
 ## Related
 - [[Routes Overview]]
 - [[Blueprint UI Components]]
