@@ -5,7 +5,7 @@ Role: "Forward Deployed Engineer"
 JobID: "015"
 Date Applied: 2026-09-15
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf"
 ---
 
 # Forward Deployed Engineer — The Walt Disney Company
@@ -63,9 +63,10 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **The largest gaps are explicit:** the current evidence does not prove three years shipping conventional software products, one year shipping LLM-based AI features in production, or hands-on production use of RAG, LLM APIs, agent frameworks, SQL, golden-set evaluations, trace analysis, LLM-as-judge, Cursor, or Claude Code. It also does not document formal code-review ownership. The tailored resume therefore emphasizes adjacent, supported product and automation evidence without claiming those missing qualifications.
 - **Education is adjacent rather than exact:** the completed B.S. in Electro-Mechanical Engineering is closely related to the posting's electrical/electronics or comparable-field language, but it is not a computer science or software degree.
 
-### Now — Sep 16, 2026
+### Now — Sep 19, 2026
 
-No material change since the application one day ago. The strongest evidence remains product ownership, AI-assisted machine diagnostics, user-facing remote operations, workflow automation, enterprise systems, and cross-functional delivery; the production LLM-stack and conventional software-tenure gaps remain open.
+- No material change to the match since application. The strongest evidence remains product ownership, AI-assisted machine diagnostics, user-facing remote operations, workflow automation, enterprise systems, and cross-functional delivery; the production LLM-stack and conventional software-tenure gaps remain open.
+- Two small additions to the record since Sep 15–16, 2026 speak to the "forward deployed" framing without closing a gap: the summary now states that Riley is "quick to pick up, apply, and integrate new technologies into real-world systems", and the current role lists acting as Hiring Manager for engineering roles (technical interviews, final hiring decisions). The PROTEOR Print bullet was condensed, so "failure alerts" is no longer stated anywhere in the record (remote operation, live video, AI-assisted diagnostics and the production metrics still are).
 
 ---
 

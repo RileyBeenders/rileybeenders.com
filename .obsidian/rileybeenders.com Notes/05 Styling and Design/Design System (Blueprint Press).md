@@ -4,12 +4,13 @@ tags: [styling, design]
 
 # Design System (Blueprint Press)
 
-Two plain global stylesheets, no CSS modules / CSS-in-JS / Tailwind. The pre-reskin single `app/globals.css` (~1740 lines, `--bg: #081217` dark theme, pointer-tilt vars, kanban/coming-soon system) was deleted.
+Plain global stylesheets, no CSS modules / CSS-in-JS / Tailwind. The pre-reskin single `app/globals.css` (~1740 lines, `--bg: #081217` dark theme, pointer-tilt vars, kanban/coming-soon system) was deleted.
 
 | File | Imported by | Scope |
 |---|---|---|
 | `app/base.css` | root `app/layout.tsx` | Bare reset only: `* { box-sizing }`, `body { margin: 0; min-height: 100vh }`, `img { display: block; max-width: 100% }`, `button/input { font: inherit }`, `a { color: inherit; text-decoration: none }`, `.sr-only`. Nothing visual. |
-| `app/(site)/blueprint.css` | `app/(site)/layout.tsx` | The entire visible design system (~590 lines). Almost everything is scoped under `.bp`. |
+| `app/(site)/blueprint.css` | `app/(site)/layout.tsx` | The site-wide design system (~980 lines after the home-page and polish work of Sep 15–19). Almost everything is scoped under `.bp`. |
+| `app/(site)/projects/projects.css` (~500), `projects/feature.css` (~1050), `about-this-site/about-site.css` | the projects and About routes | `.pj-*` entries, gallery, lightbox, date boxes; `.ft-*` / `.tl-*` / `.dm-*` deep-dive; `.as-*` page layout — see **Additions for the date boxes and the About page** below. |
 
 The design source is a Claude Design canvas in `design/` (`Main.dc.html`, `Mark.dc.html`, `Interactions.dc.html` + `canvas.json`) — the chosen "Blueprint Press" direction only. The one-time published export (`design/rileybeenders-directions.html`) and the five rejected "earlier sketches" artboards (`Blueprint`/`Editorial`/`Machined`/`Instrument`/`SwissGrid.dc.html`, plus their `canvas.json` page and annotations) were removed as stale/unused clutter once the direction was picked — the three remaining `.dc.html` files + `canvas.json` are the live, editable source and can still be re-published at any time.
 
@@ -51,7 +52,7 @@ Colors are no longer hand-authored solely in `blueprint.css`. `lib/palettes.ts` 
 | `--ease` | `cubic-bezier(0.22, 0.9, 0.28, 1)` | Shared easing for every transition/animation (matches `Reveal`'s framer-motion curve). |
 | `--shell` | `1240px` | Max content width (`.bp-shell`). |
 | `--pad` | `clamp(20px, 5vw, 64px)` | Horizontal page padding. |
-| `--bp-font-display` / `--bp-font-body` | set by `next/font` in `app/(site)/layout.tsx` | Instrument Serif (headings, italic hero tagline, drop-cap, cert titles) / Spectral (body). Fallbacks: `"Iowan Old Style", Georgia, serif`. |
+| `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` | the `.bp` block's defaults point at `--font-instrument-serif` / `--font-spectral`; the layout's override re-points them at whichever of the eight preloaded faces `header.json.fonts` names | Header (`h1`, the hero tagline, the drop cap, the outro lead), subheader (`h2`/`h3` — role, skill-group and project titles — and cert titles), body (everything else, including the tracked section indexes). Fallbacks: `"Iowan Old Style", Georgia, serif`. |
 
 The blueprint-grid texture is four stacked `linear-gradient`s on `.bp` (`16px` fine + `96px` coarse ruling), `background-attachment: fixed`. `GanttChart` re-declares the accent colors in its mermaid `themeVariables` because mermaid can't read CSS custom properties — see [[GanttChart JobsTable and gantt.ts]].
 
@@ -59,18 +60,21 @@ The blueprint-grid texture is four stacked `linear-gradient`s on `.bp` (`16px` f
 
 - **`.bp-shell`** — centered `max-width: var(--shell)` column with `--pad` inline padding. Used inside every `<section>`.
 - **`.bp-nav`** — sticky, `backdrop-filter: blur(12px)`, translucent paper, bottom hairline. See [[Blueprint Nav and Mark]].
-- **`.bp-hero`** — `overflow: hidden`, holds a decorative one-stroke ribbon SVG (`.bp-hero-ribbon`, `bp-draw` stroke animation). `h1` is `clamp(58px, 12vw, 152px)`, `line-height: 0.86`.
+- **`.bp-hero`** — `overflow: hidden`, holds the `HeroRibbon` component's one-stroke B-bowl SVG (`.bp-hero-ribbon`, `bp-draw` stroke animation, replayed by remount when the hero re-enters the viewport) and, on `/`, the hero relocation badge. `h1` is `clamp(58px, 12vw, 152px)`, `line-height: 0.86`. `.bp-hero-now` is the italic current-role fact line beside the location.
+- **`.hp-list` / `.hp-spine`** — `PageSpine`'s wrapper and its hairline track + accent fill down the home page's four sections (scroll-spring `scaleY`).
 - **`.bp-section` + `.bp-section-grid`** — a `190px | 1fr` two-column grid: the uppercase `.bp-section-index` ("01 Summary" …) in the narrow column, content in the wide one. Collapses to one column under `860px`.
 - **`.bp-rule` / `.bp-rule--hair`** — 2px ink divider / 1px hairline; animated via `Reveal as="rule"` (scaleX from left).
 - **`.bp-prose`** — `clamp(18px, 1.55vw, 22px)`, `max-width: 70ch`, `text-wrap: pretty`. `.bp-dropcap` floats an Instrument Serif capital, only when the summary opens with a whole word.
-- **`.bp-role`** — experience entry: a left rule that gains a red overlay bar and the whole row shifts `translateX(7px)` on hover.
+- **`.bp-role`** — experience entry: a left rule that gains an accent overlay bar and the whole row shifts `translateX(7px)` on hover. `.bp-bullet-emphasis` spans (from `EmphasizedText`) take the accent on hover; `.bp-bullet-link` is the inline "see ICARUS-Lite ↗" evidence link at the end of a bullet.
 - **`.bp-pill`** — skill tag: white, hairline border, lifts + shadows on hover.
 - **`.bp-cert`** — education card: lifts on hover, a `.bp-cert-bar` wipes in.
 - **`.bp-btn`** — outline button with a `::before` fill that wipes in on hover (`scaleX`), arrow nudges. `.bp-btn--solid` is the red Download button; `.bp-sheen` is its looping highlight; `:disabled` shows the wait state.
 - **`.bp-link`** — inline link with an underline that wipes in on hover and a diagonal arrow. `.bp-readmore` is the uppercased, letter-spaced, accent-colored variant used for the "Read more" link on `/more-info`.
-- **`.bp-soon-*`** — the `BpComingSoon` loader/rings/status/queue. `.bp-badge` — the fixed "Open to relocation" pill with a pinging dot (`bp-ring`).
+- **`.bp-soon-*`** — the `BpComingSoon` loader/rings/status/queue. `.bp-badge` — the "Open to relocation" pill (fixed bottom-right by default; on `/` the component moves it with a transform from beside the hero rule to that corner) with a pinging dot (`bp-ring`) and the typewriter label (`.bp-badge-type` ghost/live copies, `.bp-badge-caret` blinking via `bp-caret`). `.bp-top` — the fixed bottom-left Back to Top control.
+- **`.bp-footer-block`** — the footer's `<dl>` title block (Sheet · Rev. · Drawn in), `tabular-nums`.
 - **`.bp-gantt` / `.bp-table`** — the tracker frame: `.bp-gantt` is `height: 50vh; overflow: auto` (horizontal scroll for the rescaled chart); `.bp-table-wrap` is `overflow-x: auto`.
-- Keyframes: `bp-draw` (stroke draw-on), `bp-float`, `bp-sheen`, `bp-spin` / `bp-pulse` / `bp-sweep` (coming-soon), `bp-ring` (badge).
+- Keyframes: `bp-draw` (stroke draw-on), `bp-float`, `bp-sheen`, `bp-spin` / `bp-pulse` / `bp-sweep` (coming-soon), `bp-ring` and `bp-caret` (badge), `bp-nav-gradient` (the About tab — see below).
+- `.bp-eyebrow` still exists as a rule but nothing renders it since the eyebrows went on 2026-09-18.
 
 ## Responsive
 
@@ -82,14 +86,14 @@ The first `$impeccable critique` of the site (see [[Impeccable Design Workflow]]
 
 - **The grey ramp** (`lib/palette.ts`): `muted` 0.45 → 0.36 and `faint` 0.60 → 0.50, so every text role clears WCAG AA 4.5:1 on paper and on the white sheet, in both themes, on every preset (the old `faint` was 2.3–2.5:1 on cert dates and the footer URL; `muted` was 3.9:1 on nav links). The hand-tuned Default values were re-derived at the same weights (`#616b75` / `#838b92` light, `#9da5ad` / `#7e8791` dark). `faint` is now for lines and dots only; 12–13px text moved to `muted`. A new `--on-accent` token keeps "Download PDF" white on blue in dark mode (it was black on blue).
 - **No eyebrows.** Every label above a heading is gone: the home hero's discipline line (its information moved into the hero place column as an italic fact line from `experience[0]`), "Contact", "About", "Selected Work", "Meta · Design · Agents", the case-study, pillar, and backend-row kickers, and the miniature Studio preview's copy of the hero line. The two closing lines ("That's everything, for now.", "Still moving.") are now `.bp-outro-lead`, an italic serif sentence. The Studio's eyebrow fields were removed with them.
-- **Gradient text** on the About tab → a flat link.
+- **Gradient text** on the About tab → a flat link. **Decided, but not shipped:** `BpNav.tsx` still sets `gradient: true` on the About link and `.bp-nav-link--gradient` / `@keyframes bp-nav-gradient` are still in `blueprint.css`, so the sweep is live on `main` (see [[Blueprint Nav and Mark]]).
 - **Typography:** `.bp-role h3` at weight 400 (Instrument Serif ships no bold; the size went one step up to `clamp(28px, 3.2vw, 38px)`); `--bp-font-display` (never defined) → `--bp-font-subheader` in `projects.css`, so project titles and subtitles render in the chosen face instead of Georgia; `.bp-prose` capped at `70ch`; the drop cap only when the summary opens with a whole word (it was splitting "I'm"); `tabular-nums` on dates and the title block; the sub-11px labels on the About page (`.tl-badge`, `.tl-era`, `.tl-tick-label`, the demos' labels) raised to 11px, the `aria-hidden` Studio miniature to 9px.
 - **The evidence link** (`.bp-bullet-link`): the 9.5px uppercase accent pill became an inline 15px link at the end of the bullet that names its project ("see ICARUS-Lite ↗"), underlined like prose links. Emphasis phrases were added to roles 2–8 so the accent hover reads all the way down the resume.
 - **Browser surfaces:** `::selection`, `caret-color`, `accent-color`, prose underline offset and color, thin themed scrollbars on the table and gantt frames.
 - **Section indexes are `h2`s** (`.bp .bp-section-index` pins the body face so the bare `.bp h2` rule doesn't put them in the serif) and every home section has an id (`#summary`, `#experience`, `#skills`, `#education`).
-- **The footer title block** (`.bp-footer-block`, a `<dl>`): Sheet · Rev. (short commit and build date from `lib/build-stamp.ts`, which reads `VERCEL_GIT_COMMIT_SHA` or asks git; server-only, kept out of `lib/site.ts` because a client component imports that) · Set in (the header and body typefaces plus the palette name) · Drawn in (the location). Replaces the lone URL.
+- **The footer title block** (`.bp-footer-block`, a `<dl>`): Sheet (the site URL) · Rev. (short commit and build date from `lib/build-stamp.ts`, which reads `VERCEL_GIT_COMMIT_SHA` or asks git; server-only, kept out of `lib/site.ts` because a client component imports that; the row is omitted when no commit is known) · Drawn in (the location). Replaces the lone URL; the footer note beside the monogram now reads "A website built to house my experience, compiled into one place for the next challenge."
 - **Shadows** derive from `--ink` via `color-mix` instead of a hard-coded navy, so they exist on black paper.
-- **Phone:** the two-row nav and the docked badge above; `Reveal`'s viewport threshold went from 25% to 12% so tall role entries appear sooner.
+- **Phone:** the two-row nav and the docked badge above; `Reveal`'s viewport threshold went from 25% / −80px to 12% / −60px (committed 2026-09-19) so tall role entries appear sooner.
 - **Copy Riley approved:** "Toolchain" → "Skills" with the duplicate and the typo fixed; the "[under development]" bracket left the ICARUS summary for a `status` field; the contact cards went (the email is spelled out in prose instead).
 - **`app/icon.svg`** now carries the Electric colors like the apple icon and the social card (the Hard-Copy Rule gained a fourth file).
 
@@ -97,12 +101,16 @@ The repo-root `DESIGN.md` and `.impeccable/design.json` were updated in the same
 
 ## Additions for the date boxes and the About page (2026-09-17)
 
-- **`blueprint.css`** — `.bp-spot` (a faint radial ink wash, 5% ink, following `--sx/--sy` set by `lib/useSpotlight.ts`; pointer-only via `(hover: hover) and (pointer: fine)`), and `.bp-nav-link--gradient` + `@keyframes bp-nav-gradient` for the About tab (see [[Blueprint Nav and Mark]]).
+- **`blueprint.css`** — `.bp-spot` (a faint radial ink wash, 5% ink, following `--sx/--sy` set by `lib/useSpotlight.ts`; pointer-only via `(hover: hover) and (pointer: fine)`), and `.bp-nav-link--gradient` + `@keyframes bp-nav-gradient` for the About tab — still present on `main` (see [[Blueprint Nav and Mark]]).
 - **`projects/projects.css`** — a `dates` block: `.pj-entry-rule` (the opening/closing rule that hosts a date box), `.pj-dates` and its corner/inline positions, the `--ongoing` progress bar (`pj-dates-fill` to 92% over 1.6s, `pj-dates-chase` sweep every 2.8s), and the narrow-screen fallback.
 - **`projects/feature.css`** — new file, loaded by both `/projects` and `/about-this-site`: `.ft-*` (deep-dive shell, stats tiles, pillars, the themed-capture swap `.ft-themed`, the Behind-the-site rows `.ft-back*`), `.tl-*` (the timeline axis, eras, track/fill/now marker, ticks, dots with `--x/--i/--depth/--size`, the card, the mobile list), and `.dm-*` (the three live demos: shared card/eyebrow chrome, the resume posting/page/connector/checks, the Studio window/rail/swatches/switch and its `--p-*`-colored preview, the skills rail/indicator/card/progress cue). All eased motion on `--ease`; amplitudes inside the `motion-design` thresholds (rises ≤ 16px, lifts 2–3px, staggers 45–140ms); a reduced-motion block pins final states. The 2026-09-17 pin/callout styles were removed with the section on 2026-09-18.
 - **`about-this-site/about-site.css`** — page layout only (`.as-*`) and the `pj-dates--large` hero variant.
 
 Full component detail in [[About This Site Page]] and [[Projects Route (BpComingSoon)]].
+
+## The home page's own additions (2026-09-15 → 2026-09-16)
+
+Between the projects rebuild and the About page, the home page got the pieces the projects route had proven: `PageSpine` (`.hp-list` / `.hp-spine*`) down the four sections, the `HeroRibbon` component replaying the ribbon's `bp-draw`, the two-state relocation badge with its typewriter (`.bp-badge-type*`, `bp-caret`), `BackToTop` (`.bp-top`, moved into `components/blueprint/`), `EmphasizedText`'s accent-on-hover phrases (`.bp-bullet-emphasis`), the current-role fact line (`.bp-hero-now`), and the resume's inline evidence link (`.bp-bullet-link`, restyled from a 9.5px chip to a 15px underlined link in the polish pass). `next.config.mjs` moved the Next dev overlay to the bottom-right so it doesn't cover the Back to Top control.
 
 ## Related
 - [[Blueprint Nav and Mark]]

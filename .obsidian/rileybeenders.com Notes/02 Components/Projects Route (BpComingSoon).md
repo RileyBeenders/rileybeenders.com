@@ -22,7 +22,11 @@ tags: [component, routes]
 | `Lightbox.tsx` | Client. Full-screen viewer (portal) for the untouched original image, keyboard navigation, loading state. |
 | `ProjectFeature.tsx` + `feature/*` | The deep-dive used by the About page only — documented in [[About This Site Page]]. |
 
-`lib/projects.ts` (`buildProofView`, `buildProjectViews`) assembles the `ProjectView` each entry consumes; `EmphasizedText` (`components/content/`) renders the bullets' `emphasis` phrases, which take the accent on hover.
+`lib/projects.ts` (`buildProofView`, `buildProjectViews`) assembles the `ProjectView` each entry consumes; `EmphasizedText` (`components/content/`) renders the bullets' `emphasis` phrases, which take the accent on hover. Each entry is `id="project-<id>"`, the anchor the resume's inline evidence links (`/projects#project-icarus-lite`) jump to. `<BackToTop />` now comes from `components/blueprint/` (moved 2026-09-15).
+
+## What is published
+
+One project since 2026-09-16: **ICARUS-Lite** (`order: 1`) — six photographs from `public/project-images/ICARUS-Lite/` in its gallery (the earlier duplicate render pair is gone), a `status` line under the summary ("Project page under development. More details to come soon."), and a case study built from its `additionalInfo` (its diagram `assets` were dropped, so the gallery is photos only). The other eight projects are `visible: false` drafts in the Studio ("1 on the site · 8 drafts") and never reach `resumeData.projects`. All 17 entries in `proofs.json` are also `visible: false`, so `buildProofView` currently sees no proof for any project and the case study is the project's own write-up — see [[Career Content]].
 
 ## Dates
 

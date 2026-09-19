@@ -56,9 +56,9 @@ Not itemized beyond stated base pay range; standard Boston Dynamics compensation
 - **Gap:** the role asks for 8–15 years of relevant experience; professional experience runs from May 2020, roughly 6 years at application — under the stated range, though not far off the low end.
 - **Gap:** no humanoid/robotics-program experience specifically (additive-manufacturing/prosthetics domain, not robotics) and no PLM/MES or TWI certification evidence.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-No material change — the Aug 8, 2026 skills update landed the same day as this application, so this snapshot is already current.
+No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but every skill the snapshot above relies on (SolidWorks and CATIA, DFM/DFA, GD&T, Lean Manufacturing, Lean Six Sigma, fixture and tooling design) is still explicit, and nothing robotics-, PLM/MES- or TWI-specific was added.
 
 ---
 

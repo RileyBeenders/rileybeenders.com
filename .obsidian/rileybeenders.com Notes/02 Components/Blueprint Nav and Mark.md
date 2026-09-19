@@ -11,19 +11,20 @@ The site chrome that wraps every route, plus the monogram it's built around. Rep
 `"use client"` (needs `usePathname()`). Rendered once from `app/(site)/layout.tsx`, above every page's `{children}`. Single sticky bar (`.bp-nav`, `position: sticky; top: 0`, translucent paper background + `backdrop-filter: blur(12px)`, bottom hairline).
 
 - **Brand**: a `next/link` to `/` — `<BpMark id="nav" size={34} animated />` plus `.bp-brand-name` "Riley Beenders" (uppercased, letter-spaced, greys→ink on hover).
-- **Nav**: a hardcoded array, rendered as `next/link`s:
+- **Nav**: a hardcoded array, rendered as `next/link`s inside `.bp-nav-right` next to `<BpThemeToggle />` (the light/dark switch, backed by `ThemeProvider`'s `useTheme()`):
 
   ```ts
   const NAV = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/projects" },
     { label: "Contact", href: "/contact" },
-    { label: "More Info", href: "/more-info" }
+    { label: "More Info", href: "/more-info" },
+    { label: "About this site", href: "/about-this-site", gradient: true }
   ];
   ```
 
-  Active state is `pathname === item.href` (exact match) → adds `is-active` and `aria-current="page"`. The `.bp-nav-link::after` underline scales in on hover and stays scaled for the active link.
-- Under `max-width: 860px` the inner flex stacks and `.bp-nav-links` becomes horizontally scrollable.
+  Active state is `pathname === item.href` (exact match) → adds `is-active` and `aria-current="page"`. The `.bp-nav-link::after` underline scales in on hover and stays scaled for the active link. The `gradient` flag adds `bp-nav-link--gradient` (see below).
+- Under `max-width: 860px` the bar becomes two rows (see **The About-this-site link**).
 
 No section-anchor navigation, no `SECTIONS_BY_ROUTE` map, no scroll listeners — adding a section to a page needs no nav bookkeeping now.
 
@@ -47,7 +48,7 @@ See [[Design System (Blueprint Press)]] and `assets/fonts/README.md`.
 
 ## The About-this-site link (2026-09-17)
 
-`NAV` has a fifth entry, `{ label: "About this site", href: "/about-this-site" }`. It was drawn in a 9s `background-clip: text` gradient sweep from 2026-09-17 to 2026-09-18; the impeccable critique flagged gradient text (it also disappears in forced-colors mode, since it relies on `-webkit-text-fill-color: transparent`), so all five links are flat color again and `bp-nav-link--gradient` is gone. Under 860px the bar is now two rows (a CSS grid with `grid-template-areas: "brand toggle" "links links"`): the brand and the theme switch share the first row, and the five links sit on one horizontally scrolling row (`overflow-x: auto`, hidden scrollbar, a `mask-image` fade at both edges so a clipped last tab reads as "more"). That took the phone nav from 151px tall to about 95px. See [[About This Site Page]].
+`NAV`'s fifth entry, `{ label: "About this site", href: "/about-this-site", gradient: true }`, is drawn in a 9s `background-clip: text` gradient sweep of the palette's own inks (ink → accent → blue → ink; `.bp-nav-link--gradient` + `@keyframes bp-nav-gradient` in `blueprint.css`, 4.5s on hover, frozen on its first frame under reduced motion). **This is still the state of `main`.** The 2026-09-18 impeccable critique flagged gradient text (it also disappears in forced-colors mode, since it relies on `-webkit-text-fill-color: transparent`) and the decision was to make it a flat link like the other four — but that change was never committed: `BpNav.tsx` was last touched on 2026-09-17 and the CSS rule is still there. Flattening it is one line in `BpNav` plus deleting the rule. Under 860px the bar is two rows (a CSS grid with `grid-template-areas: "brand toggle" "links links"`, `.bp-nav-right` set to `display: contents`): the brand and the theme switch share the first row, and the five links sit on one horizontally scrolling row (`overflow-x: auto`, hidden scrollbar, a `mask-image` fade at both edges so a clipped last tab reads as "more"). That took the phone nav from 151px tall to about 95px. See [[About This Site Page]].
 
 ## Related
 - [[Routes Overview]]

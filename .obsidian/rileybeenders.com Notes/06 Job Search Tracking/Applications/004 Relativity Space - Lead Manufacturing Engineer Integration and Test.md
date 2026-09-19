@@ -57,9 +57,10 @@ Competitive salary and equity, generous PTO/sick leave, parental leave, an annua
 - **Gap:** no explicit pneumatic-systems experience; no PFMEA/value-stream-mapping/RCCA terminology in the record, though Lean Six Sigma methodology and continuous-improvement work is adjacent.
 - **Domain gap:** rocketry/aerospace is a new industry relative to additive-manufacturing/prosthetics — transferable electromechanical and manufacturing-systems skill, not direct sector experience.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
 - Same update as noted for K2 Space: GD&T, Lean Manufacturing, and Lean Six Sigma are now explicit skills as of Aug 8, 2026, closing part of the keyword gap.
+- The "lead and mentor" evidence changed shape on Sep 15–16, 2026: the record no longer mentions East Coast team oversight or the ~5 new hires, but it now states that Riley is the **Hiring Manager for engineering roles (technical interviews, final hiring decisions)** — explicit people-leadership evidence the snapshot above could only infer. The linear-motor bullet was condensed to "reaching 4 m/s and 1-micron precision"; the 30 kg moving-mass figure survives in the Filament-era bullets and the project entry.
 - Pneumatic-systems and PFMEA/value-stream-mapping gaps remain unchanged.
 
 ---

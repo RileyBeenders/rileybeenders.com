@@ -611,8 +611,8 @@
             },
             {
               "name": "site-timeline-sync",
-              "trigger": "After a meaningful commit",
-              "does": "Refreshes this page's numbers from git and adds only the commits that mattered to the timeline."
+              "trigger": "Every push to main",
+              "does": "Refreshes this page's numbers from git and adds only the commits that mattered to the timeline, on its own, after each push."
             },
             {
               "name": "impeccable",

@@ -8,7 +8,7 @@ tags: [overview]
 
 `RileyBeenders.com` is a resume-shaped portfolio website designed to complement, not replace, a traditional ATS-friendly resume PDF. The PDF is the official application document; the website presents the same career data in an editorial layout and, on `/more-info`, exposes the live job search behind the site.
 
-Since the **Blueprint Press** reskin (now on `main`), the site is a calm, mostly-static editorial piece: a blueprint-grid background, a Swiss navy/red/blue palette on warm paper, Instrument Serif display type, and a single continuous-stroke RB monogram. The earlier "evidence layer" concept — pointer-driven 3D tilt, hover proof previews, slide-in project drawers, image lightboxes — was removed in the reskin. Scroll-triggered entrance animations (`Reveal`) are the only motion now.
+Since the **Blueprint Press** reskin (now on `main`), the site is a calm editorial piece: a blueprint-grid background, a light/dark palette picked in the Studio (the **Electric** preset today — Tesla-derived white with a `#3e6ae1` accent, Bugatti-derived black in dark mode; the Swiss navy/red/blue "Default" is the fallback), Instrument Serif display type, and a single continuous-stroke RB monogram. The earlier "evidence layer" concept — pointer-driven 3D tilt, hover proof previews, slide-in project drawers — was removed in the reskin. Motion is a small, one-hand system on a single easing curve: `Reveal` entrances, a spine that fills as you scroll, the hero ribbon's stroke draw, the relocation badge's hop and typewriter label, emphasis phrases that take the accent on hover, count-ups and a time-scaled timeline on the About page — all inside the `motion-design` skill's thresholds (see [[Design System (Blueprint Press)]]).
 
 ## Owner / subject
 
@@ -16,18 +16,19 @@ Riley Beenders — R&D and electromechanical engineer focused on product develop
 
 ## Core features
 
-1. **Home** (`/`) — a one-page editorial resume: hero (name, title, location, action buttons), then numbered sections `01 Summary`, `02 Experience`, `03 Skills`, `04 Education`, and a footer with the animated monogram and a drawing-style title block (sheet, revision, typefaces, place). Server component, no client resume logic. See [[Routes Overview]].
-2. **Projects** (`/projects`) — currently a placeholder: a hero plus `BpComingSoon`, an animated "case studies in progress" panel that lists the top project names as a "queued for publish" teaser. No project detail UI exists on `main`. See [[Projects Route (BpComingSoon)]].
-3. **Contact** (`/contact`) — hero, the shared `BpActions` button row, and a contact card (email / LinkedIn / GitHub).
-4. **More Info** (`/more-info`) — About Me / About the Site copy, a "Read more" link to the `.agents/` folder on GitHub, and a **live job-application Gantt chart + tracker table**, rendered client-side with `mermaid`. See [[More Info and Gantt Data]].
-5. **On-demand resume PDF** (`/api/resume-pdf`) — a Node-runtime API route that builds a real, paginated, ATS-style PDF from the same `resumeData` that powers the website, so the downloadable resume is never stale. See [[Resume PDF Pipeline]].
+1. **Home** (`/`) — a one-page editorial resume: hero (name, title, location, the current role as a fact line, the "Open to relocation" badge resting beside the rule, action buttons), then numbered sections `01 Summary`, `02 Experience`, `03 Skills`, `04 Education` down a scroll-filled spine, and a footer with the animated monogram and a drawing-style title block (Sheet · Rev. · Drawn in). Experience bullets carry accent-on-hover emphasis phrases and, where a bullet backs a published project, an inline "see ICARUS-Lite ↗" evidence link. Server component, no client resume logic. See [[Routes Overview]].
+2. **Projects** (`/projects`) — the published case studies, one full-height entry each: summary, bullets, a photo gallery with a lightbox, an optional date box, and the full case study behind a toggle. One project is published so far (**ICARUS-Lite**, since 2026-09-16); the other eight are `visible: false` drafts, and `BpComingSoon` is only the fallback when nothing is published. See [[Projects Route (BpComingSoon)]].
+3. **Contact** (`/contact`) — hero and copy from `data/contact/contact.json`, the shared `BpActions` button row, and the email address spelled out once in prose (the three link cards went on 2026-09-18).
+4. **More Info** (`/more-info`) — About Me / About the Site copy, a "Read the full story" link to `/about-this-site`, and the **job-application Gantt chart + tracker table** (client-side `mermaid`) — currently switched off (`ganttSection.visible: false` since 2026-09-16), so the live page ends after section 02. See [[More Info and Gantt Data]].
+5. **About this site** (`/about-this-site`) — the site as its own case study: a running date bar, the story with a light/dark gallery, then stats, a time-scaled commit timeline with a self-playing tour, pillars, and live "Behind the site" demos of the resume builder, the Studio, and the skill router. Fed by `data/site/about-site.json` and kept current by the `site-timeline-sync` procedure. See [[About This Site Page]].
+6. **On-demand resume PDF** (`/api/resume-pdf`) — a Node-runtime API route that builds a real, paginated, ATS-style PDF from the same `resumeData` that powers the website, so the downloadable resume is never stale. See [[Resume PDF Pipeline]].
 
 ## Dead / dormant code
 
-`types/resume.ts` still declares `ResumeData.siteMode`, `ResumeData.comingSoon`, and the whole `ComingSoonContent` schema, and `header.json` still carries `visibility` flags. On `main`:
+`types/resume.ts` still declares `ResumeData.siteMode`, `ResumeData.comingSoon`, and the whole `ComingSoonContent` schema. On `main`:
 
 - **`siteMode` / `comingSoon` / `ComingSoonContent`** are never read anywhere. Dead code, not a prepared feature.
-- **`visibility`** flags still drive `resumeData.ts`'s merge-time pruning, but every flag that would surface proof/project chips is `false` and no component renders those chips anyway. `projectsSection: true` keeps `resumeData.projects` populated, and only `name`/`type`/`order` of each project is used (the `/projects` teaser list).
+- **`visibility`** flags are live switches, not leftovers: `experienceProjectButtons: true` keeps bullet `projectId`s and renders the inline evidence link on the resume; `projectsSection: true` publishes `/projects` (and loads proofs for it); `openToRelocation: true` shows the badge. `experienceProofButtons` and `proofIndex` stay `false`, and every entry in `proofs.json` is additionally `visible: false`, so the proof layer is dormant data rather than dead code — `lib/projects.ts` would fold a visible proof into a project's case study.
 
 See [[Data Layer and Types]].
 

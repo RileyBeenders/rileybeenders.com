@@ -1,0 +1,129 @@
+# Keeps /about-this-site honest after every push to main.
+#
+# Claude Code runs the repo's own `site-timeline-sync` procedure
+# (.agents/skills/site-timeline-sync/SKILL.md) against the commits that just
+# landed: it refreshes the six stats, decides whether any of the new commits is
+# a KEY moment worth a timeline entry (most pushes are not), moves the "present"
+# marker when its work has shipped, and keeps the vault note in step. The
+# workflow — not Claude — validates and commits the result back to main.
+#
+# Setup (once): add ANTHROPIC_API_KEY under Settings → Secrets and variables →
+# Actions. Claude subscribers can use `claude setup-token` and store the result
+# as CLAUDE_CODE_OAUTH_TOKEN instead (swap the two inputs below).
+#
+# No loop: commits pushed with GITHUB_TOKEN never trigger another workflow run.
+# Screenshots are never recaptured here (no dev server in CI) — when a key
+# commit changed the UI, the run's summary says so and the next local
+# site-timeline-sync pass runs scripts/capture-site-screenshots.mjs.
+
+name: Site timeline sync
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One sync at a time, in order — a second push while a run is in flight waits
+# for it, so the later run sees the earlier run's commit.
+concurrency:
+  group: site-timeline-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    # Belt and braces with the GITHUB_TOKEN rule above.
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # scripts/site-stats.mjs counts every commit and reads the first
+          # commit's date; the validator checks timeline hashes exist.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Claude Code discovers skills only under .claude/skills; in this repo
+      # that path is a git-ignored per-machine link to .agents/skills
+      # (see .agents/README.md → Layout). Recreate it for this runner.
+      - name: Link the repo's skills for Claude Code
+        run: ln -s ../.agents/skills .claude/skills
+
+      - name: Report what the sync will see
+        run: node scripts/site-stats.mjs
+
+      - name: Run the site-timeline-sync procedure
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            You are running unattended in GitHub Actions right after a push to main
+            (head ${{ github.sha }}; the push covered ${{ github.event.before }}..${{ github.sha }}).
+
+            Follow the repository procedure in .agents/skills/site-timeline-sync/SKILL.md,
+            including its "Unattended runs" section, to bring data/site/about-site.json up to
+            date for every commit that has landed since the timeline's last hashed entry:
+
+            1. Run `node scripts/site-stats.mjs --write` and read its report. It refreshes the
+               six stats in place and lists the commits since the last entry.
+            2. Decide which of those commits are KEY by the skill's rules. Most pushes earn no
+               entry — polish, data drops, and vault edits are carried by the stats, not the
+               timeline. Read `git show --stat <hash>` before deciding either way. Write any
+               new entry in the voice and shape of the existing ones, anchored on the last
+               commit of the work it describes. Move the present marker when its work has
+               landed. Promote or prune future items only with evidence in the repo.
+            3. Do not recapture screenshots and do not start servers. If a key commit changed
+               the UI, name the affected surfaces in your final message so the next local run
+               recaptures them.
+            4. Run `node scripts/check-about-site.mjs` and fix anything it reports.
+            5. If you added, changed, or re-dated timeline entries, update the sentence in
+               ".obsidian/rileybeenders.com Notes/02 Components/About This Site Page.md" that
+               states the entry counts and the six stats (the vault-sync procedure).
+
+            Do not commit or push — the workflow commits what you changed. Edit only
+            data/site/about-site.json and that one vault note. Finish with a short summary of
+            what changed and why, or the single line "No changes needed." if nothing did.
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Glob,Grep,Edit,Write,Bash(node scripts/site-stats.mjs:*),Bash(node scripts/check-about-site.mjs),Bash(git log:*),Bash(git show:*),Bash(git diff:*),Bash(git status:*),Bash(git rev-list:*)"
+
+      - name: Validate the result
+        run: node scripts/check-about-site.mjs
+
+      - name: Commit and push what changed
+        env:
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          git add data/site/about-site.json ".obsidian/rileybeenders.com Notes"
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — the page was already current." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if git diff --cached --name-only | grep -q '^data/site/about-site.json$' \
+             && git diff --cached -U0 -- data/site/about-site.json | grep -qE '^\+.*"(hash|title|era)":'; then
+            subject="Update the site timeline after ${HEAD_SHA:0:7}"
+          else
+            subject="Refresh the site stats after ${HEAD_SHA:0:7}"
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "$subject" -m "Unattended site-timeline-sync run (.github/workflows/site-timeline-sync.yml)."
+          git push origin HEAD:main
+          {
+            echo "### $subject"
+            echo
+            echo '```'
+            git show --stat --format='%h %s' HEAD
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

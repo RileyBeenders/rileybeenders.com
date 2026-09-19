@@ -50,9 +50,9 @@ Not itemized beyond stated base pay range; standard Boston Dynamics compensation
 - **Gap:** same as the Senior Staff role — no humanoid/robotics-program experience specifically, no PLM/MES or TWI certification evidence.
 - Despite being the better on-paper years-of-experience fit of the two Boston Dynamics roles, this one moved to "No longer in consideration" on Aug 14, 2026 while the higher-bar Senior Staff posting (007) stayed active — worth noting as an observation, not something the skills data explains on its own.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-No material change — the Aug 8, 2026 skills update landed the same day as this application.
+No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but the skills the snapshot above relies on are all still explicit, nothing robotics-, PLM/MES- or TWI-specific was added, and this application is already closed.
 
 ---
 

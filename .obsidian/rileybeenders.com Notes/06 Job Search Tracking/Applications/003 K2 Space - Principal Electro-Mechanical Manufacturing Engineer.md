@@ -55,9 +55,10 @@ Equity in the company; unlimited PTO; medical/dental/vision coverage; life insur
 - **Notable gap at this date:** the skills list live on the site at the time of this application did **not** yet explicitly itemize Design for Assembly (DFA), GD&T, Lean Manufacturing, or Lean Six Sigma as named skills — even though the Lean Six Sigma White and Yellow Belt certifications were already earned (Jun/Jul 2025). The site under-represented exactly the keywords this posting emphasizes (DFM/DFA, GD&T).
 - **Gap:** 10+ years required vs. ~5 years of professional experience at the time; no explicit aerospace/AS9100 or MES experience.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-- The skills list was updated Aug 8, 2026 to explicitly add **Design for Assembly (DFA)**, **Geometric Dimensioning & Toleranceing (GD&T)**, **Lean Manufacturing**, and **Lean Six Sigma** — closing the keyword gap noted above. The underlying qualifications didn't change; the site simply now states them.
+- The skills list was updated Aug 8, 2026 to explicitly add **Design for Assembly (DFA)**, **Geometric Dimensioning & Tolerancing (GD&T)** (its spelling on the site was corrected on Sep 19, 2026), **Lean Manufacturing**, and **Lean Six Sigma** — closing the keyword gap noted above. The underlying qualifications didn't change; the site simply now states them. Fixture and tooling design is still an explicit skill (now listed once, under Engineering).
+- The leadership evidence changed shape on Sep 15–16, 2026: the record no longer says "oversight of the East Coast engineering team" or that ~5 roles were added, but the current role now states outright that Riley **acts as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions** — more direct evidence for the posting's "mentor junior engineers/technicians" duty than the earlier wording gave.
 - The years-of-experience and aerospace/AS9100/MES gaps from the application-time snapshot are unchanged.
 
 ---
