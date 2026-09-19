@@ -7,12 +7,20 @@
 # marker when its work has shipped, and keeps the vault note in step. The
 # workflow — not Claude — validates and commits the result back to main.
 #
+# Two stages, one file: claude-code-action does not accept the `push` event
+# (it fails with "Unsupported event type: push"), so the push-triggered job
+# only re-launches this workflow as a `workflow_dispatch` run, which the action
+# does accept. The `sync` job is that dispatched run — also what "Run
+# workflow" in the Actions tab starts by hand.
+#
 # Setup (once): run `claude setup-token` locally and store the result as
 # CLAUDE_CODE_OAUTH_TOKEN under Settings → Secrets and variables → Actions, so
 # runs bill to the Claude subscription. To use API billing instead, store an
 # ANTHROPIC_API_KEY and swap the two inputs below.
 #
-# No loop: commits pushed with GITHUB_TOKEN never trigger another workflow run.
+# No loop: a workflow_dispatch fired with GITHUB_TOKEN does start a run (it is
+# one of the two documented exceptions), but the commit that run pushes with
+# GITHUB_TOKEN never fires the `push` trigger, so the chain ends there.
 # Screenshots are never recaptured here (no dev server in CI) — when a key
 # commit changed the UI, the run's summary says so and the next local
 # site-timeline-sync pass runs scripts/capture-site-screenshots.mjs.
@@ -23,33 +31,61 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-
-# One sync at a time, in order — a second push while a run is in flight waits
-# for it, so the later run sees the earlier run's commit.
-concurrency:
-  group: site-timeline-sync
-  cancel-in-progress: false
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+    inputs:
+      before:
+        description: "First commit of the push (exclusive); blank when started by hand"
+        required: false
+        default: ""
+      after:
+        description: "Head commit of the push; blank when started by hand"
+        required: false
+        default: ""
 
 jobs:
+  # Stage 1 — a push landed: hand it to a workflow_dispatch run of this file.
+  dispatch:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Re-launch this workflow as a workflow_dispatch run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          gh workflow run site-timeline-sync.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main \
+            -f "before=$BEFORE" -f "after=$AFTER"
+          echo "Dispatched the sync for ${AFTER:0:7} (after ${BEFORE:0:7})." >> "$GITHUB_STEP_SUMMARY"
+
+  # Stage 2 — the dispatched run (or a manual one): Claude does the sync.
   sync:
-    # Belt and braces with the GITHUB_TOKEN rule above.
-    if: github.actor != 'github-actions[bot]'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # One sync at a time, in order — a second sync while one is in flight waits
+    # for it, so the later run sees the earlier run's commit. Job-level so the
+    # tiny dispatch runs never queue behind (or displace) a pending sync.
+    concurrency:
+      group: site-timeline-sync
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
+          ref: main
           # scripts/site-stats.mjs counts every commit and reads the first
           # commit's date; the validator checks timeline hashes exist.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -69,8 +105,8 @@ jobs:
           # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            You are running unattended in GitHub Actions right after a push to main
-            (head ${{ github.sha }}; the push covered ${{ github.event.before }}..${{ github.sha }}).
+            You are running unattended in GitHub Actions on the main branch of this repository.
+            ${{ inputs.after && format('A push just landed: head {0}, covering {1}..{0}.', inputs.after, inputs.before) || 'This run was started by hand from the Actions tab.' }}
 
             Follow the repository procedure in .agents/skills/site-timeline-sync/SKILL.md,
             including its "Unattended runs" section, to bring data/site/about-site.json up to
@@ -104,7 +140,7 @@ jobs:
 
       - name: Commit and push what changed
         env:
-          HEAD_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ inputs.after || github.sha }}
         run: |
           git add data/site/about-site.json ".obsidian/rileybeenders.com Notes"
           if git diff --cached --quiet; then
