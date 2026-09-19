@@ -4,32 +4,37 @@ tags: [agents, automation, meta]
 
 # Repository Agent Skills (`.agents/`)
 
-`.agents/` holds this repo's own standing instructions for AI coding agents (Claude Code, ChatGPT, or any other tool pointed at this repo). Most of these aren't auto-loaded by Claude Code (that's `.claude/skills/`), but each is packaged in the Anthropic *Agent Skills* layout so a skill-aware tool can register them individually. The three `motion-*` procedures and `site-timeline-sync` are the exceptions — they're junctioned into `.claude/skills/` so they trigger automatically (see below).
+`.agents/` holds this repo's own standing instructions for AI coding agents (Claude Code, Codex, ChatGPT, or any other tool pointed at this repo). Since 2026-09-19 every skill, repo-specific or vendored, lives in one place, `.agents/skills/<name>/SKILL.md`, in the Anthropic *Agent Skills* layout. `.agents/skills/` is the cross-tool location from the Agent Skills open standard, so Codex reads it directly. Claude Code's discovery only looks at `.claude/skills/` (verified against the 2.1.275 binary), so `.claude/skills` is a single Windows directory junction to `.agents/skills`, git-ignored — the content is versioned once and every skill is a first-class Claude Code skill. A fresh clone recreates the junction with one command (see `.agents/README.md` → Layout).
 
 ```
 .agents/
-  README.md                    # routing index — the "Repository AI Commands" tables
-  custom-resume/SKILL.md       # name: custom-resume
-  vault-sync/SKILL.md          # name: vault-sync
-  sync-charts/SKILL.md         # name: sync-charts
-  design-guidelines/           # name: design-guidelines
-    SKILL.md
-    DESIGN.md                  # light/dark router
-    design-light.md            # Tesla reference system
-    design-dark.md             # Bugatti reference system
-  motion-design/               # name: motion-design — what to animate, how much
-    SKILL.md
-    references/component-catalog.md
-  motion-fluidity/             # name: motion-fluidity — how to build it (framer-motion + CSS)
-    SKILL.md
-    references/grammar-map.md
-    references/recipes.md
-  motion-layout/               # name: motion-layout — nav / hero / grid / card composition
-    SKILL.md
-    references/svelte-bits-layouts.md
-  site-timeline-sync/SKILL.md  # name: site-timeline-sync — keeps /about-this-site current
-  skills/                      # vendored, non-repo-specific skills (14 folders) — see README.md
-    impeccable/                # the design entry point: SKILL.md, reference/<command>.md, scripts/impeccable (+ detector), agents/*.toml
+  README.md                    # routing index — the "Repository AI Commands" tables + the Layout section
+  skills/                      # every skill, one folder each (23 as of 2026-09-19) — see README.md
+    custom-resume/SKILL.md     # name: custom-resume
+    vault-sync/SKILL.md        # name: vault-sync
+    sync-charts/SKILL.md       # name: sync-charts
+    design-guidelines/         # name: design-guidelines
+      SKILL.md
+      DESIGN.md                # light/dark router
+      design-light.md          # Tesla reference system
+      design-dark.md           # Bugatti reference system
+    motion-design/             # name: motion-design — what to animate, how much
+      SKILL.md
+      references/component-catalog.md
+    motion-fluidity/           # name: motion-fluidity — how to build it (framer-motion + CSS)
+      SKILL.md
+      references/grammar-map.md
+      references/recipes.md
+    motion-layout/             # name: motion-layout — nav / hero / grid / card composition
+      SKILL.md
+      references/svelte-bits-layouts.md
+    site-timeline-sync/SKILL.md# name: site-timeline-sync — keeps /about-this-site current
+    impeccable/                # vendored design entry point: SKILL.md, reference/<command>.md, scripts/impeccable (+ detector), agents/*.toml
+    <14 more vendored>/        # brandkit, design-taste-frontend(-v1), …, web-design-guidelines — see README.md
+
+.claude/
+  launch.json                  # preview-server definitions for the Claude desktop app (tracked)
+  skills  →  ../.agents/skills # directory junction, git-ignored; recreate on a fresh clone
 ```
 
 Previously this was one file (`.agents/SKILL.md`) bundling all three procedures under a single `name: custom-resume` frontmatter. It was split so each `SKILL.md`'s `name` matches its folder and each file is self-contained (no cross-file anchor links) — which also clears the VS Code skill-lint warnings.
@@ -77,7 +82,7 @@ One set of three, added 2026-09-17, distilled from the `DavidHDev/svelte-bits` c
 - **`motion-fluidity`** is the *how*. It names svelte-bits' five motion grammars (entrance on view, scroll-linked, pointer proximity, ambient loop, state transition) and maps each to framer-motion 12 + CSS as this codebase already uses them, with GSAP→framer, ScrollTrigger→`useScroll`, Motion One→framer-motion, and Svelte→React translation tables and an implementation checklist. `references/grammar-map.md` documents each borrow-worthy component's mechanism and numbers; `references/recipes.md` has complete TSX/CSS for `Reveal` extensions, `WordReveal`, `ScrollWords`, a CSS stagger hook, `Magnet`, `Spotlight`, `Tilt`, `CountUp`, `Marquee`, `Shine`, `Expandable`, `SlidingHighlight`, and a condensing `BpNav`.
 - **`motion-layout`** is the *structure*. svelte-bits' own landing site (`src/lib/components/landing/`) is where its composition lives — a nav that condenses at `scrollY > 50`, a hero in z-layers with an eased SVG fade mask, a 12-column feature grid whose cards reveal on a 70ms cadence, marquee rows, card anatomy, popovers, the Stepper's measured-height wrapper. Each is stated with its numbers and translated onto the Blueprint Press shell (`.bp-shell`, `.bp-section-grid`, `PageSpine`, `BpNav`, the single 860px breakpoint), plus a procedure for a new animated section. `references/svelte-bits-layouts.md` holds the original CSS.
 
-These three, plus `site-timeline-sync`, are the only repo-specific procedures also registered as first-class Claude Code skills, via junctions `.claude/skills/<name>` → `.agents/<name>` (same mechanism as the vendored library below). That's deliberate: they need to fire on ordinary requests like "add a hover to the pills", not only when invoked by name. Both `motion-fluidity` and `motion-layout` end by requiring a `vault-sync` pass, since motion work touches `components/` and `blueprint.css`, which map to [[Blueprint UI Components]] and [[Design System (Blueprint Press)]].
+All eight repo-specific procedures are first-class Claude Code skills through the `.claude/skills` junction (until 2026-09-19 only these three and `site-timeline-sync` were, via per-skill junctions that git then committed as copies). That matters most for the motion set: they need to fire on ordinary requests like "add a hover to the pills", not only when invoked by name. Both `motion-fluidity` and `motion-layout` end by requiring a `vault-sync` pass, since motion work touches `components/` and `blueprint.css`, which map to [[Blueprint UI Components]] and [[Design System (Blueprint Press)]].
 
 ### `site-timeline-sync`
 
@@ -85,9 +90,9 @@ Added 2026-09-17 with the [[About This Site Page]]. Keeps `data/site/about-site.
 
 ## Vendored skill library (`.agents/skills/`)
 
-Separate from the eight procedures above: `.agents/skills/` holds 14 generic (non-repo-specific) frontend/visual-design skills tracked in the repo-root `skills-lock.json` (source repo, exact file path, and content hash per skill). Thirteen are single-file taste guides mirrored from the `Leonxlnx/taste-skill` GitHub collection — brand-kit boards, image-generation-driven frontend design, several named "taste" aesthetics (minimalist, industrial-brutalist, high-end-visual-design, gpt-taste), image-to-code, and a Stitch-specific `DESIGN.md` generator. The fourteenth, **`impeccable`** (from `pbakaus/impeccable`, added 2026-09-18), is a full skill folder with a command set, a launcher, a bundled anti-pattern detector, and subagent definitions, and it is the one design skill that reads this repo's own `PRODUCT.md` / `DESIGN.md`; it is the entry point for design work and has its own note, [[Impeccable Design Workflow]]. The full list with one-line descriptions lives in `.agents/README.md` and is meant to be kept current there whenever a skill is added or removed — this note only records that the folder exists and why.
+Alongside the eight procedures above, `.agents/skills/` holds 15 generic (non-repo-specific) skills tracked in the repo-root `skills-lock.json` (source repo, exact file path, and content hash per skill). Thirteen are single-file taste guides mirrored from the `Leonxlnx/taste-skill` GitHub collection — brand-kit boards, image-generation-driven frontend design, several named "taste" aesthetics (minimalist, industrial-brutalist, high-end-visual-design, gpt-taste), image-to-code, and a Stitch-specific `DESIGN.md` generator. The fourteenth, **`impeccable`** (from `pbakaus/impeccable`, added 2026-09-18), is a full skill folder with a command set, a launcher, a bundled anti-pattern detector, and subagent definitions, and it is the one design skill that reads this repo's own `PRODUCT.md` / `DESIGN.md`; it is the entry point for design work and has its own note, [[Impeccable Design Workflow]]. The full list with one-line descriptions lives in `.agents/README.md` and is meant to be kept current there whenever a skill is added or removed — this note only records that the folder exists and why.
 
-The same 14 (plus an unrelated accessibility/compliance skill, `web-design-guidelines`, from a different source) are also registered as first-class Claude Code skills. `.agents/skills/` exists so a non-Claude-Code agent can read the same instructions as plain files; Claude Code itself should invoke them directly by name via its `Skill` tool rather than reading the copy here.
+The fifteenth, `web-design-guidelines` (from `vercel-labs/agent-skills`), is an accessibility/compliance review skill that used to live only under `.claude/skills/` and moved here with the consolidation. All fifteen are first-class Claude Code skills through the junction; Claude Code should invoke them by name via its `Skill` tool, while any other agent reads the same `SKILL.md` as a plain file.
 
 Read the live instructions directly in `.agents/`; the mappings and templates are maintained there, not here.
 

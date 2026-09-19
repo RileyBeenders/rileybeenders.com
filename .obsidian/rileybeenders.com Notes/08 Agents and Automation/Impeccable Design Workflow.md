@@ -16,7 +16,7 @@ tags: [agents, design, styling, meta]
 
 Until this pass the root `DESIGN.md` was a stray analysis of *claude.com* (cream canvas, coral CTAs, Copernicus) committed with the "Reworked AGENT skills" change. `impeccable` resolved it as the site's design authority, so its detector reported 100+ "off-system" values that were in fact Blueprint Press's own tokens. The file was replaced with the real system; the claude.com analysis exists only in git history. The narrative language in the new file (north star "The Blueprint Press", the color and philosophy descriptions) was taken from Riley's own words in `data/site/about-site.json` and [[Design System (Blueprint Press)]] rather than from a fresh interview.
 
-The `.agents/design-guidelines/DESIGN.md` router is a different file: it picks between the Tesla and Bugatti reference token sets the Electric preset was seeded from. It now carries a note pointing at the root file.
+The `.agents/skills/design-guidelines/DESIGN.md` router is a different file: it picks between the Tesla and Bugatti reference token sets the Electric preset was seeded from. It now carries a note pointing at the root file.
 
 ## Standing decisions from the 2026-09-18 interview
 

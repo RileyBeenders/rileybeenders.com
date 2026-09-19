@@ -28,12 +28,6 @@ export function formatDate(value: string, style: "long" | "month" | "month-only"
   return LONG.format(date);
 }
 
-/** Whole days from `from` to `to` (both ISO), never negative. */
-export function daysBetween(from: string, to: string): number {
-  if (!isIsoDate(from) || !isIsoDate(to)) return 0;
-  return Math.max(0, Math.round((parseIsoDate(to).getTime() - parseIsoDate(from).getTime()) / 86_400_000));
-}
-
 /** Today as YYYY-MM-DD in UTC. Call it on the server so client and server agree. */
 export function todayIso(): string {
   return new Date().toISOString().slice(0, 10);

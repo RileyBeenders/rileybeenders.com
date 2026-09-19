@@ -47,7 +47,7 @@ Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdow
 
 ## The `custom-resume` generation workflow
 
-Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.agents/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills (.agents)]]):
+Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.agents/skills/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills (.agents)]]):
 
 1. Collect page count + which `2.JobsApplliedTo/*.pdf` to target.
 2. Extract company/title/location/requirements/ATS keywords from the posting.

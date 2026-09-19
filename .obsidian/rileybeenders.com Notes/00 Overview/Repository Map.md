@@ -7,21 +7,26 @@ tags: [overview, reference]
 Full annotated tree of `rileybeenders.com` on the **`main`** branch (post Blueprint Press reskin). Paths are relative to the repo root (`C:\Users\riley\Documents\GitHub Rebos\rileybeenders.com`).
 
 ```text
-.agents/                       # repo agent procedures — see the Repository Agent Skills note
-  README.md                    # routing index — the "Repository AI Commands" tables, kept current by hand
-  custom-resume/SKILL.md       # name: custom-resume — tailored resume generation
-  vault-sync/SKILL.md          # name: vault-sync — keep this Obsidian vault current
-  sync-charts/SKILL.md         # name: sync-charts — README ↔ gantt.md tracker sync
-  design-guidelines/           # name: design-guidelines — light/dark reference design-token systems
-    SKILL.md, DESIGN.md, design-light.md, design-dark.md
-  motion-design/               # name: motion-design — what to animate and how much (svelte-bits catalog, thresholds); junctioned into .claude/skills
-    SKILL.md, references/component-catalog.md
-  motion-fluidity/             # name: motion-fluidity — framer-motion + CSS grammar and copy-ready recipes; junctioned
-    SKILL.md, references/grammar-map.md, references/recipes.md
-  motion-layout/               # name: motion-layout — nav / hero / grid / card composition patterns; junctioned
-    SKILL.md, references/svelte-bits-layouts.md
-  site-timeline-sync/SKILL.md  # name: site-timeline-sync — keeps /about-this-site current from git; junctioned
-  skills/                      # 13 vendored, non-repo-specific frontend/design-taste skills (see .agents/README.md)
+.agents/                       # every agent skill, one place — see the Repository Agent Skills note
+  README.md                    # routing index — the "Repository AI Commands" tables + Layout, kept current by hand
+  skills/                      # 23 folders: 8 repo-specific procedures + 15 vendored (see .agents/README.md)
+    custom-resume/SKILL.md     # name: custom-resume — tailored resume generation
+    vault-sync/SKILL.md        # name: vault-sync — keep this Obsidian vault current
+    sync-charts/SKILL.md       # name: sync-charts — README ↔ gantt.md tracker sync
+    design-guidelines/         # name: design-guidelines — light/dark reference design-token systems
+      SKILL.md, DESIGN.md, design-light.md, design-dark.md
+    motion-design/             # name: motion-design — what to animate and how much (svelte-bits catalog, thresholds)
+      SKILL.md, references/component-catalog.md
+    motion-fluidity/           # name: motion-fluidity — framer-motion + CSS grammar and copy-ready recipes
+      SKILL.md, references/grammar-map.md, references/recipes.md
+    motion-layout/             # name: motion-layout — nav / hero / grid / card composition patterns
+      SKILL.md, references/svelte-bits-layouts.md
+    site-timeline-sync/SKILL.md# name: site-timeline-sync — keeps /about-this-site current from git
+    impeccable/ + 14 more      # vendored: the design entry point, the taste-skill set, web-design-guidelines
+
+.claude/
+  launch.json                  # Claude desktop app preview servers (dev / prod / studio)
+  skills → ../.agents/skills   # directory junction, git-ignored; Claude Code only discovers .claude/skills
 
 .obsidian/                     # NOT the site's config — this Obsidian vault lives inside it
   rileybeenders.com Notes/     # ← you are here
@@ -143,13 +148,13 @@ README_TODO.md                 # open content tasks
 package.json / package-lock.json
 next.config.mjs                # reactStrictMode + allowedDevOrigins (LAN IPs for local network testing)
 tsconfig.json                  # strict TS, @/* path alias, next plugin, includes .next/dev/types
-next-env.d.ts                  # Next-generated; flips between .next/types and .next/dev/types depending on last command
+next-env.d.ts                  # Next-generated on every dev/build run; git-ignored since 2026-09-19
 ```
 
 ## Folders intentionally not documented as "site" content
 
-- `tmp/` — scratch output from AI-assisted PDF generation sessions. Not part of the deployed site.
-- `.claude/` — Claude Code config and worktrees.
+- `tmp/` — scratch space: browser profiles, PDF runtimes, one-off Playwright scripts. Git-ignored since 2026-09-19 (it had been committing ~2,800 files, including Chrome caches and a crash dump).
+- `.claude/worktrees/` — Claude Code checkouts, git-ignored. `.claude/launch.json` and the `.claude/skills` junction are described in the `.agents/` block above.
 - `.vscode/` — editor config.
 - `node_modules/`, `.next/` — standard build/dependency output, gitignored.
 
