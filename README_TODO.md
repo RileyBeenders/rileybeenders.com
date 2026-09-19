@@ -1,11 +1,11 @@
 # To Do Items
+
 **Possibly merge the 'proofs' in with the 'projects'? Not sure if it makes sense to do so yet...
 
 - Create a new proof 'ExtrusionLine-Studio_Modbus'
     - Must edit text & skills in proof
-- Create a new proof 'ExtrusionLine-Studio_SimpleStart`
+- Create a new proof 'ExtrusionLine-Studio_SimpleStart'
     - Must edit text & skills in proof
-
 
 Alter Line 136 - To link to the network project + VLANs/Wifi routing
 
@@ -20,75 +20,8 @@ Alter Line 136 - To link to the network project + VLANs/Wifi routing
   the-rabbit
   linear-motion-platform
 
-
-
 # ------------------------------------------------------
 
-# AI script for generating the resume PDF file
-### JSON files to include in data collection
-  {
-    header.json
-    summary.json
-    education.json
-    experience.json
-    skills.json
-  }
-
-
-## experience.json
-  #### ---------------------------
-  ### Items to include:
-    {
-      company,
-      role,
-      location
-      start,
-      end,
-      context,
-      bullets[text,projectID],
-    }
-  ### Items not to include:
-    {
-      bullets[proofID],
-    }
-  #### ---------------------------
-
-## example.json
-  #### ---------------------------
-  ### Items to include:
-    {
-
-    }
-  ### Items not to include:
-    {
-
-    }
-  #### ---------------------------
-  
-  ## example.json
-  #### ---------------------------
-  ### Items to include:
-    {
-      
-    }
-  ### Items not to include:
-    {
-
-    }
-  #### ---------------------------
-
-## example.json
-  #### ---------------------------
-  ### Items to include:
-    {
-      
-    }
-  ### Items not to include:
-    {
-
-    }
-  #### ---------------------------
-
-
-
-# ------------------------------------------------------
+The resume-PDF data rules that used to be drafted here (which JSON files and
+fields feed a tailored resume) now live in the procedure that uses them:
+`.agents/skills/custom-resume/SKILL.md`, step 3.

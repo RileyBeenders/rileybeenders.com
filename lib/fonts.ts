@@ -21,9 +21,10 @@ export type FontOption = {
 /**
  * Every font here is preloaded once in app/(site)/layout.tsx via next/font/google
  * and exposed as a CSS variable — Studio only ever chooses which variable each
- * typographic role (header/sub-header/body) points at.
+ * typographic role (header/sub-header/body) points at. The Studio's own copy of
+ * this list lives in studio/ui/schema.js; keep the two in step.
  */
-export const FONT_OPTIONS: FontOption[] = [
+const FONT_OPTIONS: FontOption[] = [
   {
     id: "instrument-serif",
     label: "Instrument Serif",
