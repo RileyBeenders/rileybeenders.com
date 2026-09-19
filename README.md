@@ -1,5 +1,5 @@
 # RileyBeenders.com
-#### Version 2.0 released on August, 27th.
+#### Version 3.1 released on September 19th, 2026.
 
 ***
 
@@ -99,11 +99,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 | 009 | [Manufacturing Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/009_Job%20Application%20for%20Manufacturing%20Engineer%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/009_Riley%20Beenders_Manufacturing%20Engineer_20260808.pdf) | 🟢 Application Received |
 | 010 | [NPI Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/010_Job%20Application%20for%20NPI%20Engineer%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/010_Riley%20Beenders_NPI%20Engineer_20260808.pdf) | 🟢 Application Received |
 | 011 | [Mechanical Engineer - Integration & Test](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/011_Job%20Application%20for%20Mechanical%20Engineer%20-%20Integration%20%26%20Test%20at%20Figure.pdf) | Figure Robotics | San Jose, CA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/011_Riley%20Beenders_Mechanical%20Engineer%20-%20Integration%20%26%20Test_20260808.pdf) | 🟢 Application Received |
-| 012 | [Product Engineer, Global Manufacturing Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20%E2%80%94%20Google%20Careers.pdf) | Google | Atlanta, GA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/012_Riley%20Beenders_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering_20260808.pdf) | 🟢 Application Received |
+| 012 | [Product Engineer, Global Manufacturing Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/012_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering%20-%20Google%20Careers.pdf) | Google | Atlanta, GA | August 08, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/012_Riley%20Beenders_Product%20Engineer%2C%20Global%20Manufacturing%20Engineering_20260808.pdf) | 🟢 Application Received |
 | 013 | [Product Software Engineer I](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/013_Product%20Software%20Engineer%20I%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Walt Disney Entertainment | Glendale, CA | August 14, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/013_RileyBeendersResume_Product%20Software%20Engineer%20I_20260814.pdf) | 🔴 No longer in consideration [August 20, 2026] |
 | 014 | [WDI Figure Programming Intern, Spring 2027] | Walt Disney Imagineering | CA or FL | September 03, 2026 | [Tailored Resume] | 🔴 Not in consideration because I am not currently enrolled in college |
-| 015 | [Forward Deployed Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/1.ApplicationsUsed/015_RileyBeenders_Disney_Forward_Deployed_Engineer.pdf) | 🟢 Application Received |
-| 016 | [Forward Deployed Product Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/1.ApplicationsUsed/016_RileyBeenders_Disney_Forward_Deployed_Product_Engineer.pdf) | 🟢 Application Received |
+| 015 | [Forward Deployed Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/015_RileyBeenders_Disney_Forward_Deployed_Engineer.pdf) | 🟢 Application Received |
+| 016 | [Forward Deployed Product Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/016_RileyBeenders_Disney_Forward_Deployed_Product_Engineer.pdf) | 🟢 Application Received |
 
 ***
 
@@ -131,6 +131,14 @@ Then open:
 
 ```txt
 http://localhost:3000
+```
+
+To open the dev server from a phone or another machine on your network, list those
+hosts in a git-ignored `.env.local` at the repo root (Next blocks other origins
+from the dev server by default):
+
+```txt
+ALLOWED_DEV_ORIGINS=10.0.0.5,10.0.0.6
 ```
 
 ***
@@ -177,48 +185,51 @@ Use a different port with `STUDIO_PORT=3002 npm run studio`.
 
 ```txt
 app/
+  layout.tsx               root <html>/<body>, analytics, metadata
+  base.css                 shared reset
+  icon.svg · apple-icon.tsx · opengraph-image.tsx
   (site)/
-    blueprint.css          site-wide styling
-    layout.tsx             nav, theme, shared chrome
-    page.tsx               the resume
+    layout.tsx             nav, theme provider, fonts, palette
+    blueprint.css          the Blueprint Press design system
+    page.tsx               the resume (home)
+    projects/              page.tsx, projects.css, feature.css
+    about-this-site/       page.tsx, about-site.css
     contact/page.tsx
     more-info/page.tsx
-    projects/
-      page.tsx             the stair-descend scroller
-      projects.css
-  api/
-    resume-pdf/route.ts
-  base.css
-  layout.tsx
+  api/resume-pdf/route.ts  generates the resume PDF on request
 components/
-  blueprint/               shared site components
-  projects/
-    ProjectStage.tsx       one project + its sliding proof panel
-    ProjectGallery.tsx     the scrolling image column
-    Lightbox.tsx           full-screen image viewer
-    BackToTop.tsx
+  blueprint/               nav, mark, reveal/motion primitives, theme toggle, badges
+  projects/                ProjectEntry, CaseStudy, ProjectFeature (+ feature/ sub-blocks and demos), gallery, lightbox
+  about-site/              AboutSiteStory
+  content/                 EmphasizedText
+  GanttChart.tsx · JobsTable.tsx   the More Info tracker
 data/
-  header.json              site metadata and visibility switches
-  home/
-    education.json
-    experience.json
-    skills.json
-    summary.json
-  projects/
-    projects.json
-    proofs.json
+  header.json              site metadata, theme, visibility switches
+  home/                    summary, experience, skills, education
+  projects/                projects.json, proofs.json
+  site/about-site.json     the About-this-site case study and timeline
+  more-info/               more-info.json, gantt.md (tracker source)
+  contact/contact.json
   resumeData.ts            merges the JSON into one typed object
-lib/
-  projects.ts              builds the project and proof views
+lib/                       palette derivation, fonts, dates, gantt parser, build stamp, hooks
+types/                     TypeScript shapes for every data file
+scripts/
+  site-stats.mjs           refreshes About-this-site stats from git
+  capture-site-screenshots.mjs
+  check-anchor-hydration.mjs
 studio/                    the local content editor (never deployed)
-  server.mjs
-  ui/
-ResumeBuilder/
-types/
-  resume.ts
+  server.mjs · ui/
+ResumeBuilder/             jsPDF resume generator used by /api/resume-pdf
 public/
-  project-images/          photographs and renders
-  project-artifacts/       diagrams
+  project-images/          photographs, renders, site captures
+  project-artifacts/       diagrams (SVG)
+assets/fonts/              Instrument Serif for the PDF renderer
+design/                    Canvas mockups of the mark and interactions
+.agents/skills/            every agent skill, one folder each (see .agents/README.md)
+.claude/                   launch.json + a git-ignored junction skills -> ../.agents/skills
+.obsidian/                 the documentation vault (rileybeenders.com Notes/)
+PRODUCT.md · DESIGN.md     product truth and the design system, read by the impeccable skill
+1.ApplicationsUsed/ · 2.JobsApplliedTo/ · output/ · references/   job-search records
 ```
 
 ***

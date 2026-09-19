@@ -23,7 +23,7 @@ function rgbToHex(rgb: [number, number, number]): string {
 }
 
 /** Linear-interpolates between two hex colors. t=0 -> a, t=1 -> b. */
-export function mix(hexA: string, hexB: string, t: number): string {
+function mix(hexA: string, hexB: string, t: number): string {
   const a = hexToRgb(hexA);
   const b = hexToRgb(hexB);
   return rgbToHex([
@@ -72,7 +72,7 @@ function contrast(a: string, b: string): number {
  * preset that is paper; on a dark preset ink is the light one, so it wins there —
  * which keeps "Download PDF" white on blue in dark mode instead of black on blue.
  */
-export function onAccentFor({ paper, ink, accent }: Pick<PaletteSeeds, "paper" | "ink" | "accent">): string {
+function onAccentFor({ paper, ink, accent }: Pick<PaletteSeeds, "paper" | "ink" | "accent">): string {
   return contrast(paper, accent) >= contrast(ink, accent) ? paper : ink;
 }
 

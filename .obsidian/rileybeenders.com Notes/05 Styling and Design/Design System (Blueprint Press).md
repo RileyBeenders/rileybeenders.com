@@ -13,7 +13,7 @@ Two plain global stylesheets, no CSS modules / CSS-in-JS / Tailwind. The pre-res
 
 The design source is a Claude Design canvas in `design/` (`Main.dc.html`, `Mark.dc.html`, `Interactions.dc.html` + `canvas.json`) — the chosen "Blueprint Press" direction only. The one-time published export (`design/rileybeenders-directions.html`) and the five rejected "earlier sketches" artboards (`Blueprint`/`Editorial`/`Machined`/`Instrument`/`SwissGrid.dc.html`, plus their `canvas.json` page and annotations) were removed as stale/unused clutter once the direction was picked — the three remaining `.dc.html` files + `canvas.json` are the live, editable source and can still be re-published at any time.
 
-A separate pair of reference design-token systems lives at `.obsidian/rileybeenders.com Notes/08 Agents and Automation/Repository Agent Skills (.agents).md` → `design-guidelines`, sourced from `.agents/design-guidelines/` in the repo (Tesla for light mode, Bugatti for dark). As of the **Electric** palette (below), those references are no longer purely aspirational — they're the source the live accent/canvas colors were pulled from.
+A separate pair of reference design-token systems lives at `.obsidian/rileybeenders.com Notes/08 Agents and Automation/Repository Agent Skills (.agents).md` → `design-guidelines`, sourced from `.agents/skills/design-guidelines/` in the repo (Tesla for light mode, Bugatti for dark). As of the **Electric** palette (below), those references are no longer purely aspirational — they're the source the live accent/canvas colors were pulled from.
 
 ## The machine-readable spec: `DESIGN.md`
 
