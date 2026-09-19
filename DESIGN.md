@@ -260,6 +260,7 @@ The voice is a document, not a campaign. At rest the home page reads top to bott
 Every transition on the site uses one easing curve, `cubic-bezier(0.22, 0.9, 0.28, 1)`, so the motion reads as a single hand: rules draw from the left, sections rise 22px into place once, hover states lift by a few pixels, and the monogram draws itself on. Dark mode swaps paper and ink to black and white (or navy and pale on the Default preset) and changes nothing else. The palette itself is a Studio setting: five seed colors per mode run through a fixed tint ramp, so any preset inherits the same tonal rhythm.
 
 **Key Characteristics:**
+
 - Warm-neutral paper with one accent; the accent is used for indexes, the solid CTA, inline evidence links, link underlines, active nav, hover bars, and the badge dot, never for surfaces.
 - Instrument Serif display at weight 400 only (the face ships no bold), Spectral body, both loaded through `next/font`; the three roles (header, sub-header, body) are Studio choices among eight preloaded faces.
 - Square hairline cards on `white` (one step off `paper`), 1px `rule` borders, 2px ink rules under headings.
@@ -272,11 +273,13 @@ Every transition on the site uses one easing curve, `cubic-bezier(0.22, 0.9, 0.2
 Paper and ink with a single accent, where every secondary tone is a fixed mix of the two.
 
 ### Primary
+
 - **Accent** (`{colors.accent}`, Electric Blue #3e6ae1 on the active preset; Signal Red #e3342f on Default): the one voltage on the page. Section index numerals, the solid Download button, the "see ICARUS-Lite" evidence link on a resume bullet, link underline wipes, the active nav underline, the role entry's hover bar, the cert card's wipe bar, the relocation badge's dot, drop caps, and inline links inside prose and tables.
 - **On Accent** (`{colors.on-accent}`): text set on the accent fill. Derived per preset as whichever of paper or ink reads better on the accent, so the solid button stays white on blue in dark mode.
 - **Blue** (`{colors.blue}`): a second hue for diagrams and data (the monogram's bowl, the gantt chart's secondary series, the coming-soon ring). On the Electric preset it equals the accent; on the other nine presets it is a distinct cooler tone.
 
 ### Neutral
+
 - **Paper** (`{colors.paper}` / `{colors.paper-dark}`): the page floor. Also painted on `<html>` so the overscroll gutter matches.
 - **White** (`{colors.white}` / `{colors.white-dark}`): card and control surfaces (pills, cert cards, the table frame, the gantt frame, the theme toggle, the floating pills). One visible step off paper.
 - **Ink** (`{colors.ink}` / `{colors.ink-dark}`): headings, primary text, 2px rules, button borders and fills.
@@ -288,10 +291,12 @@ Paper and ink with a single accent, where every secondary tone is a fixed mix of
 - **Rule** (`{colors.rule}`): every hairline border and divider (87%).
 
 ### Semantic
+
 - **Insertion** (`{colors.insertion}` / `{colors.insertion-dark}`): the "+ lines" count on a timeline entry; deletions use the accent.
 - **Scrim** (`{colors.scrim}`): the lightbox backdrop, a near-ink navy at 93%.
 
 ### Named Rules
+
 **The One Accent Rule.** Color lives in the accent alone. Surfaces are paper and white; text is ink and its tints. A second hue (`blue`) appears only inside drawn geometry and data, never on type or chrome.
 
 **The Ramp Rule.** Never hand-pick a gray. Secondary tones come from `lib/palette.ts`'s ramp (prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87) so all ten presets and any custom palette share one tonal rhythm. muted is the floor for text (it clears 4.5:1 on paper and white in both themes on every preset); faint is for lines and dots.
@@ -307,6 +312,7 @@ Paper and ink with a single accent, where every secondary tone is a fixed mix of
 **Character:** An editorial pairing. Instrument Serif is high-contrast and narrow, set very large with tight negative tracking and a line height below 1, so the name and page titles read like a masthead. Spectral is a warm reading serif at generous size and line height, so the resume body reads like a printed document rather than a UI.
 
 ### Hierarchy
+
 - **Display** (400, `clamp(58px, 12vw, 152px)`, 0.86, -0.038em): the home hero name, two lines, each revealed separately.
 - **Headline** (400, `clamp(48px, 9vw, 116px)`, 0.9): page titles on the other routes (`/projects`, `/contact`, `/more-info` at `clamp(44px, 8vw, 96px)`, `/about-this-site`).
 - **Tagline** (400 italic, `clamp(23px, 3vw, 33px)`, 1.22, ink-soft, max 24ch): the line under the hero rule.
@@ -320,6 +326,7 @@ Paper and ink with a single accent, where every secondary tone is a fixed mix of
 - **Label** (500, 11–13px, 0.1–0.2em, uppercase): dates, the brand name, "Read more", "Back to top", table headers, cert dates, the footer URL.
 
 ### Named Rules
+
 **The Regular Serif Rule.** Instrument Serif is loaded at weight 400 only. Emphasis in the serif comes from size, never from a synthesized bold.
 
 **The Tracked Label Rule.** Anything uppercase is Spectral, 11 to 16px, with 0.1 to 0.3em of tracking. The serif is never uppercased.
@@ -343,6 +350,7 @@ One breakpoint, `max-width: 860px`: the section grid collapses to one column wit
 Flat by default. Depth is drawn, not lit: hairline borders in `rule`, 2px rules in ink, and the blueprint grid behind everything. Cards sit on `white`, one step off `paper`, with no shadow at rest. Shadows appear only as a response to hover (pills, cert cards, the bullet's project link) and on the two floating pills (the relocation badge and the back-to-top control), which need lift to read over the grid. The nav and the floating pills also blur what passes behind them (`backdrop-filter: blur(10–12px)`) over a translucent paper or white.
 
 ### Shadow Vocabulary
+
 - **Hover lift** (`0 6px 18px color-mix(ink 10%)`): skill pills on hover, with a 3px rise.
 - **Card lift** (`0 16px 34px color-mix(ink 13%)`): cert cards on hover, with a 5px rise.
 - **Floating pill** (`0 10px 28px color-mix(ink 10%)`): the relocation badge and the back-to-top control at rest.
@@ -350,6 +358,7 @@ Flat by default. Depth is drawn, not lit: hairline borders in `rule`, 2px rules 
 All three derive from `--ink`, so they exist on every paper, including black.
 
 ### Named Rules
+
 **The Drawn Depth Rule.** Rest states have no shadow. If an element needs separation at rest, it gets a hairline border or a whiter sheet, not a shadow.
 
 ## Shapes
@@ -359,12 +368,14 @@ Square. Cards, buttons, pills, inputs, the table, and the gantt frame all have `
 ## Components
 
 ### Buttons
+
 - **Shape:** square, 1px border, 48px tall, `15px 28px` padding, 15px/500 label with a 16px stroke-icon arrow.
 - **Outline (`.bp-btn`):** transparent on ink border and ink text. On hover the fill wipes in from the left (`::before` scaleX 0→1 over 0.48s), text flips to paper, the button rises 2px, and the arrow nudges 5px.
 - **Solid (`.bp-btn--solid`):** accent fill, on-accent text, accent border; the wipe on hover is ink. `:disabled` shows `cursor: wait` at 75% opacity with the wipe held off. A looping diagonal sheen (`.bp-sheen`, 3.6s) runs across the solid button while idle.
 - **Focus:** 2px accent outline, 3px offset, on every control.
 
 ### Links
+
 - **Inline (`.bp-link`):** ink text with a 1.6px accent underline that wipes in from the left on hover and a 13px diagonal arrow that moves up-right 3px.
 - **Read more (`.bp-readmore`):** the same link uppercased, 13px, 0.14em tracking, in the accent.
 - **Prose and table links:** accent-colored with a 1px underline at 55% accent, offset 0.18em, solid on hover.
@@ -372,39 +383,49 @@ Square. Cards, buttons, pills, inputs, the table, and the gantt frame all have `
 - **Nav (`.bp-nav-link`):** 15px muted text, a 2px accent underline that scales in from the left on hover and stays on the active route (ink text). All five links are flat color.
 
 ### Pills (`.bp-pill`)
+
 - **Style:** white sheet, hairline border, 14px pill-text label, `8px 16px` padding, square corners.
 - **Hover:** border to ink, text to ink, 3px rise, hover-lift shadow.
 
 ### Cards (`.bp-cert`, contact cards)
+
 - **Corner Style:** square.
 - **Background:** white, 1px rule border, `18px 20px` padding.
 - **Content:** a 21px serif title, a 14px muted issuer, a 12px faint uppercase date, an optional inline link, and a 2px accent bar at the bottom that wipes in on hover.
 - **Hover:** border to ink, 5px rise, card-lift shadow.
 
 ### Role entry (`.bp-role`)
+
 A resume entry with a 2px rule down its left edge. Hover shifts the whole entry 7px right and wipes an accent bar down that rule. Inside: the serif title and an uppercase 13px date on one baseline row, the organization in 20px accent, italic 17px context, then a bullet list with accent markers. Each bullet's emphasized phrases take the accent (with a hairline text stroke) when the bullet is hovered, and a bullet can carry a small accent pill linking to its project.
 
 ### Section index (`.bp-section-index`)
+
 The section's `h2`: the uppercase 16px accent label ("02  Experience") in the 190px column, 0.26em tracking, set in the body face, aligned to the content's top with 12px of padding. Each section carries an id (`#summary`, `#experience`, `#skills`, `#education`) so the index doubles as a jump target.
 
 ### Title block (`.bp-footer-block`)
+
 A hairline-boxed `<dl>` on the footer's right: Sheet (the domain), Rev. (short commit and build date, read from Vercel's environment or git at build time), Set in (the header and body typefaces plus the palette name, from the Studio's choices), Drawn in (the location). 11px uppercase faint keys, 12px ink-soft values, tabular numerals.
 
 ### Navigation (`.bp-nav`)
+
 Sticky, 82% paper with a 12px backdrop blur and a hairline bottom rule. Brand at left (the 34px animated monogram plus the uppercase 13px muted name), links and the theme toggle at right. The toggle is a 44×24 white pill whose 18px ink thumb slides 20px and turns accent when dark is on. Under 860px the bar stacks and the links wrap.
 
 ### Floating pills (`.bp-badge`, `.bp-top`)
+
 Fixed to the bottom corners: a white pill at 92% with blur, hairline border, floating-pill shadow. The relocation badge (right) carries a 9px accent dot with a pinging ring and a typewriter label that types, holds, and deletes on a loop; on the home page it rests beside the hero rule on wide screens and hops to the corner on scroll, and starts docked below 860px. Back to top (left) is 11px uppercase with an arrow and fades in after scrolling.
 
 ### Table (`.bp-table`)
+
 White frame with hairline border, `overflow-x: auto`. 11px uppercase muted headers over a 2px ink rule, 14px cells with hairline row dividers, rows tint 3% ink on hover. Inline links in the accent.
 
 ### Monogram (`BpMark`)
+
 The site's "B" drawn as strokes: a `[data-draw]` set that draws on and off over 7.3s, a `[data-chase]` dash that circulates, and an optional 5px float. The bowl uses `blue`; the stem uses ink.
 
 ## Do's and Don'ts
 
-### Do:
+### Do
+
 - **Do** put color only in the accent: indexes, the solid CTA, evidence links, underlines, hover bars, the badge dot. Surfaces stay paper and white.
 - **Do** derive every gray from the ramp in `lib/palette.ts` and every palette from five seeds, so all presets and dark mode keep the same rhythm.
 - **Do** keep cards, buttons, and frames square with 1px `rule` borders; reserve `999px` for small floating controls and `50%` for dots.
@@ -415,7 +436,8 @@ The site's "B" drawn as strokes: a `[data-draw]` set that draws on and off over 
 - **Do** write section indexes as `h2` and keep the heading outline unbroken (h1 title, h2 index, h3 entry, h4 detail).
 - **Do** theme the browser's own surfaces: `::selection`, `caret-color`, `accent-color`, underline offset, scrollbars, tabular numerals.
 
-### Don't:
+### Don't
+
 - **Don't** synthesize a bold Instrument Serif; the face has none. Go larger instead.
 - **Don't** put a kicker, eyebrow, or category label above any heading, on any page, in any card.
 - **Don't** set text in `faint` or below 11px; the miniature Studio preview on `/about-this-site` is the one decorative exception (`aria-hidden`, 9px).
