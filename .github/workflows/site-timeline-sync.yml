@@ -7,9 +7,10 @@
 # marker when its work has shipped, and keeps the vault note in step. The
 # workflow — not Claude — validates and commits the result back to main.
 #
-# Setup (once): add ANTHROPIC_API_KEY under Settings → Secrets and variables →
-# Actions. Claude subscribers can use `claude setup-token` and store the result
-# as CLAUDE_CODE_OAUTH_TOKEN instead (swap the two inputs below).
+# Setup (once): run `claude setup-token` locally and store the result as
+# CLAUDE_CODE_OAUTH_TOKEN under Settings → Secrets and variables → Actions, so
+# runs bill to the Claude subscription. To use API billing instead, store an
+# ANTHROPIC_API_KEY and swap the two inputs below.
 #
 # No loop: commits pushed with GITHUB_TOKEN never trigger another workflow run.
 # Screenshots are never recaptured here (no dev server in CI) — when a key
@@ -64,8 +65,8 @@ jobs:
       - name: Run the site-timeline-sync procedure
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             You are running unattended in GitHub Actions right after a push to main
