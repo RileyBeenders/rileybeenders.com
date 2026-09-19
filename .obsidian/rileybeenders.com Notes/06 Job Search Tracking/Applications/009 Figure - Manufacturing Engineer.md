@@ -57,9 +57,9 @@ Total compensation may include additional components/benefits depending on the r
 - **Gap:** no explicit Manufacturing Execution Systems (implementation/integration/optimization) experience on record — BOM/ERP oversight (Business Central, a self-developed ERP/CRM with dynamic BOM generation) is adjacent operational-systems experience but not literally MES.
 - **Gap:** no CATIA V6 specifically (general CATIA is listed) and no robotics-industry-specific experience — additive manufacturing/prosthetics is the closest adjacent domain, not robotics.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-No material change — nothing MES-specific or robotics-industry-specific has been added to the record since application, and the skills list hasn't changed since Aug 8, 2026.
+No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing MES-specific, CATIA V6-specific or robotics-industry-specific has been added, and the CAD, fixture/tooling and production-ramp evidence above is still in the record.
 
 ---
 

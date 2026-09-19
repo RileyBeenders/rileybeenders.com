@@ -12,8 +12,8 @@ Typed by `MoreInfoData` (see [[Data Layer and Types]]). Rendered by `app/(site)/
 
 - `aboutHeader` — `{ title, description[] }` → the page hero (title + one intro line).
 - `aboutMe` — `{ title, description[] }` → section `01`. Currently one playful placeholder line ("How did you read this before the rest of the site?? …") — genuinely unfinished copy, not a rendering bug.
-- `aboutSite` — `{ title, description[], readMore? }` → section `02`. The real "about this site" copy (resume-plus-live-job-search framing), followed by a `.bp-link.bp-readmore` **"Read more"** link when `readMore` is set. `readMore` is currently `{ label: "Read more", href: "https://github.com/RileyBeenders/rileybeenders.com/tree/main/.agents" }` — it opens the repo's `.agents/` folder on GitHub (which renders `.agents/README.md` and lists the three skill folders) in a new tab. If the branch in that URL ever needs to change, it's a plain string in this JSON file (no code change).
-- `ganttSection` — `{ visible, title, intro }` → the heading/intro above the tracker. Studio exposes `visible` as a **Show on live site** switch; when it is `false`, `/more-info` omits the full tracker section, including both the Mermaid timeline and applications table, and does not read `gantt.md`. The chart + table themselves come from `gantt.md`, not this file. (`intro` may be absent in the data; the page renders it only if present.)
+- `aboutSite` — `{ title, description[], readMore? }` → section `02`. The real "about this site" copy (resume-plus-live-job-search framing), followed by a `.bp-link.bp-readmore` link when `readMore` is set. Since 2026-09-17 it is `{ "label": "Read the full story", "href": "/about-this-site" }`, pointing at the site's own [[About This Site Page]] (before that it opened the repo's `.agents/` folder on GitHub). The page renders a leading-slash href as an in-tab `next/link` and any other href as an external new-tab `<a>`, so the Studio field accepts either.
+- `ganttSection` — `{ visible, title, intro? }` → the heading/intro above the tracker. Studio exposes `visible` as a **Show on live site** switch; when it is `false`, `/more-info` omits the full tracker section, including both the Mermaid timeline and applications table, and does not read `gantt.md`. **It is `false` right now** (set 2026-09-16 with the first published project) — the live More Info page has no tracker, and the About page's timeline carries "The tracker returns" as a planned entry. The chart + table themselves come from `gantt.md`, not this file. (`intro` is absent in the data; the page renders it only if present.)
 
 ## `data/more-info/gantt.md` — hand-authored, not JSON
 
@@ -26,15 +26,11 @@ Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (n
 
 ### Duplicated in `README.md`
 
-`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. The mermaid blocks and tracker tables were verified identical on Sep 16, 2026 after applications 015 and 016 were added and all active bars were refreshed through that date. Keeping the two in sync is exactly what the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] is for.
+`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Sep 19, 2026 the two mermaid blocks are identical (active bars refreshed through Sep 16, when 015 and 016 were added), but the **tables differ**: `gantt.md`'s 015 and 016 rows link their posting PDFs at `blob/Version-3.1/…`, a branch deleted when PR #9 merged on 2026-09-19, while `README.md`'s rows link `blob/main/…`. The `gantt.md` links 404 and should be pointed at `main` — exactly what the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] is for (it would copy the README version over). The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
 
 ### Current tracked applications (as of `gantt.md`)
 
 16 applications, IDs 001–016, spanning Disney (×6), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. Statuses range from "Waiting for Reply" to "Interview Process" to "No Longer in Consideration." Full per-application file references live in [[Job Application Tracker]].
-
-## `aboutSite.readMore` (2026-09-17)
-
-The "About this site" section's link is now `{ "label": "Read the full story", "href": "/about-this-site" }`, pointing at the site's own [[About This Site Page]] instead of the GitHub `.agents` folder. The More Info page renders a leading-slash href as an in-tab `next/link` and any other href as an external new-tab link, so the Studio field accepts either.
 
 ## Related
 - [[Job Application Tracker]]

@@ -58,9 +58,9 @@ Disney's standard rewards package: health and savings benefits, educational oppo
 - **Gap:** no direct evidence of C++ in my background; PLC work (Ladder Logic-adjacent) is the closer match to "Structured Text."
 - **Gap:** no ride control or theme park industry experience (this is only a preferred qualification, not required).
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-No material change since application — `skills.json` hasn't been touched since Jul 23, 2026, so the same strengths and gaps above still hold. The years-of-experience gap narrows naturally over time regardless of site edits.
+No material change since application. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing added touches this posting's gaps (no C++ or Structured Text, no ride-control or theme-park work, no dedicated software-engineering tenure), and the risk-analysis and PLC evidence cited above is still in the record. The years-of-experience gap narrows naturally over time regardless of site edits.
 
 ---
 

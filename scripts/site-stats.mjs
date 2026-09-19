@@ -26,10 +26,16 @@ const firstCommitDate = git("log", "--reverse", "--format=%ad", "--date=short").
 const commits = Number(git("rev-list", "--count", "HEAD"));
 const days = Math.round((Date.parse(today) - Date.parse(firstCommitDate)) / 86_400_000);
 
-const procedures = readdirSync(path.join(ROOT, ".agents"), { withFileTypes: true })
-  .filter((d) => d.isDirectory() && d.name !== "skills" && existsSync(path.join(ROOT, ".agents", d.name, "SKILL.md")))
+// Every skill lives in .agents/skills/<name>/SKILL.md (since 2026-09-19). The
+// vendored ones are the keys of skills-lock.json; whatever else is there is a
+// repo-specific procedure.
+const skillsDir = path.join(ROOT, ".agents/skills");
+const skills = readdirSync(skillsDir, { withFileTypes: true })
+  .filter((d) => d.isDirectory() && existsSync(path.join(skillsDir, d.name, "SKILL.md")))
   .map((d) => d.name);
-const registered = Object.keys(JSON.parse(readFileSync(path.join(ROOT, "skills-lock.json"), "utf8")).skills ?? {});
+const registered = Object.keys(JSON.parse(readFileSync(path.join(ROOT, "skills-lock.json"), "utf8")).skills ?? {})
+  .filter((name) => skills.includes(name));
+const procedures = skills.filter((name) => !registered.includes(name));
 
 function countNotes(dir) {
   let n = 0;
@@ -53,7 +59,7 @@ const published = projects.length - queued;
 const stats = {
   "Commits": { value: commits, note: "on main and its version branches" },
   "Days in motion": { value: days, note: "since the first commit" },
-  "Agent skills": { value: procedures.length + registered.length, note: `${procedures.length} repo procedures, ${registered.length} registered` },
+  "Agent skills": { value: skills.length, note: `${procedures.length} repo procedures, ${registered.length} registered` },
   "Vault notes": { value: vaultNotes, note: "kept in sync by an agent" },
   "Applications tracked": { value: applications, note: "each with a tailored PDF" },
   "Projects queued": { value: queued, note: "written, hidden, waiting" }

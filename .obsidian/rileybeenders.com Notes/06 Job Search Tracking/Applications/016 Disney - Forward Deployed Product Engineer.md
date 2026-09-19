@@ -5,7 +5,7 @@ Role: "Forward Deployed Product Engineer"
 JobID: "016"
 Date Applied: 2026-09-15
 Status: "Application Received"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Version-3.1/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf"
 ---
 
 # Forward Deployed Product Engineer — The Walt Disney Company
@@ -64,9 +64,10 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **The software/LLM requirements remain a significant gap:** the evidence does not establish three years shipping conventional software products or one year shipping LLM-based AI features in production. It also does not substantiate production RAG, LLM APIs, agents, SQL, regression/golden-set evaluation pipelines, trace analysis, LLM-as-judge, Cursor, Claude Code, or formal code reviews. The resume uses supported language such as AI-assisted diagnostics and local LLM tooling rather than converting those adjacent skills into unsupported claims.
 - **Education is satisfied:** the posting accepts a bachelor's degree and/or equivalent experience, and the record includes a completed B.S. in Electro-Mechanical Engineering.
 
-### Now — Sep 16, 2026
+### Now — Sep 19, 2026
 
-No material change since the application one day ago. Product engineering, workflow design, automation, commercialization, enterprise infrastructure, and stakeholder-facing delivery remain strong; the role's production software tenure and modern LLM application-stack requirements remain the principal gaps.
+- No material change to the match since application. Product engineering, workflow design, automation, commercialization, enterprise infrastructure, and stakeholder-facing delivery remain strong; the role's production software tenure and modern LLM application-stack requirements remain the principal gaps.
+- Since Sep 15–16, 2026 the record additionally states that Riley is "quick to pick up, apply, and integrate new technologies into real-world systems" (the rewritten summary) and acts as Hiring Manager for engineering roles — supporting, not new, evidence for the builder/operator and stakeholder side of this posting.
 
 ---
 

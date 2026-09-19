@@ -1,6 +1,6 @@
 ---
 name: site-timeline-sync
-description: Keep the "About this site" page (data/site/about-site.json) current as the repository grows — refresh its stats from git, add only the KEY commits to its timeline (brief, one line of summary each), move the present marker, promote planned items that shipped, and recapture screenshots when the UI changed. Use after a meaningful commit or merge, when asked to "update the site timeline / about page / site story", "add this to the timeline", "refresh the site stats", or before a release. Also use when a timeline entry, stat, or screenshot on /about-this-site looks stale.
+description: Keep the "About this site" page (data/site/about-site.json) current as the repository grows — refresh its stats from git, add only the KEY commits to its timeline (brief, one line of summary each), move the present marker, promote planned items that shipped, and recapture screenshots when the UI changed. Use after a meaningful commit or merge, when asked to "update the site timeline / about page / site story", "add this to the timeline", "refresh the site stats", or before a release. Also use when a timeline entry, stat, or screenshot on /about-this-site looks stale. Runs unattended after every push to main through .github/workflows/site-timeline-sync.yml; see "Unattended runs".
 ---
 
 # Site Timeline Sync
@@ -16,6 +16,7 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 - After a commit or merge that changed how the site looks, what it can do, how it's built, or what it's for. Routine edits (a typo, a README tracker row, a job-application PDF drop) don't earn a timeline entry, though they still count toward the stats.
 - On request ("update the about page", "add the dark-mode work to the timeline").
 - When `node scripts/site-stats.mjs` reports numbers that differ from the page, or lists commits since the last timeline entry.
+- **Automatically, after every push to `main`** — `.github/workflows/site-timeline-sync.yml` runs steps 1–7 and 9–10 of this procedure through Claude Code on a GitHub runner and commits the result. See **Unattended runs** below for what that run may and may not do; a local run is still how screenshots get recaptured.
 
 ## Procedure
 
@@ -66,7 +67,16 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 
 9. **Keep the demos honest.** The three "Behind the site" rows (`feature.backend.items`) each render a live replica beside notes: `resume` lights a real resume line per posting keyword (`matches[]` — keep each `line` a bullet that actually exists in `data/home/experience.json`), `studio` uses the real preset palettes from `lib/palettes.ts` so it needs no data, and `skills` lists procedures (`skills[]`: `name`, `trigger`, `does`). When a skill is added, removed, or renamed under `.agents/`, update that list so the router on the page matches the router in the repo. The prose there is in Riley's own words — refresh facts, don't rewrite voice.
 
-10. **Verify and hand off.** `npm run typecheck`, then load `/about-this-site` in both themes and confirm: the new dot sits where its date belongs, the card reads well, thumbnails show the *other* theme's capture, the date bar still says → Present, and nothing in the Studio's About-this-site form shows an empty required field. Then run `vault-sync` — `data/site/**`, `app/(site)/about-this-site/**`, and `components/about-site/**` map to the vault's notes on the About page and data layer.
+10. **Verify and hand off.** `node scripts/check-about-site.mjs` (every entry has a real date, era, title and summary; a `hash` is a commit in this repository; at most one `present`; connectors and `screenshotId`s point at things that exist; the six stats are present), then `npm run typecheck`, then load `/about-this-site` in both themes and confirm: the new dot sits where its date belongs, the card reads well, thumbnails show the *other* theme's capture, the date bar still says → Present, and nothing in the Studio's About-this-site form shows an empty required field. Then run `vault-sync` — `data/site/**`, `app/(site)/about-this-site/**`, and `components/about-site/**` map to the vault's notes on the About page and data layer.
+
+## Unattended runs
+
+`.github/workflows/site-timeline-sync.yml` runs this procedure on a GitHub runner after every push to `main` (and on demand from the Actions tab). The runner has the full git history and Node, but no browser, no dev server, and no Studio, and nobody is watching — so the unattended run is a narrower version of the procedure:
+
+- **Do**: steps 1–7 and 9 — `node scripts/site-stats.mjs --write`, read the listed commits with `git show --stat`, add an entry only for a genuinely key commit, move the present marker when its work has landed, keep the demos' data honest — then `node scripts/check-about-site.mjs` and the vault note for the About page (the sentence that states the entry counts and stats). The workflow validates the file again and commits whatever changed, as `github-actions[bot]`, with a subject that says whether the timeline or only the stats moved. Commits made with the workflow's own token never trigger another run, so there is no loop.
+- **Don't**: recapture screenshots, start servers, run the impeccable detector, commit, push, or touch any file other than `data/site/about-site.json` and `.obsidian/rileybeenders.com Notes/02 Components/About This Site Page.md`. If a key commit changed a surface the page captures, say which in the final message; the next local run recaptures it (step 8).
+- **Be conservative.** A local run can always add an entry later; an unattended one must never invent a moment, a number, or a hash. When the commits since the last entry are polish, the right result is a stats-only commit — or no commit at all, if the numbers already match. Never rewrite existing entries' prose to "improve" it.
+- **Setup and cost.** The workflow needs one repository secret, `ANTHROPIC_API_KEY` (or a `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token` for a Claude subscription — swap the input in the workflow). Each push costs one short Claude Code session; `--max-turns 40` caps it. If the validator fails, the workflow fails and nothing is committed — fix the file locally and push, and the next run starts clean. A push that only contains the sync's own commit is impossible (see above), but a push from GitHub Desktop that bundles several commits is one run covering all of them.
 
 ## Shape reference
 

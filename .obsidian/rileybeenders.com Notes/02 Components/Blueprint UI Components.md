@@ -4,7 +4,7 @@ tags: [component, client]
 
 # Blueprint UI Components
 
-The three small `components/blueprint/*` pieces that aren't the nav/mark. All the pre-reskin interactive components (`InteractiveResume`, `ProjectsExplorer`, `ProjectDetails`, `BulletList`, `ProofPanel`, `AdditionalInfoDrawer`, image galleries/lightbox) were deleted — none of them exist on `main`.
+The `components/blueprint/*` pieces that aren't the nav/mark, plus `components/content/EmphasizedText.tsx`. All the pre-reskin interactive components (`InteractiveResume`, `ProjectsExplorer`, `ProjectDetails`, `BulletList`, `ProofPanel`, `AdditionalInfoDrawer`) were deleted — none of them exist on `main`; the project gallery and lightbox were rebuilt under `components/projects/` (see [[Projects Route (BpComingSoon)]]).
 
 ## `components/blueprint/BpActions.tsx`
 
@@ -25,12 +25,40 @@ See [[Resume PDF Pipeline]] for what happens after the click.
 
 - `useReducedMotion()` → if reduced, renders a plain `<div>` with no animation.
 - `rise`: `hidden { opacity: 0, y: 22 }` → `shown { opacity: 1, y: 0 }`. `rule`: `hidden { scaleX: 0 }` → `shown { scaleX: 1 }` with `transformOrigin: left center` (for the `.bp-rule` dividers).
-- `whileInView` with `viewport={{ once: true, amount: 0.25, margin: "0px 0px -80px 0px" }}` — fires once, slightly before the element is fully in view.
-- One shared easing curve (`[0.22, 0.9, 0.28, 1]`) so all page motion reads as a single hand — the same curve is `--ease` in `blueprint.css`.
+- `whileInView` with `viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}` — fires once, as soon as 12% of the element is in view (lowered from 25% / −80px on 2026-09-19 so tall role entries appear sooner on phones).
+- One shared easing curve (`[0.22, 0.9, 0.28, 1]`) so all page motion reads as a single hand — the same curve is `--ease` in `blueprint.css`. Durations per variant: rise 0.82s, rule 0.9s, fade 0.7s, slide 0.72s.
 
 ## `Reveal` variants (2026-09-18)
 
 `Reveal` grew two more `as` values alongside `rise` and `rule`: `fade` (opacity only, optional `blur` prop capped at 6px, 0.7s) and `slide` (18px in from `from="left" | "right"`, 0.72s). Same curve, same `viewport` defaults, same plain-`div` reduced-motion branch. The About page uses `fade` for its behind-the-site demos so a live replica doesn't lurch into place.
+
+## `components/blueprint/PageSpine.tsx` (2026-09-15)
+
+`"use client"`. Wraps the home page's four content sections (`.hp-list`) and draws a hairline (`.hp-spine-track`) down their left edge with an accent fill (`.hp-spine-fill`) whose `scaleY` follows `useScroll({ target, offset: ["start 0.75", "end end"] })` through a `useSpring` (`stiffness 220, damping 34, mass 0.4`) — so it settles rather than tracking the scrollbar 1:1. The `"end end"` offset (not the project list's `"end 0.4"`) is deliberate: the wrapper's bottom sits at the footer, so the page runs out of scroll before its bottom could reach 40% of the viewport. Purely decorative; reduced motion shows it fully drawn. Sibling of `components/projects/ProjectListSpine.tsx`, which does the same for the project entries.
+
+## `components/blueprint/HeroRibbon.tsx` (2026-09-15)
+
+`"use client"`. The faint B-bowl flourish behind the home hero's `h1` (`.bp-hero-ribbon`, a 200×240 `viewBox` path stroked in `--ink`). The stroke-draw itself is CSS (`bp-draw` in `blueprint.css`), but CSS can't replay a finished animation, so the component remounts the `<path>` via a `key` whenever the `.bp-hero` section (not the ribbon's own mostly-empty box) re-enters the viewport at ≥60%, ignoring the observer's initial report and holding a 2.1s cooldown that matches the animation's delay + duration so a mid-replay crossing can't stack a second restart.
+
+## `components/blueprint/BpRelocationBadge.tsx` (2026-09-15, revised 2026-09-19)
+
+`"use client"`. The "Open to relocation" pill, in two exports, both gated on `resumeData.visibility.openToRelocation`:
+
+- **`BpHeroRelocationBadge`** — rendered by the home page inside `.bp-hero`. It is a single always-`position: fixed` element anchored at the viewport's top-right and moved with an `x`/`y` transform, so its two homes are one tween: at rest it sits level with the rule under the heading, flush with the hero content's right edge (`useHeroRestingSpot()` measures `.bp-hero .bp-shell` and the `h1` from the real DOM, corrected for `scrollY`, re-measured on resize and once web fonts swap in); once `scrollY > 48px` — or on any viewport under 860px, where the name spans the whole hero — it hops to the same bottom-right corner the other pages dock it in (`HOP_SPRING`: stiffness 170, damping 18, mass 1) with a small roll (`0 → −14° → 10° → −5° → 0`, 0.6s). Reduced motion places it with a static transform.
+- **`BpFixedRelocationBadge`** — rendered by the site layout: the plain docked `.bp-badge` on every page except `/` (`usePathname()`); `.bp:has(.pj) .bp-badge` hides it on the projects and About pages, where `BackToTop` and the page's own controls own the corners.
+- **`BadgeLabel`** (shared) — the accent dot with its `bp-ring` ping, and a looping **typewriter**: the label types in at ~40ms + jitter per letter, holds 2.6s with a blinking caret, deletes two letters at a time every 160ms, pauses 1s empty, repeats. An invisible ghost copy reserves the full width so the pill never resizes, and an `sr-only` copy carries the text for assistive tech. Under reduced motion the label is static.
+
+## `components/blueprint/BackToTop.tsx`
+
+`"use client"`. The bottom-left "Back to Top" control (`.bp-top`), shown (`is-shown`, focusable) once `scrollY` passes 80% of the viewport height; `aria-hidden` and `tabIndex −1` otherwise; smooth-scrolls to the top. Used by `/`, `/projects` and `/about-this-site`. Moved here from `components/projects/` on 2026-09-15. (`next.config.mjs` moves the Next dev overlay to the bottom-right so it doesn't cover it.)
+
+## `components/blueprint/BpThemeToggle.tsx` + `ThemeProvider.tsx`
+
+`"use client"`, added with dark mode on 2026-09-12. `ThemeProvider` (mounted by the site layout) owns `data-theme` on `<html>` — a blocking init script in the root layout stamps it before hydration — and the `localStorage` preference; `useTheme()` returns `{ theme, toggleTheme }`. `BpThemeToggle` is the switch in the nav. Components that must know the mode in JS (the About page's themed captures, the Studio demo) read `useTheme()`; everything else is CSS on `html[data-theme="dark"]`.
+
+## `components/content/EmphasizedText.tsx` (2026-09-16)
+
+Server-safe (no directive). Takes `text`, `phrases` (a bullet's `emphasis: string[]`, picked in the Studio) and a required `className`, and returns the text with each exact phrase wrapped in a `<span className>` — on the resume that class is `.bp-bullet-emphasis`, whose CSS gives the phrase the accent on hover. When selections overlap the longest phrase wins, so "motion control" beside "motion" still yields one span; phrases that don't occur verbatim are ignored, so a Studio typo can't break a bullet. Used by the home page's experience bullets (30 of them carry phrases), `ProjectEntry`, and `AboutSiteStory`.
 
 ## `CountUp`, `WordReveal`, `ScrollWords` (2026-09-17)
 
@@ -38,7 +66,7 @@ Three more `components/blueprint/` motion primitives, added with the About-this-
 
 ## `components/blueprint/BpComingSoon.tsx`
 
-`"use client"`. The entire content of `/projects` today. Props: `{ teasers?: { name: string; type: string }[] }` (the projects page passes the top 6 projects by `order`).
+`"use client"`. The fallback `/projects` renders when no project is published (every project `visible: false`, or the Projects switch off) — since 2026-09-16 ICARUS-Lite is published, so it is not on the live site. Props: `{ teasers?: { name: string; type: string }[] }`; the current fallback call passes none.
 
 - A CSS-only triple-ring loader + pulsing core (`.bp-soon-loader`).
 - A cycling status line (`.bp-soon-status`) that rotates through `PHASES` ("Compiling case studies", "Rendering system diagrams", …) every 2600 ms — skipped entirely if `prefers-reduced-motion: reduce`.

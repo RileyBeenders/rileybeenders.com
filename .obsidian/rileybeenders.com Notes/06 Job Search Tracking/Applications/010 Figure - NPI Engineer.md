@@ -55,9 +55,10 @@ Total compensation may include additional components/benefits depending on the r
 - BOM management is a literal explicit skill ("Engineering Documentation and BOM Control"), and the self-developed Kubernetes-hosted ERP/CRM with dynamic BOM generation linked to purchasing is a direct, hands-on match for the "PLM/ERP/MRP systems" requirement — not just familiarity, but having built one. 5+ years of experience is comfortably met, and leadership/accountability is demonstrated through team growth and mentoring.
 - **Minor gap:** no formal change-management/ECN terminology on record specifically, though risk analysis and documented process changes for ICARUS/ICARUS-Lite regulatory compliance is adjacent evidence of disciplined change control.
 
-### Now — Aug 22, 2026
+### Now — Sep 19, 2026
 
-No material change — this remains the strongest structural fit in the tracked applications, and nothing in the underlying data has shifted since Aug 8, 2026.
+- This remains the strongest structural fit in the tracked applications. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — none of which weakens the NPI, BOM/ERP or lifecycle evidence above.
+- The leadership evidence changed shape: the "~5 new roles" figure the snapshot above cites is no longer stated in the record, but the current role now says outright that Riley **acts as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions** — more direct support for the "leadership/accountability" point than team-growth wording was. The change-management/ECN gap is unchanged.
 
 ---
 
