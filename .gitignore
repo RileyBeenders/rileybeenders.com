@@ -13,3 +13,6 @@ out
 
 # Studio keeps a rolling backup of each JSON file it saves — local only.
 .studio-backups
+
+# impeccable live-mode runtime state (the port/token of a running live server); config.json beside it is meant to be committed.
+.impeccable/live/server.json

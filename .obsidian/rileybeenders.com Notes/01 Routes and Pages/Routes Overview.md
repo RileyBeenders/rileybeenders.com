@@ -10,7 +10,7 @@ All routes are Next.js App Router server components. None use dynamic segments �
 |---|---|---|---|
 | `/` | `app/(site)/page.tsx` | Editorial one-page resume (hero + 4 numbered sections + footer) | "Riley Beenders \| R&D, Electromechanical and Automation Engineer" (root layout) |
 | `/projects` | `app/(site)/projects/page.tsx` | Hero + one [[Projects Route (BpComingSoon)\|ProjectEntry]] per published project inside `ProjectListSpine` (falls back to `BpComingSoon` when none) | "Projects \| Riley Beenders" |
-| `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + contact card row | "Contact \| Riley Beenders" |
+| `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + a Details paragraph with the email address spelled out | "Contact \| Riley Beenders" |
 | `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] | "More Info \| Riley Beenders" |
 | `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
 | `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → PDF binary, no HTML | n/a |
@@ -34,10 +34,10 @@ Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `open
 
 Server component, `data = resumeData`. Renders:
 
-1. **Hero** (`.bp-hero`) — a decorative one-continuous-stroke ribbon SVG, eyebrow "R&D · Electromechanical · Automation", `h1` "Riley / Beenders", a rule, `data.person.title` + location + red "Open to relocation", and `<BpActions data={data} />`.
+1. **Hero** (`.bp-hero`) — a decorative one-continuous-stroke ribbon SVG, `h1` "Riley / Beenders", a rule, then a meta row: `data.person.title` in italic on the left and, on the right, the uppercase location over an italic fact line built from `experience[0]` ("Lead, Research & Development Engineer, Proteor, since January 2025", `.bp-hero-now`). No eyebrow above the name since 2026-09-18 (see the No-Eyebrow Rule in [[Design System (Blueprint Press)]]). Then `<BpActions data={data} />`.
 2. **`01 Summary`** — `data.summary` with a `.bp-dropcap` on the first character.
 3. **`02 Experience`** — `data.experience.map(...)` → `.bp-role` articles (role, `start — end`, `company · location`, optional `context`, `bullets`). No proof/project chips.
-4. **`03 Toolchain`** — `data.skills.map(...)` → `.bp-skill-group` with `.bp-pill` tags per `group.items`.
+4. **`03 Skills`** (labelled "Toolchain" until 2026-09-18) — `data.skills.map(...)` → `.bp-skill-group` with `.bp-pill` tags per `group.items`.
 5. **`04 Education`** — `data.education.degrees` then, if any, `data.education.certificates` as `.bp-cert` cards (each with an optional `.bp-link` "Show credential" external link + diagonal arrow).
 6. **Footer** — `<BpMark id="footer" animated float />` and a note about the monogram's single-stroke construction.
 
@@ -53,7 +53,7 @@ Server component reading `data/site/about-site.json` and `todayIso()`; renders t
 
 ## `/contact` — `app/(site)/contact/page.tsx`
 
-Fully static aside from `person` off `resumeData`. Hero ("Get in touch"), `<BpActions data={resumeData} />`, then a `01 Details` section with a paragraph and a `.bp-certs` grid of three `.bp-cert` cards: Email (`mailto:`), LinkedIn, GitHub — each a `.bp-link`.
+Fully static aside from `person` off `resumeData`. Hero ("Get in touch", no eyebrow), `<BpActions data={resumeData} />`, then a `01 Details` section with the `details.description` paragraph(s) and the email address printed once as a `mailto:` link in prose. The three Email / LinkedIn / GitHub cards that duplicated the button row were removed on 2026-09-18 (the impeccable critique's "same three links twice on one screen"), and with them `ContactDetails.linkedinLabel` / `githubLabel` and `ContactHero.eyebrow` left `types/contact.ts`, `data/contact/contact.json`, and the Studio schema.
 
 ## `/more-info` — `app/(site)/more-info/page.tsx`
 

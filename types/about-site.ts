@@ -7,7 +7,6 @@ import type {
 } from "@/types/resume";
 
 export type AboutSiteHero = {
-  eyebrow: string;
   title: string;
   tagline: string;
 };

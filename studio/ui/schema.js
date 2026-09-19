@@ -161,8 +161,7 @@ const BACKEND_ITEM_FIELDS = [
       { value: "skills", label: "Agent skills (mini router)" }
     ]
   },
-  { name: "eyebrow", type: "text", label: "Eyebrow", span: "third" },
-  { name: "title", type: "text", label: "Title", required: true, span: "third" },
+  { name: "title", type: "text", label: "Title", required: true, span: "half" },
   { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true },
   { name: "notes", type: "stringList", label: "Side notes", help: "Short one-liners listed under the paragraphs." },
   { name: "matches", type: "objectList", label: "Resume demo: keyword matches", itemLabel: "Match", fields: BACKEND_MATCH_FIELDS, help: "Only the resume demo reads these." },
@@ -213,8 +212,7 @@ const STAT_FIELDS = [
 ];
 
 const PILLAR_FIELDS = [
-  { name: "eyebrow", type: "text", label: "Eyebrow", span: "half" },
-  { name: "title", type: "text", label: "Title", required: true, span: "half" },
+  { name: "title", type: "text", label: "Title", required: true },
   { name: "body", type: "stringList", label: "Paragraphs", multiline: true, required: true, help: "The first paragraph shows at rest; the rest open on demand." },
   { name: "screenshotId", type: "text", label: "Screenshot ID" }
 ];
@@ -261,6 +259,7 @@ export const SCHEMAS = {
       { name: "type", type: "text", label: "Category", placeholder: "Motion Control / Product Platform" },
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
+      { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
       { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true },
       { name: "proofId", type: "ref", source: "proofs", label: "Proof", help: "The write-up that slides in after this project." },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
@@ -408,8 +407,7 @@ export const SCHEMAS = {
         type: "group",
         label: "Hero",
         fields: [
-          { name: "eyebrow", type: "text", label: "Eyebrow", required: true, span: "half", help: "The small label above the headline." },
-          { name: "title", type: "text", label: "Headline", required: true, span: "half" },
+          { name: "title", type: "text", label: "Headline", required: true },
           { name: "tagline", type: "text", label: "Tagline", required: true }
         ]
       },
@@ -417,7 +415,7 @@ export const SCHEMAS = {
         name: "details",
         type: "group",
         label: "Details",
-        help: "The section under the hero: a short intro, then the Email, LinkedIn and GitHub cards.",
+        help: "The section under the hero: a short intro, then the email address spelled out from Site Settings → Person.",
         fields: [
           { name: "title", type: "text", label: "Section title", required: true, span: "half" },
           { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true },
@@ -502,8 +500,7 @@ export const SCHEMAS = {
         type: "group",
         label: "Hero",
         fields: [
-          { name: "eyebrow", type: "text", label: "Eyebrow", required: true, span: "half" },
-          { name: "title", type: "text", label: "Headline", required: true, span: "half" },
+          { name: "title", type: "text", label: "Headline", required: true },
           { name: "tagline", type: "text", label: "Tagline", required: true }
         ]
       },
@@ -656,10 +653,10 @@ export const SCHEMAS = {
  * changes. A schema that isn't listed here doesn't appear.
  */
 export const RAIL = [
-  { page: "Home", keys: ["summary", "experience", "skills", "education"] },
-  { page: "Projects", keys: ["projects", "proofs"] },
-  { page: "Contact", keys: ["contact"] },
-  { page: "More Info", keys: ["moreInfo"] },
-  { page: "About this site", keys: ["aboutSite"] },
-  { page: "Site settings", keys: ["header"] }
+  { page: "Home", path: "/", keys: ["summary", "experience", "skills", "education"] },
+  { page: "Projects", path: "/projects", keys: ["projects", "proofs"] },
+  { page: "Contact", path: "/contact", keys: ["contact"] },
+  { page: "More Info", path: "/more-info", keys: ["moreInfo"] },
+  { page: "About this site", path: "/about-this-site", keys: ["aboutSite"] },
+  { page: "Site settings", path: "/", keys: ["header"] }
 ];

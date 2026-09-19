@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Studio · rileybeenders.com</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9C%8E%3C/text%3E%3C/svg%3E" />
+  <!-- The site's own mark (app/icon.svg), so the Studio tab reads as part of the same product. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%23ffffff'/%3E%3Cg transform='translate(2 2)'%3E%3Ccircle cx='20' cy='20' r='18.4' fill='none' stroke='%23171a20' stroke-width='1.7'/%3E%3Cpath d='M13 10.6v18.8' fill='none' stroke='%23171a20' stroke-width='3.4' stroke-linecap='round'/%3E%3Cpath d='M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7' fill='none' stroke='%233e6ae1' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E" />
   <script>
     // Runs before the stylesheet so the saved theme is on <html> for first
     // paint — otherwise the page would flash light before studio.js loads.
@@ -23,7 +24,15 @@
 <body>
   <header class="topbar">
     <div class="topbar-left">
-      <span class="brand">Studio</span>
+      <span class="brand">
+        <!-- The monogram, static (components/blueprint/BpMark.tsx draws the animated one on the site). -->
+        <svg class="brand-mark" width="26" height="26" viewBox="0 0 40 40" fill="none" aria-hidden="true" focusable="false">
+          <circle cx="20" cy="20" r="18.4" stroke="currentColor" stroke-width="1.2" />
+          <path d="M13 10.6v18.8" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" />
+          <path d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7" stroke="var(--accent)" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="brand-name">Studio</span>
+      </span>
       <span class="brand-sub">rileybeenders.com</span>
     </div>
 
@@ -33,10 +42,14 @@
     </div>
 
     <div class="topbar-right">
-      <span id="status" class="status">Saved</span>
+      <span id="status" class="status" aria-live="polite">Saved</span>
       <button type="button" id="revert" class="f-btn f-btn--quiet" disabled>Revert</button>
-      <button type="button" id="save" class="f-btn f-btn--solid" disabled>Save</button>
-      <a id="site-link" class="f-btn f-btn--quiet" href="http://localhost:3000" target="_blank" rel="noreferrer">Site ↗</a>
+      <button type="button" id="save" class="f-btn f-btn--solid" title="Save (Ctrl+S)" disabled>Save</button>
+      <!-- Opens the page this file renders, in one reused window, so the site never multiplies into tabs. -->
+      <a id="site-link" class="f-btn f-btn--quiet f-btn--site" href="http://localhost:3000" target="rileybeenders-site" rel="noreferrer">
+        <span>Open on the site</span>
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </a>
       <button type="button" id="theme-toggle" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode"></button>
     </div>
   </header>
@@ -47,6 +60,7 @@
     <section id="list-pane" class="list-pane" aria-label="Entries">
       <div class="list-head">
         <h2 id="list-title">Summary</h2>
+        <span id="list-count" class="list-count"></span>
       </div>
       <div id="list-body" class="list-body"></div>
       <div id="list-actions" class="list-actions"></div>
@@ -57,6 +71,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <dialog id="modal" class="modal"></dialog>
+  <dialog id="confirm" class="confirm"></dialog>
 
   <script type="module" src="/studio/studio.js"></script>
 </body>

@@ -458,7 +458,7 @@ function TimelineCard({
           </a>
         )}
       </p>
-      <h4 className="tl-card-title">{entry.title}</h4>
+      <h3 className="tl-card-title">{entry.title}</h3>
       {relation && (
         <p className="tl-card-link">
           <span className="tl-card-link-rule" aria-hidden="true" />

@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import type { ProjectFeature as ProjectFeatureData, ProjectImage } from "@/types/resume";
 import { useTheme } from "@/components/blueprint/ThemeProvider";
 import { Reveal } from "@/components/blueprint/Reveal";
-import { WordReveal } from "@/components/blueprint/WordReveal";
 import { ScrollWords } from "@/components/blueprint/ScrollWords";
 import { Lightbox } from "@/components/projects/Lightbox";
 import { FeatureStats } from "@/components/projects/feature/FeatureStats";
@@ -57,7 +56,6 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
       <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
 
       <header className="ft-head">
-        {feature.eyebrow && <WordReveal as="p" className="pj-eyebrow ft-eyebrow" text={feature.eyebrow} blur={false} />}
         {feature.intro && <ScrollWords className="ft-intro" text={feature.intro} />}
       </header>
 
@@ -69,7 +67,7 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
 
       {hasTimeline && (
         <div className="ft-block">
-          <Reveal><h3 className="ft-block-title">Timeline</h3></Reveal>
+          <Reveal><h2 className="ft-block-title">Timeline</h2></Reveal>
           <FeatureTimeline
             entries={feature.timeline!}
             screenshots={screenshots}
@@ -82,14 +80,14 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
 
       {hasPillars && (
         <div className="ft-block">
-          <Reveal><h3 className="ft-block-title">What it's made of</h3></Reveal>
+          <Reveal><h2 className="ft-block-title">What it's made of</h2></Reveal>
           <FeaturePillars pillars={feature.pillars!} screenshots={screenshots} onOpenScreenshot={openScreenshot} />
         </div>
       )}
 
       {hasBackend && (
         <div className="ft-block">
-          <Reveal><h3 className="ft-block-title">{feature.backend!.eyebrow ?? "Behind the site"}</h3></Reveal>
+          <Reveal><h2 className="ft-block-title">{feature.backend!.eyebrow ?? "Behind the site"}</h2></Reveal>
           {feature.backend!.intro && (
             <Reveal delay={0.06}><p className="ft-block-note">{feature.backend!.intro}</p></Reveal>
           )}

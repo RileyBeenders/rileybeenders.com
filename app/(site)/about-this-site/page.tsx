@@ -40,7 +40,6 @@ export default function AboutThisSitePage() {
     <main className="pj as">
       <section className="bp-hero as-hero">
         <div className="bp-shell">
-          <Reveal delay={0.05}><p className="bp-eyebrow">{data.hero.eyebrow}</p></Reveal>
           <h1 style={{ fontSize: "clamp(44px, 8vw, 96px)" }}>
             <Reveal delay={0.14}><span style={{ display: "block" }}>{data.hero.title}</span></Reveal>
           </h1>
@@ -68,7 +67,7 @@ export default function AboutThisSitePage() {
 
       <footer className="pj-outro">
         <div className="bp-shell">
-          <p className="bp-eyebrow">Still moving</p>
+          <p className="bp-outro-lead">Still moving.</p>
           <p className="bp-prose" style={{ marginTop: 18 }}>
             Everything on this page is edited from the Studio and refreshed by an agent as
             the repository grows. If the timeline ends before today, that is a to-do, not

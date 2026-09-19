@@ -48,7 +48,7 @@ export function Reveal({ children, delay = 0, as = "rise", from = "left", blur =
       className={className}
       initial="hidden"
       whileInView="shown"
-      viewport={{ once: true, amount: 0.25, margin: "0px 0px -80px 0px" }}
+      viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}
       variants={variantsFor(as, from, blur)}
       transition={{
         duration: DURATION[as],

@@ -1,6 +1,5 @@
 {
   "hero": {
-    "eyebrow": "Meta · Design · Agents",
     "title": "About this site",
     "tagline": "The site as its own case study: how it was designed, the agents that maintain it, and how far it has come in a short time."
   },
@@ -89,27 +88,26 @@
     ]
   },
   "feature": {
-    "eyebrow": "A living project",
     "intro": "This page is the one part of the site that documents itself. The numbers below come from the repository, the timeline is the commit history with the noise removed, and an agent skill refreshes both as the site grows.",
     "stats": [
       {
         "label": "Commits",
-        "value": 117,
+        "value": 123,
         "note": "on main and its version branches"
       },
       {
         "label": "Days in motion",
-        "value": 81,
+        "value": 83,
         "note": "since the first commit"
       },
       {
         "label": "Agent skills",
-        "value": 21,
-        "note": "7 repo procedures, 14 registered"
+        "value": 23,
+        "note": "8 repo procedures, 15 registered"
       },
       {
         "label": "Vault notes",
-        "value": 33,
+        "value": 35,
         "note": "kept in sync by an agent"
       },
       {
@@ -390,8 +388,8 @@
         "deletions": 299
       },
       {
-        "date": "2026-09-17",
-        "era": "present",
+        "date": "2026-09-18",
+        "era": "past",
         "title": "A motion language, and this page",
         "summary": "Three skills distilled from svelte-bits (what to animate, how to build it, how to compose it) are written, then used to build the page you are reading: the date bar, the timeline, the stats, the pins on the screenshots.",
         "tags": [
@@ -399,7 +397,22 @@
           "motion",
           "content"
         ],
-        "screenshotId": "feature"
+        "screenshotId": "feature",
+        "hash": "3a9f0ba",
+        "files": 40,
+        "insertions": 1202,
+        "deletions": 464
+      },
+      {
+        "date": "2026-09-18",
+        "era": "present",
+        "title": "A design critic joins the repository",
+        "summary": "The impeccable skill arrives with the site's first PRODUCT.md and a real DESIGN.md, then reviews the site and the Studio. One batch follows: the grey ramp fixed for contrast, every label above a heading gone, the evidence link named, a two-row phone nav, a title block in the footer, and the Studio rebuilt as the site's own drafting room.",
+        "tags": [
+          "design",
+          "agents",
+          "studio"
+        ]
       },
       {
         "date": "2026-10-01",
@@ -442,7 +455,6 @@
     ],
     "pillars": [
       {
-        "eyebrow": "Design",
         "title": "Blueprint Press",
         "body": [
           "The site is set on paper with ink, one accent, and hairline rules, over a fixed blueprint grid you can see through the page. Which colors those are is not fixed in the code: paper, ink, and accent are CSS tokens, filled from whichever palette is chosen in the Studio's Site Settings, so the page re-inks itself from a form. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
@@ -452,17 +464,15 @@
         "screenshotId": "home-full"
       },
       {
-        "eyebrow": "Agents",
         "title": "Skills in the repository",
         "body": [
-          "Standing instructions for any AI coding agent live in .agents/ as plain markdown, one folder per procedure, routed by a README. custom-resume builds a job-targeted PDF from a posting and the site's data. vault-sync keeps an Obsidian vault of 33 notes matching the code in the same session as any change. sync-charts keeps the application tracker identical in two places.",
-          "Thirteen generic frontend-design skills are vendored in with a lock file so drift upstream is detectable, and registered as first-class Claude Code skills.",
+          "Standing instructions for any AI coding agent live in .agents/ as plain markdown, one folder per procedure, routed by a README. custom-resume builds a job-targeted PDF from a posting and the site's data. vault-sync keeps an Obsidian vault of 35 notes matching the code in the same session as any change. sync-charts keeps the application tracker identical in two places.",
+          "Fourteen generic frontend-design skills are vendored in with a lock file so drift upstream is detectable, and registered as first-class Claude Code skills. One of them, impeccable, reads the repository's own PRODUCT.md and DESIGN.md and is the design critic every visual change now answers to.",
           "The newest three, motion-design, motion-fluidity, and motion-layout, were distilled from the svelte-bits component library and translated into this site's system: numeric subtlety thresholds, a rated catalog of every effect, and copy-ready recipes. This entry is their first use."
         ],
         "screenshotId": "studio"
       },
       {
-        "eyebrow": "Goal",
         "title": "A resume that shows its work",
         "body": [
           "The PDF stays the official application document. The site is the evidence layer behind it: each line of the resume links to a project, and each project opens into the problem, the approach, and what changed.",
@@ -515,7 +525,6 @@
       "items": [
         {
           "demo": "resume",
-          "eyebrow": "Automatic resume formatter",
           "title": "One posting in, one page out",
           "body": [
             "The PDF is still the document that gets submitted. When I apply somewhere, an agent reads the posting, pulls the matching evidence out of the same data this site renders, and writes a one-page PDF in the site's format. Anything the data can't back up is left out, not softened.",
@@ -551,7 +560,6 @@
         },
         {
           "demo": "studio",
-          "eyebrow": "Studio environment",
           "title": "Edit the site from a form, not a code editor",
           "body": [
             "Every word, image, palette, and font on this site comes from JSON files. The Studio is a small local editor that reads and writes them through a form built from a schema, so a content change never means opening a code file.",
@@ -565,7 +573,6 @@
         },
         {
           "demo": "skills",
-          "eyebrow": "Custom agent skills",
           "title": "Standing instructions any agent can follow",
           "body": [
             "The repository carries its own instructions for AI coding agents, written as plain markdown so any tool can follow them. Each one is a procedure I would otherwise have to remember: how to tailor a resume, how to keep the documentation honest, how motion on this site should feel.",
@@ -606,6 +613,11 @@
               "name": "site-timeline-sync",
               "trigger": "After a meaningful commit",
               "does": "Refreshes this page's numbers from git and adds only the commits that mattered to the timeline."
+            },
+            {
+              "name": "impeccable",
+              "trigger": "\"Critique this page\" or any design change",
+              "does": "Reviews a surface against the site's own product and design files, scores it, and polishes what it finds without changing the world it lives in."
             }
           ]
         }

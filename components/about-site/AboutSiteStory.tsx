@@ -54,7 +54,7 @@ export function AboutSiteStory({ data, proof }: AboutSiteStoryProps) {
 
         <div className={`pj-entry-grid${hasImages ? "" : " as-story-grid--text-only"}`}>
           <div className="pj-entry-text">
-            <Reveal><p className="bp-section-index">01&nbsp;&nbsp;The site</p></Reveal>
+            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;The site</h2></Reveal>
 
             <div className="pj-body">
               <Reveal delay={0.06}><p className="pj-summary">{data.summary}</p></Reveal>

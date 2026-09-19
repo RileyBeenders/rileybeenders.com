@@ -9,7 +9,6 @@ import type { ProofView } from "@/lib/projects";
 export function CaseStudy({ proof }: { proof: ProofView }) {
   return (
     <div className="pj-case-study">
-      <p className="pj-eyebrow">Case study</p>
       <h3 className="pj-proof-title">{proof.title}</h3>
       {proof.subtitle && <p className="pj-proof-subtitle">{proof.subtitle}</p>}
       {proof.summary && <p className="pj-proof-summary">{proof.summary}</p>}

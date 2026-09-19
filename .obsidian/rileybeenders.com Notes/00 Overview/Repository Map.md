@@ -35,7 +35,7 @@ app/
   (site)/                      # route group: everything with the Blueprint Press chrome
     layout.tsx                 # loads Instrument Serif + Spectral (next/font/google), blueprint.css, renders <BpNav> + "Open to relocation" badge
     blueprint.css              # the entire site design system, all scoped under .bp
-    page.tsx                   # / — home (server component): hero + Summary/Experience/Toolchain/Education + footer
+    page.tsx                   # / — home (server component): hero + Summary/Experience/Skills/Education + footer title block
     projects/page.tsx          # /projects — hero + one <ProjectEntry> per published project in <ProjectListSpine> (BpComingSoon fallback)
     projects/projects.css      # .pj-* — entry layout, gallery, lightbox, case study, the per-project date box
     projects/feature.css       # .ft-* / .tl-* — the About page's stats, timeline, pillars, pinned screenshots (loaded by both routes)

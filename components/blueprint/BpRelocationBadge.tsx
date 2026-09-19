@@ -7,6 +7,8 @@ import resumeData from "@/data/resumeData";
 
 const SCROLL_THRESHOLD = 48;
 const BADGE_HEIGHT = 44;
+/** Below this width the name spans the whole hero, so the badge starts docked instead of resting beside it. */
+const HERO_SPOT_MIN_WIDTH = 860;
 /** Vertical air between the badge's bottom edge and the rule it floats above. Tune this to move it closer/further. */
 const GAP_ABOVE_RULE = 16;
 const HOP_SPRING = { type: "spring", stiffness: 170, damping: 18, mass: 1 } as const;
@@ -32,10 +34,15 @@ function useScrolledPastHero() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    const onScroll = () =>
+      setScrolled(window.scrollY > SCROLL_THRESHOLD || document.documentElement.clientWidth < HERO_SPOT_MIN_WIDTH);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return scrolled;
