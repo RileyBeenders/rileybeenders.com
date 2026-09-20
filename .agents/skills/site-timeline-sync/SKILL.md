@@ -59,7 +59,7 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
    ```bash
    sh .agents/skills/impeccable/scripts/impeccable detect --json <changed .css/.tsx files>
    ```
-   Advisory hits on the blueprint grid are expected (it is the committed surface); warnings are not. If the commit changed a whole surface, run `$impeccable audit` on it first. Then, with `npm run dev` (and `npm run studio` for the Studio shots) running:
+   Advisory hits on the blueprint grid are expected (it is the committed surface); warnings are not. If the commit changed a whole surface, run `$impeccable audit` on it first. Then, with `npm run site` running (both servers; the Studio shots are skipped if it is down):
    ```bash
    node scripts/capture-site-screenshots.mjs
    ```

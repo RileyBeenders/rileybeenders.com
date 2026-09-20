@@ -913,6 +913,38 @@ html[data-theme="dark"] .bp {
 .bp-badge-caret[data-blink] { animation: bp-caret 1s steps(2, jump-none) infinite; }
 @keyframes bp-caret { from { opacity: 1; } to { opacity: 0; } }
 
+/* ------------------------------------------------------ dev: studio --- */
+/* Only while `npm run site` is running (components/blueprint/StudioLink.tsx):
+   the way into the Studio from the page being looked at. It keeps to the
+   back-to-top control's vocabulary and stacks above the badge's corner. */
+.bp-studio-link {
+  position: fixed;
+  right: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.3s ease, transform 0.38s var(--ease);
+}
+.bp-studio-link svg { color: var(--accent); flex: none; }
+.bp-studio-link:hover { border-color: var(--accent); transform: translateY(-2px); }
+.bp-studio-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* The badge docks in the same corner, 44px tall; sit one gap above it — except on
+   the pages that hide it (.pj, see projects.css), where the corner is free. */
+.bp:has(.bp-badge):not(:has(.pj)) .bp-studio-link { bottom: calc(clamp(14px, 2vw, 24px) + 44px + 10px); }
+
 /* ------------------------------------------------------- responsive --- */
 @media (max-width: 860px) {
   .bp-section-grid { grid-template-columns: 1fr; gap: 14px; }
@@ -955,7 +987,7 @@ html[data-theme="dark"] .bp {
 /* The home page prints as the document it imitates: ink on paper, no chrome, no grid. */
 @media print {
   .bp { background: #fff !important; color: #000 !important; }
-  .bp-nav, .bp-badge, .bp-top, .bp-hero-ribbon, .hp-spine, .bp-actions, .bp-sheen { display: none !important; }
+  .bp-nav, .bp-badge, .bp-top, .bp-studio-link, .bp-hero-ribbon, .hp-spine, .bp-actions, .bp-sheen { display: none !important; }
   .bp-hero { padding-top: 0; }
   .bp-hero h1 { font-size: 56pt; }
   .bp-section { padding: 16pt 0; }

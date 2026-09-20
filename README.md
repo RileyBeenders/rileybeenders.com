@@ -111,14 +111,22 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
 ```bash
 npm install
-npm run dev
+npm run site
 ```
+
+One command brings up both halves of the local environment and stops both on
+Ctrl+C:
+
+| | URL | What it is |
+| :-- | :-- | :-- |
+| **Site** | `http://localhost:3000` | `next dev` with Fast Refresh, behind the device gate (below) |
+| **Studio** | `http://localhost:3001` | the content editor, reachable from this machine only |
 
 If you are running these commands in Windows PowerShell and see `running scripts is disabled on this system`, use the command shim instead:
 
 ```bash
 npm.cmd install
-npm.cmd run dev
+npm.cmd run site
 ```
 
 If you want to keep using `npm` directly in PowerShell, run this once in an elevated terminal:
@@ -127,57 +135,62 @@ If you want to keep using `npm` directly in PowerShell, run this once in an elev
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
-Then open:
+**Moving between the two.** Every page of the dev site has an **Edit in Studio**
+control in its bottom-right corner that opens the Studio on the file that page
+is built from (and on the project entry, when the URL names one). The Studio's
+**Open on the site** button is the way back. Each direction reuses one window,
+so neither side multiplies into tabs and unsaved Studio work is never lost.
 
-```txt
-http://localhost:3000
-```
+**Testing on a phone or tablet.** The dev server listens only on this machine;
+the gate on port 3000 is what other devices reach, and it turns them away until
+you let them in:
 
-To open the dev server from a phone or another machine on your network, list those
-hosts in a git-ignored `.env.local` at the repo root (Next blocks other origins
-from the dev server by default):
+1. On the phone, open the address the terminal printed at startup
+   (`http://<this machine's LAN IP>:3000`). It shows a "not allowed in yet" page
+   with the phone's address.
+2. In the Studio, open **Devices**. The phone is listed under *Waiting at the
+   door* — click **Allow**. The page on the phone loads the site by itself.
 
-```txt
-ALLOWED_DEV_ORIGINS=10.0.0.5,10.0.0.6
-```
+Access is temporary (1 hour to 24 hours, or until the server stops) and can be
+revoked from the same panel. Only local-network addresses can be allowed, a
+range no wider than one network (`10.1.1.0/24`) is the most a grant can cover,
+and nothing off the local network gets in at all. The list lives in the
+git-ignored `.studio-access.json`.
+
+Each half also runs on its own: `npm run dev` for the site alone (loopback only,
+no gate, no Studio control) and `npm run studio` for the editor alone. Ports can
+be moved with `SITE_PORT`, `STUDIO_PORT`, and `NEXT_PORT` (the private port
+`next dev` listens on behind the gate, 3010).
 
 ***
 
 ### Editing Content — the Studio
 
 Site content lives in the JSON files under `data/`. Rather than editing those by
-hand, run the Studio: a local editor that reads and writes the same files
-through a browser.
-
-```bash
-npm run studio
-```
-
-Then open:
-
-```txt
-http://localhost:3001
-```
-
-Run it alongside `npm run dev` in a second terminal — save in the Studio, and the
-site on port 3000 hot-reloads with the change.
+hand, use the Studio: a local editor that reads and writes the same files
+through a browser. It starts with `npm run site` (or alone with `npm run studio`)
+at `http://localhost:3001`; save there, and the site on port 3000 hot-reloads
+with the change.
 
 - **Local only.** The Studio is a standalone Node server; it is not part of the
   Next app and never ships to production. It binds to the loopback interface, so
-  nothing outside the machine can reach it — not even another device on the same
-  network.
+  nothing outside the machine can reach it — not even a device you have allowed
+  onto the dev site.
 - **Projects and proofs** get a purpose-built editor: reorder them, edit bullets,
   build the image gallery, and cross-link a project to its proof.
 - **Show / hide.** The eye icon next to a project or proof writes
   `"visible": false` into the JSON. The entry stays in the file — and in the
   Studio — but drops off the public site. History is kept; visibility is not.
 - **Images.** Upload straight into `public/project-images` or
-  `public/project-artifacts`, or pick from what is already there.
+  `public/project-artifacts`, or pick from what is already there. The editor
+  shows every image as a small resized copy sized to its box (cached in the
+  git-ignored `.studio-cache/`), never the multi-megabyte original.
 - **Saves are guarded.** Every save writes the previous version into
   `.studio-backups/` (git-ignored, last 25 kept), and a save is refused if the
   file changed on disk since it was loaded.
-
-Use a different port with `STUDIO_PORT=3002 npm run studio`.
+- **Devices.** The panel that lets a phone or another machine on the local
+  network open the dev site for a while — see *Testing on a phone or tablet*
+  above.
 
 ***
 
@@ -198,7 +211,7 @@ app/
     more-info/page.tsx
   api/resume-pdf/route.ts  generates the resume PDF on request
 components/
-  blueprint/               nav, mark, reveal/motion primitives, theme toggle, badges
+  blueprint/               nav, mark, reveal/motion primitives, theme toggle, badges, the dev-only Edit in Studio control
   projects/                ProjectEntry, CaseStudy, ProjectFeature (+ feature/ sub-blocks and demos), gallery, lightbox
   about-site/              AboutSiteStory
   content/                 EmphasizedText
@@ -217,8 +230,10 @@ scripts/
   site-stats.mjs           refreshes About-this-site stats from git
   capture-site-screenshots.mjs
   check-anchor-hydration.mjs
-studio/                    the local content editor (never deployed)
-  server.mjs · ui/
+studio/                    the local environment, none of it deployed
+  site.mjs                 `npm run site`: the device gate + the Studio in one process, `next dev` behind them
+  gate.mjs · access.mjs    the gate on :3000 and the temporary device grants it enforces
+  server.mjs · ui/         the content editor on :3001 (ui/devices.js is the Devices panel)
 ResumeBuilder/             jsPDF resume generator used by /api/resume-pdf
 public/
   project-images/          photographs, renders, site captures
@@ -226,7 +241,7 @@ public/
 assets/fonts/              Instrument Serif for the PDF renderer
 design/                    Canvas mockups of the mark and interactions
 .agents/skills/            every agent skill, one folder each (see .agents/README.md)
-.claude/                   launch.json + a git-ignored junction skills -> ../.agents/skills
+.claude/                   launch.json (site / dev / prod / studio servers) + a git-ignored junction skills -> ../.agents/skills
 .obsidian/                 the documentation vault (rileybeenders.com Notes/)
 PRODUCT.md · DESIGN.md     product truth and the design system, read by the impeccable skill
 1.ApplicationsUsed/ · 2.JobsApplliedTo/ · output/ · references/   job-search records

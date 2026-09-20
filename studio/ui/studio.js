@@ -7,12 +7,13 @@
  */
 
 import { SCHEMAS, RAIL } from "./schema.js";
-import { el, renderFields, normalize } from "./fields.js";
-
-const SITE_URL = "http://localhost:3000";
+import { el, renderFields, normalize, thumbImage } from "./fields.js";
+import { createDevicesPanel } from "./devices.js";
 
 const state = {
   files: [],
+  /** Where the dev site is, from the server — the launcher may have moved it. */
+  siteUrl: "http://localhost:3000",
   activeKey: null,
   /** key -> { label, shape, data, revision, dirty } */
   docs: {},
@@ -39,7 +40,9 @@ const dom = {
   toast: document.querySelector("#toast"),
   modal: document.querySelector("#modal"),
   confirm: document.querySelector("#confirm"),
-  siteLink: document.querySelector("#site-link")
+  siteLink: document.querySelector("#site-link"),
+  devicesBtn: document.querySelector("#devices"),
+  devicesDialog: document.querySelector("#devices-dialog")
 };
 
 /* ------------------------------------------------------------------ api --- */
@@ -243,7 +246,7 @@ function paintList() {
           class: "list-open",
           "aria-current": index === selected ? "true" : undefined,
           title: "Alt+↑ / Alt+↓ moves this entry",
-          onClick: () => { state.selection[key] = index; paintList(); paintDetail(); },
+          onClick: () => { state.selection[key] = index; paintList(); paintDetail(); paintSiteLink(); },
           onKeydown: (event) => {
             if (!event.altKey || (event.key !== "ArrowUp" && event.key !== "ArrowDown")) return;
             event.preventDefault();
@@ -488,7 +491,7 @@ const doc_phase = (doc) => (doc?.dirty ? "dirty" : "saved");
 /** "Open on the site" points at the page this file renders, and at the entry when it has an anchor. */
 function paintSiteLink() {
   const group = RAIL.find((g) => g.keys.includes(state.activeKey));
-  let href = SITE_URL + (group?.path ?? "/");
+  let href = state.siteUrl + (group?.path ?? "/");
   const schema = schemaFor(state.activeKey);
   const doc = activeDoc();
   if (state.activeKey === "projects" && schema?.shape === "array") {
@@ -496,9 +499,50 @@ function paintSiteLink() {
     if (entry?.id) href += `#project-${entry.id}`;
   }
   dom.siteLink.href = href;
+  writeHash();
 }
 
 /* ------------------------------------------------------------ file nav --- */
+
+/**
+ * The address bar names what is open — `#projects`, or `#projects/icarus-lite`
+ * for one entry — so a reload lands back on it, and the site's "Edit in
+ * Studio" control can open the right file by linking here. Updated with
+ * replaceState so it never adds history or scrolls anything.
+ */
+function writeHash() {
+  const key = state.activeKey;
+  if (!key) return;
+  const schema = schemaFor(key);
+  const doc = activeDoc();
+  let hash = `#${key}`;
+  if (schema?.shape === "array" && schema.idField) {
+    const id = doc?.data?.[state.selection[key] ?? 0]?.[schema.idField];
+    if (id) hash += `/${encodeURIComponent(id)}`;
+  }
+  if (window.location.hash !== hash) history.replaceState(null, "", hash);
+}
+
+/** `#projects/icarus-lite` → { key: "projects", id: "icarus-lite" }, or null when there is nothing usable. */
+function readHash() {
+  const [key, id] = window.location.hash.replace(/^#/, "").split("/");
+  if (!key || !schemaFor(key)) return null;
+  return { key, id: id ? decodeURIComponent(id) : null };
+}
+
+/** Opens what the hash names — from a fresh load, or from the site's link changing it. */
+async function openFromHash() {
+  const target = readHash();
+  if (!target) return false;
+  const doc = await loadDoc(target.key);
+  const schema = schemaFor(target.key);
+  if (target.id && schema.shape === "array" && schema.idField) {
+    const index = doc.data.findIndex((entry) => entry?.[schema.idField] === target.id);
+    if (index !== -1) state.selection[target.key] = index;
+  }
+  await selectFile(target.key);
+  return true;
+}
 
 async function selectFile(key) {
   state.activeKey = key;
@@ -669,7 +713,8 @@ function openImagePicker(current) {
             class: "picker-select",
             onClick: () => finish(image.src)
           },
-            el("img", { src: image.src, alt: "", loading: "lazy" }),
+            // The cell is up to ~220px wide with a 96px-tall contain box; the longest edge decides.
+            thumbImage(image.src, 220),
             el("span", { class: "picker-name" }, image.name),
             el("span", { class: "picker-meta" }, `${image.folder} · ${Math.round(image.bytes / 1024)} KB`));
 
@@ -798,14 +843,20 @@ async function boot() {
     if (Object.values(state.docs).some((doc) => doc.dirty)) event.preventDefault();
   });
 
+  const devices = createDevicesPanel({ api, dialog: dom.devicesDialog, button: dom.devicesBtn, toast, confirmDialog });
+
   try {
-    const [{ files }] = await Promise.all([api("/api/files"), refreshImages()]);
+    const [{ files, siteUrl }] = await Promise.all([api("/api/files"), refreshImages()]);
     state.files = files;
+    if (siteUrl) state.siteUrl = siteUrl;
     // Projects and proofs load up front so the cross-link dropdowns are filled
     // in no matter which file you open first.
     await Promise.all([loadDoc("projects"), loadDoc("proofs")]);
-    // Open on page one, the same place a visitor starts.
-    await selectFile(RAIL[0].keys[0]);
+    // Open what the address bar names, else page one, the same place a visitor starts.
+    if (!(await openFromHash())) await selectFile(RAIL[0].keys[0]);
+    // The site's "Edit in Studio" control reuses this window and only changes the hash.
+    window.addEventListener("hashchange", () => { openFromHash(); });
+    devices.start();
   } catch (error) {
     dom.detail.replaceChildren(el("p", { class: "f-empty f-empty--pane" }, `Could not reach the Studio server: ${error.message}`));
   }

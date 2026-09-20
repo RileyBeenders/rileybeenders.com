@@ -56,9 +56,9 @@ async function settle(page, ms = 1600) {
   await page.waitForTimeout(ms);
 }
 
-/** The dev server draws its own tools badge in the corner; keep it out of the pictures. */
+/** The dev server draws its own tools badge in the corner, and `npm run site` adds the Studio control; keep both out of the pictures. */
 async function hideDevTools(page) {
-  await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root] { display: none !important; }" });
+  await page.addStyleTag({ content: "nextjs-portal, [data-nextjs-toast], [data-next-badge-root], .bp-studio-link { display: none !important; }" });
 }
 
 /** Flips the site's theme through its real nav switch, so React state and the DOM stamp agree. */

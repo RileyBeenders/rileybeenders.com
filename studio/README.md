@@ -4,15 +4,22 @@ The local content editor for the site. It reads and writes the JSON files under
 `data/` so content is edited in a browser instead of by hand in VS Code.
 
 ```bash
-npm run studio          # http://localhost:3001
+npm run site            # the site on :3000 and the Studio on :3001, together
+npm run studio          # the Studio alone, http://localhost:3001
 STUDIO_PORT=3002 npm run studio
 ```
 
-Run it next to `npm run dev` (port 3000) and the site hot-reloads on save.
+Save here and the site hot-reloads. Each page of the dev site has an
+**Edit in Studio** control (bottom-right, only under `npm run site`) that opens
+this editor on the file behind that page; **Open on the site** is the way back.
+Both reuse one window each, driven by the hash in this page's address
+(`#projects`, or `#projects/icarus-lite` for one entry), so a link into the
+Studio never reloads it or loses unsaved work.
 
 ## Why it lives outside the Next app
 
-The Studio is a plain Node server with no dependencies and no build step. It is
+The Studio is a plain Node server with no dependencies of its own and no build step
+(for thumbnails it borrows `sharp`, which `npm install` brings in with Next). It is
 not a route, so it cannot be deployed by accident, and it binds to `127.0.0.1`
 only — nothing off this machine can reach it. It also refuses any request whose
 `Host` header is not localhost, which stops a page in the browser from reaching
@@ -21,14 +28,53 @@ it by DNS rebinding.
 ## Layout
 
 ```txt
-server.mjs      HTTP server: the JSON API, image uploads, static files
+site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
+gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
+access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
+server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access, /api/thumb
 ui/
   index.html    the editor shell
   studio.css
-  studio.js     loads files, tracks unsaved changes, saves
+  studio.js     loads files, tracks unsaved changes, saves, hash deep links
+  devices.js    the Devices panel
   schema.js     what each data file contains and how it is edited
-  fields.js     renders a schema as a form; normalizes a form back to JSON
+  fields.js     renders a schema as a form; normalizes a form back to JSON; thumbImage()
 ```
+
+## Images are shown small
+
+A project photograph is a 6000px, 9 MB JPEG; drawing seven of them into 38px
+boxes is what made the projects page drag. Every image the editor shows now
+comes through `/api/thumb?src=<public path>&w=<px>`: `thumbImage(src, cssSize)`
+in `ui/fields.js` asks for the slot's longest edge at the screen's pixel
+density (a 92px preview on a 2x display asks for 184px, the picker's ~220px
+cells for ~440px), and the server rounds that up to one of 96 / 192 / 320 /
+480 / 640 / 960 / 1280, resizes with `sharp` (EXIF orientation honoured) to a
+WebP, and caches it in the git-ignored `.studio-cache/thumbs/` keyed by the
+file's path, mtime and size, so a changed image gets a fresh copy and the
+folder is safe to delete. SVG and GIF are served as they are. Without `sharp`
+the endpoint serves the original, and an `<img>` whose copy fails falls back
+to the original too.
+
+## Letting a phone in
+
+`next dev` itself listens on loopback only. Under `npm run site` the gate takes
+port 3000 on every interface and decides per device: this machine always gets
+through; a device on the local network gets through while a grant covers it;
+anything else is refused. A device that is turned away sees a page with its
+own address that reloads by itself, and the gate remembers the knock, so
+**Devices** in the top bar lists it with a one-click **Allow**. Grants last
+1–24 hours or until the server stops, can be revoked at any time (open
+connections from that device are closed), may cover a range as wide as one
+network (`/16` at most), and persist in the git-ignored `.studio-access.json`.
+
+Next's own cross-origin check for dev assets still applies: `next.config.mjs`
+allows every private-network hostname in development, which is what lets Fast
+Refresh work when the site is opened at this machine's LAN address. Which
+devices get in is the gate's decision, not that list's.
+
+`npm run studio` on its own has no gate, so the panel shows "Gate off" and
+grants made there apply the next time `npm run site` runs.
 
 ## Adding a field
 
