@@ -4,11 +4,17 @@ The local content editor for the site. It reads and writes the JSON files under
 `data/` so content is edited in a browser instead of by hand in VS Code.
 
 ```bash
-npm run studio          # http://localhost:3001
+npm run site            # the site on :3000 and the Studio on :3001, together
+npm run studio          # the Studio alone, http://localhost:3001
 STUDIO_PORT=3002 npm run studio
 ```
 
-Run it next to `npm run dev` (port 3000) and the site hot-reloads on save.
+Save here and the site hot-reloads. Each page of the dev site has an
+**Edit in Studio** control (bottom-right, only under `npm run site`) that opens
+this editor on the file behind that page; **Open on the site** is the way back.
+Both reuse one window each, driven by the hash in this page's address
+(`#projects`, or `#projects/icarus-lite` for one entry), so a link into the
+Studio never reloads it or loses unsaved work.
 
 ## Why it lives outside the Next app
 
@@ -21,14 +27,38 @@ it by DNS rebinding.
 ## Layout
 
 ```txt
-server.mjs      HTTP server: the JSON API, image uploads, static files
+site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
+gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
+access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
+server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access
 ui/
   index.html    the editor shell
   studio.css
-  studio.js     loads files, tracks unsaved changes, saves
+  studio.js     loads files, tracks unsaved changes, saves, hash deep links
+  devices.js    the Devices panel
   schema.js     what each data file contains and how it is edited
   fields.js     renders a schema as a form; normalizes a form back to JSON
 ```
+
+## Letting a phone in
+
+`next dev` itself listens on loopback only. Under `npm run site` the gate takes
+port 3000 on every interface and decides per device: this machine always gets
+through; a device on the local network gets through while a grant covers it;
+anything else is refused. A device that is turned away sees a page with its
+own address that reloads by itself, and the gate remembers the knock, so
+**Devices** in the top bar lists it with a one-click **Allow**. Grants last
+1–24 hours or until the server stops, can be revoked at any time (open
+connections from that device are closed), may cover a range as wide as one
+network (`/16` at most), and persist in the git-ignored `.studio-access.json`.
+
+Next's own cross-origin check for dev assets still applies: `next.config.mjs`
+allows every private-network hostname in development, which is what lets Fast
+Refresh work when the site is opened at this machine's LAN address. Which
+devices get in is the gate's decision, not that list's.
+
+`npm run studio` on its own has no gate, so the panel shows "Gate off" and
+grants made there apply the next time `npm run site` runs.
 
 ## Adding a field
 

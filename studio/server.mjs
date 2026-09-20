@@ -8,23 +8,40 @@
  * to the loopback interface only, and never appears in a production build. The
  * public site cannot reach it and neither can anything else on the network.
  *
- *   npm run studio      # http://localhost:3001
+ *   npm run site        # the site and the Studio together (see site.mjs)
+ *   npm run studio      # the Studio alone, http://localhost:3001
+ *
+ * Under `npm run site` this module is imported and started in the launcher's
+ * process, beside the device gate, so the Devices panel and the gate share
+ * one access store.
  */
 
 import { createServer } from "node:http";
 import { createHash } from "node:crypto";
 import { readFile, writeFile, rename, mkdir, readdir, stat, unlink } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { AccessStore, parseTarget } from "./access.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 const UI_DIR = path.join(HERE, "ui");
 const PUBLIC_DIR = path.join(ROOT, "public");
 const BACKUP_DIR = path.join(ROOT, ".studio-backups");
+export const ACCESS_FILE = path.join(ROOT, ".studio-access.json");
 
 const HOST = "127.0.0.1";
-const PORT = Number(process.env.STUDIO_PORT || 3001);
+export const DEFAULT_PORT = 3001;
+export const DEFAULT_SITE_URL = "http://localhost:3000";
+
+/** How long a device may stay allowed. `null` lasts until the server stops. */
+const GRANT_DURATIONS = {
+  "1h": 60 * 60 * 1000,
+  "4h": 4 * 60 * 60 * 1000,
+  "8h": 8 * 60 * 60 * 1000,
+  "24h": 24 * 60 * 60 * 1000,
+  session: null
+};
 
 /**
  * Every file the Studio is allowed to touch. Anything else is off limits.
@@ -302,7 +319,7 @@ function decodeSegment(raw) {
   }
 }
 
-async function handleApi(req, res, url) {
+async function handleApi(req, res, url, { store, siteUrl }) {
   const segments = url.pathname.split("/").filter(Boolean).map(decodeSegment).slice(1); // drop "api"
 
   if (req.method === "GET" && segments[0] === "files" && segments.length === 1) {
@@ -312,7 +329,39 @@ async function handleApi(req, res, url) {
         return { key, label: entry.label, shape: entry.shape, file: entry.file, modified: info.mtimeMs };
       })
     );
-    return sendJson(res, 200, { files });
+    return sendJson(res, 200, { files, siteUrl, gate: store.gate !== null });
+  }
+
+  // The Devices panel: who else may open the dev site, for how long.
+  if (segments[0] === "access") {
+    if (req.method === "GET" && segments.length === 1) return sendJson(res, 200, store.snapshot());
+
+    if (req.method === "POST" && segments.length === 1) {
+      const raw = await readBody(req, 4096);
+      let payload;
+      try {
+        payload = JSON.parse(raw.toString("utf8"));
+      } catch {
+        return sendError(res, 400, "Request body was not valid JSON.");
+      }
+      const target = parseTarget(payload?.target);
+      if (target.error) return sendError(res, 422, target.error);
+      if (!Object.hasOwn(GRANT_DURATIONS, payload?.duration)) {
+        return sendError(res, 422, `Duration must be one of ${Object.keys(GRANT_DURATIONS).join(", ")}.`);
+      }
+      const grant = await store.grant({ ...target, label: payload.label, ttlMs: GRANT_DURATIONS[payload.duration] });
+      console.log(`  allowed ${grant.address}/${grant.prefix}${grant.label ? ` (${grant.label})` : ""} ${grant.expiresAt ? `until ${new Date(grant.expiresAt).toLocaleTimeString()}` : "until the server stops"}`);
+      return sendJson(res, 201, { grant, ...store.snapshot() });
+    }
+
+    // DELETE /api/access/<address>/<prefix>
+    if (req.method === "DELETE" && segments.length === 3) {
+      const prefix = Number(segments[2]);
+      const gone = Number.isInteger(prefix) && (await store.revoke(segments[1], prefix));
+      if (!gone) return sendError(res, 404, "That device is not on the list.");
+      console.log(`  revoked ${segments[1]}/${prefix}`);
+      return sendJson(res, 200, store.snapshot());
+    }
   }
 
   if (segments[0] === "file" && segments.length === 2) {
@@ -397,56 +446,95 @@ async function handleApi(req, res, url) {
   return sendError(res, 404, "No such endpoint.");
 }
 
-const server = createServer(async (req, res) => {
-  if (!isLocalRequest(req)) return sendError(res, 403, "Studio only answers requests from this machine.");
+/**
+ * Starts the editor on the loopback interface. Resolves once it is listening;
+ * rejects with the listen error (EADDRINUSE and the like) so the caller can
+ * say something useful.
+ */
+export async function startStudio({
+  port = Number(process.env.STUDIO_PORT || DEFAULT_PORT),
+  siteUrl = process.env.SITE_URL || DEFAULT_SITE_URL,
+  store = null
+} = {}) {
+  store ??= await new AccessStore(ACCESS_FILE).load();
+  const context = { store, siteUrl };
 
-  const url = new URL(req.url || "/", `http://${HOST}:${PORT}`);
+  const server = createServer(async (req, res) => {
+    if (!isLocalRequest(req)) return sendError(res, 403, "Studio only answers requests from this machine.");
 
-  try {
-    if (url.pathname.startsWith("/api/")) return await handleApi(req, res, url);
-    if (req.method !== "GET") return sendError(res, 405, "Method not allowed.");
+    const url = new URL(req.url || "/", `http://${HOST}:${port}`);
 
-    // The editor shell.
-    if (url.pathname === "/" || url.pathname === "/index.html") {
-      if (await serveStatic(res, path.join(UI_DIR, "index.html"))) return;
-      return sendError(res, 500, "Studio UI is missing from studio/ui.");
-    }
+    try {
+      if (url.pathname.startsWith("/api/")) return await handleApi(req, res, url, context);
+      if (req.method !== "GET") return sendError(res, 405, "Method not allowed.");
 
-    // Editor assets.
-    if (url.pathname.startsWith("/studio/")) {
-      const target = safeJoin(UI_DIR, url.pathname.slice("/studio".length));
-      if (target && (await serveStatic(res, target))) return;
+      // The editor shell.
+      if (url.pathname === "/" || url.pathname === "/index.html") {
+        if (await serveStatic(res, path.join(UI_DIR, "index.html"))) return;
+        return sendError(res, 500, "Studio UI is missing from studio/ui.");
+      }
+
+      // Editor assets.
+      if (url.pathname.startsWith("/studio/")) {
+        const target = safeJoin(UI_DIR, url.pathname.slice("/studio".length));
+        if (target && (await serveStatic(res, target))) return;
+        return sendError(res, 404, "Not found.");
+      }
+
+      // Everything else falls through to the site's public/ folder, so image
+      // paths resolve here exactly as they do on the real site.
+      const asset = safeJoin(PUBLIC_DIR, url.pathname);
+      if (asset && (await serveStatic(res, asset))) return;
+
       return sendError(res, 404, "Not found.");
+    } catch (error) {
+      const status = error?.status || 500;
+      if (status === 500) console.error(error);
+      sendError(res, status, error?.message || "Something went wrong.");
     }
+  });
 
-    // Everything else falls through to the site's public/ folder, so image
-    // paths resolve here exactly as they do on the real site.
-    const asset = safeJoin(PUBLIC_DIR, url.pathname);
-    if (asset && (await serveStatic(res, asset))) return;
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(port, HOST, () => {
+      server.off("error", reject);
+      resolve();
+    });
+  });
 
-    return sendError(res, 404, "Not found.");
-  } catch (error) {
-    const status = error?.status || 500;
-    if (status === 500) console.error(error);
-    sendError(res, status, error?.message || "Something went wrong.");
-  }
-});
+  return {
+    server,
+    port,
+    store,
+    url: `http://localhost:${port}`,
+    close: () => new Promise((done) => {
+      server.closeAllConnections?.();
+      server.close(() => done());
+    })
+  };
+}
 
-server.listen(PORT, HOST, () => {
-  console.log("");
-  console.log("  Studio — local content editor");
-  console.log(`  http://localhost:${PORT}`);
-  console.log("");
-  console.log(`  Editing JSON in ${path.relative(process.cwd(), path.join(ROOT, "data")) || "data"}/`);
-  console.log("  Loopback only — nothing outside this machine can reach it.");
-  console.log("");
-});
+/* ------------------------------------------------------------ direct run --- */
 
-server.on("error", (error) => {
-  if (error.code === "EADDRINUSE") {
-    console.error(`\n  Port ${PORT} is already in use.`);
-    console.error(`  Close whatever is on it, or run: STUDIO_PORT=3002 npm run studio\n`);
-    process.exit(1);
-  }
-  throw error;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const port = Number(process.env.STUDIO_PORT || DEFAULT_PORT);
+  startStudio({ port })
+    .then((studio) => {
+      console.log("");
+      console.log("  Studio — local content editor");
+      console.log(`  ${studio.url}`);
+      console.log("");
+      console.log(`  Editing JSON in ${path.relative(process.cwd(), path.join(ROOT, "data")) || "data"}/`);
+      console.log("  Loopback only — nothing outside this machine can reach it.");
+      console.log("  Run `npm run site` instead to bring the site up beside it and let other devices in.");
+      console.log("");
+    })
+    .catch((error) => {
+      if (error.code === "EADDRINUSE") {
+        console.error(`\n  Port ${port} is already in use.`);
+        console.error(`  Close whatever is on it, or run: STUDIO_PORT=3002 npm run studio\n`);
+        process.exit(1);
+      }
+      throw error;
+    });
+}

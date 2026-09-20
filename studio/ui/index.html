@@ -50,6 +50,8 @@
         <span>Open on the site</span>
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
       </a>
+      <!-- Who else on the network may open the dev site (see devices.js). -->
+      <button type="button" id="devices" class="f-btn f-btn--quiet f-btn--devices">Devices</button>
       <button type="button" id="theme-toggle" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode"></button>
     </div>
   </header>
@@ -71,6 +73,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <dialog id="modal" class="modal"></dialog>
+  <dialog id="devices-dialog" class="modal modal--devices" aria-label="Devices on your network"></dialog>
   <dialog id="confirm" class="confirm"></dialog>
 
   <script type="module" src="/studio/studio.js"></script>

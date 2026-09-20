@@ -11,6 +11,7 @@ import {
 } from "next/font/google";
 import resumeData from "@/data/resumeData";
 import { BpNav } from "@/components/blueprint/BpNav";
+import dynamic from "next/dynamic";
 import { BpFixedRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { fontVarExpression } from "@/lib/fonts";
@@ -76,6 +77,14 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap"
 });
 
+// The way into the Studio from the page being looked at (see components/blueprint/StudioLink.tsx).
+// Loaded only by the development build: a plain import would keep the module in the
+// production bundle even though nothing renders it there.
+const StudioLink =
+  process.env.NODE_ENV === "development"
+    ? dynamic(() => import("@/components/blueprint/StudioLink").then((mod) => mod.StudioLink))
+    : () => null;
+
 const FONT_VARIABLES = [
   instrumentSerif.variable,
   spectral.variable,
@@ -128,6 +137,7 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
         <BpNav />
         {children}
         <BpFixedRelocationBadge />
+        <StudioLink />
       </div>
     </ThemeProvider>
   );

@@ -21,6 +21,8 @@ tmp/
 
 # Studio keeps a rolling backup of each JSON file it saves — local only.
 .studio-backups
+# Which devices on the local network may open the dev site, and until when (Studio → Devices).
+.studio-access.json
 
 # Claude Code: skills are versioned once under .agents/skills/ and this path is a
 # per-machine junction to it (see .agents/README.md). Worktrees are checkouts, not source.

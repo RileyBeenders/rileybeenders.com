@@ -38,17 +38,19 @@ Every range was pinned to a caret on the installed version in the Version 3.1.1 
 ## `next.config.mjs`
 
 ```js
-const allowedDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? "")
-  .split(",").map((origin) => origin.trim()).filter(Boolean);
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 
-const nextConfig = {
-  reactStrictMode: true,
-  ...(allowedDevOrigins.length > 0 && { allowedDevOrigins }),
-  devIndicators: { position: "bottom-right" }
-};
+const PRIVATE_NETWORK_HOSTS = ["10.*.*.*", "192.168.*.*", "172.16.*.*" /* …172.31 */, "100.*.*.*", "169.254.*.*", "*.local"];
+
+const nextConfig = { reactStrictMode: true, devIndicators: { position: "bottom-right" } };
+
+export default function config(phase) {
+  if (phase === PHASE_DEVELOPMENT_SERVER) return { ...nextConfig, allowedDevOrigins: PRIVATE_NETWORK_HOSTS };
+  return nextConfig;
+}
 ```
 
-`allowedDevOrigins` (the LAN hosts allowed to reach the dev server from a phone or another machine) is no longer hard-coded: since 2026-09-19 it comes from `ALLOWED_DEV_ORIGINS=10.0.0.5,10.0.0.6` in a git-ignored `.env.local`, which Next loads before evaluating this file, so the machine-specific IPs stay out of the repo. `devIndicators` moves the Next dev overlay to the bottom-right because the pages' Back to Top control owns the bottom-left. No image domains, redirects/rewrites, or experimental flags.
+The config is a phase function (2026-09-19, replacing the `ALLOWED_DEV_ORIGINS` env var and `.env.local`). `allowedDevOrigins` is Next's cross-origin check for `/_next` dev resources — it matches the **hostname in the browser's address bar** (the Origin header), never the client's IP, so it cannot single out a phone. In development it now allows every private-network hostname pattern (one `*` per dotted segment is how Next's matcher works; `**` only leads), which is what lets Fast Refresh connect when the site is opened at this machine's LAN address. Which devices actually get in is decided per device by the Studio's gate (below). `devIndicators` moves the Next dev overlay to the bottom-right because the pages' Back to Top control owns the bottom-left. No image domains, redirects/rewrites, or experimental flags.
 
 ## `.gitignore`
 
@@ -78,10 +80,18 @@ Most of these arrived in the 2026-09-19 cleanup (`tmp/` alone had been committin
 
 ```bash
 npm install
-npm run dev
+npm run site            # site http://localhost:3000 + Studio http://localhost:3001, one Ctrl+C
 ```
 
-Then open `http://localhost:3000`. On Windows PowerShell, if script execution is disabled, use `npm.cmd` directly or run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. To reach the dev server from a phone, put the hosts in `.env.local` as `ALLOWED_DEV_ORIGINS` (above). `.claude/launch.json` defines the same three servers for the Claude desktop app's preview pane: `dev` and `prod` on :3000 (`autoPort`), `studio` on :3001.
+`npm run site` (2026-09-19) runs `studio/site.mjs`: one Node process hosts the **device gate** on :3000 and the Studio on :3001, and spawns `next dev -H 127.0.0.1 -p 3010` behind the gate (ports movable with `SITE_PORT` / `STUDIO_PORT` / `NEXT_PORT`; child output is prefixed `next`). It checks all three ports first and prints the LAN URL to type on a phone. `npm run dev` alone is now `next dev -H 127.0.0.1` — loopback only, no gate, no Studio control. On Windows PowerShell, if script execution is disabled, use `npm.cmd` directly or run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once. `.claude/launch.json` defines four servers for the Claude desktop app's preview pane: `site` on :3000, `dev` and `prod` on :3000 (`autoPort`), `studio` on :3001.
+
+### Moving between the site and the Studio
+
+In development every page renders `components/blueprint/StudioLink.tsx` — a fixed bottom-right "Edit in Studio" pill (stacked above the relocation badge where that shows) that opens `http://localhost:3001/#<file>` for the page's data file, `#projects/<id>` when the URL names a project. It renders only when `NEXT_PUBLIC_STUDIO_URL` is set (the launcher sets it) and the page is on a loopback host, and is absent from production builds (`app/(site)/layout.tsx` reaches it through a `next/dynamic` import that only the development branch of a `process.env.NODE_ENV` check contains). The Studio reads that hash on load and on `hashchange`, keeps it current with `replaceState` as you move around, and its "Open on the site" points back at the page (and the project anchor). Both links reuse one named window (`rileybeenders-studio` / `rileybeenders-site`), so a click into the Studio is a fragment navigation that never reloads it. `scripts/capture-site-screenshots.mjs` hides the control.
+
+### The device gate (letting a phone in)
+
+`studio/gate.mjs` is a dependency-free reverse proxy (HTTP + websocket upgrade, Host header preserved, `x-forwarded-*` added) in front of `next dev`. Per client address: loopback always passes; a private address (RFC 1918, 100.64/10, link-local, IPv6 ULA/link-local) passes only while a grant in `studio/access.mjs` covers it; anything else gets a 403. A turned-away device gets a page showing its own address that reloads every 4 s, and the gate records the knock. Grants (`{ address, prefix, label, createdAt, expiresAt }`) last 1/4/8/24 h or `null` = until the server stops; timed ones persist in the git-ignored `.studio-access.json`; only private addresses no wider than `/16` (IPv6 `/48`) can be granted; revoking or expiry also destroys that device's open sockets (its HMR connection). The Studio's **Devices** panel (`studio/ui/devices.js`, `/api/access` GET/POST/DELETE, loopback-only like the rest of the API) shows the LAN URL, the knocks with one-click Allow, the active grants with a countdown and Revoke, and an add-by-address form; it polls every 5 s (2.5 s while open) only when a gate is running in the process. Under plain `npm run studio` it reads "Gate off".
 
 `npm run typecheck` runs `tsc --noEmit` — no separate lint script. Markdown is linted by the editor's markdownlint extension against `.markdownlint.jsonc` (2026-09-19), which turns off the line-length rule and carves out the generated `DESIGN.md`'s repeated headings, bold-line opener and front-matter `title:` role.
 
@@ -91,7 +101,7 @@ Then open `http://localhost:3000`. On Windows PowerShell, if script execution is
 npm run studio          # http://localhost:3001 — set STUDIO_PORT to move it
 ```
 
-`studio/server.mjs` is a dependency-free Node server that edits the site's JSON in a browser instead of by hand. It is not a Next route, binds to `127.0.0.1` only and refuses non-localhost `Host` headers, so it can neither deploy nor be reached by DNS rebinding. Its `FILES` allow-list is the only thing it can read or write — ten files, in the order the site reads them: `summary`, `experience`, `skills`, `education`, `projects`, `proofs`, `contact` (added 2026-09-15), `moreInfo`, `aboutSite` (2026-09-17), `header` ("Site Settings": the visibility switches, palette and fonts). Every save backs the previous version up into `.studio-backups/` (25 per file), writes to a temp name and renames into place, and is refused if the file changed on disk since it was loaded. The image picker browses `public/project-images/` and `public/project-artifacts/` **including subfolders** (since 2026-09-15 — `project-images/ICARUS-Lite/` is how the published project's photos are picked), uploads are image-only, sanitized, never overwrite, and capped at 16 MB. Field order in `ui/schema.js` is key order on disk and empty optional fields are dropped, so an untouched entry round-trips byte-for-byte. Run it beside `npm run dev` and the site hot-reloads on save. `studio/README.md` covers adding a field or a file.
+`studio/server.mjs` is a dependency-free Node server that edits the site's JSON in a browser instead of by hand. It is not a Next route, binds to `127.0.0.1` only and refuses non-localhost `Host` headers, so it can neither deploy nor be reached by DNS rebinding. Its `FILES` allow-list is the only thing it can read or write — ten files, in the order the site reads them: `summary`, `experience`, `skills`, `education`, `projects`, `proofs`, `contact` (added 2026-09-15), `moreInfo`, `aboutSite` (2026-09-17), `header` ("Site Settings": the visibility switches, palette and fonts). Every save backs the previous version up into `.studio-backups/` (25 per file), writes to a temp name and renames into place, and is refused if the file changed on disk since it was loaded. The image picker browses `public/project-images/` and `public/project-artifacts/` **including subfolders** (since 2026-09-15 — `project-images/ICARUS-Lite/` is how the published project's photos are picked), uploads are image-only, sanitized, never overwrite, and capped at 16 MB. Field order in `ui/schema.js` is key order on disk and empty optional fields are dropped, so an untouched entry round-trips byte-for-byte. Since 2026-09-19 `server.mjs` exports `startStudio({ port, siteUrl, store })` so `site.mjs` can host it in-process beside the gate (sharing one `AccessStore`), and still runs on its own via a direct-run guard; `/api/files` also returns `siteUrl` and whether a gate is running. `studio/README.md` covers adding a field or a file and letting a phone in.
 
 ## Deployment signal
 
@@ -99,7 +109,7 @@ No explicit deployment config (no `vercel.json`), but strong indirect evidence o
 
 ## `scripts/` and `playwright-core` (2026-09-17)
 
-`package.json` gained one devDependency, `playwright-core`, used only by the scripts to drive the machine's own Chrome or Edge headlessly (`channel: "chrome"` → `"msedge"`; no browser download). The top-level `scripts/` folder holds three plain Node ESM scripts, run with `node scripts/<name>.mjs` against a running `npm run dev`, none part of the Next build:
+`package.json` gained one devDependency, `playwright-core`, used only by the scripts to drive the machine's own Chrome or Edge headlessly (`channel: "chrome"` → `"msedge"`; no browser download). The top-level `scripts/` folder holds three plain Node ESM scripts, run with `node scripts/<name>.mjs` against a running `npm run site` (or `npm run dev`), none part of the Next build:
 
 - `capture-site-screenshots.mjs` — recaptures the About page's screenshots in both themes. See [[About This Site Page]].
 - `site-stats.mjs` — git-derived stats and key-commit candidates for the About page.

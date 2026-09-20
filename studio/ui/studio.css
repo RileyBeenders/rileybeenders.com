@@ -122,6 +122,39 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 
 .f-btn--site svg { flex: none; }
 
+/* Devices: a count of who is allowed in, and an accent dot while someone waits at the door. */
+.f-btn--devices { position: relative; gap: 7px; }
+.f-btn--devices svg { flex: none; color: var(--muted); }
+.devices-count {
+  min-width: 18px;
+  padding: 1px 5px;
+  border: 1px solid var(--rule);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.devices-knock {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--paper);
+}
+.devices-knock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: devices-ring 1.9s ease-out infinite;
+}
+@keyframes devices-ring { 0% { transform: scale(1); opacity: 0.75; } 100% { transform: scale(3); opacity: 0; } }
+
 /* ----------------------------------------------------------- workspace --- */
 
 .workspace {
@@ -789,6 +822,58 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   flex-wrap: wrap;
   padding: 13px 18px;
   border-top: 1px solid var(--rule);
+}
+
+/* ------------------------------------------------------------- devices --- */
+/* Who else on the network may open the dev site: the same sheet as the picker,
+   narrower, read top to bottom — the address to type, who is waiting, who is in. */
+.modal--devices { width: min(640px, calc(100vw - 40px)); }
+.devices { display: flex; flex-direction: column; max-height: inherit; }
+.devices-body { flex: 1; overflow-y: auto; padding: 6px 22px 20px; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; }
+.devices-notice {
+  margin: 14px 0 4px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule));
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.devices-notice code, .devices-url code, .devices-address {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.devices-section { padding: 16px 0 0; }
+.devices-section + .devices-section { margin-top: 14px; border-top: 1px solid var(--rule); }
+.devices-section .f-label { margin-bottom: 8px; }
+.devices-section .f-help { margin-top: 8px; }
+.devices-section .f-empty { margin: 0; }
+.devices-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.devices-duration { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.devices-duration .f-input { padding-block: 5px; font-size: 13px; min-width: 0; }
+
+.devices-urls { display: flex; flex-direction: column; gap: 6px; }
+.devices-url { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px 8px 12px; border: 1px solid var(--rule); background: var(--panel); }
+.devices-url code { font-size: 14px; color: var(--ink); user-select: all; }
+
+.devices-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.devices-row {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 8px 10px 8px 12px;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+}
+.devices-address { color: var(--ink); font-weight: 500; white-space: nowrap; }
+.devices-meta { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.devices-form { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+
+@media (max-width: 560px) {
+  .devices-row { grid-template-columns: 1fr auto; }
+  .devices-row .devices-meta { grid-column: 1 / -1; white-space: normal; }
+  .devices-form { grid-template-columns: 1fr; }
 }
 
 /* ------------------------------------------------------------- confirm --- */
