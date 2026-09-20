@@ -7,7 +7,7 @@
  */
 
 import { SCHEMAS, RAIL } from "./schema.js";
-import { el, renderFields, normalize } from "./fields.js";
+import { el, renderFields, normalize, thumbImage } from "./fields.js";
 import { createDevicesPanel } from "./devices.js";
 
 const state = {
@@ -713,7 +713,8 @@ function openImagePicker(current) {
             class: "picker-select",
             onClick: () => finish(image.src)
           },
-            el("img", { src: image.src, alt: "", loading: "lazy" }),
+            // The cell is up to ~220px wide with a 96px-tall contain box; the longest edge decides.
+            thumbImage(image.src, 220),
             el("span", { class: "picker-name" }, image.name),
             el("span", { class: "picker-meta" }, `${image.folder} · ${Math.round(image.bytes / 1024)} KB`));
 

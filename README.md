@@ -182,7 +182,9 @@ with the change.
   `"visible": false` into the JSON. The entry stays in the file — and in the
   Studio — but drops off the public site. History is kept; visibility is not.
 - **Images.** Upload straight into `public/project-images` or
-  `public/project-artifacts`, or pick from what is already there.
+  `public/project-artifacts`, or pick from what is already there. The editor
+  shows every image as a small resized copy sized to its box (cached in the
+  git-ignored `.studio-cache/`), never the multi-megabyte original.
 - **Saves are guarded.** Every save writes the previous version into
   `.studio-backups/` (git-ignored, last 25 kept), and a save is refused if the
   file changed on disk since it was loaded.

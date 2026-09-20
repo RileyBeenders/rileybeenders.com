@@ -1,8 +1,10 @@
 /**
  * Studio — the local content editor for rileybeenders.com.
  *
- * A dependency-free Node server that reads and writes the JSON files under
- * `data/`, so content is edited in a browser instead of by hand in VS Code.
+ * A plain Node server (no dependencies of its own; it borrows `sharp` from
+ * Next for thumbnails when that optional package is installed) that reads and
+ * writes the JSON files under `data/`, so content is edited in a browser
+ * instead of by hand in VS Code.
  *
  * It is deliberately NOT part of the Next app: it lives on its own port, binds
  * to the loopback interface only, and never appears in a production build. The
@@ -72,6 +74,18 @@ const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".
 const MAX_JSON_BYTES = 4 * 1024 * 1024;
 const MAX_IMAGE_BYTES = 16 * 1024 * 1024;
 const BACKUPS_KEPT = 25;
+
+/**
+ * Thumbnails. The editor never needs a 6000px photograph in a 38px box, so
+ * every image it shows comes through /api/thumb, resized to fit a bounding
+ * box of one of these sizes (the longest edge, in device pixels) and cached
+ * on disk. SVG and GIF are served as they are: one is already tiny and the
+ * other would lose its animation.
+ */
+const THUMB_DIR = path.join(ROOT, ".studio-cache", "thumbs");
+const THUMB_SIZES = [96, 192, 320, 480, 640, 960, 1280];
+const THUMB_PASSTHROUGH = new Set([".svg", ".gif"]);
+const THUMB_QUALITY = 78;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -294,6 +308,107 @@ async function uniquePath(dir, filename) {
   return `${stem}-${Date.now()}${ext}`;
 }
 
+/* ---------------------------------------------------------- thumbnails --- */
+
+let sharpModule; // undefined until first use; null when it is not installed
+
+/** `sharp` ships with Next as an optional package, so it is usually here, but never assumed. */
+async function loadSharp() {
+  if (sharpModule !== undefined) return sharpModule;
+  try {
+    sharpModule = (await import("sharp")).default;
+  } catch {
+    sharpModule = null;
+    console.warn("  sharp is not installed, so images are shown at full size. `npm install` brings it in with Next.");
+  }
+  return sharpModule;
+}
+
+/** Snaps a requested size up to the ladder, so the cache holds a handful of sizes per image at most. */
+function snapThumbSize(raw) {
+  const requested = Number(raw);
+  if (!Number.isFinite(requested) || requested <= 0) return THUMB_SIZES[1];
+  return THUMB_SIZES.find((size) => size >= requested) ?? THUMB_SIZES[THUMB_SIZES.length - 1];
+}
+
+/** Several <img>s ask for the same thumbnail at once on a fresh cache; make it once. */
+const thumbsInFlight = new Map();
+
+/**
+ * Returns `{ etag, body }` for the resized copy, from the cache when the
+ * original has not changed since, or null when sharp is missing or fails
+ * (the caller then serves the original).
+ */
+async function thumbnail(absolute, relative, size) {
+  const info = await stat(absolute);
+  const etag = createHash("sha1").update(`${relative}|${info.mtimeMs}|${info.size}|${size}`).digest("hex").slice(0, 20);
+  const cached = path.join(THUMB_DIR, `${etag}.webp`);
+
+  try {
+    return { etag, body: await readFile(cached) };
+  } catch {
+    // Not made yet.
+  }
+
+  if (!thumbsInFlight.has(etag)) {
+    thumbsInFlight.set(etag, (async () => {
+      const sharp = await loadSharp();
+      if (!sharp) return null;
+      // rotate() honours EXIF orientation, as the browser does for the original.
+      const body = await sharp(absolute)
+        .rotate()
+        .resize({ width: size, height: size, fit: "inside", withoutEnlargement: true })
+        .webp({ quality: THUMB_QUALITY })
+        .toBuffer();
+      await mkdir(THUMB_DIR, { recursive: true });
+      const staging = `${cached}.${process.pid}.tmp`;
+      await writeFile(staging, body);
+      await rename(staging, cached);
+      return body;
+    })().finally(() => thumbsInFlight.delete(etag)));
+  }
+
+  const body = await thumbsInFlight.get(etag);
+  return body ? { etag, body } : null;
+}
+
+/** GET /api/thumb?src=/project-images/x.jpg&w=192 */
+async function serveThumb(req, res, url) {
+  const src = url.searchParams.get("src") || "";
+  const absolute = safeJoin(PUBLIC_DIR, src);
+  const ext = path.extname(src).toLowerCase();
+  if (!absolute || !IMAGE_EXTS.has(ext)) return sendError(res, 404, "Not an image under public/.");
+  if (THUMB_PASSTHROUGH.has(ext)) {
+    if (await serveStatic(res, absolute)) return;
+    return sendError(res, 404, "Not found.");
+  }
+
+  let thumb = null;
+  try {
+    thumb = await thumbnail(absolute, src, snapThumbSize(url.searchParams.get("w")));
+  } catch (error) {
+    if (error.code === "ENOENT") return sendError(res, 404, "Not found.");
+    console.error(`  could not resize ${src}: ${error.message}`);
+  }
+  if (!thumb) {
+    if (await serveStatic(res, absolute)) return;
+    return sendError(res, 404, "Not found.");
+  }
+
+  // The URL never changes, so the browser revalidates; the tag changes with the file.
+  if (req.headers["if-none-match"] === `"${thumb.etag}"`) {
+    res.writeHead(304, { etag: `"${thumb.etag}"`, "cache-control": "no-cache" });
+    return res.end();
+  }
+  res.writeHead(200, {
+    "content-type": "image/webp",
+    "content-length": thumb.body.length,
+    "cache-control": "no-cache",
+    etag: `"${thumb.etag}"`
+  });
+  res.end(thumb.body);
+}
+
 /* ------------------------------------------------------------- routing --- */
 
 async function serveStatic(res, absolute) {
@@ -402,6 +517,10 @@ async function handleApi(req, res, url, { store, siteUrl }) {
   if (req.method === "GET" && segments[0] === "images" && segments.length === 1) {
     const { images, folders } = await scanImages();
     return sendJson(res, 200, { images, folders });
+  }
+
+  if (req.method === "GET" && segments[0] === "thumb" && segments.length === 1) {
+    return serveThumb(req, res, url);
   }
 
   // Both routes address a folder by every segment after "images", e.g.

@@ -18,7 +18,8 @@ Studio never reloads it or loses unsaved work.
 
 ## Why it lives outside the Next app
 
-The Studio is a plain Node server with no dependencies and no build step. It is
+The Studio is a plain Node server with no dependencies of its own and no build step
+(for thumbnails it borrows `sharp`, which `npm install` brings in with Next). It is
 not a route, so it cannot be deployed by accident, and it binds to `127.0.0.1`
 only — nothing off this machine can reach it. It also refuses any request whose
 `Host` header is not localhost, which stops a page in the browser from reaching
@@ -30,15 +31,30 @@ it by DNS rebinding.
 site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
 gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
 access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
-server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access
+server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access, /api/thumb
 ui/
   index.html    the editor shell
   studio.css
   studio.js     loads files, tracks unsaved changes, saves, hash deep links
   devices.js    the Devices panel
   schema.js     what each data file contains and how it is edited
-  fields.js     renders a schema as a form; normalizes a form back to JSON
+  fields.js     renders a schema as a form; normalizes a form back to JSON; thumbImage()
 ```
+
+## Images are shown small
+
+A project photograph is a 6000px, 9 MB JPEG; drawing seven of them into 38px
+boxes is what made the projects page drag. Every image the editor shows now
+comes through `/api/thumb?src=<public path>&w=<px>`: `thumbImage(src, cssSize)`
+in `ui/fields.js` asks for the slot's longest edge at the screen's pixel
+density (a 92px preview on a 2x display asks for 184px, the picker's ~220px
+cells for ~440px), and the server rounds that up to one of 96 / 192 / 320 /
+480 / 640 / 960 / 1280, resizes with `sharp` (EXIF orientation honoured) to a
+WebP, and caches it in the git-ignored `.studio-cache/thumbs/` keyed by the
+file's path, mtime and size, so a changed image gets a fresh copy and the
+folder is safe to delete. SVG and GIF are served as they are. Without `sharp`
+the endpoint serves the original, and an `<img>` whose copy fails falls back
+to the original too.
 
 ## Letting a phone in
 
