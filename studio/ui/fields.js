@@ -34,6 +34,26 @@ export function el(tag, props = {}, ...children) {
   return node;
 }
 
+/**
+ * An <img> for a slot `cssSize` px along its longest side. Anything under
+ * public/ comes through /api/thumb, resized for that box at this screen's
+ * pixel density (a 92px preview on a 2x display asks for 184px; the server
+ * rounds up to its size ladder), so the editor never decodes a 6000px
+ * photograph to draw a thumbnail. Should the copy fail, the original stands in.
+ */
+export function thumbImage(src, cssSize, props = {}) {
+  const local = typeof src === "string" && src.startsWith("/") && !src.startsWith("//");
+  const img = el("img", {
+    alt: "",
+    loading: "lazy",
+    decoding: "async",
+    ...props,
+    src: local ? `/api/thumb?src=${encodeURIComponent(src)}&w=${Math.ceil(cssSize * (window.devicePixelRatio || 1))}` : src
+  });
+  if (local) img.addEventListener("error", () => { img.src = src; }, { once: true });
+  return img;
+}
+
 function icon(name) {
   const paths = {
     up: "M8 13V3m0 0L4 7m4-4 4 4",
@@ -303,7 +323,7 @@ function imageControl(field, value, ctx) {
   function paint() {
     preview.replaceChildren(
       input.value
-        ? el("img", { src: input.value, alt: "", loading: "lazy" })
+        ? thumbImage(input.value, 92)
         : el("span", { class: "f-thumb-empty" }, "no image")
     );
   }
@@ -449,7 +469,7 @@ function objectListControl(field, value, ctx) {
 
   const cards = list.map((entry, index) => {
     const thumb = field.gallery && entry.src
-      ? el("div", { class: "f-card-thumb" }, el("img", { src: entry.src, alt: "", loading: "lazy", decoding: "async" }))
+      ? el("div", { class: "f-card-thumb" }, thumbImage(entry.src, 38))
       : null;
     // Open when there is little to hide, when the user opened it, or when it was just added.
     const open = list.length <= 2 || openCards.has(entry);

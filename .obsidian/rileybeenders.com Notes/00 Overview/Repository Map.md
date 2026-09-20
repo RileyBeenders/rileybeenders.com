@@ -142,7 +142,7 @@ studio/                        # the local environment — `npm run site` (site 
   site.mjs                     # the `npm run site` launcher (2026-09-19): hosts gate + Studio in one process, spawns `next dev -H 127.0.0.1 -p 3010` behind the gate, prefixes its output, one Ctrl+C
   gate.mjs                     # the device gate on :3000 — dependency-free reverse proxy (HTTP + websocket upgrade) to next dev; loopback always in, LAN devices only while granted, everything else 403
   access.mjs                   # AccessStore: temporary grants (address/prefix/label/expiry) in git-ignored .studio-access.json, knock list, private/loopback/public address rules, CIDR matching
-  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups, /api/access; exports startStudio()
+  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups, /api/access, /api/thumb (sharp-resized WebP thumbnails cached in git-ignored .studio-cache/thumbs, 2026-09-20); exports startStudio()
   README.md                    # how to run it, add a field, add a file, letting a phone in, the safety rails
   ui/index.html · studio.css · studio.js · schema.js · fields.js   # the editor shell, form schemas per file, RAIL order, hash deep links (#projects/icarus-lite)
   ui/devices.js                # the Devices panel: LAN URL to type on a phone, "waiting at the door" knocks with one-click Allow, active grants with expiry + Revoke, add by address
