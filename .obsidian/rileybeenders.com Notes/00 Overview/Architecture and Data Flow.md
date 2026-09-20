@@ -19,7 +19,7 @@ tags: [overview, architecture]
 ## Two-layer layout
 
 - **`app/layout.tsx`** (root) — shell only: `<html>`/`<body>`, imports `app/base.css` (a bare reset), mounts Analytics + SpeedInsights, and sets static `metadata` (title, description, OpenGraph, Twitter, `metadataBase`). No chrome, no fonts.
-- **`app/(site)/layout.tsx`** — the visible site: loads the eight Google faces as CSS variables, imports `app/(site)/blueprint.css`, resolves the Studio's palette choice (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and the font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark), wraps everything in `ThemeProvider`, and renders `<BpNav>` above `{children}` and `<BpFixedRelocationBadge>` below (docked bottom-right on every page except `/`, whose hero owns its own badge). Every page route lives in this `(site)` group.
+- **`app/(site)/layout.tsx`** — the visible site: loads the eight Google faces as CSS variables, imports `app/(site)/blueprint.css`, resolves the Studio's palette choice (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and the font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark), wraps everything in `ThemeProvider`, and renders `<BpNav>` above `{children}` and `<BpFixedRelocationBadge>` below (docked bottom-right on every page except `/`, whose hero owns its own badge), plus `<StudioLink>` in development only (the "Edit in Studio" control, see [[Blueprint UI Components]]). Every page route lives in this `(site)` group.
 
 ## Data flow, end to end
 

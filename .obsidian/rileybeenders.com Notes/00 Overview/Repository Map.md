@@ -25,7 +25,7 @@ Full annotated tree of `rileybeenders.com` on the **`main`** branch (post Bluepr
     impeccable/ + 14 more      # vendored: the design entry point, the taste-skill set, web-design-guidelines
 
 .claude/
-  launch.json                  # Claude desktop app preview servers (dev / prod / studio)
+  launch.json                  # Claude desktop app preview servers (site / dev / prod / studio)
   skills → ../.agents/skills   # directory junction, git-ignored; Claude Code only discovers .claude/skills
 
 .github/
@@ -133,15 +133,19 @@ types/
   about-site.ts                # AboutSiteData (matches data/site/about-site.json)
 
 scripts/
-  capture-site-screenshots.mjs # playwright-core (machine Chrome/Edge) recapture of the About page's screenshots in both themes; needs the dev server (+ Studio)
+  capture-site-screenshots.mjs # playwright-core (machine Chrome/Edge) recapture of the About page's screenshots in both themes; needs `npm run site` (hides the dev badge and the Edit in Studio control)
   site-stats.mjs               # git-derived stats + key-commit candidates for the About page; --write refreshes the data file
   check-anchor-hydration.mjs   # replays the author's anchor-stamping browser extension over every route and fails on any hydration warning (see Anchor hydration in the Build note)
   check-about-site.mjs         # validates data/site/about-site.json (eras, dates, real hashes, one present, connectors, stats) — run locally and by the workflow
 
-studio/                        # the local content editor — `npm run studio`, http://localhost:3001, never deployed
-  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups
-  README.md                    # how to run it, add a field, add a file, the safety rails
-  ui/index.html · studio.css · studio.js · schema.js · fields.js   # the editor shell, form schemas per file, RAIL order
+studio/                        # the local environment — `npm run site` (site :3000 + Studio :3001 together) or `npm run studio` alone; none of it deployed
+  site.mjs                     # the `npm run site` launcher (2026-09-19): hosts gate + Studio in one process, spawns `next dev -H 127.0.0.1 -p 3010` behind the gate, prefixes its output, one Ctrl+C
+  gate.mjs                     # the device gate on :3000 — dependency-free reverse proxy (HTTP + websocket upgrade) to next dev; loopback always in, LAN devices only while granted, everything else 403
+  access.mjs                   # AccessStore: temporary grants (address/prefix/label/expiry) in git-ignored .studio-access.json, knock list, private/loopback/public address rules, CIDR matching
+  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups, /api/access; exports startStudio()
+  README.md                    # how to run it, add a field, add a file, letting a phone in, the safety rails
+  ui/index.html · studio.css · studio.js · schema.js · fields.js   # the editor shell, form schemas per file, RAIL order, hash deep links (#projects/icarus-lite)
+  ui/devices.js                # the Devices panel: LAN URL to type on a phone, "waiting at the door" knocks with one-click Allow, active grants with expiry + Revoke, add by address
 
 ResumeBuilder/
   downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + trigger-download the live PDF
@@ -175,8 +179,8 @@ DESIGN.md                      # the Blueprint Press token spec in Stitch DESIGN
 .impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); live/ holds live-mode annotations; critique/ is git-ignored run output
 skills-lock.json               # source repo + path + content hash for each vendored skill under .agents/skills/
 .markdownlint.jsonc            # markdownlint exceptions (long lines; DESIGN.md's generated repeated headings and front-matter `title:` role)
-package.json / package-lock.json   # name rileybeenders.com, version 3.1.0, pinned ranges, `studio` script
-next.config.mjs                # reactStrictMode, allowedDevOrigins read from ALLOWED_DEV_ORIGINS in .env.local, dev overlay moved bottom-right
+package.json / package-lock.json   # name rileybeenders.com, version 3.1.0, pinned ranges; `site` (both servers), `dev` (next dev, loopback only), `studio` scripts
+next.config.mjs                # phase-aware: reactStrictMode, dev overlay bottom-right; in dev only, allowedDevOrigins = every private-network hostname pattern (no env var since 2026-09-19)
 tsconfig.json                  # strict TS, @/* path alias, next plugin, includes .next/dev/types
 next-env.d.ts                  # Next-generated on every dev/build run; git-ignored since 2026-09-19
 ```
