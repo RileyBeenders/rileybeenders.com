@@ -20,7 +20,22 @@ const nextConfig = {
   reactStrictMode: true,
   // The projects page puts its back-to-top control in the bottom-left corner,
   // which is where the dev overlay sits by default.
-  devIndicators: { position: "bottom-right" }
+  devIndicators: { position: "bottom-right" },
+
+  // rileybeenders.com/AutoWinUpdater is the short link for the AutoWinUpdater
+  // install script, which lives on GitHub. Sources match case-insensitively
+  // (experimental.caseSensitiveRoutes is off), so /autowinupdater works too.
+  // Temporary (307) so the target can be repointed without fighting caches.
+  async redirects() {
+    return [
+      {
+        source: "/AutoWinUpdater",
+        destination:
+          "https://raw.githubusercontent.com/RileyBeenders/RB-s-Auto-App-Updater/main/install.ps1",
+        permanent: false
+      }
+    ];
+  }
 };
 
 export default function config(phase) {

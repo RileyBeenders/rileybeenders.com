@@ -10,8 +10,18 @@
 
 .ft { margin-top: clamp(40px, 6vh, 64px); }
 
-.ft-head { margin-top: clamp(22px, 3vh, 30px); max-width: 64ch; }
+/* The intro on the left, the repository button on the right, sitting on the
+   passage's last line so the two share a baseline. */
+.ft-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px clamp(28px, 5vw, 64px);
+  margin-top: clamp(22px, 3vh, 30px);
+}
+.ft-head-action { flex: none; }
 .ft-intro {
+  max-width: 64ch;
   margin-top: 0;
   font-size: clamp(17px, 1.5vw, 21px);
   line-height: 1.55;
@@ -974,6 +984,9 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 /* --------------------------------------------------------------- narrow --- */
 
 @media (max-width: 860px) {
+  /* The button drops under the passage, above the stats. */
+  .ft-head { flex-direction: column; align-items: flex-start; }
+
   .ft-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   /* The axis needs width to breathe; below it the list takes over. */

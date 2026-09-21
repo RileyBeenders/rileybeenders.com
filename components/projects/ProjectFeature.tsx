@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { ProjectFeature as ProjectFeatureData, ProjectImage } from "@/types/resume";
+import { REPO_URL } from "@/lib/site";
 import { useTheme } from "@/components/blueprint/ThemeProvider";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { ScrollWords } from "@/components/blueprint/ScrollWords";
@@ -19,6 +20,15 @@ type ProjectFeatureProps = {
   /** The site's current palette id (Site Settings), so the Studio replica starts where the real one is. */
   paletteId: string;
 };
+
+/** Same arrow as the home page's GitHub button, so the two read as one control. */
+function ArrowRight() {
+  return (
+    <svg className="bp-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2.5 8h11m0 0L9 3.5M13.5 8L9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 /**
  * The deep-dive of the About page: stats, the commit timeline, thematic
@@ -57,6 +67,13 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
 
       <header className="ft-head">
         {feature.intro && <ScrollWords className="ft-intro" text={feature.intro} />}
+        <Reveal delay={0.18} className="ft-head-action">
+          {/* suppressHydrationWarning: like every other anchor on the site — a browser extension can stamp attributes onto <a> before hydration. */}
+          <a className="bp-btn" href={REPO_URL} target="_blank" rel="noreferrer" suppressHydrationWarning>
+            <span>GitHub</span>
+            <ArrowRight />
+          </a>
+        </Reveal>
       </header>
 
       {hasStats && (
