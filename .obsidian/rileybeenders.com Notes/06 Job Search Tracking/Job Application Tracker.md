@@ -30,7 +30,7 @@ Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdow
 |---|---|---|---|
 | [[001 Disney - Principal Ride Control Software Engineer\|001]] | Walt Disney Imagineering | Principal Ride Control Software Engineer (Controls Automation) | 🟢 Application Received |
 | [[002 Fluidstack - General Application\|002]] | Fluidstack.io | General Application | 🟢 Application Received |
-| [[003 K2 Space - Principal Electro-Mechanical Manufacturing Engineer\|003]] | K2 Space | Principal Electro-Mechanical Manufacturing Engineer | 🟡 Interviewing |
+| [[003 K2 Space - Principal Electro-Mechanical Manufacturing Engineer\|003]] | K2 Space | Principal Electro-Mechanical Manufacturing Engineer | 🔴 No longer in consideration |
 | [[004 Relativity Space - Lead Manufacturing Engineer Integration and Test\|004]] | Relativity Space | Lead, Manufacturing Engineer, Integration & Test | 🟢 Application Received |
 | [[005 SpaceX - Sr Network Security Engineer\|005]] | SpaceX | Sr. Network Security Engineer | 🟢 Application Received |
 | [[006 Disney - Principal Software Engineer\|006]] | Walt Disney Imagineering | Principal Software Engineer | 🔴 No longer in consideration |
