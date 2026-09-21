@@ -16,6 +16,7 @@ PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.
 **Date Posted:** Not listed
 **Date Applied:** Aug 1, 2026
 **Salary Range:** $175,000 – $200,000 + equity
+**Interviews:** Aug 12, Aug 28, and Sep 1, 2026 (scheduling began Aug 8)
 **Outcome:** No longer in consideration as of Sep 20, 2026, after the interview process that ran from Aug 8, 2026
 
 ---

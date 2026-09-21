@@ -28,6 +28,8 @@ The site stays readable as a conventional resume at rest, then reveals additiona
     Application Submitted           :done, 2026-08-01, 7d
     Scheduling Interview            :milestone, 2026-08-08, 0d
     Interview                       :milestone, 2026-08-12, 0d
+    Interview                       :milestone, 2026-08-28, 0d
+    Interview                       :milestone, 2026-09-01, 0d
     Interview Process               :done, 2026-08-08, 43d
     No Longer in Consideration      :crit, milestone, 2026-09-20, 0d
 
