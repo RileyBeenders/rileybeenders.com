@@ -50,16 +50,15 @@
       "subtitle": "Product development of a compact, professional 3D Printer. Purpose built for prosthetics and orthotics.",
       "problem": "Professional prosthetic and orthotic users needed a compact, purpose-built printer that retained industrial capability while being easier for a new customer to install and operate.",
       "constraints": [
-        "Minimize setup and visual complexity",
-        "Preserve the POSEIDON product family's industrial-design language",
-        "Support 120 and 240 VAC supplies",
-        "Address CE machinery-directive requirements"
+        "Reduced assembly time by 80% compared to previous designs",
+        "Preserve the POSEIDON's industrial-design language",
+        "Support both 120 VAC and 240 VAC input power",
+        "Addressed CE Machinery Directive requirements and implemented necessary design changes"
       ],
       "approach": [
         "Designed a bolt-less shell with seamless chamfered geometry",
-        "Developed a plug-and-play customer workflow",
-        "Created a simplified IEEE-style electrical design",
-        "Implemented product changes supporting conformity with the 2006/42/EC machinery directive"
+        "Implemented a plug-and-play customer workflow",
+        "Product changes supporting conformity with the 2006/42/EC Machinery Directive"
       ],
       "impact": [
         "Released the company's most compact purpose-built printer at the time",
@@ -73,60 +72,96 @@
         "Design for manufacturing",
         "Regulatory compliance"
       ]
+    },
+    "dates": {
+      "start": "2025-02-18",
+      "end": "2026-05-22"
     }
   },
   {
-    "name": "Linear Motor Platform Standardization",
-    "id": "linear-motion-platform",
+    "name": "RB's Auto App Updater",
+    "id": "auto-app-updater",
     "order": 2,
-    "type": "Motion Control / Product Platform",
-    "visible": false,
-    "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
-    "proofId": "linear-motion-platform",
+    "type": "Windows Utility / PowerShell",
+    "summary": "A one-line install that puts an App Auto Updater shortcut on a Windows desktop. It checks every installed application with WinGet, shows what can be updated, and upgrades each package on its own so a single failure never stops the rest.",
+    "status": "Initial draft. Photos and screenshots to come.",
+    "images": [
+      {
+        "src": "/project-artifacts/RBs-Auto-Win-Updater.gif",
+        "alt": "This demonstrate the entire process. From installing the script to running it the first time. It takes ~30 seconds to do everything.",
+        "fit": "contain",
+        "speed": 2
+      }
+    ],
     "bullets": [
       {
-        "text": "Replaced servo-driven ballscrew assemblies and demonstrated 4-micron precision with a 30 kg moving mass at 4 m/s.",
-        "proofId": "linear-motion-platform"
+        "text": "Runs the upgrades through an elevated scheduled task, so after the one-time setup the desktop shortcut updates everything without a UAC prompt.",
+        "emphasis": [
+          "without a UAC prompt",
+          "one-time setup"
+        ]
       },
       {
-        "text": "Unified product architecture and created swappable mounts to reduce support complexity and make future scaling easier.",
-        "proofId": "linear-motion-platform"
+        "text": "Translates WinGet exit codes into plain-language statuses such as security blocked, manual update, restart needed, and application in use, and retries per-user installers without elevation.",
+        "emphasis": [
+          "retries per-user installers without elevation"
+        ]
+      },
+      {
+        "text": "Keeps itself current: every launch checks a version manifest on GitHub, downloads the newer script, and verifies its SHA-256 hash before installing.",
+        "emphasis": [
+          "verifies",
+          "SHA-256 hash before installing"
+        ]
       }
     ],
     "additionalInfo": {
-      "title": "Linear Motor Platform Standardization",
-      "subtitle": "Higher-speed precision through a shared motion architecture",
-      "problem": "POSEIDON and ICARUS used servo-driven ballscrew assemblies that limited the opportunity to standardize service, mounts, and future performance across the product line.",
+      "title": "RB's Auto App Updater",
+      "subtitle": "One shortcut that keeps every app on a Windows PC up to date",
+      "problem": "I use CachyOS on my laptop and have grown pretty fond of the auto-updater built into the OS. After working with Winget on Windows for a few months, I started wondering why updating applications still felt so manual.\n\nThe goal of this project was simple: create a tool that can update all supported applications on a Windows system with a single double-click. Similar to the update experience I had grown used to on Linux.\n\nNo commands to remember. No terminal interaction. Just launch it and let it handle the updates.",
+      "rootCause": "Keeping applications updated on Windows can become tedious, especially when different programs use completely different update methods.\n\nSome applications update themselves, some rely on Microsoft Store and others prompt you to visit a website, download a new `.exe`, and manually run the installer.\n\nWhen you have dozens of applications installed, that fragmented process becomes unnecessarily time-consuming.",
       "constraints": [
-        "Move a 30 kg machine assembly",
-        "Support large-format printer geometries",
-        "Preserve precision at high travel speed",
-        "Keep mounts serviceable across products"
+        "Install with one PowerShell line and no other tooling",
+        "Ask for administrator approval once, at setup, and never again",
+        "Keep going when a single package fails",
+        "Update itself safely from a public repository"
       ],
       "approach": [
-        "Converted both flagship platforms to linear-motor assemblies",
-        "Unified the architecture between products",
-        "Designed easily swappable mounts",
-        "Validated speed and positional performance on the machine platforms"
+        "Split the tool into a non-elevated launcher in the user's profile and protected worker scripts in Program Files that a registered scheduled task runs with highest privileges",
+        "List available upgrades with WinGet, confirm once, then upgrade each package individually with live progress and elapsed time",
+        "Map WinGet exit codes to a friendly explanation and a next action: retry per-user installers without elevation, and flag security blocks, required restarts, and applications still in use",
+        "Check version.json on every launch and install a newer AutoAppUpdater.ps1 only after its SHA-256 hash matches the manifest"
+      ],
+      "designDecisions": [
+        "Convert the repository's icon.png into a multi-size .ico so the desktop shortcut looks like an app rather than a script",
+        "Explain failures in plain language instead of WinGet exit codes"
       ],
       "impact": [
-        "Achieved 4-micron precision at 4 m/s with a 30 kg moving mass",
-        "Reduced product-to-product architectural complexity",
-        "Created a more scalable foundation for support and future performance"
+        "Installs from rileybeenders.com/AutoWinUpdater with a single PowerShell line",
+        "One double-click updates every WinGet-managed application with no UAC prompt",
+        "Failed packages are classified and skipped instead of halting the run",
+        "Detailed logs in %LOCALAPPDATA%\\WingetUpdater make remote troubleshooting possible"
       ],
       "tools": [
-        "Linear motors",
-        "Motion control",
-        "Mechanical design",
-        "Precision testing"
+        "PowerShell",
+        "WinGet",
+        "Windows Task Scheduler",
+        "GitHub",
+        "SHA-256 verification"
       ],
       "assets": [
         {
-          "label": "Motion Architecture",
-          "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract diagram of a standardized motion-control architecture"
+          "src": "/project-artifacts/auto-app-updater/run-flow.svg"
+        },
+        {
+          "src": "/project-artifacts/auto-app-updater/install-flow.svg"
         }
       ]
+    },
+    "dates": {
+      "start": "2026-09-20",
+      "ongoing": true,
+      "position": "top-right"
     }
   },
   {
@@ -189,9 +224,63 @@
     }
   },
   {
+    "name": "Linear Motor Platform Standardization",
+    "id": "linear-motion-platform",
+    "order": 4,
+    "type": "Motion Control / Product Platform",
+    "visible": false,
+    "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
+    "proofId": "linear-motion-platform",
+    "bullets": [
+      {
+        "text": "Replaced servo-driven ballscrew assemblies and demonstrated 4-micron precision with a 30 kg moving mass at 4 m/s.",
+        "proofId": "linear-motion-platform"
+      },
+      {
+        "text": "Unified product architecture and created swappable mounts to reduce support complexity and make future scaling easier.",
+        "proofId": "linear-motion-platform"
+      }
+    ],
+    "additionalInfo": {
+      "title": "Linear Motor Platform Standardization",
+      "subtitle": "Higher-speed precision through a shared motion architecture",
+      "problem": "POSEIDON and ICARUS used servo-driven ballscrew assemblies that limited the opportunity to standardize service, mounts, and future performance across the product line.",
+      "constraints": [
+        "Move a 30 kg machine assembly",
+        "Support large-format printer geometries",
+        "Preserve precision at high travel speed",
+        "Keep mounts serviceable across products"
+      ],
+      "approach": [
+        "Converted both flagship platforms to linear-motor assemblies",
+        "Unified the architecture between products",
+        "Designed easily swappable mounts",
+        "Validated speed and positional performance on the machine platforms"
+      ],
+      "impact": [
+        "Achieved 4-micron precision at 4 m/s with a 30 kg moving mass",
+        "Reduced product-to-product architectural complexity",
+        "Created a more scalable foundation for support and future performance"
+      ],
+      "tools": [
+        "Linear motors",
+        "Motion control",
+        "Mechanical design",
+        "Precision testing"
+      ],
+      "assets": [
+        {
+          "label": "Motion Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a standardized motion-control architecture"
+        }
+      ]
+    }
+  },
+  {
     "name": "PROTEOR Print",
     "id": "proteor-print",
-    "order": 4,
+    "order": 5,
     "type": "Remote Operations Software",
     "visible": false,
     "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
@@ -246,7 +335,7 @@
   {
     "name": "Gen3 POSEIDON",
     "id": "gen3-poseidon",
-    "order": 5,
+    "order": 6,
     "type": "Large-Format Additive Manufacturing System",
     "visible": false,
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
@@ -301,7 +390,7 @@
   {
     "name": "THE KRAKEN",
     "id": "kraken",
-    "order": 6,
+    "order": 7,
     "type": "Custom Hybrid Additive Manufacturing System",
     "visible": false,
     "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
@@ -357,7 +446,7 @@
   {
     "name": "Engineering Operations Platform",
     "id": "internal-erp",
-    "order": 7,
+    "order": 8,
     "type": "Internal Software / Infrastructure",
     "visible": false,
     "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
@@ -412,7 +501,7 @@
   {
     "name": "Modular CAN-Bus Controls Architecture",
     "id": "modular-controls",
-    "order": 8,
+    "order": 9,
     "type": "Electrical / Manufacturing System",
     "visible": false,
     "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
@@ -467,7 +556,7 @@
   {
     "name": "Unified Ubiquiti Network",
     "id": "unifi-network",
-    "order": 9,
+    "order": 10,
     "type": "Network Infrastructure",
     "visible": false,
     "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",

@@ -28,6 +28,12 @@ export type ProjectImage = {
   alt: string;
   caption?: string;
   fit?: "cover" | "contain";
+  /**
+   * GIF only: playback rate relative to the recording (2 = twice as fast).
+   * The Studio bakes it into the file's frame delays on save, so the site
+   * never reads it — a browser plays a GIF at the file's own pace.
+   */
+  speed?: number;
 };
 
 export type Experience = {

@@ -1,4 +1,6 @@
 import type { ProofView } from "@/lib/projects";
+import { FlowDiagram } from "@/components/projects/diagrams/FlowDiagram";
+import { FLOW_DIAGRAMS } from "@/components/projects/diagrams/flows";
 
 /**
  * The expanded case study: problem, constraints, approach, decisions, impact,
@@ -32,14 +34,24 @@ export function CaseStudy({ proof }: { proof: ProofView }) {
       )}
 
       {proof.assets.length > 0 && (
-        <div className="pj-proof-assets">
-          {proof.assets.map((asset) => (
-            <figure key={asset.src}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset.src} alt={asset.alt} loading="lazy" />
-              <figcaption>{asset.label}</figcaption>
-            </figure>
-          ))}
+        // All flowcharts: the grid lets two share a row when the width allows.
+        <div className={`pj-proof-assets${proof.assets.every((asset) => FLOW_DIAGRAMS[asset.src]) ? " pj-proof-assets--flows" : ""}`}>
+          {proof.assets.map((asset) => {
+            // A diagram the site knows how to draw itself renders inline,
+            // in the palette and animated; anything else is the file as-is.
+            const flow = FLOW_DIAGRAMS[asset.src];
+            return (
+              <figure key={asset.src} className={flow ? "pj-proof-asset--flow" : undefined}>
+                {flow ? (
+                  <FlowDiagram spec={flow} title={asset.alt || asset.label} />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={asset.src} alt={asset.alt} loading="lazy" />
+                )}
+                <figcaption>{asset.label}</figcaption>
+              </figure>
+            );
+          })}
         </div>
       )}
     </div>

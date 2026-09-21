@@ -11,7 +11,7 @@ tags: [data, types]
 | `ProofAsset` | `{ label, src, alt }` — one image tied to a proof or a project's `additionalInfo`. |
 | `ProofPoint` | `{ id, title, summary, tags[], assets[], projectId?, visible? }` — an evidence entry. `visible: false` (every entry today) keeps it out of `resumeData.proofs`. |
 | `ResumeBullet` | `{ text, emphasis?, proofId?, projectId? }` — one line of experience/project copy. `emphasis` is the exact phrases `EmphasizedText` accents on hover (always passed through the merge); `proofId` is stripped at merge time on `main`, `projectId` is kept (`experienceProjectButtons: true`) and becomes the resume's inline evidence link when it names a published project. |
-| `ProjectImage` | `{ src, alt, caption?, fit?: "cover" \| "contain" }` |
+| `ProjectImage` | `{ src, alt, caption?, fit?: "cover" \| "contain", speed? }` — `speed` (2026-09-20) is GIF-only: the playback rate relative to the recording (`2` = twice as fast, left out at 1×). The site never reads it — the Studio bakes it into the file's frame delays on save, since a browser plays a GIF at the file's own pace (see [[Career Content]]). |
 | `Experience` | `{ company, role, location, start, end, context?, bullets[] }` — one job. |
 | `EducationDegree` | `{ school, degree, graduation }` |
 | `EducationCertificate` | `{ certificateName, issuer, date, credentialUrl?, credentialLabel? }` |

@@ -24,6 +24,7 @@ import { readFile, writeFile, rename, mkdir, readdir, stat, unlink } from "node:
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { AccessStore, parseTarget } from "./access.mjs";
+import { inspectGif, retimeGif, timingAt } from "./gif.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
@@ -308,6 +309,119 @@ async function uniquePath(dir, filename) {
   return `${stem}-${Date.now()}${ext}`;
 }
 
+/* --------------------------------------------------------- gif timing --- */
+
+/** A public path that names a GIF, e.g. "/project-artifacts/demo.gif". */
+function isGifSrc(src) {
+  return typeof src === "string" && src.startsWith("/") && !src.startsWith("//") && path.extname(src).toLowerCase() === ".gif";
+}
+
+/** The playback rate an image entry asks for; anything unset or unusable is the recording's own pace. */
+function speedOf(entry) {
+  const speed = entry?.speed;
+  return typeof speed === "number" && Number.isFinite(speed) && speed > 0 ? speed : 1;
+}
+
+/**
+ * Every GIF a data file refers to, with the speed the entry asks for. Any
+ * object with a `src` counts — gallery images, proof assets, site captures —
+ * so looping is guaranteed for all of them, not only the ones with a slider.
+ * The first mention of a file wins if two entries disagree.
+ */
+function gifRefs(data, found = new Map()) {
+  if (Array.isArray(data)) {
+    for (const entry of data) gifRefs(entry, found);
+  } else if (data && typeof data === "object") {
+    if (isGifSrc(data.src) && !found.has(data.src)) found.set(data.src, speedOf(data));
+    for (const value of Object.values(data)) {
+      if (value && typeof value === "object") gifRefs(value, found);
+    }
+  }
+  return found;
+}
+
+/**
+ * Makes each GIF a just-saved file refers to play at the speed the JSON asks
+ * for and loop forever. A file that already reads that way is left alone, so
+ * a 15 MB recording is only rewritten when its slider actually moved.
+ * Returns one line per file for the save's toast; a missing or broken file
+ * is reported, not fatal — the JSON is already saved by then.
+ */
+async function syncGifTimings(data) {
+  const results = [];
+  for (const [src, speed] of gifRefs(data)) {
+    const absolute = safeJoin(PUBLIC_DIR, src);
+    if (!absolute) continue;
+    try {
+      const { buffer, changed } = retimeGif(await readFile(absolute), speed);
+      if (changed) {
+        const staging = `${absolute}.studio-${process.pid}.tmp`;
+        await writeFile(staging, buffer);
+        await rename(staging, absolute);
+        console.log(`  retimed ${src} to ${speed}×, looping`);
+      }
+      results.push({ src, speed, changed });
+    } catch (error) {
+      const message = error.code === "ENOENT" ? "the file is missing" : error.message;
+      console.warn(`  could not retime ${src}: ${message}`);
+      results.push({ src, speed, changed: false, error: message });
+    }
+  }
+  return results;
+}
+
+/** GET /api/gif?src=/project-artifacts/demo.gif&speed=2 — the file's timing, and what `speed` would make of it. */
+async function serveGifInfo(res, url) {
+  const src = url.searchParams.get("src") || "";
+  const absolute = safeJoin(PUBLIC_DIR, src);
+  if (!absolute || !isGifSrc(src)) return sendError(res, 404, "Not a GIF under public/.");
+
+  let info;
+  try {
+    info = inspectGif(await readFile(absolute));
+  } catch (error) {
+    if (error.code === "ENOENT") return sendError(res, 404, "Not found.");
+    return sendError(res, 422, `Could not read the GIF: ${error.message}`);
+  }
+
+  const requested = Number(url.searchParams.get("speed"));
+  const speed = Number.isFinite(requested) && requested > 0 ? requested : info.speed;
+  const { original, ...shape } = info;
+  return sendJson(res, 200, { ...shape, recorded: timingAt(original, 1), at: timingAt(original, speed) });
+}
+
+/**
+ * A GIF served retimed to `speed` in memory — the preview beside the slider,
+ * before anything is saved. The tag tracks the file and the speed, so the
+ * browser reuses the copy until either changes.
+ */
+async function serveGifPreview(req, res, absolute, speed) {
+  let body;
+  try {
+    body = await readFile(absolute);
+  } catch {
+    return sendError(res, 404, "Not found.");
+  }
+  const info = await stat(absolute);
+  const etag = createHash("sha1").update(`${absolute}|${info.mtimeMs}|${info.size}|${speed}`).digest("hex").slice(0, 20);
+  if (req.headers["if-none-match"] === `"${etag}"`) {
+    res.writeHead(304, { etag: `"${etag}"`, "cache-control": "no-cache" });
+    return res.end();
+  }
+  try {
+    body = retimeGif(body, speed).buffer;
+  } catch (error) {
+    console.error(`  could not retime ${absolute} for preview: ${error.message}`);
+  }
+  res.writeHead(200, {
+    "content-type": "image/gif",
+    "content-length": body.length,
+    "cache-control": "no-cache",
+    etag: `"${etag}"`
+  });
+  res.end(body);
+}
+
 /* ---------------------------------------------------------- thumbnails --- */
 
 let sharpModule; // undefined until first use; null when it is not installed
@@ -379,6 +493,9 @@ async function serveThumb(req, res, url) {
   const ext = path.extname(src).toLowerCase();
   if (!absolute || !IMAGE_EXTS.has(ext)) return sendError(res, 404, "Not an image under public/.");
   if (THUMB_PASSTHROUGH.has(ext)) {
+    // A GIF asked for at a speed is retimed on the way out, for the slider's preview.
+    const speed = Number(url.searchParams.get("speed"));
+    if (ext === ".gif" && Number.isFinite(speed) && speed > 0) return serveGifPreview(req, res, absolute, speed);
     if (await serveStatic(res, absolute)) return;
     return sendError(res, 404, "Not found.");
   }
@@ -510,7 +627,9 @@ async function handleApi(req, res, url, { store, siteUrl }) {
 
       const revision = await writeDataFile(key, payload.data);
       console.log(`  saved ${FILES[key].file}`);
-      return sendJson(res, 200, { key, revision, savedAt: Date.now() });
+      // The GIFs this file refers to follow it: their speed and loop live in the file bytes.
+      const gifs = await syncGifTimings(payload.data);
+      return sendJson(res, 200, { key, revision, savedAt: Date.now(), gifs });
     }
   }
 
@@ -521,6 +640,10 @@ async function handleApi(req, res, url, { store, siteUrl }) {
 
   if (req.method === "GET" && segments[0] === "thumb" && segments.length === 1) {
     return serveThumb(req, res, url);
+  }
+
+  if (req.method === "GET" && segments[0] === "gif" && segments.length === 1) {
+    return serveGifInfo(res, url);
   }
 
   // Both routes address a folder by every segment after "images", e.g.

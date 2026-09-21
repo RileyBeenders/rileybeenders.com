@@ -592,7 +592,15 @@ async function save() {
     paintRail();
     paintList();
     paintDetail();
-    toast(`Saved ${subject}: ${changes} ${changes === 1 ? "field" : "fields"} changed. The site picks it up on its own.`);
+    // GIFs the file refers to were retimed and set to loop on the server; say which, and which could not be.
+    const gifs = Array.isArray(result.gifs) ? result.gifs : [];
+    const retimed = gifs.filter((gif) => gif.changed).map((gif) => `${gif.src.split("/").pop()} at ${gif.speed}×`);
+    const failed = gifs.filter((gif) => gif.error).map((gif) => `${gif.src.split("/").pop()} (${gif.error})`);
+    const note = [
+      retimed.length > 0 ? ` Retimed ${retimed.join(", ")}.` : "",
+      failed.length > 0 ? ` Could not retime ${failed.join(", ")}.` : ""
+    ].join("");
+    toast(`Saved ${subject}: ${changes} ${changes === 1 ? "field" : "fields"} changed.${note} The site picks it up on its own.`, failed.length > 0 ? "error" : "ok");
   } catch (error) {
     paintChrome();
     if (/changed on disk/i.test(error.message)) {
