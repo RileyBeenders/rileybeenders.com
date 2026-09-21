@@ -309,6 +309,122 @@ function refControl(field, value, ctx) {
   return selectControl(field, value, ctx, options);
 }
 
+/** The one kind of image whose playback the Studio can retime. */
+const isGifSrc = (src) => typeof src === "string" && /\.gif$/i.test(src);
+
+/** A stored playback rate, or the recording's own pace when there is none. */
+const speedOf = (raw) => (typeof raw === "number" && Number.isFinite(raw) && raw > 0 ? raw : 1);
+
+const formatSpeed = (speed) => `${Number(speed.toFixed(2))}×`;
+const formatSeconds = (cs) => `${(cs / 100).toFixed(1)} s`;
+
+/**
+ * The playback row under a GIF's path: a slider from quarter speed up to the
+ * fastest the recording allows, what that does to the clip, and a preview the
+ * server retimes on the fly (/api/thumb?speed=) before anything is saved. The
+ * chosen speed is kept beside `src` under `field.speedName` and baked into
+ * the file on save; every GIF loops on the site, so there is no switch for
+ * that. Hidden for anything that is not a GIF.
+ */
+function playbackControl(field, value, ctx) {
+  const speedName = field.speedName;
+  const slider = el("input", {
+    type: "range",
+    class: "f-range",
+    min: "0.25",
+    max: "4",
+    step: "0.25",
+    value: String(speedOf(value[speedName])),
+    "aria-label": "Playback speed"
+  });
+  const rate = el("span", { class: "f-playback-rate" });
+  const summary = el("span", { class: "f-playback-summary" });
+  const reset = el("button", { type: "button", class: "f-btn f-btn--quiet f-playback-reset" }, "As recorded");
+  const preview = el("img", { class: "f-playback-preview", alt: "", decoding: "async" });
+  const root = el("div", { class: "f-playback", hidden: true },
+    el("div", { class: "f-playback-head" },
+      el("span", { class: "f-label f-label--inline" }, "Playback speed"),
+      rate,
+      reset),
+    slider,
+    summary,
+    preview,
+    el("p", { class: "f-help" }, "Applied to the file itself when you save, so the site plays it at this pace. GIFs always loop on the site."));
+
+  let src = null;
+  let info = null;
+  let timer = 0;
+
+  const speed = () => Number(slider.value);
+
+  function paint() {
+    rate.textContent = formatSpeed(speed());
+    reset.hidden = speed() === 1;
+    if (!info) {
+      summary.textContent = "";
+      return;
+    }
+    const clip = `${info.frames} frames · ${info.width}×${info.height}`;
+    summary.textContent = info.at.speed === 1
+      ? `As recorded: ${formatSeconds(info.recorded.durationCs)} at ${Number(info.recorded.fps.toFixed(1))} fps · ${clip}`
+      : `${formatSeconds(info.at.durationCs)} at ${Number(info.at.fps.toFixed(1))} fps, from ${formatSeconds(info.recorded.durationCs)} · ${clip}`;
+  }
+
+  /** Asks the server what this speed does to the clip, and shows the clip at that speed. */
+  async function describe() {
+    const asked = src;
+    preview.src = `/api/thumb?src=${encodeURIComponent(asked)}&speed=${speed()}`;
+    try {
+      const response = await fetch(`/api/gif?src=${encodeURIComponent(asked)}&speed=${speed()}`);
+      if (!response.ok || asked !== src) return;
+      info = await response.json();
+    } catch {
+      return;
+    }
+    // The fastest frame can't go under what browsers honour, so the slider stops there.
+    slider.max = String(Math.max(1, info.maxSpeed));
+    if (speed() > info.maxSpeed) {
+      slider.value = String(info.maxSpeed);
+      store();
+      describe();
+      return;
+    }
+    paint();
+  }
+
+  function store() {
+    if (speed() === 1) delete value[speedName];
+    else value[speedName] = speed();
+    ctx.onEdit();
+  }
+
+  const describeSoon = () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(describe, 150);
+  };
+
+  slider.addEventListener("input", () => { store(); paint(); describeSoon(); });
+  reset.addEventListener("click", () => { slider.value = "1"; store(); paint(); describe(); });
+
+  /** Called whenever the path changes: shows for a GIF, hides for anything else. */
+  root.refresh = (next) => {
+    if (!isGifSrc(next)) {
+      root.hidden = true;
+      src = null;
+      preview.removeAttribute("src");
+      return;
+    }
+    root.hidden = false;
+    if (next === src) return;
+    src = next;
+    info = null;
+    paint();
+    describe();
+  };
+
+  return root;
+}
+
 function imageControl(field, value, ctx) {
   const id = nextId();
   const input = el("input", {
@@ -319,6 +435,7 @@ function imageControl(field, value, ctx) {
     placeholder: "/project-images/example.png"
   });
 
+  const playback = field.speedName ? playbackControl(field, value, ctx) : null;
   const preview = el("div", { class: "f-thumb" });
   function paint() {
     preview.replaceChildren(
@@ -326,6 +443,7 @@ function imageControl(field, value, ctx) {
         ? thumbImage(input.value, 92)
         : el("span", { class: "f-thumb-empty" }, "no image")
     );
+    playback?.refresh(input.value);
   }
   paint();
 
@@ -345,7 +463,7 @@ function imageControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), undefined, id);
+  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), playback, id);
 }
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
@@ -566,12 +684,22 @@ const isBlank = (entry) => entry === undefined || entry === null || entry === ""
 export function normalize(fields, value) {
   if (typeof value !== "object" || value === null) return value;
   const out = {};
+  // Sibling keys a control owns (a GIF's speed) go after the schema's own fields.
+  const trailing = [];
 
   for (const field of fields) {
     const raw = value[field.name];
     const keep = field.always || field.required;
 
     switch (field.type) {
+      case "image": {
+        const text = isBlank(raw) ? "" : String(raw).trim();
+        if (text !== "" || keep) out[field.name] = text;
+        // Only a GIF has a pace to keep, and 1× is the file's own, so it needs no key.
+        const speed = field.speedName ? value[field.speedName] : undefined;
+        if (isGifSrc(text) && speedOf(speed) !== 1) trailing.push([field.speedName, speedOf(speed)]);
+        break;
+      }
       case "emphasisText": {
         const text = isBlank(raw) ? "" : String(raw).trim();
         if (text !== "" || keep) out[field.name] = text;
@@ -616,7 +744,9 @@ export function normalize(fields, value) {
     }
   }
 
-  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : [])]));
+  for (const [key, entry] of trailing) out[key] = entry;
+
+  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.speedName ? [field.speedName] : [])]));
   for (const [key, raw] of Object.entries(value)) {
     if (!known.has(key)) out[key] = raw;
   }

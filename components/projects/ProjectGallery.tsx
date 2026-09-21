@@ -19,6 +19,9 @@ const shotVariants = {
   shown: { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { duration: 0.7, ease: EASE } }
 };
 
+/** An animated GIF plays at the file's own pace and loops as the file says; the Studio sets both. */
+const isGif = (src: string) => /\.gif$/i.test(src);
+
 function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: () => void }): ReactNode {
   return (
     <button
@@ -33,13 +36,16 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
           file's dimensions, and `sizes` tracks the grid (one column on
           phones, two in a full-width block, two in a half-width column), so
           the optimizer serves a frame-sized WebP here. The Lightbox is
-          where the untouched original finally loads. */}
+          where the untouched original finally loads. An animated GIF is
+          the exception: the optimizer would only pass it through whole,
+          so it is fetched directly and keeps its timing and loop. */}
       <Image
         src={image.src}
         alt={image.alt}
         fill
         sizes="(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw"
         loading={index === 0 ? "eager" : "lazy"}
+        unoptimized={isGif(image.src)}
         className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
       />
       <span className="pj-shot-zoom" aria-hidden="true">

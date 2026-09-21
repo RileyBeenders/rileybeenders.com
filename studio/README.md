@@ -31,7 +31,8 @@ it by DNS rebinding.
 site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
 gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
 access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
-server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access, /api/thumb
+server.mjs      HTTP server: the JSON API, image uploads, static files, /api/access, /api/thumb, /api/gif
+gif.mjs         retimes a GIF's frame delays and loop flag in place, without decoding it
 ui/
   index.html    the editor shell
   studio.css
@@ -55,6 +56,27 @@ file's path, mtime and size, so a changed image gets a fresh copy and the
 folder is safe to delete. SVG and GIF are served as they are. Without `sharp`
 the endpoint serves the original, and an `<img>` whose copy fails falls back
 to the original too.
+
+## GIFs: speed and looping
+
+A browser plays a GIF at the pace written into the file, and loops it only if
+the file says so, so neither can be set from the site. Instead a gallery image
+whose path ends in `.gif` gets a **Playback speed** slider under it, from ¼×
+up to the fastest the recording allows (a frame can't be shown for less than
+2 hundredths of a second, so a 12.5 fps recording tops out at 4×). The readout
+says what the speed does to the clip's length and frame rate, and the preview
+under it is the file retimed on the fly by `/api/thumb?speed=`.
+
+The chosen speed is saved as `speed` beside the image's `src` (left out at 1×).
+On every save, `gif.mjs` makes each GIF the file refers to match: it rewrites
+the per-frame delays and sets the loop flag to forever, copying the pixel data
+through untouched — no decode, a few milliseconds for a 15 MB recording. The
+recording's own delays are kept in a comment inside the GIF the first time it
+is retimed, so later speeds are computed from those and 2× → 3× → 1× lands on
+the original bytes. A file that already reads as the JSON says is not touched,
+so a save that didn't move the slider never rewrites it. Every referenced GIF
+is set to loop, slider or not; a GIF that only appears in the picker is left
+as it is until something refers to it.
 
 ## Letting a phone in
 

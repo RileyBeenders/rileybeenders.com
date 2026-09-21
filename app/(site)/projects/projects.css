@@ -28,16 +28,16 @@
   bottom: 0;
   left: calc(max(var(--pad), calc((100% - var(--shell)) / 2 + var(--pad))) - 12px);
   width: 2px;
+  overflow: visible;
   pointer-events: none;
 }
-.pj-spine-track { position: absolute; inset: 0; background: var(--rule); }
-.pj-spine-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform-origin: top center;
-  will-change: transform;
-}
+/* One path drawn twice: the track in full, the fill over it as far as the
+   scroll has come. The path itself is laid out by ProjectListSpine — straight
+   down the column, bending in beside any open case study and back out. */
+.pj-spine-track,
+.pj-spine-fill { fill: none; stroke-width: 2; stroke-linecap: butt; }
+.pj-spine-track { stroke: var(--rule); }
+.pj-spine-fill { stroke: var(--accent); }
 
 /* --------------------------------------------------------------- entry --- */
 
@@ -308,7 +308,12 @@
 
 .pj-case-study-wrap { overflow: hidden; }
 
+/* A centred column, narrower than the entry above it, so the open panel
+   reads as a deeper layer rather than more of the same page; the spine
+   bends in to run beside its edge (ProjectListSpine). */
 .pj-case-study {
+  max-width: 960px;
+  margin-inline: auto;
   padding-top: clamp(28px, 4vh, 44px);
   margin-top: clamp(28px, 4vh, 44px);
   border-top: 1px solid var(--rule);
@@ -394,6 +399,36 @@
   text-transform: uppercase;
   color: var(--faint);
 }
+
+/* ---------------------------------------------------------- flowcharts --- */
+
+/* An inline flowchart (components/projects/diagrams) takes the full row —
+   at half width its 12px labels would shrink past reading — and draws in
+   the palette: neutral steps on --white, security checks in --blue,
+   what lands on the machine in --accent, a dead end dashed and muted. */
+.pj-proof-asset--flow { grid-column: 1 / -1; max-width: 600px; }
+/* When every diagram is a flowchart, two sit side by side as soon as each
+   can have 460px (the 960px case-study column on a desktop), else they stack. */
+.pj-proof-assets--flows { grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 28px; }
+.pj-proof-assets--flows .pj-proof-asset--flow { grid-column: auto; }
+.pj-flow { display: block; width: 100%; height: auto; overflow: visible; }
+.pj-flow text { font-family: var(--bp-font-body); }
+.pj-flow-title { font-size: 16px; font-weight: 600; fill: var(--ink); }
+.pj-flow-detail { font-size: 13.5px; fill: var(--muted); }
+.pj-flow-label { font-size: 13px; fill: var(--muted); }
+.pj-flow-node rect { fill: var(--white); stroke: var(--rule); stroke-width: 1; }
+/* Checks are outlined; what gets installed is filled and heavier — the two
+   stay apart in palettes where --blue and --accent share a hue (Electric). */
+.pj-flow-node--check rect { stroke: var(--blue); fill: color-mix(in srgb, var(--blue) 6%, var(--white)); }
+.pj-flow-node--check .pj-flow-detail { fill: var(--blue); }
+.pj-flow-node--system rect { stroke: var(--accent); stroke-width: 1.5; fill: color-mix(in srgb, var(--accent) 18%, var(--white)); }
+.pj-flow-node--system .pj-flow-detail { fill: var(--accent); }
+.pj-flow-node--stop rect { fill: var(--paper); stroke-dasharray: 4 3; }
+.pj-flow-node--stop .pj-flow-title { fill: var(--muted); }
+.pj-flow-node--stop .pj-flow-detail { fill: var(--faint); }
+.pj-flow-line { stroke: var(--faint); stroke-width: 1.5; fill: none; }
+.pj-flow-head { stroke: var(--faint); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pj-flow-pulse circle { fill: var(--accent); }
 
 /* ---------------------------------------------------------------- outro --- */
 

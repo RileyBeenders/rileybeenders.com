@@ -37,7 +37,8 @@ const ASSET_FIELDS = [
 ];
 
 const IMAGE_FIELDS = [
-  { name: "src", type: "image", label: "Image", required: true },
+  // A GIF gets a playback-speed slider under its path, kept as `speed` beside `src`.
+  { name: "src", type: "image", label: "Image", required: true, speedName: "speed" },
   { name: "alt", type: "text", label: "Alt text", required: true, help: "What the image shows, for screen readers." },
   { name: "caption", type: "text", label: "Caption", help: "Shown under the image in the gallery." },
   {
