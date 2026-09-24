@@ -119,7 +119,7 @@ export default function HomePage() {
                                     aria-label={`See the ${project.name} project`}
                                     suppressHydrationWarning
                                   >
-                                    <span>see {project.name}</span>
+                                    <span>Read more</span>
                                     <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                       <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>

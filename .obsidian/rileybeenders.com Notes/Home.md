@@ -10,14 +10,14 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 
 ## Quick facts
 
-| | |
-|---|---|
-| Framework | Next.js `^16.2.12` (App Router, Turbopack dev), React `^19.2.7`, TypeScript `^6` `strict` — `package.json` is `rileybeenders.com` v`3.1.0`, every range pinned since 2026-09-19 |
-| Live site | https://rileybeenders.com |
-| Hosting signal | Vercel (`@vercel/analytics`, `@vercel/speed-insights`, Vercel CDN cache headers) |
-| Repo owner | RileyBeenders (GitHub) |
-| Current branch | `main` |
-| Package manager | npm |
+|                 |                                                                                                                                                                                                                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework       | Next.js `^16.2.12` (App Router, Turbopack dev), React `^19.2.7`, TypeScript `^6` `strict` — `package.json` is `rileybeenders.com` v`3.1.0`, every range pinned since 2026-09-19                                                                                                                                                                  |
+| Live site       | https://rileybeenders.com                                                                                                                                                                                                                                                                                                                        |
+| Hosting signal  | Vercel (`@vercel/analytics`, `@vercel/speed-insights`, Vercel CDN cache headers)                                                                                                                                                                                                                                                                 |
+| Repo owner      | RileyBeenders (GitHub)                                                                                                                                                                                                                                                                                                                           |
+| Current branch  | `main`                                                                                                                                                                                                                                                                                                                                           |
+| Package manager | npm                                                                                                                                                                                                                                                                                                                                              |
 | Design language | Blueprint Press — blueprint-grid texture, a Studio-picked palette (active: **Electric**, `#3e6ae1` accent on white / on black in dark mode; fallback: the Swiss navy `#0b1a2b` / red `#e3342f` / blue `#2f86c4` on paper `#fbfbf9`), Instrument Serif + Spectral type, one continuous-stroke RB monogram; specified in the repo-root `DESIGN.md` |
 
 ## Map of Content

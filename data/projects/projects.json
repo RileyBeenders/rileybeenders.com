@@ -192,7 +192,7 @@
       "problem": "Multiple laser-sensor readings needed to be collected consistently and transformed into a visual tolerance result that an end customer could use.",
       "constraints": [
         "Communicate with multiple sensors over Modbus",
-        "Collect nine data points every 100 ms",
+        "Collect nine data points (three per laser sensor) every 17.5 ms",
         "Remove manual data-collection steps",
         "Present results as an understandable tolerance chart"
       ],

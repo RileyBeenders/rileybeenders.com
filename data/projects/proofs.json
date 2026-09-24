@@ -41,7 +41,7 @@
     "id": "ExtrusionLine-Studio",
     "title": "Automated LabVIEW Metrology",
     "visible": false,
-    "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings every 100 ms into customer-facing tolerance charts.",
+    "summary": "Automated Modbus data collection from multiple laser sensors and transformed nine readings (three per laser) every 17.5 ms into customer-facing tolerance charts.",
     "tags": [
       "LabVIEW",
       "Modbus",

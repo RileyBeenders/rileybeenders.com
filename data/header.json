@@ -12,9 +12,9 @@
   },
   "visibility": {
     "experienceProjectButtons": true,
-    "experienceProofButtons": false,
+    "experienceProofButtons": true,
     "projectsSection": true,
-    "proofIndex": false,
+    "proofIndex": true,
     "openToRelocation": true
   },
   "theme": {

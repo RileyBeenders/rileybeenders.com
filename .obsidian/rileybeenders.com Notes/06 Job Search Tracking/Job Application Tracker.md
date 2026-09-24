@@ -26,24 +26,24 @@ Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdow
 
 ### Current applications (16, as of README.md)
 
-| ID | Company | Role | Status |
-|---|---|---|---|
-| [[001 Disney - Principal Ride Control Software Engineer\|001]] | Walt Disney Imagineering | Principal Ride Control Software Engineer (Controls Automation) | 🟢 Application Received |
-| [[002 Fluidstack - General Application\|002]] | Fluidstack.io | General Application | 🟢 Application Received |
-| [[003 K2 Space - Principal Electro-Mechanical Manufacturing Engineer\|003]] | K2 Space | Principal Electro-Mechanical Manufacturing Engineer | 🔴 No longer in consideration |
-| [[004 Relativity Space - Lead Manufacturing Engineer Integration and Test\|004]] | Relativity Space | Lead, Manufacturing Engineer, Integration & Test | 🟢 Application Received |
-| [[005 SpaceX - Sr Network Security Engineer\|005]] | SpaceX | Sr. Network Security Engineer | 🟢 Application Received |
-| [[006 Disney - Principal Software Engineer\|006]] | Walt Disney Imagineering | Principal Software Engineer | 🔴 No longer in consideration |
-| [[007 Boston Dynamics - Senior Staff Manufacturing Engineer\|007]] | Boston Dynamics | Senior Staff Manufacturing Engineer | 🟢 Application Received |
-| [[008 Boston Dynamics - Staff Manufacturing Engineering Atlas\|008]] | Boston Dynamics | Staff Manufacturing Engineering - Atlas | 🔴 No longer in consideration |
-| [[009 Figure - Manufacturing Engineer\|009]] | Figure Robotics | Manufacturing Engineer | 🟢 Application Received |
-| [[010 Figure - NPI Engineer\|010]] | Figure Robotics | NPI Engineer | 🟢 Application Received |
-| [[011 Figure - Mechanical Engineer Integration and Test\|011]] | Figure Robotics | Mechanical Engineer - Integration & Test | 🟢 Application Received |
-| [[012 Google - Product Engineer Global Manufacturing Engineering\|012]] | Google | Product Engineer, Global Manufacturing Engineering | 🟢 Application Received |
-| [[013 Disney - Product Software Engineer I\|013]] | Walt Disney Entertainment | Product Software Engineer I | 🔴 No longer in consideration |
-| [[014 Disney - WDI Figure Programming Intern\|014]] | Walt Disney Imagineering | WDI Figure Programming Intern, Spring 2027 | 🔴 Not in consideration (not currently enrolled in college) |
-| [[015 Disney - Forward Deployed Engineer\|015]] | The Walt Disney Company (Corporate) | Forward Deployed Engineer | 🟢 Application Received |
-| [[016 Disney - Forward Deployed Product Engineer\|016]] | The Walt Disney Company (Corporate) | Forward Deployed Product Engineer | 🟢 Application Received |
+| ID                                                                               | Company                             | Role                                                           | Status                                                      |
+| -------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
+| [[001 Disney - Principal Ride Control Software Engineer\|001]]                   | Walt Disney Imagineering            | Principal Ride Control Software Engineer (Controls Automation) | 🟢 Application Received                                     |
+| [[002 Fluidstack - General Application\|002]]                                    | Fluidstack.io                       | General Application                                            | 🟢 Application Received                                     |
+| [[003 K2 Space - Principal Electro-Mechanical Manufacturing Engineer\|003]]      | K2 Space                            | Principal Electro-Mechanical Manufacturing Engineer            | 🔴 No longer in consideration                               |
+| [[004 Relativity Space - Lead Manufacturing Engineer Integration and Test\|004]] | Relativity Space                    | Lead, Manufacturing Engineer, Integration & Test               | 🟢 Application Received                                     |
+| [[005 SpaceX - Sr Network Security Engineer\|005]]                               | SpaceX                              | Sr. Network Security Engineer                                  | 🟢 Application Received                                     |
+| [[006 Disney - Principal Software Engineer\|006]]                                | Walt Disney Imagineering            | Principal Software Engineer                                    | 🔴 No longer in consideration                               |
+| [[007 Boston Dynamics - Senior Staff Manufacturing Engineer\|007]]               | Boston Dynamics                     | Senior Staff Manufacturing Engineer                            | 🟢 Application Received                                     |
+| [[008 Boston Dynamics - Staff Manufacturing Engineering Atlas\|008]]             | Boston Dynamics                     | Staff Manufacturing Engineering - Atlas                        | 🔴 No longer in consideration                               |
+| [[009 Figure - Manufacturing Engineer\|009]]                                     | Figure Robotics                     | Manufacturing Engineer                                         | 🟢 Application Received                                     |
+| [[010 Figure - NPI Engineer\|010]]                                               | Figure Robotics                     | NPI Engineer                                                   | 🟢 Application Received                                     |
+| [[011 Figure - Mechanical Engineer Integration and Test\|011]]                   | Figure Robotics                     | Mechanical Engineer - Integration & Test                       | 🟢 Application Received                                     |
+| [[012 Google - Product Engineer Global Manufacturing Engineering\|012]]          | Google                              | Product Engineer, Global Manufacturing Engineering             | 🟢 Application Received                                     |
+| [[013 Disney - Product Software Engineer I\|013]]                                | Walt Disney Entertainment           | Product Software Engineer I                                    | 🔴 No longer in consideration                               |
+| [[014 Disney - WDI Figure Programming Intern\|014]]                              | Walt Disney Imagineering            | WDI Figure Programming Intern, Spring 2027                     | 🔴 Not in consideration (not currently enrolled in college) |
+| [[015 Disney - Forward Deployed Engineer\|015]]                                  | The Walt Disney Company (Corporate) | Forward Deployed Engineer                                      | 🟢 Application Received                                     |
+| [[016 Disney - Forward Deployed Product Engineer\|016]]                          | The Walt Disney Company (Corporate) | Forward Deployed Product Engineer                              | 🟢 Application Received                                     |
 
 ## The `custom-resume` generation workflow
 

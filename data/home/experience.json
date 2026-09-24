@@ -97,31 +97,31 @@
     "bullets": [
       {
         "text": "Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while retaining hands-on responsibility for mechanical, electrical, firmware, and software systems.",
-        "proofId": "unifi-network",
         "emphasis": [
           "technology strategy"
-        ]
+        ],
+        "proofId": "unifi-network"
       },
       {
         "text": "Led the design and launch of the Gen3 POSEIDON, combining a 1 m³ build volume, filament-and-pellet dual extrusion, braked NEMA 34 Z drives, industrial servo XY motion, and a custom gantry.",
-        "proofId": "gen3-poseidon",
         "emphasis": [
           "Gen3 POSEIDON"
-        ]
+        ],
+        "proofId": "gen3-poseidon"
       },
       {
         "text": "Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM for orders, inventory, tasks, projects, and customer interactions, with dynamic BOM generation linked to purchasing.",
-        "proofId": "internal-erp",
         "emphasis": [
           "redundant Kubernetes cluster"
-        ]
+        ],
+        "proofId": "internal-erp"
       },
       {
         "text": "Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.",
-        "proofId": "nonplanar-research",
         "emphasis": [
           "30 kg payload at 3 m/s"
-        ]
+        ],
+        "proofId": "nonplanar-research"
       }
     ]
   },
@@ -134,24 +134,24 @@
     "bullets": [
       {
         "text": "Improved thermal and acoustic performance through enclosure redesign and component placement, including custom tooling with local fabricators for large-radius aluminum-panel bends.",
-        "proofId": "modular-controls",
         "emphasis": [
           "thermal and acoustic performance"
-        ]
+        ],
+        "proofId": "modular-controls"
       },
       {
         "text": "Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging while supporting larger, modular machines.",
-        "proofId": "modular-controls",
         "emphasis": [
           "multi-board CAN-bus control architecture"
-        ]
+        ],
+        "proofId": "modular-controls"
       },
       {
         "text": "Developed independently testable electronics enclosures that could be installed in minutes and coordinated custom harnesses, panel designs, and hardware improvements with vendors.",
-        "proofId": "modular-controls",
         "emphasis": [
           "installed in minutes"
-        ]
+        ],
+        "proofId": "modular-controls"
       }
     ]
   },
@@ -164,24 +164,24 @@
     "bullets": [
       {
         "text": "Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.",
-        "proofId": "kratos",
         "emphasis": [
           "Kratos"
-        ]
+        ],
+        "proofId": "kratos"
       },
       {
         "text": "Developed next-generation ICARUS and POSEIDON models with higher-performance components and expanded motion safety through NEMA 34 motors, planetary gearboxes, and power-failure brakes.",
-        "proofId": "gen3-poseidon",
         "emphasis": [
           "ICARUS and POSEIDON"
-        ]
+        ],
+        "proofId": "gen3-poseidon"
       },
       {
         "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
-        "proofId": "kraken",
         "emphasis": [
           "THE KRAKEN"
-        ]
+        ],
+        "proofId": "kraken"
       }
     ]
   },
@@ -194,17 +194,17 @@
     "bullets": [
       {
         "text": "Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.",
-        "proofId": "product-reliability",
         "emphasis": [
           "early product reliability"
-        ]
+        ],
+        "proofId": "product-reliability"
       },
       {
         "text": "Tuned, calibrated, and optimized print parameters while documenting design limitations and opportunities for product improvement.",
-        "proofId": "product-reliability",
         "emphasis": [
           "print parameters"
-        ]
+        ],
+        "proofId": "product-reliability"
       }
     ]
   },

@@ -65,7 +65,7 @@ The blueprint-grid texture is four stacked `linear-gradient`s on `.bp` (`16px` f
 - **`.bp-section` + `.bp-section-grid`** — a `190px | 1fr` two-column grid: the uppercase `.bp-section-index` ("01 Summary" …) in the narrow column, content in the wide one. Collapses to one column under `860px`.
 - **`.bp-rule` / `.bp-rule--hair`** — 2px ink divider / 1px hairline; animated via `Reveal as="rule"` (scaleX from left).
 - **`.bp-prose`** — `clamp(18px, 1.55vw, 22px)`, `max-width: 70ch`, `text-wrap: pretty`. `.bp-dropcap` floats an Instrument Serif capital, only when the summary opens with a whole word.
-- **`.bp-role`** — experience entry: a left rule that gains an accent overlay bar and the whole row shifts `translateX(7px)` on hover. `.bp-bullet-emphasis` spans (from `EmphasizedText`) take the accent on hover; `.bp-bullet-link` is the inline "see ICARUS-Lite ↗" evidence link at the end of a bullet.
+- **`.bp-role`** — experience entry: a left rule that gains an accent overlay bar and the whole row shifts `translateX(7px)` on hover. `.bp-bullet-emphasis` spans (from `EmphasizedText`) take the accent on hover; `.bp-bullet-link` is the "READ MORE ↗" evidence button (uppercase via CSS; its aria-label still names the project) at the end of a bullet: a compact `.bp-btn--solid` (theme accent fill, `--on-accent` text, ink sweep on hover) sized to sit inside the bullet line-height.
 - **`.bp-pill`** — skill tag: white, hairline border, lifts + shadows on hover.
 - **`.bp-cert`** — education card: lifts on hover, a `.bp-cert-bar` wipes in.
 - **`.bp-btn`** — outline button with a `::before` fill that wipes in on hover (`scaleX`), arrow nudges. `.bp-btn--solid` is the red Download button; `.bp-sheen` is its looping highlight; `:disabled` shows the wait state.
