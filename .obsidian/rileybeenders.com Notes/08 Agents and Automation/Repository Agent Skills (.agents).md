@@ -69,7 +69,7 @@ The full vault was re-synced to `main` after the Blueprint Press reskin: the `02
 
 ### `sync-charts`
 
-A narrower, chart-only counterpart to `vault-sync`. The Job Application Tracker's mermaid `gantt` block + JobID table lives in **two** hand-maintained places — `README.md` (under `## Job Application Tracker`, between that heading and the next `***`) and `data/more-info/gantt.md` (standalone, nothing else in the file) — with no code-level link, so they drift if only one is edited. This procedure: extract both blocks, compare exactly, and if they differ copy the more-recently-edited version over the other (uncommitted edits always win over commits), then deliver an itemized revision report. See [[More Info and Gantt Data]] for the drift history.
+A narrower, chart-only counterpart to `vault-sync`. The Job Application Tracker's Status Key + mermaid `gantt` block + tracker table lives in **two** hand-maintained places — `README.md` (under `## Job Application Tracker`, between that heading and the next `***`) and `data/more-info/gantt.md` (standalone, nothing else in the file besides that block) — with no code-level link, so they drift if only one is edited. This procedure: extract both blocks, compare exactly, and if they differ copy the more-recently-edited version over the other (uncommitted edits always win over commits), then deliver an itemized revision report. See [[More Info and Gantt Data]] for the drift history.
 
 ### `design-guidelines`
 

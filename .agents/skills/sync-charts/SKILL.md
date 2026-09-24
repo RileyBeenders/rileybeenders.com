@@ -7,7 +7,7 @@ description: Keep the Job Application Tracker mermaid gantt block and JobID tabl
 
 One of several repository agent procedures — see `.agents/README.md` for the set.
 
-Keep the Job Application Tracker gantt chart in `README.md` and `data/more-info/gantt.md` identical. Both files carry the same mermaid `gantt` block and JobID table — `README.md` wraps it under the `## Job Application Tracker` heading (between that heading and the next `***` divider), while `data/more-info/gantt.md` holds it as a standalone block with nothing else in the file.
+Keep the Job Application Tracker gantt chart in `README.md` and `data/more-info/gantt.md` identical. Both files carry the same **Status Key** (🟢 / 🟠 / 🔴 legend), mermaid `gantt` block, and tracker table (columns `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID`) — `README.md` wraps it under the `## Job Application Tracker` heading (between that heading and the next `***` divider), while `data/more-info/gantt.md` holds it as a standalone block with nothing else in the file. The `Status` cell holds only the circle, never text; `Job ID` is the posting's own job/requisition number, or `N/A` when the posting shows none.
 
 Run this check whenever either file is edited, or whenever asked to sync, check, or verify the gantt charts.
 
@@ -44,7 +44,7 @@ Every run ends with a report to the user, even when nothing needed to change:
   - Active bars refreshed to the run date (JobID, old duration → new duration).
   - JobID sections added or removed (by number).
   - Per-JobID task line changes: task name, status keyword (`milestone`/`active`/`done`/`crit`), start date, or duration.
-  - Table row changes: added/removed JobIDs, or edited cells (Job Title, Company, Location, Date Submitted, Resume Used, Updates/status).
+  - Table row changes: added/removed IDs, or edited cells (Job Title, Company, Location, Date Submitted, Resume Used, Status, Job ID).
   - If a change is a status update (e.g. 🟢 → 🟡, or a new "No longer in consideration" date), call that out explicitly since it's usually the most relevant part of the revision.
 
 Keep the report itemized (a short bulleted list per change), not a single vague sentence like "the tables were updated."

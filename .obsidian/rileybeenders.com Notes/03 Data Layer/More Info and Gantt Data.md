@@ -17,16 +17,17 @@ Typed by `MoreInfoData` (see [[Data Layer and Types]]). Rendered by `app/(site)/
 
 ## `data/more-info/gantt.md` — hand-authored, not JSON
 
-A markdown file combining two things in one document:
+A markdown file combining three things in one document:
 
-1. A fenced ` ```mermaid ` **gantt** block (`dateFormat YYYY-MM-DD`, `tickInterval 1week`, `axisFormat %d %b %Y`, one `section` per job application, tasks tagged `milestone` / `active` / `done` / `crit`).
-2. A markdown **table** immediately after it: columns `JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`, one row per application, with GitHub-hosted links to the job posting PDF and the resume PDF used.
+1. A **Status Key** (a bold label and a bullet list: 🟢 Application Received, 🟠 Currently in the interview process, 🔴 No longer in consideration). It sits above the chart as plain text, so `parseGanttFile()` ignores it.
+2. A fenced ` ```mermaid ` **gantt** block (`dateFormat YYYY-MM-DD`, `tickInterval 1week`, `axisFormat %d %b %Y`, one `section` per job application, tasks tagged `milestone` / `active` / `done` / `crit`).
+3. A markdown **table** immediately after it: columns `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID`, one row per application, with GitHub-hosted links to the job posting PDF and the resume PDF used. `ID` is the three-digit application number; `Status` holds only the colored circle from the key; `Job ID` is the employer's own job/requisition number as printed on the posting PDF, or `N/A` when the posting shows none.
 
 Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (not imported as a module) and split by `lib/gantt.ts`'s `parseGanttFile()` into `{ chart, columns, rows }`, handed to [[GanttChart JobsTable and gantt.ts|GanttChart and JobsTable]].
 
 ### Duplicated in `README.md`
 
-`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Sep 19, 2026 the two mermaid blocks are identical (active bars refreshed through Sep 16, when 015 and 016 were added), but the **tables differ**: `gantt.md`'s 015 and 016 rows link their posting PDFs at `blob/Version-3.1/…`, a branch deleted when PR #9 merged on 2026-09-19, while `README.md`'s rows link `blob/main/…`. The `gantt.md` links 404 and should be pointed at `main` — exactly what the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] is for (it would copy the README version over). The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
+`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Sep 24, 2026 the two copies (key, chart, and table) are identical, with active bars refreshed through Sep 24 when 017–021 were added. The **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] reconciles them when they drift. The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
 
 ### Current tracked applications (as of `gantt.md`)
 

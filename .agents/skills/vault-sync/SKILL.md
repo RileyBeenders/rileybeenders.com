@@ -98,11 +98,11 @@ Every job application tracked in `README.md` / `data/more-info/gantt.md` (IDs `0
 - Resume used: `1.ApplicationsUsed/<file>.pdf`
 ```
 
-Frontmatter property keys are always capitalized: `Tags: [job-application]`, `Company`, `Role`, `JobID`, `Date Applied`, `Status` (mirror the emoji-coded status from the README/gantt tracker table as plain text, e.g. `"Application Received"`, `"Interviewing"`, `"No longer in consideration (Aug 4, 2026)"`), and `PDF Referenced` — a GitHub `blob` URL to the source posting PDF in `2.JobsApplliedTo/`. `JobID` is the value used everywhere in the vault and in repo tables (see **Renaming GitID to JobID** below) — it is the same three-digit application ID, not a GitHub or job-board internal ID.
+Frontmatter property keys are always capitalized: `Tags: [job-application]`, `Company`, `Role`, `JobID`, `Date Applied`, `Status` (mirror the emoji-coded status from the README/gantt tracker table as plain text, e.g. `"Application Received"`, `"Interviewing"`, `"No longer in consideration (Aug 4, 2026)"`), and `PDF Referenced` — a GitHub `blob` URL to the source posting PDF in `2.JobsApplliedTo/`. `JobID` is the vault's name for the same three-digit application number shown in the repo tables' `ID` column (see **Tracker table columns** below). It is not the employer's job number; that goes in the note's `**Job ID:**` line and the tables' `Job ID` column.
 
-### Renaming GitID to JobID
+### Tracker table columns
 
-The tracker table's first column is named `JobID`, not `GitID`, in both `README.md` and `data/more-info/gantt.md` — this was renamed for clarity since the column has nothing to do with git. If you ever see `GitID` reappear in either table (e.g. from a stale edit or a merge), correct it back to `JobID`, and update any vault note quoting that column list (currently `03 Data Layer/More Info and Gantt Data.md` and `06 Job Search Tracking/Job Application Tracker.md`) to match. `JobsTable.tsx` renders whatever header text is in the table, so this column name change alone requires no code change — it flows straight through to the live site.
+The tracker table's columns in both `README.md` and `data/more-info/gantt.md` are `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID`. `ID` is the three-digit application number (formerly `JobID`, and before that `GitID`); `Status` holds only a 🟢/🟠/🔴 circle defined by the Status Key above the chart; `Job ID` is the employer's number from the posting PDF, or `N/A`. If an old column name reappears (e.g. from a stale edit or a merge), correct it, and update any vault note quoting that column list (currently `03 Data Layer/More Info and Gantt Data.md` and `06 Job Search Tracking/Job Application Tracker.md`) to match. `JobsTable.tsx` renders whatever header text is in the table, so this column name change alone requires no code change — it flows straight through to the live site.
 
 ### Linking the PDF Referenced property
 
