@@ -1,9 +1,12 @@
 import { ExternalLink } from "lucide-react";
 import type { ReactNode } from "react";
+import type { ApplicationRow } from "@/lib/applications";
 
 type JobsTableProps = {
   columns: string[];
-  rows: string[][];
+  rows: ApplicationRow[];
+  /** Keep every row on one line; the wrapper scrolls sideways when needed. */
+  singleLine?: boolean;
 };
 
 // Anchored + greedy so a URL containing literal parentheses (e.g. a PDF
@@ -24,12 +27,12 @@ function renderCell(text: string): ReactNode {
   );
 }
 
-export function JobsTable({ columns, rows }: JobsTableProps) {
+export function JobsTable({ columns, rows, singleLine = false }: JobsTableProps) {
   if (columns.length === 0 || rows.length === 0) return null;
 
   return (
     <div className="bp-table-wrap">
-      <table className="bp-table">
+      <table className={singleLine ? "bp-table bp-table--single-line" : "bp-table"}>
         <thead>
           <tr>
             {columns.map((column) => (
@@ -39,8 +42,8 @@ export function JobsTable({ columns, rows }: JobsTableProps) {
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={row[0] ?? rowIndex}>
-              {row.map((cell, cellIndex) => (
+            <tr key={rowIndex} className={row.beforeSite ? "is-before-site" : "is-with-site"}>
+              {row.cells.map((cell, cellIndex) => (
                 <td key={columns[cellIndex] ?? cellIndex}>{renderCell(cell)}</td>
               ))}
             </tr>

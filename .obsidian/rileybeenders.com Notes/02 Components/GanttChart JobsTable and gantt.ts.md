@@ -19,11 +19,23 @@ The three pieces that render the job-application tracker on `/more-info`. (`Bull
 
 ## `components/JobsTable.tsx`
 
-No `"use client"` directive — server-renderable, but only ever rendered inside `more-info/page.tsx`. Renders the parsed markdown table (`columns` / `rows` from `parseGanttFile()`) as a real `.bp-table` `<table>` inside an `overflow-x: auto` wrapper.
+No `"use client"` directive — server-renderable, but only ever rendered inside `more-info/page.tsx`. Renders **every** application as a real `.bp-table` `<table>` inside an `overflow-x: auto` wrapper. It takes `columns: string[]` and `rows: ApplicationRow[]` (`{ cells, beforeSite }`) built by `lib/applications.ts` (below), not the raw `gantt.md` table.
+
+- Each `<tr>` gets `is-before-site` or `is-with-site`. `blueprint.css` colors before-site rows `var(--faint)` (gray) and with-site rows `var(--ink)` (full ink), so the switch from handmade resumes to the site's tailored ones is visible in both themes.
+- `singleLine` (set on `/more-info`) adds `bp-table--single-line`: every `th`/`td` is `white-space: nowrap` with 12px side padding, so each application stays on one line. On `/more-info` the key and table sit in a `.bp-section-full` grid child (`grid-column: 1 / -1`) and, inside it, a `.bp-breakout` block that grows past the 1240px shell to the table's natural width (about 1435px), centred on the page and capped at the window minus the page gutters. So the whole table is visible from about a 1580px-wide window up; narrower, the wrapper scrolls sideways and the page itself never does.
 
 - `WHOLE_CELL_LINK_PATTERN = /^\[([^\]]+)\]\((.+)\)$/` — matches a cell that is **entirely** a markdown link. Greedy/anchored on purpose so a URL containing literal parentheses (e.g. a PDF filename like `…(Controls Automation)…pdf`) isn't truncated at the first `)`.
 - Matched cells render as an external link (`target="_blank" rel="noreferrer"`) with a trailing `ExternalLink` icon from `lucide-react` (the only lucide icon used anywhere on `main`); everything else renders as plain text.
 - Returns `null` if `columns` or `rows` is empty.
+
+## `lib/applications.ts` — `buildApplicationRows()`
+
+Merges the two sources of the live table, oldest first:
+
+- the `gantt.md` tracker rows (applications made with the site), remapped by header name onto `APPLICATION_COLUMNS` = `Status | Job Title | Company | Location | Date Submitted | Resume Used | Job ID` (both sources are mapped by column name, so reordering that array is the only change needed to move a column). The three-digit `ID` column is dropped (it stays on GitHub only), and `Location (Goal)` becomes `Location`;
+- `data/more-info/past-applications.json` (applications from before the site), whose ISO `dateSubmitted` is formatted `Month DD, YYYY` to match, with `—` for a blank location.
+
+Rows sort by date; same-day rows keep their source order. Above the table, `more-info/page.tsx` renders a `bp-prose bp-table-note` line, styled exactly like the section 02 paragraphs ("Gray rows were applied to before this site and its tailored resumes.") in the section grid's text column beside the `03` heading, like section 02's paragraphs (rendered only while `tableVisible` is on, ahead of any `intro` and the chart). The full-width block below it holds a `.bp-table-key` box: a bordered, centred `<div role="note">` legend of 🟢 / 🟠 / 🔴. It is a `div`, not a `p`, because the global `.bp p { margin: 0 }` would override its `margin: auto` centring. The page renders its own key because the `gantt.md` Status Key is plain text that `parseGanttFile()` skips.
 
 ## `lib/gantt.ts` — `parseGanttFile()`
 

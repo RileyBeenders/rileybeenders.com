@@ -142,10 +142,10 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
 ## Past Disney Applications
 
-Every Disney application in Disney's Workday candidate portal that is now
-inactive: 29 as of September 24, 2026, all marked *No Longer In Consideration*.
-26 of them came before this site and the tailored resume builder existed. The
-other 3 are tracked above (006, 013, and 014).
+The 26 Disney applications made before this site and the tailored resume
+builder existed, from Disney's Workday candidate portal as of September 24, 2026.
+All are marked *No Longer In Consideration*. Disney applications made with the
+site (006, 013, 014, and later) are in the tracker above.
 
 ### Highlight: Ride Control System Security Engineer - Operational Technology (OT)
 
@@ -155,54 +155,34 @@ hiring manager interview, and team panel interviews. Riley was one
 of the final candidates for a role that had been posted for almost a year. The
 answer on January 5, 2026 was a no.
 
-```mermaid
-  gantt
-    dateFormat YYYY-MM-DD
-    tickInterval 2week
-    axisFormat %d %b %Y
-
-    section 10119309
-    Applied Sep 08                  :milestone, 2025-09-08, 0d
-    Waiting for Reply               :done, 2025-09-08, 17d
-    Scheduling Screen               :milestone, 2025-09-25, 0d
-    Recruiter Screen                :milestone, 2025-10-03, 0d
-    Hiring Manager Interview        :milestone, 2025-10-15, 0d
-    Team Panel Interviews           :milestone, 2025-12-10, 0d
-    Interview Process               :done, 2025-09-25, 102d
-    No Longer in Consideration      :crit, milestone, 2026-01-05, 0d
-```
-
 | # | Job Title | Job ID | Date Submitted | Status | Notes |
 | :----: | :---- | :----: | :----: | :----: | :---- |
-| 1 | WDI Figure Programming Intern, Spring 2027 | 10159712 | September 3, 2026 | 🔴 | Tracked above as 014 |
-| 2 | Product Software Engineer I | 10151599 | August 14, 2026 | 🔴 | Tracked above as 013 |
-| 3 | Principal Software Engineer | 10153541 | August 1, 2026 | 🔴 | Tracked above as 006 |
-| 4 | Controls Engineer | 10152834 | June 11, 2026 | 🔴 | — |
-| 5 | Lead Control Software Developer | 10152756 | June 11, 2026 | 🔴 | — |
-| 6 | Show Controls Software Developer | 10153346 | June 10, 2026 | 🔴 | — |
-| 7 | Senior Ride Control Systems Engineer | 10152453 | May 29, 2026 | 🔴 | — |
-| 8 | Manager-Mechanical Engineering | 10151761 | May 29, 2026 | 🔴 | — |
-| 9 | Staff Data Operations Engineer | 10141277 | May 23, 2026 | 🔴 | — |
-| 10 | Principal Ride Control Systems Engineer (Design Assurance) | 10149234 | May 23, 2026 | 🔴 | — |
-| 11 | Manager - Global Network Engineering & Telecom Operations | 10144149 | May 23, 2026 | 🔴 | — |
-| 12 | Ride Standards Engineering Specialist Principal | 10145661 | May 23, 2026 | 🔴 | — |
-| 13 | Security Engineer - Security Architecture and Engineering | 10137015 | May 23, 2026 | 🔴 | — |
-| 14 | Principal Ride Development Engineer, Design Assurance | 10134485 | May 23, 2026 | 🔴 | — |
-| 15 | Operational Technology Network Engineer, Technical Infrastructure | 10151059 | May 23, 2026 | 🔴 | — |
-| 16 | Platform Engineer Principal | 10148427 | May 23, 2026 | 🔴 | — |
-| 17 | Principal Ride Control Hardware Engineer (Controls Automation) | 10132824 | January 5, 2026 | 🔴 | — |
-| 18 | Principal Ride Control System Engineer (Design Assurance) | 10132822 | January 5, 2026 | 🔴 | — |
-| 19 | Principal Ride Control Hardware Engineer | 10082944 | September 8, 2025 | 🔴 | — |
-| 20 | Ride Control Hardware Engineer, Senior | 10094331 | September 8, 2025 | 🔴 | — |
-| 21 | Ride Control Systems Engineer, Senior | 10096080 | September 8, 2025 | 🔴 | — |
-| 22 | Ride Control - Control Systems Engineer Principal (Design Assurance) | 10084245 | September 8, 2025 | 🔴 | — |
-| 23 | **Ride Control System Security Engineer - Operational Technology (OT)** | 10119309 | September 8, 2025 | 🔴 | Final-round candidate (see above) |
-| 24 | Ride Control Systems Engineer, Senior (System Safety) | 10128430 | September 8, 2025 | 🔴 | — |
-| 25 | Sr Staff R&D Engineer | 10127968 | September 8, 2025 | 🔴 | — |
-| 26 | Senior Ride Project Engineer | 10123775 | September 8, 2025 | 🔴 | — |
-| 27 | Staff Media Systems Engineer | 10127411 | September 8, 2025 | 🔴 | — |
-| 28 | Ride Development Engineer Senior | 10124086 | June 18, 2025 | 🔴 | — |
-| 29 | Principal R&D Imagineer - Mechanical Engineer | 10113427 | June 13, 2025 | 🔴 | — |
+| 1 | Controls Engineer | 10152834 | June 11, 2026 | 🔴 | — |
+| 2 | Lead Control Software Developer | 10152756 | June 11, 2026 | 🔴 | — |
+| 3 | Show Controls Software Developer | 10153346 | June 10, 2026 | 🔴 | — |
+| 4 | Senior Ride Control Systems Engineer | 10152453 | May 29, 2026 | 🔴 | — |
+| 5 | Manager-Mechanical Engineering | 10151761 | May 29, 2026 | 🔴 | — |
+| 6 | Staff Data Operations Engineer | 10141277 | May 23, 2026 | 🔴 | — |
+| 7 | Principal Ride Control Systems Engineer (Design Assurance) | 10149234 | May 23, 2026 | 🔴 | — |
+| 8 | Manager - Global Network Engineering & Telecom Operations | 10144149 | May 23, 2026 | 🔴 | — |
+| 9 | Ride Standards Engineering Specialist Principal | 10145661 | May 23, 2026 | 🔴 | — |
+| 10 | Security Engineer - Security Architecture and Engineering | 10137015 | May 23, 2026 | 🔴 | — |
+| 11 | Principal Ride Development Engineer, Design Assurance | 10134485 | May 23, 2026 | 🔴 | — |
+| 12 | Operational Technology Network Engineer, Technical Infrastructure | 10151059 | May 23, 2026 | 🔴 | — |
+| 13 | Platform Engineer Principal | 10148427 | May 23, 2026 | 🔴 | — |
+| 14 | Principal Ride Control Hardware Engineer (Controls Automation) | 10132824 | January 5, 2026 | 🔴 | — |
+| 15 | Principal Ride Control System Engineer (Design Assurance) | 10132822 | January 5, 2026 | 🔴 | — |
+| 16 | Principal Ride Control Hardware Engineer | 10082944 | September 8, 2025 | 🔴 | — |
+| 17 | Ride Control Hardware Engineer, Senior | 10094331 | September 8, 2025 | 🔴 | — |
+| 18 | Ride Control Systems Engineer, Senior | 10096080 | September 8, 2025 | 🔴 | — |
+| 19 | Ride Control - Control Systems Engineer Principal (Design Assurance) | 10084245 | September 8, 2025 | 🔴 | — |
+| 20 | **Ride Control System Security Engineer - Operational Technology (OT)** | 10119309 | September 8, 2025 | 🔴 | Final-round candidate (see above) |
+| 21 | Ride Control Systems Engineer, Senior (System Safety) | 10128430 | September 8, 2025 | 🔴 | — |
+| 22 | Sr Staff R&D Engineer | 10127968 | September 8, 2025 | 🔴 | — |
+| 23 | Senior Ride Project Engineer | 10123775 | September 8, 2025 | 🔴 | — |
+| 24 | Staff Media Systems Engineer | 10127411 | September 8, 2025 | 🔴 | — |
+| 25 | Ride Development Engineer Senior | 10124086 | June 18, 2025 | 🔴 | — |
+| 26 | Principal R&D Imagineer - Mechanical Engineer | 10113427 | June 13, 2025 | 🔴 | — |
 
 ***
 

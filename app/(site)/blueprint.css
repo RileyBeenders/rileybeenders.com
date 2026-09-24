@@ -369,7 +369,9 @@ html[data-theme="dark"] .bp {
 }
 
 .bp-rule { height: 2px; background: var(--ink); transform-origin: left center; }
-.bp-rule--hair { height: 1px; background: var(--rule); }
+/* The section divider: 1px in faint, so it reads clearly on paper in both themes
+   while staying lighter and thinner than the 2px ink rule under each page title. */
+.bp-rule--hair { height: 1px; background: var(--faint); }
 
 .bp-hero-meta {
   display: flex;
@@ -828,6 +830,41 @@ html[data-theme="dark"] .bp {
 .bp-table tbody tr { transition: background 0.3s ease; }
 .bp-table tbody tr:hover { background: color-mix(in srgb, var(--ink) 3%, transparent); }
 .bp-table a { display: inline-flex; align-items: center; gap: 5px; }
+/* More Info tracker: applications made with the site read in full ink; the
+   ones from before it recede to the faint gray, so the switch is visible. */
+.bp-table tr.is-with-site td { color: var(--ink); }
+.bp-table tr.is-before-site td { color: var(--faint); }
+/* The status key: a small boxed legend centred over the table. */
+.bp-table-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 18px auto 0;
+  padding: 10px 22px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.bp-table-key + .bp-table-wrap { margin-top: 16px; }
+/* A grid child that spans the label column too (the More Info applications table). */
+.bp-section-full { grid-column: 1 / -1; min-width: 0; }
+/* Grows past the shell to its content's natural width, centred on the page and
+   capped at the window minus the page gutters (and room for a scrollbar). */
+.bp-breakout {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  min-width: 100%;
+  max-width: calc(100vw - 2 * var(--pad) - 16px);
+}
+/* One line per row; .bp-table-wrap's overflow-x scrolls anything wider than the page. */
+.bp-table--single-line th,
+.bp-table--single-line td { white-space: nowrap; padding-inline: 12px; }
 
 /* ------------------------------------------------------- page spine --- */
 /* Runs the height of .hp-list (the content sections PageSpine wraps — see

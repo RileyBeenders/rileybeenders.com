@@ -288,7 +288,7 @@ Paper and ink with a single accent, where every secondary tone is a fixed mix of
 - **Pill Text** (`{colors.pill-text}`): skill pill labels (29%).
 - **Muted** (`{colors.muted}`): nav links at rest, the brand name, issuers, cert dates, the footer note and title-block values, table headers, timeline ticks (36%). The smallest tone any text may use.
 - **Faint** (`{colors.faint}`): rules, ticks, dots, scrollbar thumbs, and the title block's 11px keys (50%). Not for running text.
-- **Rule** (`{colors.rule}`): every hairline border and divider (87%).
+- **Rule** (`{colors.rule}`): every hairline border (cards, tables, inputs) (87%). The section divider between sections uses faint instead, so it stays visible on paper in both themes.
 
 ### Semantic
 
@@ -337,7 +337,7 @@ Paper and ink with a single accent, where every secondary tone is a fixed mix of
 
 ## Layout
 
-The page is a single centered column, `--shell: 1240px` wide, with `--pad: clamp(20px, 5vw, 64px)` of side padding, and every route is a stack of `<section class="bp-section">` blocks separated by a 1px hairline rule that draws in from the left. Inside a section, `.bp-section-grid` is a two-column grid: a fixed `190px` index column holding the uppercase accent-colored "01  Summary" label, then the content column, with a `50px` gutter. On the home page a 2px spine runs down the left gutter beside the sections and fills with the accent as the reader scrolls.
+The page is a single centered column, `--shell: 1240px` wide, with `--pad: clamp(20px, 5vw, 64px)` of side padding, and every route is a stack of `<section class="bp-section">` blocks separated by a 1px faint hairline rule (`.bp-rule--hair`) that draws in from the left, lighter and thinner than the 2px ink rule under the page title. Inside a section, `.bp-section-grid` is a two-column grid: a fixed `190px` index column holding the uppercase accent-colored "01  Summary" label, then the content column, with a `50px` gutter. On the home page a 2px spine runs down the left gutter beside the sections and fills with the accent as the reader scrolls.
 
 The hero is the one section without the grid: the two-line display name, a 2px ink rule, then a meta row (italic tagline left; on the right the uppercase location over an italic fact line naming the current role, employer, and start date) and the action row (one solid button, three outline buttons). A decorative one-stroke ribbon sits behind the hero at 10% opacity, flush with the shell's right edge.
 

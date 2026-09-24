@@ -6,11 +6,11 @@ tags: [job-search, content]
 
 The **Inactive** list in Disney's Workday candidate portal (`disney.wd5.myworkdayjobs.com`, Candidate Home → My Applications), copied on Sep 24, 2026: 29 applications, all *No Longer In Consideration*. 26 of them came before this site and the `custom-resume` builder existed, so they have no posting PDF, no tailored resume, and no three-digit tracker ID. The other 3 are tracked in the main tracker as 006, 013, and 014 (see [[Job Application Tracker]]).
 
-The same list lives in `README.md` under `## Past Disney Applications`, between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md` and is not rendered on `/more-info`, so the `sync-charts` procedure doesn't cover it.
+The README's `## Past Disney Applications` section lists only the 26 pre-site roles (006, 013, and 014 are left out because the main tracker already has them). It sits between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md`, so the `sync-charts` procedure doesn't cover it. The live `/more-info` table does list the 26 pre-site roles, in gray, from `data/more-info/past-applications.json` (see [[More Info and Gantt Data]]).
 
 ## Highlight: Ride Control System Security Engineer - Operational Technology (OT)
 
-Job ID **10119309**. Applied Sep 8, 2025, and reached the final round after about four months of interviews. The role had been posted for almost a year. The README section shows this as its own small mermaid gantt chart.
+Job ID **10119309**. Applied Sep 8, 2025, and reached the final round after about four months of interviews. The role had been posted for almost a year.
 
 | Date | Step |
 |---|---|

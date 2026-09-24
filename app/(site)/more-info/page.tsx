@@ -7,6 +7,8 @@ import { GanttChart } from "@/components/GanttChart";
 import { JobsTable } from "@/components/JobsTable";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { parseGanttFile } from "@/lib/gantt";
+import { APPLICATION_COLUMNS, buildApplicationRows, type PastApplication } from "@/lib/applications";
+import pastApplicationsData from "@/data/more-info/past-applications.json";
 import type { MoreInfoData } from "@/types/more-info";
 
 const data = moreInfoData as MoreInfoData;
@@ -108,11 +110,34 @@ export default function MoreInfoPage() {
               <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;{data.ganttSection.title}</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
+                  {showTable ? (
+                    <p className="bp-prose bp-table-note">Gray rows were applied to before this site and its tailored resumes.</p>
+                  ) : null}
                   {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
                   {showChart ? <GanttChart chart={applicationTracker.chart} /> : null}
-                  {showTable ? <JobsTable columns={applicationTracker.columns} rows={applicationTracker.rows} /> : null}
                 </div>
               </Reveal>
+              {showTable ? (
+                // Spans both grid columns, then breaks out of the shell so a wide
+                // screen shows the whole table; narrower, it scrolls sideways.
+                <Reveal delay={0.1} className="bp-section-full">
+                  <div className="bp-breakout">
+                    <div className="bp-table-key" role="note" aria-label="Status key">
+                      <span>🟢 Application received</span>
+                      <span>🟠 Interviewing</span>
+                      <span>🔴 No longer in consideration</span>
+                    </div>
+                    <JobsTable
+                      columns={APPLICATION_COLUMNS}
+                      rows={buildApplicationRows(
+                        applicationTracker,
+                        pastApplicationsData.applications as PastApplication[]
+                      )}
+                      singleLine
+                    />
+                  </div>
+                </Reveal>
+              ) : null}
             </div>
           </div>
         </section>
