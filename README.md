@@ -228,66 +228,47 @@ with the change.
 
 ***
 
-# Project Structure
+### Tailored Resume Builder
 
-```txt
-app/
-  layout.tsx               root <html>/<body>, analytics, metadata
-  base.css                 shared reset
-  icon.svg · apple-icon.tsx · opengraph-image.tsx
-  (site)/
-    layout.tsx             nav, theme provider, fonts, palette
-    blueprint.css          the Blueprint Press design system
-    page.tsx               the resume (home)
-    projects/              page.tsx, projects.css, feature.css
-    about-this-site/       page.tsx, about-site.css
-    contact/page.tsx
-    more-info/page.tsx
-  api/resume-pdf/route.ts  generates the resume PDF on request
-components/
-  blueprint/               nav, mark, reveal/motion primitives, theme toggle, badges, the dev-only Edit in Studio control
-  projects/                ProjectEntry, CaseStudy, ProjectFeature (+ feature/ sub-blocks and demos), gallery, lightbox
-  about-site/              AboutSiteStory
-  content/                 EmphasizedText
-  GanttChart.tsx · JobsTable.tsx   the More Info tracker
-data/
-  header.json              site metadata, theme, visibility switches
-  home/                    summary, experience, skills, education
-  projects/                projects.json, proofs.json
-  site/about-site.json     the About-this-site case study and timeline
-  more-info/               more-info.json, gantt.md (tracker source)
-  contact/contact.json
-  resumeData.ts            merges the JSON into one typed object
-lib/                       palette derivation, fonts, dates, gantt parser, build stamp, hooks
-types/                     TypeScript shapes for every data file
-scripts/
-  site-stats.mjs           refreshes About-this-site stats from git
-  capture-site-screenshots.mjs
-  check-anchor-hydration.mjs
-studio/                    the local environment, none of it deployed
-  site.mjs                 `npm run site`: the device gate + the Studio in one process, `next dev` behind them
-  gate.mjs · access.mjs    the gate on :3000 and the temporary device grants it enforces
-  server.mjs · ui/         the content editor on :3001 (ui/devices.js is the Devices panel)
-ResumeBuilder/             jsPDF resume generator used by /api/resume-pdf
-public/
-  project-images/          photographs, renders, site captures
-  project-artifacts/       diagrams (SVG)
-assets/fonts/              Instrument Serif for the PDF renderer
-design/                    Canvas mockups of the mark and interactions
-.agents/skills/            every agent skill, one folder each (see .agents/README.md)
-.claude/                   launch.json (site / dev / prod / studio servers) + a git-ignored junction skills -> ../.agents/skills
-.obsidian/                 the documentation vault (rileybeenders.com Notes/)
-PRODUCT.md · DESIGN.md     product truth and the design system, read by the impeccable skill
-1.ApplicationsUsed/ · 2.JobsApplliedTo/ · output/ · references/   job-search records
-```
+Each application gets its own resume, written for that one posting. The builder
+is an agent skill, `custom-resume` (`.agents/skills/custom-resume/SKILL.md`),
+not a script: run `/custom-resume` in Claude Code (or `$custom-resume` in Codex)
+from the repo root. The agent lays the resume out as an HTML page and prints it
+to PDF with headless Chrome. It never touches the site's own `/api/resume-pdf`
+generator.
 
-***
-
-## Tailored Resume Builder Prompt
-
-```I am applying to some jobs. I needs 1-page resumes generated based off of my current 'live' website "www.rileybeenders.com" matching the same format that we generated [reference Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf] yesterday.
-
-Please make sure to follow the same theme, underline the hyperlinks and make them blue. When finished, use the following name format: "RileyBeenders_<company>_<job title>.pdf"
-
-Use the "/2.JobsApplliedTo/<PDF Name Here>.pdf" to reference the current job I am applying to.
-```
+- **Two questions first.** It asks how many pages the resume should be
+  (1 is recommended) and which posting in `2.JobsApplliedTo/` to use. Nothing
+  starts until it has both. Near-miss folder spellings such as `JobsAppliedTo`
+  still resolve.
+- **Reads the posting.** It pulls the company, title, location,
+  responsibilities, qualifications, and the keywords the posting repeats or
+  stresses. Where the posting and `data/home/skills.json` spell a skill
+  differently, the resume uses the posting's wording.
+- **Evidence only.** Every claim is checked against the live site and the same
+  JSON the site is built from: `data/header.json`, `data/home/*.json`, and
+  `data/projects/projects.json`. It can reword a real claim to match the
+  posting, but tools, credentials, industries, dates, or metrics the data
+  doesn't support are left out and listed as gaps. When an older resume
+  disagrees with the current data, the current data wins.
+- **Fills the pages.** The last page should end near the bottom margin, not
+  halfway down. It adds supported content first (more experience bullets,
+  Filament Innovations split into its separate roles, a Selected Projects
+  section, the full certification list), then scales every vertical gap
+  together, about 0.8x to 1.7x the reference spacing. It never shrinks the body
+  text and never pads. If the evidence runs out, it says so.
+- **Same look every time.** Layout follows the reference resume
+  `output/pdf/Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf`:
+  US Letter, one column, Arial, navy headings, with the phone, email, website,
+  and LinkedIn links in blue and underlined. On multi-page resumes a heading
+  always stays with its first bullet, and a bullet never splits across pages.
+- **Checked before delivery.** Exact page count at 612 x 792 pt, the lowest
+  line on the last page at y >= 726 pt, every link clickable, no clipping or
+  overlap, the posting's supported keywords present, and none of the gaps
+  slipped back in. It returns the PDF link with the measured page fill.
+- **Where the files go.** The resume is saved to `output/pdf/` as
+  `RileyBeenders_<Company>_<Job_Title>.pdf` (`_2-Page` is appended for 2-page
+  versions). The copy actually submitted goes into `1.ApplicationsUsed/` with the
+  application's ID in front (for example `019_...`). The tracker above and the
+  application's page in the Obsidian vault are then updated through the
+  `sync-charts` and `vault-sync` skills.
