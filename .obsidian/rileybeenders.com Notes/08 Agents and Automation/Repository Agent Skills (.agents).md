@@ -54,9 +54,10 @@ Generates a job-targeted resume PDF for a specific posting in `2.JobsApplliedTo/
 1. **Collects two required inputs** first: final page count (recommended 1) and which job-posting PDF to target. Asks for both in one message if either is missing.
 2. Extracts company, title, location, responsibilities, qualifications, and ATS keywords from the posting — preferring the posting's exact wording over `data/home/skills.json`'s when they differ slightly.
 3. Builds a **fact-only evidence matrix** from the live site + `data/**/*.json` + relevant source files. Explicitly forbidden from inventing experience; unsupported claims are excluded, not softened.
+   Then **fills every requested page**: the last page's text should end near the bottom margin. It adds supported content first (more `experience.json` bullets, per-role Filament Innovations entries, a **Selected Projects** section from `projects.json`, more relevant experience, the full certification list, an extra Core Expertise line), then tunes all vertical gaps together with one spacing multiplier (about 0.8x–1.7x the reference). It never shrinks body text or pads with filler; if supported evidence runs out it reports the gap. Multi-page resumes put their margins in `@page` and keep headings with their first bullet.
 4. Matches the visual layout/theme of `output/pdf/Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf` — US Letter portrait, navy headings, Arial, single column, blue underlined clickable contact links.
 5. Saves to `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf`.
-6. Validates before delivery: exact page count at `612×792pt`, visual inspection for clipping/overlap, working phone/email/website/LinkedIn link annotations, all links blue+underlined, supported keywords present and unsupported claims absent.
+6. Validates before delivery: exact page count at `612×792pt`, measured page fill (lowest text line on the last page at y ≥ 726pt, reported in the summary), visual inspection for clipping/overlap, working phone/email/website/LinkedIn link annotations, all links blue+underlined, supported keywords present and unsupported claims absent.
 
 Can parallelize job analysis, evidence auditing, and content strategy across subagents, but keeps final writing/PDF generation/approval with the primary agent.
 

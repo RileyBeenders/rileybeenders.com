@@ -17,11 +17,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 001
     Applied Jul 31                  :milestone, 2026-07-31, 0d
-    Waiting for Reply               :active, 2026-07-31, 51d
+    Waiting for Reply               :active, 2026-07-31, 55d
 
     section 002
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 50d
+    Waiting for Reply               :active, 2026-08-01, 54d
 
     section 003
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -35,11 +35,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 50d
+    Waiting for Reply               :active, 2026-08-01, 54d
 
     section 005
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 50d
+    Waiting for Reply               :active, 2026-08-01, 54d
 
     section 006
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -47,7 +47,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 007
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 43d
+    Waiting for Reply               :active, 2026-08-08, 47d
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -56,19 +56,19 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 43d
+    Waiting for Reply               :active, 2026-08-08, 47d
 
     section 010
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 43d
+    Waiting for Reply               :active, 2026-08-08, 47d
 
     section 011
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 43d
+    Waiting for Reply               :active, 2026-08-08, 47d
 
     section 012
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 43d
+    Waiting for Reply               :active, 2026-08-08, 47d
 
     section 013
     Applied Aug 14                  :milestone, 2026-08-14, 0d
@@ -82,11 +82,31 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
     section 015
     Applied Sep 15                  :milestone, 2026-09-15, 0d
-    Waiting for Reply               :active, 2026-09-15, 5d
+    Waiting for Reply               :active, 2026-09-15, 9d
 
     section 016
     Applied Sep 15                  :milestone, 2026-09-15, 0d
-    Waiting for Reply               :active, 2026-09-15, 5d
+    Waiting for Reply               :active, 2026-09-15, 9d
+
+    section 017
+    Applied Sep 24                  :milestone, 2026-09-24, 0d
+    Waiting for Reply               :active, 2026-09-24, 1d
+
+    section 018
+    Applied Sep 24                  :milestone, 2026-09-24, 0d
+    Waiting for Reply               :active, 2026-09-24, 1d
+
+    section 019
+    Applied Sep 24                  :milestone, 2026-09-24, 0d
+    Waiting for Reply               :active, 2026-09-24, 1d
+
+    section 020
+    Applied Sep 24                  :milestone, 2026-09-24, 0d
+    Waiting for Reply               :active, 2026-09-24, 1d
+
+    section 021
+    Applied Sep 24                  :milestone, 2026-09-24, 0d
+    Waiting for Reply               :active, 2026-09-24, 1d
 ```
 
 | JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates |
@@ -107,6 +127,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 | 014 | [WDI Figure Programming Intern, Spring 2027] | Walt Disney Imagineering | CA or FL | September 03, 2026 | [Tailored Resume] | 🔴 Not in consideration because I am not currently enrolled in college |
 | 015 | [Forward Deployed Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/015_RileyBeenders_Disney_Forward_Deployed_Engineer.pdf) | 🟢 Application Received |
 | 016 | [Forward Deployed Product Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf) | The Walt Disney Company (Corporate) | Burbank / Glendale, CA | September 15, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/016_RileyBeenders_Disney_Forward_Deployed_Product_Engineer.pdf) | 🟢 Application Received |
+| 017 | [Sr Cybersecurity Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/017_Disney_Sr%20Cybersecurity%20Engineer.pdf) | Disneyland Resort | Anaheim, CA | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/017_RileyBeenders_Disney_Sr_Cybersecurity_Engineer_2-Page.pdf) | 🟢 Application Received |
+| 018 | [Sr Mechanical Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/018_Disney_Sr%20Mechanical%20Engineer.pdf) | Disneyland Resort | Anaheim, CA | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/018_RileyBeenders_Disney_Sr_Mechanical_Engineer_2-Page.pdf) | 🟢 Application Received |
+| 019 | [Sr Site Reliability Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/019_Disney_Sr%20Site%20Reliability%20Engineer.pdf) | Disney Signature Experiences | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/019_RileyBeenders_Disney_Sr_Site_Reliability_Engineer_2-Page.pdf) | 🟢 Application Received |
+| 020 | [Manager, Software Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf) | Disney Experiences | Orlando, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/020_RileyBeenders_Disney_Manager_Software_Engineering_2-Page.pdf) | 🟢 Application Received |
+| 021 | [Manager, Systems Engineering (DCL New Build)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/021_Disney_Manager%2C%20Systems%20Engineering%20%28DCL%20New%20Build%29.pdf) | Disney Signature Experiences (Disney Cruise Line) | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/021_RileyBeenders_Disney_Senior_Manager_Solutions_Architecture_2-Page.pdf) | 🟢 Application Received |
 
 ***
 

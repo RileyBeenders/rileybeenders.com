@@ -10,9 +10,9 @@ The repo doubles as the owner's personal job-search system of record. This note 
 
 | Folder | Contents |
 |---|---|
-| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`016`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
-| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, and the role-specific Disney Applied AI resumes for 015 and 016. |
-| `output/pdf/` | Generated resume PDF variants, including the Disney Forward Deployed Engineer and Forward Deployed Product Engineer resumes, plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
+| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`021`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
+| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, and the 2-page Disney resumes for 017–021. |
+| `output/pdf/` | Generated resume PDF variants, including the Disney Forward Deployed Engineer and Forward Deployed Product Engineer resumes, the full-length and `_2-Page` variants for applications 017–021, plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
 | `references/` | Dated **snapshot resumes** (`RileyBeenders_Apr2022.pdf`, `_Sept2025.pdf`, `_Jan2026.pdf`) kept as historical evidence of how the resume has evolved, and as reference material the `custom-resume` procedure can draw layout/content cues from. |
 | `output/resumeTemplates/` | Abstract layout mockups from `generateResumeTemplates.mjs` — see [[Resume PDF Pipeline]]. |
 
@@ -24,7 +24,7 @@ Every tracked application also has its own note under `06 Job Search Tracking/Ap
 
 Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdown table with columns `JobID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Updates`. **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters, and the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] for reconciling them.
 
-### Current applications (16, as of README.md)
+### Current applications (21, as of README.md)
 
 | ID                                                                               | Company                             | Role                                                           | Status                                                      |
 | -------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
@@ -44,6 +44,11 @@ Both `README.md` and `data/more-info/gantt.md` contain a Gantt chart + a markdow
 | [[014 Disney - WDI Figure Programming Intern\|014]]                              | Walt Disney Imagineering            | WDI Figure Programming Intern, Spring 2027                     | 🔴 Not in consideration (not currently enrolled in college) |
 | [[015 Disney - Forward Deployed Engineer\|015]]                                  | The Walt Disney Company (Corporate) | Forward Deployed Engineer                                      | 🟢 Application Received                                     |
 | [[016 Disney - Forward Deployed Product Engineer\|016]]                          | The Walt Disney Company (Corporate) | Forward Deployed Product Engineer                              | 🟢 Application Received                                     |
+| [[017 Disney - Sr Cybersecurity Engineer\|017]] | Disneyland Resort | Sr Cybersecurity Engineer | 🟢 Application Received |
+| [[018 Disney - Sr Mechanical Engineer\|018]] | Disneyland Resort | Sr Mechanical Engineer | 🟢 Application Received |
+| [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🟢 Application Received |
+| [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🟢 Application Received |
+| [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🟢 Application Received |
 
 ## The `custom-resume` generation workflow
 
@@ -53,7 +58,7 @@ Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent pr
 2. Extract company/title/location/requirements/ATS keywords from the posting.
 3. Build a fact-only evidence matrix from the live site + `data/**/*.json` — **never invents experience**.
 4. Draft and lay out a resume matching the visual style of `output/pdf/Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf` (navy headings, Arial, blue underlined links, US Letter).
-5. Save to `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf`, then validate page count, dimensions, rendering, and link functionality before delivery.
+5. Save to `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf`, then validate page count, page fill, dimensions, rendering, and link functionality before delivery.
 
 ## Related
 - [[More Info and Gantt Data]]
