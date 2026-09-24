@@ -24,7 +24,8 @@
     }
   },
   "ganttSection": {
-    "visible": false,
+    "chartVisible": false,
+    "tableVisible": true,
     "title": "Application Tracker"
   }
 }

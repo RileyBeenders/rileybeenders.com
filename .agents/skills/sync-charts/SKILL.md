@@ -51,7 +51,7 @@ Keep the report itemized (a short bulleted list per change), not a single vague 
 
 ## Design check
 
-The chart is also a rendered surface on `/more-info` (when `data/more-info/more-info.json`'s `ganttSection.visible` is on). `components/GanttChart.tsx` bakes its colors into mermaid's `themeVariables` because mermaid cannot read CSS variables — the repo-root `DESIGN.md` calls this the **Hard-Copy Rule**. Whenever the chart's look changes (a status color, bar or font size, the active palette preset in `data/header.json`), sync those hard-coded values to the active preset's tokens in `lib/palettes.ts` for both themes, then run `sh .agents/skills/impeccable/scripts/impeccable detect --json components/GanttChart.tsx components/JobsTable.tsx` and load `/more-info` in both themes. Content-only edits to the gantt block (dates, durations, statuses) need none of this.
+The chart is also a rendered surface on `/more-info` (when `data/more-info/more-info.json`'s `ganttSection.chartVisible` is on; the table has its own `tableVisible` switch). `components/GanttChart.tsx` bakes its colors into mermaid's `themeVariables` because mermaid cannot read CSS variables — the repo-root `DESIGN.md` calls this the **Hard-Copy Rule**. Whenever the chart's look changes (a status color, bar or font size, the active palette preset in `data/header.json`), sync those hard-coded values to the active preset's tokens in `lib/palettes.ts` for both themes, then run `sh .agents/skills/impeccable/scripts/impeccable detect --json components/GanttChart.tsx components/JobsTable.tsx` and load `/more-info` in both themes. Content-only edits to the gantt block (dates, durations, statuses) need none of this.
 
 ## Related procedure
 

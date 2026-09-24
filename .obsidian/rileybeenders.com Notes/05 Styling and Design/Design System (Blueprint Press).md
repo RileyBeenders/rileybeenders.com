@@ -72,7 +72,7 @@ The blueprint-grid texture is four stacked `linear-gradient`s on `.bp` (`16px` f
 - **`.bp-link`** — inline link with an underline that wipes in on hover and a diagonal arrow. `.bp-readmore` is the uppercased, letter-spaced, accent-colored variant used for the "Read more" link on `/more-info`.
 - **`.bp-soon-*`** — the `BpComingSoon` loader/rings/status/queue. `.bp-badge` — the "Open to relocation" pill (fixed bottom-right by default; on `/` the component moves it with a transform from beside the hero rule to that corner) with a pinging dot (`bp-ring`) and the typewriter label (`.bp-badge-type` ghost/live copies, `.bp-badge-caret` blinking via `bp-caret`). `.bp-top` — the fixed bottom-left Back to Top control.
 - **`.bp-footer-block`** — the footer's `<dl>` title block (Sheet · Rev. · Drawn in), `tabular-nums`.
-- **`.bp-gantt` / `.bp-table`** — the tracker frame: `.bp-gantt` is `height: 50vh; overflow: auto` (horizontal scroll for the rescaled chart); `.bp-table-wrap` is `overflow-x: auto`.
+- **`.bp-gantt` / `.bp-table`** — the tracker frame: `.bp-gantt` is `height: 50vh; overflow: auto; scrollbar-gutter: stable` (scrolls a chart drawn wider than the box; the stable gutter keeps the vertical scrollbar from eating into the 21-day width `GanttChart` measures before rendering); `.bp-table-wrap` is `overflow-x: auto`.
 - Keyframes: `bp-draw` (stroke draw-on), `bp-float`, `bp-sheen`, `bp-spin` / `bp-pulse` / `bp-sweep` (coming-soon), `bp-ring` and `bp-caret` (badge), `bp-nav-gradient` (the About tab — see below).
 - `.bp-eyebrow` still exists as a rule but nothing renders it since the eyebrows went on 2026-09-18.
 

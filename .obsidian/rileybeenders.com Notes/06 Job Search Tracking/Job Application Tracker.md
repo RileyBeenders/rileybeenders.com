@@ -50,6 +50,10 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🟢 Application Received |
 | [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🟢 Application Received |
 
+### Before the tracker
+
+The 29 inactive applications in Disney's Workday portal, 26 of them from before this site, are listed separately in [[Past Disney Applications]] (and in `README.md` under `## Past Disney Applications`). That note also covers the Ride Control System Security Engineer - OT role (10119309), which reached the final round.
+
 ## The `custom-resume` generation workflow
 
 Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.agents/skills/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills (.agents)]]):

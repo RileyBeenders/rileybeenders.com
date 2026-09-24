@@ -50,7 +50,7 @@ flowchart LR
   GEN --> PDF["application/pdf response"]
 
   MI[data/more-info/more-info.json] --> MIPAGE["app/(site)/more-info/page.tsx (server)"]
-  GMD[data/more-info/gantt.md] -->|"fs.readFileSync, only while ganttSection.visible"| MIPAGE
+  GMD[data/more-info/gantt.md] -->|"fs.readFileSync, only while chartVisible or tableVisible"| MIPAGE
   MIPAGE --> GANTT["GanttChart (client, mermaid)"]
   MIPAGE --> JT["JobsTable (server-renderable)"]
 
@@ -78,7 +78,7 @@ These are **build-time content toggles**, flipped in the Studio's Site Settings,
 
 ## Server vs. client components
 
-- `app/layout.tsx`, `app/(site)/layout.tsx`, and all five `app/(site)/**/page.tsx` files are **server components** (no `"use client"`). `more-info/page.tsx` additionally reads `data/more-info/gantt.md` off disk with Node's `fs` at request time (only while `ganttSection.visible` is on); `page.tsx` calls `lib/build-stamp.ts` (git / `VERCEL_GIT_COMMIT_SHA`) for the footer's revision line.
+- `app/layout.tsx`, `app/(site)/layout.tsx`, and all five `app/(site)/**/page.tsx` files are **server components** (no `"use client"`). `more-info/page.tsx` additionally reads `data/more-info/gantt.md` off disk with Node's `fs` at request time (only while `ganttSection.chartVisible` or `tableVisible` is on); `page.tsx` calls `lib/build-stamp.ts` (git / `VERCEL_GIT_COMMIT_SHA`) for the footer's revision line.
 - Client components (`"use client"`): everything under `components/blueprint/` except `BpMark` (`BpNav`, `BpThemeToggle`, `ThemeProvider`, `BpActions`, `BpComingSoon`, `Reveal`, `PageSpine`, `HeroRibbon`, `BackToTop`, `BpRelocationBadge`, `CountUp`, `WordReveal`, `ScrollWords`), `GanttChart`, `AboutSiteStory`, and the `components/projects/` tree (`ProjectEntry`, `ProjectListSpine`, `ProjectDateBox`, `ProjectGallery`, `Lightbox`, `ProjectFeature` and its `feature/*` blocks and demos). No directive, so server-renderable: `BpMark` (a pure SVG function used from both trees), `JobsTable`, `EmphasizedText`, `CaseStudy`, `ThemedShot`.
 - `mermaid` is loaded with a dynamic `import("mermaid")` inside `GanttChart`'s `useEffect`, so it never ships in the initial bundle.
 - `BpActions` dynamically imports `ResumeBuilder/downloadPublishedResume` only when the Download button is clicked.

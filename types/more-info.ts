@@ -20,8 +20,10 @@ export type MoreInfoAboutSite = {
 };
 
 export type MoreInfoGanttSection = {
-  /** Controls the full tracker section, including both the chart and table. */
-  visible: boolean;
+  /** Shows the mermaid Gantt chart. */
+  chartVisible: boolean;
+  /** Shows the tracker table. The section is hidden when both flags are off. */
+  tableVisible: boolean;
   title: string;
   /** Optional lead-in above the chart; omitted when there is nothing to say. */
   intro?: string;

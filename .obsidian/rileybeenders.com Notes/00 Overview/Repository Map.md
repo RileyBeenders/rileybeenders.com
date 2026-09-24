@@ -50,7 +50,7 @@ app/
     about-this-site/page.tsx   # /about-this-site — the site as its own case study (hero + date bar, story, deep-dive)
     about-this-site/about-site.css  # .as-* page layout + the large date-bar variant
     contact/page.tsx           # /contact — hero + <BpActions> + Details prose, copy from data/contact/contact.json, email spelled out once
-    more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable> (only while ganttSection.visible — off today)
+    more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable> (each gated by ganttSection.chartVisible / tableVisible — table only today)
   api/resume-pdf/route.ts      # Node-runtime API route: generates the live resume PDF on demand
 
 components/

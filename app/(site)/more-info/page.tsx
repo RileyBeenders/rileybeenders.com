@@ -17,7 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default function MoreInfoPage() {
-  const showApplicationTracker = data.ganttSection.visible !== false;
+  const showChart = data.ganttSection.chartVisible !== false;
+  const showTable = data.ganttSection.tableVisible !== false;
+  const showApplicationTracker = showChart || showTable;
   const applicationTracker = showApplicationTracker
     ? parseGanttFile(fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8"))
     : null;
@@ -107,8 +109,8 @@ export default function MoreInfoPage() {
               <Reveal delay={0.06}>
                 <div>
                   {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
-                  <GanttChart chart={applicationTracker.chart} />
-                  <JobsTable columns={applicationTracker.columns} rows={applicationTracker.rows} />
+                  {showChart ? <GanttChart chart={applicationTracker.chart} /> : null}
+                  {showTable ? <JobsTable columns={applicationTracker.columns} rows={applicationTracker.rows} /> : null}
                 </div>
               </Reveal>
             </div>

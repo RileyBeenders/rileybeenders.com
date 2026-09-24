@@ -7,8 +7,19 @@ type GanttChartProps = {
   chart: string;
 };
 
-const VISIBLE_DAYS = 20;
+/** Days of the timeline visible at once; the chart opens scrolled to the newest. */
+const VISIBLE_DAYS = 21;
 const MS_PER_DAY = 86400000;
+
+/**
+ * Mermaid's gantt layout, shared with the chart-width math below: the time
+ * axis runs from `leftPadding` (the section-label column) to
+ * `width - rightPadding`.
+ */
+const GANTT_LAYOUT = {
+  leftPadding: 96,
+  rightPadding: 75
+} as const;
 
 /**
  * Mermaid bakes colors into the SVG it returns rather than consuming CSS
@@ -80,6 +91,20 @@ export function GanttChart({ chart }: GanttChartProps) {
     async function render() {
       try {
         const { default: mermaid } = await import("mermaid");
+        const container = containerRef.current;
+        if (!container) return;
+
+        // Draw the chart wide enough that VISIBLE_DAYS days (plus the right
+        // padding) fill the box, rather than scaling the SVG afterwards: bars
+        // and labels keep their size and only the time axis stretches. A chart
+        // shorter than the window just fits the box.
+        const availableWidth = container.clientWidth;
+        const totalDays = countTotalDays(chart);
+        const dayWidth = (availableWidth - GANTT_LAYOUT.rightPadding) / VISIBLE_DAYS;
+        const chartWidth =
+          totalDays > VISIBLE_DAYS
+            ? Math.round(GANTT_LAYOUT.leftPadding + GANTT_LAYOUT.rightPadding + dayWidth * totalDays)
+            : availableWidth;
 
         mermaid.initialize({
           startOnLoad: false,
@@ -97,7 +122,9 @@ export function GanttChart({ chart }: GanttChartProps) {
             barHeight: 22,
             barGap: 6,
             topPadding: 42,
-            leftPadding: 96,
+            ...GANTT_LAYOUT,
+            useWidth: chartWidth,
+            useMaxWidth: false,
             gridLineStartPadding: 32,
             numberSectionStyles: 4
           }
@@ -110,22 +137,12 @@ export function GanttChart({ chart }: GanttChartProps) {
         const svgEl = containerRef.current.querySelector("svg");
         if (!svgEl) return;
 
-        const naturalWidth = svgEl.width.baseVal.value;
-        const naturalHeight = svgEl.height.baseVal.value;
-        const availableWidth = containerRef.current.clientWidth;
-
-        const totalDays = countTotalDays(chart);
-
-        const scale =
-          naturalWidth > 0 ? availableWidth / ((naturalWidth / totalDays) * VISIBLE_DAYS) : 1;
-
-        const scaledWidth = naturalWidth * scale;
-        const scaledHeight = naturalHeight * scale;
-
-        svgEl.style.maxWidth = "none";
-        svgEl.setAttribute("width", String(scaledWidth));
-        svgEl.setAttribute("height", String(scaledHeight));
-        containerRef.current.style.maxHeight = `${scaledHeight}px`;
+        containerRef.current.style.maxHeight = `${svgEl.viewBox.baseVal.height}px`;
+        // Open on the newest applications: the latest dates are at the right
+        // and the latest rows (and the date axis) at the bottom. Earlier
+        // history scrolls into view from the left and top.
+        containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
       } catch (renderError) {
         console.error("Unable to render the Gantt chart.", renderError);
         if (!cancelled) setError(true);

@@ -477,12 +477,21 @@ export const SCHEMAS = {
         help: "The chart itself is drawn from data/more-info/gantt.md, which is still edited by hand.",
         fields: [
           {
-            name: "visible",
+            name: "chartVisible",
             type: "boolean",
-            label: "Show on live site",
+            label: "Show Gantt chart on live site",
             default: true,
             always: true,
-            help: "Controls both the application timeline and the tracker table."
+            span: "half"
+          },
+          {
+            name: "tableVisible",
+            type: "boolean",
+            label: "Show tracker table on live site",
+            default: true,
+            always: true,
+            span: "half",
+            help: "Turning both off hides the whole section."
           },
           { name: "title", type: "text", label: "Section title", required: true },
           { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." }
