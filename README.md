@@ -9,12 +9,6 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 
 ## Job Application Tracker
 
-**Status Key**
-
-- 🟢 = Application Received
-- 🟠 = Currently in the interview process
-- 🔴 = No longer in consideration
-
 ```mermaid
   gantt
     dateFormat YYYY-MM-DD
@@ -114,6 +108,11 @@ The site stays readable as a conventional resume at rest, then reveals additiona
     Applied Sep 24                  :milestone, 2026-09-24, 0d
     Waiting for Reply               :active, 2026-09-24, 1d
 ```
+
+**Status Key**
+- 🟢 = Application Received
+- 🟠 = Currently in the interview process
+- 🔴 = No longer in consideration
 
 | ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID |
 | :----: | :---- | :---- | :----: | :----: | :----: | :----: | :----: |
