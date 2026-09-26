@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "About this site | Riley Beenders",
+    "description": "The site as its own case study: the Blueprint Press design, the AI agent skills that maintain it, and a commit-by-commit timeline of how far it has come."
+  },
   "hero": {
     "title": "About this site",
     "tagline": "The site as its own case study: how it was designed, the agents that maintain it, and how far it has come in a short time."
@@ -7,6 +11,7 @@
     "start": "2026-06-28",
     "ongoing": true
   },
+  "storyHeading": "The site",
   "summary": "The site you are reading. A resume-shaped evidence layer built from scratch, then handed a set of AI agent skills that tailor resumes, keep its documentation honest, and now carry its motion language. It started on June 28, 2026 and has not stopped moving.",
   "bullets": [
     {
@@ -89,6 +94,7 @@
   },
   "feature": {
     "intro": "This page is the one part of the site that documents itself. The numbers below come from the repository, the timeline is the commit history with the noise removed, and an agent skill refreshes both as the site grows.",
+    "repoLabel": "GitHub",
     "stats": [
       {
         "label": "Commits",
@@ -121,6 +127,8 @@
         "note": "written, hidden, waiting"
       }
     ],
+    "timelineTitle": "Timeline",
+    "timelineNote": "Key commits, placed by date, playing through in order. Click a dot, or use the arrow keys, to take over.",
     "timeline": [
       {
         "date": "2026-06-28",
@@ -453,6 +461,7 @@
         ]
       }
     ],
+    "pillarsTitle": "What it's made of",
     "pillars": [
       {
         "title": "Blueprint Press",
@@ -623,5 +632,9 @@
         }
       ]
     }
+  },
+  "outro": {
+    "lead": "Still moving.",
+    "body": "Everything on this page is edited from the Studio and refreshed by an agent as the repository grows. If the timeline ends before today, that is a to-do, not the end."
   }
 }

@@ -18,6 +18,7 @@ import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
 import "./blueprint.css";
+import homePage from "@/data/home/page.json";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;
 // picking a font just points --bp-font-header/subheader/body at one of these.
@@ -97,9 +98,8 @@ const FONT_VARIABLES = [
 ].join(" ");
 
 export const metadata: Metadata = {
-  title: "Riley Beenders | R&D, Electromechanical and Automation Engineer",
-  description:
-    "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
+  title: homePage.meta.title,
+  description: homePage.meta.description
 };
 
 function cssBlock(vars: Record<string, string>): string {
@@ -131,10 +131,10 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
 
   return (
     <ThemeProvider>
-      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId}>
+      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId} data-intro-align={resumeData.layout.introAlign}>
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
-        <BpNav />
+        <BpNav name={resumeData.person.name} />
         {children}
         <BpFixedRelocationBadge />
         <StudioLink />

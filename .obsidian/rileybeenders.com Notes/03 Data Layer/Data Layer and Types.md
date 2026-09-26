@@ -22,7 +22,8 @@ tags: [data, types]
 | `ResumeVisibility` | `{ experienceProjectButtons, experienceProofButtons, projectsSection, proofIndex, openToRelocation }` — 5 booleans; the first four drive `resumeData.ts`, `openToRelocation` (2026-09-15) gates the relocation badge and the contact hero's "Open to relocation" line. |
 | `PaletteSeeds` / `ThemeSetting` | Five seed colors (`paper`, `white`, `ink`, `accent`, `blue`) and `{ paletteId, custom: { light, dark } }` — the Studio's palette choice; `lib/palette.ts` derives the full `PaletteTokens` (ramp, `onAccent`, …) from the seeds. |
 | `FontRole` / `FontSettings` | `"header" \| "subheader" \| "body"` → a font id from `lib/fonts.ts`. |
-| `ResumeData` | The top-level object. `siteMode?: "resume" \| "coming-soon"`, `person`, `summary`, `visibility`, `theme`, `fonts`, `resumePdfPath`, `comingSoon?`, `skills[]`, `experience[]`, `projects[]`, `education`, `proofs[]`. `siteMode` and `comingSoon` are declared but read nowhere. |
+| `IntroAlign` / `LayoutSettings` | `{ introAlign: "left" \| "center" \| "right" \| "full" }` (2026-09-26): how the intro under a page headline sits on Projects, More Info and About this site. The site layout stamps it on `.bp` as `data-intro-align`, and `blueprint.css` positions every `.bp-page-intro` from it. Studio: Site Settings → Layout, a Left / Centered / Right / Full width button row (the `choice` field type). Currently `"center"`. |
+| `ResumeData` | The top-level object. `siteMode?: "resume" \| "coming-soon"`, `person`, `summary`, `visibility`, `theme`, `fonts`, `layout`, `resumePdfPath`, `comingSoon?`, `skills[]`, `experience[]`, `projects[]`, `education`, `proofs[]`. `siteMode` and `comingSoon` are declared but read nowhere. |
 
 ### The dead "coming soon" schema
 
@@ -35,12 +36,22 @@ Matches `data/more-info/more-info.json`:
 - `MoreInfoAboutHeader`, `MoreInfoAboutMe` — `{ title, description: string[] }`.
 - `MoreInfoReadMore` — `{ label: string; href: string }`.
 - `MoreInfoAboutSite` — `{ title, description: string[], readMore?: MoreInfoReadMore }`. The optional `readMore` renders a "Read more" link after the About-the-Site paragraphs on `/more-info`.
-- `MoreInfoGanttSection` — `{ visible, title, intro }`; `visible` controls the complete live tracker section (timeline and table together).
-- `MoreInfoData` — the four blocks composed.
+- `MoreInfoGanttSection` — `{ chartVisible, tableVisible, title, intro?, tableNote, statusKey { received, interviewing, closed } }`; the two flags switch the chart and the table, `tableNote` is the line above the table and `statusKey` the words beside its 🟢/🟠/🔴 key (the circles stay in code, matching `gantt.md`).
+- `MoreInfoData` — `meta` (`PageMeta`) plus the four blocks.
 
 ## `types/contact.ts`
 
-Matches `data/contact/contact.json` (added 2026-09-15, Studio: **Contact**): `ContactHero { title, tagline }`, `ContactDetails { title, description[] }`, `ContactData { hero, details }`. The email address is not in this file — `/contact` prints `person.email` from `header.json` after the paragraphs. `eyebrow`, `linkedinLabel` and `githubLabel` left the schema with the contact cards on 2026-09-18.
+Matches `data/contact/contact.json` (added 2026-09-15, Studio: **Contact**): `ContactHero { title, tagline }`, `ContactDetails { title, description[] }`, `ContactData { meta, hero, details }` (`meta` is the page's `PageMeta`, 2026-09-26). The email address is not in this file — `/contact` prints `person.email` from `header.json` after the paragraphs. `eyebrow`, `linkedinLabel` and `githubLabel` left the data with the contact cards on 2026-09-18; the last two lingered in the Studio schema (a save would have written them back as empty strings) until 2026-09-26.
+
+## Page copy — `types/pages.ts`, `lib/copy.ts` (2026-09-26)
+
+Every visitor-facing word that used to be written into a page component now comes from data the Studio edits, as preparation for moving the site into its own product repository. Three new files, each with a Studio schema:
+
+- `data/home/page.json` (Studio: **Home page**, first under Home) → `HomePageData`: `meta { title, description, shareTitle }` (read by both `app/layout.tsx` and `app/(site)/layout.tsx` for the default tab title, description and Open Graph/Twitter title, and by `app/opengraph-image.tsx`, which sets `shareTitle` on two lines and prints `footer.sheetLink.text` · `person.location`), `hero { lines[], currentRole }` (the big name, one `Reveal` per line; `"{company}, since {start}"`), `summaryLink { text, href }` (the phrase linked wherever it appears in the summary; blank = no link), `headings { summary, experience, skills, education }`, `footer { note, sheetLabel, sheetLink { text, href }, revisionLabel, locationLabel }`.
+- `data/projects/page.json` (Studio: **Projects page**) → `ProjectsPageData`: `meta`, `title`, `intro` and `outro.body` as `CountedText { one, many }` (`many` takes `{count}`), `outro.lead`, and `comingSoon { heading, body, phases[], queueLabel }`, passed to `BpComingSoon` as its `copy` prop.
+- `data/site/interface.json` (Studio: **Navigation & labels**, under Site settings) → `InterfaceData`: nav labels, the action buttons (`downloadPdf`, `preparingPdf`, `email`, `linkedin`, `github`), `backToTop`, `openToRelocation`, `bulletReadMore`, `showCredential`, `caseStudy` (toggle + the six section headings `buildProofView()` uses), `gallery` (notes, Before/After tags, lightbox loading/failed), `dates.present`, `timeline` (era badges, axis labels, tour state, screenshot fallback) and `pillars` (Read more / Less).
+
+The existing page files gained `meta` (Contact, More Info, About this site) and the copy still hard-coded on those pages (see [[More Info and Gantt Data]] and [[About This Site Page]]). `lib/copy.ts` exports `ui` (the typed `interface.json`, imported directly by client components), `fill(template, values)` for `{name}` placeholders, and `counted(text, count)`. `BpNav` takes the brand name as a `name` prop from the server layout rather than importing `header.json`, so no other personal detail reaches the browser bundle. What stays in code: the interactive demo replicas on the About page, the flowchart text in `components/projects/diagrams/flows.ts`, screen-reader-only and `aria-label` strings, and the dev-only Edit in Studio control.
 
 ## `data/header.json`
 

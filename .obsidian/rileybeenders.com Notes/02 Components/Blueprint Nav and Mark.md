@@ -10,7 +10,7 @@ The site chrome that wraps every route, plus the monogram it's built around. Rep
 
 `"use client"` (needs `usePathname()`). Rendered once from `app/(site)/layout.tsx`, above every page's `{children}`. Single sticky bar (`.bp-nav`, `position: sticky; top: 0`, translucent paper background + `backdrop-filter: blur(12px)`, bottom hairline).
 
-- **Brand**: a `next/link` to `/` — `<BpMark id="nav" size={34} animated />` plus `.bp-brand-name` "Riley Beenders" (uppercased, letter-spaced, greys→ink on hover).
+- **Brand**: a `next/link` to `/` — `<BpMark id="nav" size={34} animated />` plus `.bp-brand-name`: Site Settings → Person → Name, passed in as `BpNav`'s `name` prop by the server layout (uppercased, letter-spaced, greys→ink on hover). The five link labels come from `data/site/interface.json` → `nav` (Studio: Navigation & labels) since 2026-09-26.
 - **Nav**: a hardcoded array, rendered as `next/link`s inside `.bp-nav-right` next to `<BpThemeToggle />` (the light/dark switch, backed by `ThemeProvider`'s `useTheme()`):
 
   ```ts

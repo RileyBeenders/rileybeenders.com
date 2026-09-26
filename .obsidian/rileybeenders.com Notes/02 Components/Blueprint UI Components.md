@@ -70,11 +70,11 @@ Three more `components/blueprint/` motion primitives, added with the About-this-
 
 ## `components/blueprint/BpComingSoon.tsx`
 
-`"use client"`. The fallback `/projects` renders when no project is published (every project `visible: false`, or the Projects switch off) — since 2026-09-16 ICARUS-Lite is published, so it is not on the live site. Props: `{ teasers?: { name: string; type: string }[] }`; the current fallback call passes none.
+`"use client"`. The fallback `/projects` renders when no project is published (every project `visible: false`, or the Projects switch off) — since 2026-09-16 ICARUS-Lite is published, so it is not on the live site. Props: `{ copy, teasers? }`. `copy` is `data/projects/page.json` → `comingSoon { heading, body, phases[], queueLabel }` (2026-09-26); `teasers?: { name: string; type: string }[]` isn't passed by the current fallback call.
 
 - A CSS-only triple-ring loader + pulsing core (`.bp-soon-loader`).
-- A cycling status line (`.bp-soon-status`) that rotates through `PHASES` ("Compiling case studies", "Rendering system diagrams", …) every 2600 ms — skipped entirely if `prefers-reduced-motion: reduce`.
-- A sweeping progress bar, a fixed "Case studies in progress" copy block, and — if `teasers` is non-empty — a "Queued for publish" list showing each `name` (and `type`, hidden under 860px).
+- A cycling status line (`.bp-soon-status`) that rotates through `copy.phases` ("Compiling case studies", "Rendering system diagrams", …) every 2600 ms — skipped entirely if `prefers-reduced-motion: reduce`.
+- A sweeping progress bar, the `copy.heading` / `copy.body` block ("Case studies in progress"), and — if `teasers` is non-empty — a `copy.queueLabel` ("Queued for publish") list showing each `name` (and `type`, hidden under 860px).
 - An `sr-only` `role="status"` line for assistive tech.
 
 It does **not** use the `ComingSoonContent` type from `types/resume.ts` — that schema is unrelated dead code. This component's shape is just `{ name, type }[]`.

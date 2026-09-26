@@ -580,7 +580,7 @@ async function save() {
       retimed.length > 0 ? ` Retimed ${retimed.join(", ")}.` : "",
       failed.length > 0 ? ` Could not retime ${failed.join(", ")}.` : ""
     ].join("");
-    toast(`Saved ${subject}: ${changes} ${changes === 1 ? "field" : "fields"} changed.${note} The site picks it up on its own.`, failed.length > 0 ? "error" : "ok");
+    toast(`Saved ${subject}: ${changes} ${changes === 1 ? "field" : "fields"} changed.${note}`, failed.length > 0 ? "error" : "ok");
   } catch (error) {
     paintChrome();
     if (/changed on disk/i.test(error.message)) {

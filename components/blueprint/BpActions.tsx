@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ResumeData } from "@/types/resume";
+import { ui } from "@/lib/copy";
 
 type BpActionsProps = {
   data: ResumeData;
@@ -51,22 +52,22 @@ export function BpActions({ data }: BpActionsProps) {
         aria-busy={busy}
       >
         {!busy && <span className="bp-sheen" aria-hidden="true" />}
-        <span>{busy ? "Preparing PDF…" : "Download PDF"}</span>
+        <span>{busy ? ui.actions.preparingPdf : ui.actions.downloadPdf}</span>
         {!busy && <ArrowDown />}
       </button>
 
       <a className="bp-btn" href={`mailto:${data.person.email}`} suppressHydrationWarning>
-        <span>Email</span>
+        <span>{ui.actions.email}</span>
         <ArrowRight />
       </a>
 
       <a className="bp-btn" href={data.person.linkedin} target="_blank" rel="noreferrer" suppressHydrationWarning>
-        <span>LinkedIn</span>
+        <span>{ui.actions.linkedin}</span>
         <ArrowRight />
       </a>
 
       <a className="bp-btn" href={data.person.github} target="_blank" rel="noreferrer" suppressHydrationWarning>
-        <span>GitHub</span>
+        <span>{ui.actions.github}</span>
         <ArrowRight />
       </a>
 

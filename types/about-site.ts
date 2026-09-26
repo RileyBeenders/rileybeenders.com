@@ -5,6 +5,7 @@ import type {
   ProjectImage,
   ResumeBullet
 } from "@/types/resume";
+import type { PageMeta } from "@/types/pages";
 
 export type AboutSiteHero = {
   title: string;
@@ -18,12 +19,20 @@ export type AboutSiteHero = {
  * edited from the Studio and refreshed by the site-timeline-sync skill.
  */
 export type AboutSiteData = {
+  meta: PageMeta;
   hero: AboutSiteHero;
   /** Start is the first commit; `ongoing` keeps the date bar running. */
   dates: ProjectDates;
+  /** The index heading of the story section ("01  The site"). */
+  storyHeading: string;
   summary: string;
   bullets: ResumeBullet[];
   images: ProjectImage[];
   caseStudy?: ProjectAdditionalInfo;
   feature: ProjectFeature;
+  /** The closing note at the foot of the page. */
+  outro: {
+    lead: string;
+    body: string;
+  };
 };

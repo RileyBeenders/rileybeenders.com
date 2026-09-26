@@ -195,8 +195,14 @@ export type FeaturePillar = {
 /** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
 export type ProjectFeature = {
   intro?: string;
+  /** The repository button beside the intro. */
+  repoLabel?: string;
   stats?: ProjectStat[];
+  timelineTitle?: string;
+  /** How to use the timeline, under its title. */
+  timelineNote?: string;
   timeline?: TimelineEntry[];
+  pillarsTitle?: string;
   pillars?: FeaturePillar[];
   screenshots?: FeatureScreenshot[];
   backend?: FeatureBackend;
@@ -309,6 +315,17 @@ export type FontRole = "header" | "subheader" | "body";
 /** Values are ids from lib/fonts.ts. */
 export type FontSettings = Record<FontRole, string>;
 
+/**
+ * How the intro under a page headline sits (Projects, More Info, About this
+ * site): against the left edge, centred, against the right edge, or across
+ * the full width of the page.
+ */
+export type IntroAlign = "left" | "center" | "right" | "full";
+
+export type LayoutSettings = {
+  introAlign: IntroAlign;
+};
+
 export type ResumeData = {
   siteMode?: "resume" | "coming-soon";
   person: {
@@ -325,6 +342,7 @@ export type ResumeData = {
   visibility: ResumeVisibility;
   theme: ThemeSetting;
   fonts: FontSettings;
+  layout: LayoutSettings;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
   skills: {

@@ -7,6 +7,7 @@ import type { ProjectImage } from "@/types/resume";
 import { Lightbox } from "@/components/projects/Lightbox";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
+import { fill, ui } from "@/lib/copy";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -156,8 +157,8 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
       )}
 
       <p className="pj-gallery-note">
-        {images.length === 1 ? "Click to enlarge" : `${images.length} images · click to enlarge`}
-        {images.some((image) => image.display === "compare" && image.after) && " · drag to compare"}
+        {images.length === 1 ? ui.gallery.oneImage : fill(ui.gallery.manyImages, { count: images.length })}
+        {images.some((image) => image.display === "compare" && image.after) && ` · ${ui.gallery.dragToCompare}`}
       </p>
 
       {openAt !== null && (

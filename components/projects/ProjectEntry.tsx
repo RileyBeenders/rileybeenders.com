@@ -11,6 +11,7 @@ import { CaseStudy } from "@/components/projects/CaseStudy";
 import { ProjectStatus } from "@/components/projects/ProjectStatus";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { Paragraphs } from "@/components/content/Paragraphs";
+import { ui } from "@/lib/copy";
 
 type ProjectEntryProps = {
   view: ProjectView;
@@ -139,7 +140,7 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
                   aria-controls={panelId}
                   onClick={() => setExpanded((value) => !value)}
                 >
-                  <span>{expanded ? "Hide the case study" : "View the full case study"}</span>
+                  <span>{expanded ? ui.caseStudy.hide : ui.caseStudy.view}</span>
                   <ChevronDown
                     className={`pj-toggle-icon${expanded ? " is-open" : ""}`}
                     size={16}

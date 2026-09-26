@@ -1,5 +1,6 @@
 import type { Project, ProjectImage, ProofAsset, ProofPoint } from "@/types/resume";
 import { THEMED_SVGS } from "@/components/projects/diagrams/themed";
+import { ui } from "@/lib/copy";
 
 /**
  * The projects page shows each project twice: the project entry itself, then
@@ -56,12 +57,12 @@ export function buildProofView(project: Project, proofs: ProofPoint[]): ProofVie
   if (!info && !proof) return null;
 
   const sections = [
-    prose("Problem", info?.problem),
-    prose("Root cause", info?.rootCause),
-    list("Constraints", info?.constraints),
-    list("Approach", info?.approach),
-    list("Design decisions", info?.designDecisions),
-    list("Impact", info?.impact)
+    prose(ui.caseStudy.problem, info?.problem),
+    prose(ui.caseStudy.rootCause, info?.rootCause),
+    list(ui.caseStudy.constraints, info?.constraints),
+    list(ui.caseStudy.approach, info?.approach),
+    list(ui.caseStudy.designDecisions, info?.designDecisions),
+    list(ui.caseStudy.impact, info?.impact)
   ].filter((section): section is ProofSection => section !== null);
 
   const summary = proof?.summary ?? project.summary;

@@ -7,6 +7,12 @@
    (lib/palette.ts: 0.25 / 0.36 / 0.50 / 0.87) pre-computed for this ink/paper
    pair, since a plain stylesheet can't import the TypeScript that derives them.
    Re-derive them here whenever the ramp or the preset changes.
+
+   Three surfaces tell the chrome from the work: the top bar, the rail, and
+   the page. Each is the palette's own ink mixed into its paper, so they stay
+   the preset's neutrals. Light: white page, the rail at 6% ink, the top bar at
+   10%. Dark: the top bar keeps Electric's black, the rail is 6% white, the
+   page 10%, and cards and inputs (--panel) lift one step above the page.
    ========================================================================== */
 
 :root {
@@ -17,6 +23,9 @@
   --muted: #6b6c70;
   --faint: #8b8d90;
   --rule: #e1e1e2;
+  --chrome-top: #e8e8e9;
+  --chrome-rail: #f1f1f2;
+  --rail-rule: #c9cacd;
   --accent: #3e6ae1;
   --on-accent: #ffffff;
   --shadow: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent);
@@ -32,13 +41,16 @@
 /* The init script in index.html stamps data-theme on <html> before first
    paint: the saved choice, or the OS setting when nothing has been saved. */
 :root[data-theme="dark"] {
-  --paper: #000000;
-  --panel: #141414;
+  --paper: #1a1a1a;
+  --panel: #242424;
   --ink: #ffffff;
   --ink-soft: #bfbfbf;
   --muted: #a3a3a3;
-  --faint: #808080;
-  --rule: #212121;
+  --faint: #858585;
+  --rule: #2e2e2e;
+  --chrome-top: #000000;
+  --chrome-rail: #0f0f0f;
+  --rail-rule: #3a3a3a;
   --accent: #3e6ae1;
   --on-accent: #ffffff;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -89,8 +101,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   min-height: var(--topbar);
   padding: 10px 20px;
   border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(10px);
+  background: var(--chrome-top);
 }
 
 .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -143,7 +154,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   height: 9px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 2px var(--paper);
+  box-shadow: 0 0 0 2px var(--chrome-top);
 }
 .devices-knock::after {
   content: "";
@@ -172,13 +183,14 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   overflow-y: auto;
   padding: 14px 10px;
   border-right: 1px solid var(--rule);
+  background: var(--chrome-rail);
 }
 
 /* One group per page of the site, read top to bottom. The hairline between
    groups is a page break: everything above it lives on one page, everything
    below it on the next. */
 .rail-group { display: flex; flex-direction: column; gap: 2px; }
-.rail-group + .rail-group { margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--rule); }
+.rail-group + .rail-group { margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--rail-rule); }
 
 .rail-item {
   display: flex;
@@ -195,7 +207,8 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   transition: background 0.18s var(--ease);
 }
 .rail-item:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
-.rail-item.is-active { background: var(--panel); border-color: var(--rule); color: var(--ink); font-weight: 600; }
+/* The open file takes the page's own color, like a tab joined to the sheet it opens. */
+.rail-item.is-active { background: var(--paper); border-color: var(--rail-rule); color: var(--ink); font-weight: 600; }
 .rail-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Stays gray even on the active item: it marks a utility, not site content. */
 .rail-icon { flex: none; color: var(--muted); }
@@ -410,7 +423,9 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-input--mono { font-family: var(--mono); font-size: 13px; }
 .f-input--short { width: auto; min-width: 150px; }
-.f-textarea { resize: vertical; line-height: 1.55; }
+/* Sized to its text by autoGrow() in fields.js, so it never needs a scrollbar;
+   the corner handle still drags it taller. */
+.f-textarea { resize: vertical; line-height: 1.55; overflow-y: hidden; }
 .f-textarea--prose {
   min-height: 16rem;
   max-width: 72ch;
@@ -418,7 +433,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   font-family: var(--serif);
   font-size: 16px;
   line-height: 1.7;
-  field-sizing: content;
 }
 .f-count { margin: 6px 0 0; max-width: 72ch; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .f-select { appearance: auto; }
@@ -516,7 +530,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .f-row-tools { display: flex; align-items: center; gap: 1px; flex: none; }
 /* Paragraph rows: the textarea grows with its text and the tools sit on its first line. */
 .f-row--multiline { align-items: flex-start; }
-.f-row--multiline .f-textarea { min-height: 4.6em; field-sizing: content; }
+.f-row--multiline .f-textarea { min-height: 4.6em; }
 .f-row--multiline .f-row-tools { padding-top: 6px; }
 
 /* Cards are <details>: a one-line summary built from the card's own content
@@ -574,9 +588,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .f-thumb-empty { font-size: 12px; color: var(--muted); }
-
-/* Under every multi-line field: how to split it into paragraphs on the site. */
-.f-hint { margin: 5px 0 0; font-size: 11.5px; color: var(--faint); }
 
 /* GIF playback: the slider row under the path, and the clip retimed to it. */
 .f-playback {
@@ -1044,7 +1055,7 @@ html.is-grabbing * { cursor: grabbing !important; user-select: none; -webkit-use
   .workspace { grid-template-columns: 1fr; overflow: visible; }
   .rail { flex-direction: row; flex-wrap: wrap; gap: 6px; overflow: visible; border-right: 0; border-bottom: 1px solid var(--rule); }
   .rail-group { flex-direction: row; flex-wrap: wrap; }
-  .rail-group + .rail-group { margin: 0 0 0 4px; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--rule); }
+  .rail-group + .rail-group { margin: 0 0 0 4px; padding: 0 0 0 10px; border-top: 0; border-left: 2px solid var(--rail-rule); }
   .list-pane { border-right: 0; border-bottom: 1px solid var(--rule); max-height: 320px; }
   .list-pane[hidden] ~ .detail { grid-column: auto; }
   .detail { overflow: visible; }

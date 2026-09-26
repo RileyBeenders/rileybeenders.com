@@ -84,16 +84,20 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 
 | Key | What it is |
 |---|---|
+| `meta` | `title`, `description` — the browser tab and search/share text. Riley's copy; leave it alone. |
 | `hero` | `eyebrow`, `title`, `tagline` — the top of the page. |
 | `dates` | `start` (ISO, the first commit), `ongoing: true` keeps the bar running and the end reading "Present". Set `end` and drop `ongoing` only if the site is ever frozen. |
-| `summary`, `bullets`, `images` | The "01 The site" section, shaped like a project entry. |
+| `storyHeading`, `summary`, `bullets`, `images` | The "01 The site" section (`storyHeading` is its title), shaped like a project entry. |
 | `caseStudy` | Problem / root cause / constraints / approach / design decisions / impact / tools, behind the toggle. |
-| `feature.eyebrow`, `feature.intro` | The deep-dive header. |
+| `feature.eyebrow`, `feature.intro`, `feature.repoLabel` | The deep-dive header and its repository button. |
 | `feature.stats[]` | `label`, `value`, optional `suffix`, `note`. Labels the script refreshes: Commits, Days in motion, Agent skills, Vault notes, Applications tracked, Projects queued. |
+| `feature.timelineTitle`, `feature.timelineNote` | The heading over the timeline and the how-to line under it. Page copy, not data: don't touch. |
 | `feature.timeline[]` | Entries as above, in date order. |
+| `feature.pillarsTitle` | The heading over the pillars. Page copy: don't touch. |
 | `feature.pillars[]` | `eyebrow`, `title`, `body[]` (first paragraph shows at rest), optional `screenshotId`. |
 | `feature.screenshots[]` | `id`, `src` (light capture), `srcDark` (dark capture), `alt`, `caption`. Thumbnails for timeline entries and pillars; the page inverts them against the visitor's theme. |
 | `feature.backend` | `eyebrow`, `intro`, `items[]` of `{ demo: "resume" \| "studio" \| "skills", eyebrow, title, body[], notes[], matches[], skills[] }` — the live-demo rows. |
+| `outro` | `lead`, `body` — the closing note at the foot of the page. Page copy: don't touch. |
 
 ## What "brief" means here
 

@@ -10,6 +10,11 @@ import { BackToTop } from "@/components/blueprint/BackToTop";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { getBuildStamp } from "@/lib/build-stamp";
 import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
+import homePageData from "@/data/home/page.json";
+import { fill, ui } from "@/lib/copy";
+import type { HomePageData } from "@/types/pages";
+
+const page = homePageData as HomePageData;
 
 export default function HomePage() {
   const data = resumeData;
@@ -18,7 +23,7 @@ export default function HomePage() {
   // An empty line in the summary starts a new paragraph; the drop cap opens the first.
   const summaryParagraphs = splitParagraphs(data.summary);
   const dropCap = /^[A-Za-z][A-Za-z]/.test(summaryParagraphs[0] ?? "");
-  const siteLinkLabel = "RileyBeenders.com";
+  const siteLinkLabel = page.summaryLink.text;
   const projectsById = new Map(data.projects.map((project) => [project.id, project]));
   const current = data.experience[0];
   const stamp = getBuildStamp();
@@ -33,8 +38,9 @@ export default function HomePage() {
           <HeroRibbon />
 
           <h1>
-            <Reveal delay={0.14}><span style={{ display: "block" }}>Riley</span></Reveal>
-            <Reveal delay={0.24}><span style={{ display: "block" }}>Beenders</span></Reveal>
+            {page.hero.lines.map((line, index) => (
+              <Reveal key={index} delay={0.14 + index * 0.1}><span style={{ display: "block" }}>{line}</span></Reveal>
+            ))}
           </h1>
 
           <Reveal as="rule" delay={0.36}>
@@ -49,7 +55,7 @@ export default function HomePage() {
                 {current && (
                   <span className="bp-hero-now">
                     <span className="bp-hero-now-role">{current.role}</span>
-                    <span className="bp-hero-now-where">{current.company}, since {current.start}</span>
+                    <span className="bp-hero-now-where">{fill(page.hero.currentRole, { company: current.company, start: current.start })}</span>
                   </span>
                 )}
               </div>
@@ -68,21 +74,21 @@ export default function HomePage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;Summary</h2></Reveal>
+              <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{page.headings.summary}</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
                   {summaryParagraphs.map((paragraph, index) => {
                     const capped = index === 0 && dropCap;
                     const text = capped ? paragraph.slice(1) : paragraph;
-                    // The site's own name links to it, in whichever paragraph mentions it.
-                    const [beforeLink, ...afterLink] = text.split(siteLinkLabel);
+                    // The linked phrase (Home page → Summary link) links wherever it appears; blank means no link.
+                    const [beforeLink, ...afterLink] = siteLinkLabel ? text.split(siteLinkLabel) : [text];
                     return (
                       <p className="bp-prose" data-para="" key={index}>
                         {capped && <span className="bp-dropcap">{paragraph.slice(0, 1)}</span>}
                         {beforeLink}
                         {afterLink.length > 0 && (
                           <>
-                            <a href="https://www.rileybeenders.com" target="_blank" rel="noreferrer" suppressHydrationWarning>
+                            <a href={page.summaryLink.href} target="_blank" rel="noreferrer" suppressHydrationWarning>
                               {siteLinkLabel}
                             </a>
                             {afterLink.join(siteLinkLabel)}
@@ -102,7 +108,7 @@ export default function HomePage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;Experience</h2></Reveal>
+              <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;{page.headings.experience}</h2></Reveal>
               <div className="bp-roles">
                 {data.experience.map((job, index) => (
                   <Reveal key={`${job.company}-${job.start}`} delay={Math.min(index, 3) * 0.06}>
@@ -132,7 +138,7 @@ export default function HomePage() {
                                     aria-label={`See the ${project.name} project`}
                                     suppressHydrationWarning
                                   >
-                                    <span>Read more</span>
+                                    <span>{ui.bulletReadMore}</span>
                                     <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                       <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
@@ -157,7 +163,7 @@ export default function HomePage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;Skills</h2></Reveal>
+              <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;{page.headings.skills}</h2></Reveal>
               <div>
                 {data.skills.map((group, index) => (
                   <Reveal key={group.category} delay={Math.min(index, 3) * 0.06}>
@@ -181,7 +187,7 @@ export default function HomePage() {
           <div className="bp-shell">
             <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
             <div className="bp-section-grid">
-              <Reveal><h2 className="bp-section-index">04&nbsp;&nbsp;Education</h2></Reveal>
+              <Reveal><h2 className="bp-section-index">04&nbsp;&nbsp;{page.headings.education}</h2></Reveal>
               <div>
                 {data.education.degrees.map((degree) => (
                   <Reveal key={`${degree.school}-${degree.degree}`}>
@@ -209,7 +215,7 @@ export default function HomePage() {
                               style={{ marginTop: 10 }}
                               suppressHydrationWarning
                             >
-                              {certificate.credentialLabel || "Show credential"}
+                              {certificate.credentialLabel || ui.showCredential}
                               <svg className="bp-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                 <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
@@ -233,24 +239,21 @@ export default function HomePage() {
           <div className="bp-footer-inner">
             <div className="bp-footer-mark">
               <BpMark id="footer" size={58} animated float />
-              <p className="bp-footer-note">
-                A website built to house my experience, compiled into one place
-                for the next challenge.
-              </p>
+              <p className="bp-footer-note">{page.footer.note}</p>
             </div>
             <dl className="bp-footer-block" aria-label="About this page">
               <div>
-                <dt>Sheet</dt>
-                <dd><a href="https://rileybeenders.com" suppressHydrationWarning>rileybeenders.com</a></dd>
+                <dt>{page.footer.sheetLabel}</dt>
+                <dd><a href={page.footer.sheetLink.href} suppressHydrationWarning>{page.footer.sheetLink.text}</a></dd>
               </div>
               {stamp.commit && (
                 <div>
-                  <dt>Rev.</dt>
+                  <dt>{page.footer.revisionLabel}</dt>
                   <dd>{stamp.commit} · {stamp.date}</dd>
                 </div>
               )}
               <div>
-                <dt>Drawn in</dt>
+                <dt>{page.footer.locationLabel}</dt>
                 <dd>{data.person.location}</dd>
               </div>
             </dl>

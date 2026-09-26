@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "contact": "Contact",
+    "moreInfo": "More Info",
+    "aboutSite": "About this site"
+  },
+  "actions": {
+    "downloadPdf": "Download PDF",
+    "preparingPdf": "Preparing PDF…",
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "backToTop": "Back to Top",
+  "openToRelocation": "Open to relocation",
+  "bulletReadMore": "Read more",
+  "showCredential": "Show credential",
+  "caseStudy": {
+    "view": "View the full case study",
+    "hide": "Hide the case study",
+    "problem": "Problem",
+    "rootCause": "Root cause",
+    "constraints": "Constraints",
+    "approach": "Approach",
+    "designDecisions": "Design decisions",
+    "impact": "Impact"
+  },
+  "gallery": {
+    "oneImage": "Click to enlarge",
+    "manyImages": "{count} images · click to enlarge",
+    "dragToCompare": "drag to compare",
+    "before": "Before",
+    "after": "After",
+    "loading": "Loading full-resolution image…",
+    "failed": "Couldn’t load the full-resolution image"
+  },
+  "dates": {
+    "present": "Present"
+  },
+  "timeline": {
+    "shipped": "Shipped",
+    "inProgress": "In progress",
+    "planned": "Planned",
+    "past": "Past",
+    "present": "Present",
+    "future": "Future",
+    "playing": "Playing",
+    "paused": "Paused",
+    "viewScreenshot": "View screenshot"
+  },
+  "pillars": {
+    "readMore": "Read more",
+    "less": "Less"
+  }
+}

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import type { ProjectImage } from "@/types/resume";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
+import { ui } from "@/lib/copy";
 
 type LightboxProps = {
   images: ProjectImage[];
@@ -44,7 +45,7 @@ function FullImage({ src, alt }: { src: string; alt: string }) {
       />
       {status !== "ready" && (
         <span className="pj-lb-loading" role="status">
-          {status === "failed" ? "Couldn’t load the full-resolution image" : "Loading full-resolution image…"}
+          {status === "failed" ? ui.gallery.failed : ui.gallery.loading}
         </span>
       )}
     </>

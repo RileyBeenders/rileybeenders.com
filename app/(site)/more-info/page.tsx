@@ -15,8 +15,8 @@ import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
 const data = moreInfoData as MoreInfoData;
 
 export const metadata: Metadata = {
-  title: "More Info | Riley Beenders",
-  description: "Background on this site and a live look at the job search behind it."
+  title: data.meta.title,
+  description: data.meta.description
 };
 
 export default function MoreInfoPage() {
@@ -40,7 +40,7 @@ export default function MoreInfoPage() {
           <Reveal delay={0.38}>
             <div style={{ marginTop: 26 }}>
               {data.aboutHeader.description.flatMap(splitParagraphs).map((paragraph) => (
-                <p className="bp-prose" key={paragraph}>{paragraph}</p>
+                <p className="bp-prose bp-page-intro" key={paragraph}>{paragraph}</p>
               ))}
             </div>
           </Reveal>
@@ -112,7 +112,7 @@ export default function MoreInfoPage() {
               <Reveal delay={0.06}>
                 <div>
                   {showTable ? (
-                    <p className="bp-prose bp-table-note">Gray rows were applied to before this site and its tailored resumes.</p>
+                    <p className="bp-prose bp-table-note">{data.ganttSection.tableNote}</p>
                   ) : null}
                   {data.ganttSection.intro ? <Paragraphs className="bp-prose" text={data.ganttSection.intro} /> : null}
                   {showChart ? <GanttChart chart={applicationTracker.chart} /> : null}
@@ -124,9 +124,10 @@ export default function MoreInfoPage() {
                 <Reveal delay={0.1} className="bp-section-full">
                   <div className="bp-breakout">
                     <div className="bp-table-key" role="note" aria-label="Status key">
-                      <span>🟢 Application received</span>
-                      <span>🟠 Interviewing</span>
-                      <span>🔴 No longer in consideration</span>
+                      {/* The circles match the tracker rows in gantt.md, so only the words are editable. */}
+                      <span>🟢 {data.ganttSection.statusKey.received}</span>
+                      <span>🟠 {data.ganttSection.statusKey.interviewing}</span>
+                      <span>🔴 {data.ganttSection.statusKey.closed}</span>
                     </div>
                     <JobsTable
                       columns={APPLICATION_COLUMNS}

@@ -10,6 +10,7 @@ import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { CaseStudy } from "@/components/projects/CaseStudy";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
 import { Paragraphs } from "@/components/content/Paragraphs";
+import { ui } from "@/lib/copy";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -55,7 +56,7 @@ export function AboutSiteStory({ data, proof }: AboutSiteStoryProps) {
 
         <div className={`pj-entry-grid${hasImages ? "" : " as-story-grid--text-only"}`}>
           <div className="pj-entry-text">
-            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;The site</h2></Reveal>
+            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.storyHeading}</h2></Reveal>
 
             <div className="pj-body">
               <Reveal delay={0.06}><Paragraphs className="pj-summary" text={data.summary} /></Reveal>
@@ -100,7 +101,7 @@ export function AboutSiteStory({ data, proof }: AboutSiteStoryProps) {
                   aria-controls={panelId}
                   onClick={() => setExpanded((value) => !value)}
                 >
-                  <span>{expanded ? "Hide the case study" : "View the full case study"}</span>
+                  <span>{expanded ? ui.caseStudy.hide : ui.caseStudy.view}</span>
                   <ChevronDown className={`pj-toggle-icon${expanded ? " is-open" : ""}`} size={16} strokeWidth={1.8} aria-hidden="true" />
                 </button>
               </Reveal>

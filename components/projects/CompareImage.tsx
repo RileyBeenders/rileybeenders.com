@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Image from "next/image";
 import type { ImageFrame } from "@/types/resume";
+import { ui } from "@/lib/copy";
 
 /** A GIF goes around the optimizer so it keeps its timing and loop. */
 const isGif = (src: string) => /\.gif$/i.test(src);
@@ -103,8 +104,8 @@ export function CompareImage({ before, after, alt, frame, afterFrame, sizes, rat
         <Layer src={after} alt={`${alt} (after)`} frame={afterFrame} sizes={sizes} loading={loading} />
       </div>
 
-      <span className="cmp-tag cmp-tag--before" aria-hidden="true">Before</span>
-      <span className="cmp-tag cmp-tag--after" aria-hidden="true">After</span>
+      <span className="cmp-tag cmp-tag--before" aria-hidden="true">{ui.gallery.before}</span>
+      <span className="cmp-tag cmp-tag--after" aria-hidden="true">{ui.gallery.after}</span>
 
       <div className="cmp-bar" aria-hidden="true">
         <span className="cmp-knob">

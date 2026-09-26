@@ -78,12 +78,30 @@ so a save that didn't move the slider never rewrites it. Every referenced GIF
 is set to loop, slider or not; a GIF that only appears in the picker is left
 as it is until something refers to it.
 
+## Page text and labels
+
+Every word a visitor reads is editable here, not only the content. Each page
+has a page file at the top of its group in the rail (**Home page**, **Projects
+page**; Contact, More Info and About this site keep theirs in their own file)
+holding the browser-tab title and description, headlines, intros, section
+headings and closing notes. The words shared by every page (the menu, the
+buttons, Back to Top, case-study headings, gallery notes, timeline labels) are
+in **Navigation & labels** under Site settings. Where a field mentions
+`{count}`, `{company}` or `{start}`, the site fills the value in. The site reads
+these through `lib/copy.ts`; the types are in `types/pages.ts`.
+
+How the intro under a page headline sits (Left, Centered, Right or Full
+width) is one choice for every page, in Site Settings → Layout.
+
+Still in code: the interactive demo replicas on About this site, the
+flowchart text in `components/projects/diagrams/flows.ts`, and labels only a
+screen reader hears.
+
 ## Paragraphs
 
 Body text is plain text. In any multi-line field (a summary, a problem, an
 intro, a paragraph in a list of paragraphs), an empty line starts a new
-paragraph on the site; a single line break just flows on. Each such field
-says so under it. The site splits the text with `splitParagraphs` /
+paragraph on the site; a single line break just flows on. The site splits the text with `splitParagraphs` /
 `<Paragraphs>` in `components/content/Paragraphs.tsx`, and the resume PDF
 keeps it as one compact block.
 
@@ -157,6 +175,13 @@ surfaces, the site's 2px accent focus ring, and the monogram as favicon and
 brand. It runs on system fonts because it never ships. The workspace is locked
 to the viewport, so the rail, the list, and the editor scroll on their own.
 
+Three surface tones separate the chrome from the work, all mixed from the
+palette's own ink and paper: in light mode a white page, a light gray rail and
+a slightly darker top bar; in dark mode a black top bar, a deep dark gray rail
+and a deep gray page, with cards and inputs a step lighter than the page. The
+open file in the rail takes the page's color, like a tab joined to its sheet,
+and 2px dividers mark where one page of the site ends and the next begins.
+
 - Hidden entries are **drafts**: a muted name with a DRAFT caption, an accent
   dot on live ones, and the list header counts both ("1 on the site · 8 drafts").
 - Gallery images, bullets, and other repeated cards are collapsible; their
@@ -171,6 +196,9 @@ to the viewport, so the rail, the list, and the editor scroll on their own.
   into that gap. Escape puts it back, and the list scrolls itself near the
   pane's edges. Focus the grip and ↑ / ↓ move it one place. `makeSortable` in
   `ui/fields.js` does all of it, moving only transforms until the drop.
+- Text boxes are as tall as their text, with no scrollbar, and grow as you
+  type. Drag a box's corner to give it more room; it won't go shorter than
+  its text.
 - Ctrl+S saves. Alt+↑ / Alt+↓ also reorders the focused list entry. "Open on the
   site" opens the page this file renders, reusing one window.
 

@@ -41,5 +41,8 @@
     "subheader": "instrument-serif",
     "body": "spectral"
   },
+  "layout": {
+    "introAlign": "full"
+  },
   "resumePdfPath": "/api/resume-pdf"
 }

@@ -15,6 +15,24 @@
  * order the site reads them.
  */
 
+/** Every page's browser-tab title and search/share description. */
+const META_GROUP = {
+  name: "meta",
+  type: "group",
+  label: "Browser tab & search",
+  help: "What the browser tab, search results and link previews show for this page.",
+  fields: [
+    { name: "title", type: "text", label: "Tab title", required: true },
+    { name: "description", type: "textarea", label: "Description", rows: 2, required: true }
+  ]
+};
+
+/** Copy that differs with how many projects are published. */
+const COUNTED_FIELDS = [
+  { name: "one", type: "textarea", label: "With one project", rows: 2, required: true },
+  { name: "many", type: "textarea", label: "With several", rows: 2, required: true, help: "{count} becomes the number of published projects." }
+];
+
 /** Repeatable bullet rows, shared by projects and experience. */
 const BULLET_FIELDS = [
   {
@@ -331,6 +349,39 @@ export const SCHEMAS = {
     ]
   },
 
+  projectsPage: {
+    label: "Projects page",
+    shape: "object",
+    description: "The projects page around the entries: the browser tab, the headline and intro, the closing note, and what shows while nothing is published.",
+    fields: [
+      META_GROUP,
+      { name: "title", type: "text", label: "Headline", required: true },
+      { name: "intro", type: "group", label: "Intro", help: "Under the headline.", fields: COUNTED_FIELDS },
+      {
+        name: "outro",
+        type: "group",
+        label: "Closing note",
+        help: "At the foot of the page, after the last project.",
+        fields: [
+          { name: "lead", type: "text", label: "Lead", required: true },
+          { name: "body", type: "group", label: "Note", fields: COUNTED_FIELDS }
+        ]
+      },
+      {
+        name: "comingSoon",
+        type: "group",
+        label: "While nothing is published",
+        help: "Shown instead of the projects when none is published, or the Projects page is switched off in Site Settings.",
+        fields: [
+          { name: "heading", type: "text", label: "Heading", required: true },
+          { name: "body", type: "textarea", label: "Body", rows: 3, required: true },
+          { name: "phases", type: "stringList", label: "Status lines", always: true, help: "The loading line cycles through these." },
+          { name: "queueLabel", type: "text", label: "Queue label", required: true, help: "Above the list of drafts waiting to publish." }
+        ]
+      }
+    ]
+  },
+
   proofs: {
     label: "Proofs",
     shape: "array",
@@ -413,6 +464,72 @@ export const SCHEMAS = {
     ]
   },
 
+  homePage: {
+    label: "Home page",
+    shape: "object",
+    description: "Everything on the home page around the resume itself: the browser tab, the big name, the section headings, the summary's link, and the footer.",
+    fields: [
+      {
+        ...META_GROUP,
+        fields: [
+          ...META_GROUP.fields,
+          { name: "shareTitle", type: "text", label: "Share title", required: true, help: "The headline a link preview shows (and the share image draws), which can be friendlier than the tab title." }
+        ]
+      },
+      {
+        name: "hero",
+        type: "group",
+        label: "Hero",
+        fields: [
+          { name: "lines", type: "stringList", label: "Name lines", always: true, help: "The big name at the top, one line each." },
+          { name: "currentRole", type: "text", label: "Current role line", required: true, help: "Under the tagline. {company} and {start} fill in from the first Experience entry." }
+        ]
+      },
+      {
+        name: "summaryLink",
+        type: "group",
+        label: "Summary link",
+        help: "This phrase becomes a link wherever it appears in the Summary. Leave the phrase blank for no link.",
+        fields: [
+          { name: "text", type: "text", label: "Phrase", span: "half", always: true },
+          { name: "href", type: "text", label: "URL", span: "half", always: true, placeholder: "https://…" }
+        ]
+      },
+      {
+        name: "headings",
+        type: "group",
+        label: "Section headings",
+        help: "The numbers in front of them are added by the site.",
+        fields: [
+          { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
+          { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
+          { name: "skills", type: "text", label: "Skills", required: true, span: "half" },
+          { name: "education", type: "text", label: "Education", required: true, span: "half" }
+        ]
+      },
+      {
+        name: "footer",
+        type: "group",
+        label: "Footer",
+        fields: [
+          { name: "note", type: "textarea", label: "Note beside the mark", rows: 2, required: true },
+          { name: "sheetLabel", type: "text", label: "Site label", required: true, span: "third" },
+          {
+            name: "sheetLink",
+            type: "group",
+            label: "Site link",
+            fields: [
+              { name: "text", type: "text", label: "Text", required: true, span: "half" },
+              { name: "href", type: "text", label: "URL", required: true, span: "half" }
+            ]
+          },
+          { name: "revisionLabel", type: "text", label: "Revision label", required: true, span: "third", help: "Beside the latest commit." },
+          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "Beside Site Settings → Location." }
+        ]
+      }
+    ]
+  },
+
   summary: {
     label: "Summary",
     shape: "object",
@@ -425,6 +542,7 @@ export const SCHEMAS = {
     shape: "object",
     description: "The contact page. The email, LinkedIn and GitHub addresses themselves come from Site Settings → Person.",
     fields: [
+      META_GROUP,
       {
         name: "hero",
         type: "group",
@@ -441,9 +559,7 @@ export const SCHEMAS = {
         help: "The section under the hero: a short intro, then the email address spelled out from Site Settings → Person.",
         fields: [
           { name: "title", type: "text", label: "Section title", required: true, span: "half" },
-          { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true },
-          { name: "linkedinLabel", type: "text", label: "LinkedIn link text", required: true, span: "half", help: "Shown on the card; the address is Site Settings → Person → LinkedIn." },
-          { name: "githubLabel", type: "text", label: "GitHub link text", required: true, span: "half", help: "Shown on the card; the address is Site Settings → Person → GitHub." }
+          { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true }
         ]
       }
     ]
@@ -454,6 +570,7 @@ export const SCHEMAS = {
     shape: "object",
     description: "The About page: who you are, why this site exists, and the application tracker.",
     fields: [
+      META_GROUP,
       {
         name: "aboutHeader",
         type: "group",
@@ -516,7 +633,19 @@ export const SCHEMAS = {
             help: "Turning both off hides the whole section."
           },
           { name: "title", type: "text", label: "Section title", required: true },
-          { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." }
+          { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." },
+          { name: "tableNote", type: "text", label: "Table note", required: true, help: "Above the table: what the gray rows mean." },
+          {
+            name: "statusKey",
+            type: "group",
+            label: "Status key",
+            help: "The words beside each circle. The circles themselves match the rows in gantt.md.",
+            fields: [
+              { name: "received", type: "text", label: "🟢", required: true, span: "third" },
+              { name: "interviewing", type: "text", label: "🟠", required: true, span: "third" },
+              { name: "closed", type: "text", label: "🔴", required: true, span: "third" }
+            ]
+          }
         ]
       }
     ]
@@ -527,6 +656,7 @@ export const SCHEMAS = {
     shape: "object",
     description: "The site as its own case study: hero, the running date bar, summary and bullets, screenshots, the case study, and the deep-dive (stats, commit timeline, pillars, and the Behind-the-site demos). The site-timeline-sync agent skill refreshes the stats and timeline from git.",
     fields: [
+      META_GROUP,
       {
         name: "hero",
         type: "group",
@@ -547,6 +677,7 @@ export const SCHEMAS = {
           { name: "ongoing", type: "boolean", label: "Ongoing", span: "third", default: false, omitWhenDefault: true, help: "Reads \"→ Present\" and keeps the bar moving." }
         ]
       },
+      { name: "storyHeading", type: "text", label: "Story heading", required: true, span: "half", help: "The section heading beside the summary; the site adds the number." },
       { name: "summary", type: "textarea", label: "Summary", rows: 4, required: true },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
       { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true, always: true },
@@ -577,8 +708,12 @@ export const SCHEMAS = {
         fields: [
           { name: "eyebrow", type: "text", label: "Eyebrow", span: "half", placeholder: "A living project" },
           { name: "intro", type: "textarea", label: "Intro", rows: 3 },
+          { name: "repoLabel", type: "text", label: "Repository button", span: "half", placeholder: "GitHub", help: "Beside the intro." },
           { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
+          { name: "timelineTitle", type: "text", label: "Timeline heading", span: "half", help: "Blank hides the heading." },
+          { name: "timelineNote", type: "textarea", label: "Timeline note", rows: 2, help: "How to use the timeline, under its heading." },
           { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },
+          { name: "pillarsTitle", type: "text", label: "Pillars heading", span: "half", help: "Blank hides the heading." },
           { name: "pillars", type: "objectList", label: "Pillars", itemLabel: "Pillar", fields: PILLAR_FIELDS },
           { name: "screenshots", type: "objectList", label: "Screenshots", itemLabel: "Screenshot", fields: SCREENSHOT_FIELDS, gallery: true, help: "Thumbnails for timeline entries and pillars. Each has a light and a dark capture; the page shows the opposite of the visitor's theme." },
           {
@@ -592,6 +727,116 @@ export const SCHEMAS = {
               { name: "items", type: "objectList", label: "Rows", itemLabel: "Row", fields: BACKEND_ITEM_FIELDS, always: true }
             ]
           }
+        ]
+      },
+      {
+        name: "outro",
+        type: "group",
+        label: "Closing note",
+        help: "At the foot of the page.",
+        fields: [
+          { name: "lead", type: "text", label: "Lead", required: true },
+          { name: "body", type: "textarea", label: "Note", rows: 3, required: true }
+        ]
+      }
+    ]
+  },
+
+  interface: {
+    label: "Navigation & labels",
+    shape: "object",
+    description: "The words the site uses on every page: the menu, the buttons, and the small labels around content. Where a label says {count}, the site fills in the number.",
+    fields: [
+      {
+        name: "nav",
+        type: "group",
+        label: "Menu",
+        fields: [
+          { name: "home", type: "text", label: "Home", required: true, span: "third" },
+          { name: "projects", type: "text", label: "Projects", required: true, span: "third" },
+          { name: "contact", type: "text", label: "Contact", required: true, span: "third" },
+          { name: "moreInfo", type: "text", label: "More Info", required: true, span: "third" },
+          { name: "aboutSite", type: "text", label: "About this site", required: true, span: "third" }
+        ]
+      },
+      {
+        name: "actions",
+        type: "group",
+        label: "Buttons",
+        help: "The row of buttons under the home and contact headlines. Where each one goes is Site Settings → Person.",
+        fields: [
+          { name: "downloadPdf", type: "text", label: "Download PDF", required: true, span: "half" },
+          { name: "preparingPdf", type: "text", label: "While the PDF is made", required: true, span: "half" },
+          { name: "email", type: "text", label: "Email", required: true, span: "third" },
+          { name: "linkedin", type: "text", label: "LinkedIn", required: true, span: "third" },
+          { name: "github", type: "text", label: "GitHub", required: true, span: "third" }
+        ]
+      },
+      { name: "backToTop", type: "text", label: "Back to top button", required: true, span: "half" },
+      { name: "openToRelocation", type: "text", label: "Relocation badge", required: true, span: "half", help: "Shown while Site Settings → Visibility has it on." },
+      { name: "bulletReadMore", type: "text", label: "Resume bullet link", required: true, span: "half", help: "On a bullet that links to its project." },
+      { name: "showCredential", type: "text", label: "Certificate link", required: true, span: "half", help: "When a certificate doesn't name its own." },
+      {
+        name: "caseStudy",
+        type: "group",
+        label: "Case studies",
+        help: "The toggle under a project, and the headings inside its case study.",
+        fields: [
+          { name: "view", type: "text", label: "Open", required: true, span: "half" },
+          { name: "hide", type: "text", label: "Close", required: true, span: "half" },
+          { name: "problem", type: "text", label: "Problem", required: true, span: "third" },
+          { name: "rootCause", type: "text", label: "Root cause", required: true, span: "third" },
+          { name: "constraints", type: "text", label: "Constraints", required: true, span: "third" },
+          { name: "approach", type: "text", label: "Approach", required: true, span: "third" },
+          { name: "designDecisions", type: "text", label: "Design decisions", required: true, span: "third" },
+          { name: "impact", type: "text", label: "Impact", required: true, span: "third" }
+        ]
+      },
+      {
+        name: "gallery",
+        type: "group",
+        label: "Photo galleries",
+        fields: [
+          { name: "oneImage", type: "text", label: "Note under one image", required: true, span: "half" },
+          { name: "manyImages", type: "text", label: "Note under several", required: true, span: "half", help: "{count} becomes the number of images." },
+          { name: "dragToCompare", type: "text", label: "Added when there's a before & after", required: true, span: "half" },
+          { name: "before", type: "text", label: "Before tag", required: true, span: "third" },
+          { name: "after", type: "text", label: "After tag", required: true, span: "third" },
+          { name: "loading", type: "text", label: "Full-screen: loading", required: true, span: "half" },
+          { name: "failed", type: "text", label: "Full-screen: failed", required: true, span: "half" }
+        ]
+      },
+      {
+        name: "dates",
+        type: "group",
+        label: "Dates",
+        fields: [
+          { name: "present", type: "text", label: "End of an ongoing range", required: true, span: "half" }
+        ]
+      },
+      {
+        name: "timeline",
+        type: "group",
+        label: "About this site: timeline",
+        fields: [
+          { name: "shipped", type: "text", label: "Past entry badge", required: true, span: "third" },
+          { name: "inProgress", type: "text", label: "Present entry badge", required: true, span: "third" },
+          { name: "planned", type: "text", label: "Future entry badge", required: true, span: "third" },
+          { name: "past", type: "text", label: "Axis: past", required: true, span: "third" },
+          { name: "present", type: "text", label: "Axis: present", required: true, span: "third" },
+          { name: "future", type: "text", label: "Axis: future", required: true, span: "third" },
+          { name: "playing", type: "text", label: "Tour playing", required: true, span: "third" },
+          { name: "paused", type: "text", label: "Tour paused", required: true, span: "third" },
+          { name: "viewScreenshot", type: "text", label: "Screenshot without a caption", required: true, span: "third" }
+        ]
+      },
+      {
+        name: "pillars",
+        type: "group",
+        label: "About this site: pillars",
+        fields: [
+          { name: "readMore", type: "text", label: "Open", required: true, span: "half" },
+          { name: "less", type: "text", label: "Close", required: true, span: "half" }
         ]
       }
     ]
@@ -673,6 +918,28 @@ export const SCHEMAS = {
           { name: "body", type: "select", label: "Body copy", span: "third", options: FONT_OPTIONS, always: true }
         ]
       },
+      {
+        name: "layout",
+        type: "group",
+        label: "Layout",
+        help: "How page-level text sits, the same on every page.",
+        fields: [
+          {
+            name: "introAlign",
+            type: "choice",
+            label: "Intro under a page headline",
+            default: "left",
+            always: true,
+            help: "The paragraph under the headline on Projects, More Info and About this site. Left, Centered and Right keep a comfortable line length; Full width runs it across the page.",
+            options: [
+              { value: "left", label: "Left", help: "Against the left edge, the page's reading width." },
+              { value: "center", label: "Centered", help: "Centered, with even space on each side." },
+              { value: "right", label: "Right", help: "Against the right edge." },
+              { value: "full", label: "Full width", help: "Across the whole page." }
+            ]
+          }
+        ]
+      },
       { name: "resumePdfPath", type: "text", label: "Resume PDF path", span: "half", placeholder: "/api/resume-pdf", help: "What the “Download PDF” button fetches." }
     ]
   }
@@ -685,10 +952,10 @@ export const SCHEMAS = {
  * changes. A schema that isn't listed here doesn't appear.
  */
 export const RAIL = [
-  { page: "Home", path: "/", keys: ["summary", "experience", "skills", "education"] },
-  { page: "Projects", path: "/projects", keys: ["projects", "proofs"] },
+  { page: "Home", path: "/", keys: ["homePage", "summary", "experience", "skills", "education"] },
+  { page: "Projects", path: "/projects", keys: ["projectsPage", "projects", "proofs"] },
   { page: "Contact", path: "/contact", keys: ["contact"] },
   { page: "More Info", path: "/more-info", keys: ["moreInfo"] },
   { page: "About this site", path: "/about-this-site", keys: ["aboutSite"] },
-  { page: "Site settings", path: "/", keys: ["header"] }
+  { page: "Site settings", path: "/", keys: ["header", "interface"] }
 ];

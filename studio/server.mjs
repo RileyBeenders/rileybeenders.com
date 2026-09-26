@@ -53,16 +53,19 @@ const GRANT_DURATIONS = {
  * (see RAIL in ui/schema.js).
  */
 const FILES = {
+  homePage: { file: "data/home/page.json", label: "Home page", shape: "object" },
   summary: { file: "data/home/summary.json", label: "Summary", shape: "object" },
   experience: { file: "data/home/experience.json", label: "Experience", shape: "array" },
   skills: { file: "data/home/skills.json", label: "Skills", shape: "array" },
   education: { file: "data/home/education.json", label: "Education", shape: "object" },
+  projectsPage: { file: "data/projects/page.json", label: "Projects page", shape: "object" },
   projects: { file: "data/projects/projects.json", label: "Projects", shape: "array" },
   proofs: { file: "data/projects/proofs.json", label: "Proofs", shape: "array" },
   contact: { file: "data/contact/contact.json", label: "Contact", shape: "object" },
   moreInfo: { file: "data/more-info/more-info.json", label: "More Info", shape: "object" },
   aboutSite: { file: "data/site/about-site.json", label: "About this site", shape: "object" },
-  header: { file: "data/header.json", label: "Site Settings", shape: "object" }
+  header: { file: "data/header.json", label: "Site Settings", shape: "object" },
+  interface: { file: "data/site/interface.json", label: "Navigation & labels", shape: "object" }
 };
 
 /** Folders the image picker reads from, and uploads may write to. */

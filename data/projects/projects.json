@@ -283,25 +283,31 @@
     "id": "unifi-network",
     "order": 5,
     "type": "Network Infrastructure",
-    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.\n\nThis is a test to see if it makes another paragraph.",
+    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house. The setup shown in the before vs after is the \"Proteor\" network. My first deployment of a Unifi gateway that was recently reworked after adding cables over the past few  years. \n\nThe \"Proteor\" network is planned to get an upgrade into the Fortinet system as our needs internally are growing.",
     "images": [
       {
         "src": "/project-artifacts/unifi-network/IMG_7234.png",
         "aspect": "9:16",
         "alt": "",
+        "caption": "Before and After of the 'Proteor' Networ",
         "fit": "contain",
         "display": "compare",
         "after": "/project-artifacts/unifi-network/IMG_8139.png",
         "frame": {
-          "x": -63.88,
-          "y": -57,
-          "w": 209.33
+          "x": -75.03,
+          "y": -63.17,
+          "w": 225.33
         },
         "afterFrame": {
-          "x": -20.62,
-          "y": 0,
-          "w": 133.33
+          "x": -32.84,
+          "y": -5.73,
+          "w": 154.35
         }
+      },
+      {
+        "src": "/project-artifacts/unifi-network/IMG_8137.png",
+        "aspect": "9:16",
+        "alt": ""
       }
     ],
     "bullets": [],
@@ -360,6 +366,7 @@
     "id": "linear-motion-platform",
     "order": 6,
     "type": "Motion Control / Product Platform",
+    "visible": false,
     "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
     "proofId": "linear-motion-platform",
     "bullets": [

@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import resumeData from "@/data/resumeData";
+import { ui } from "@/lib/copy";
 
 const SCROLL_THRESHOLD = 48;
 const BADGE_HEIGHT = 44;
@@ -15,7 +16,7 @@ const HOP_SPRING = { type: "spring", stiffness: 170, damping: 18, mass: 1 } as c
 const ROLL_KEYFRAMES = [0, -14, 10, -5, 0];
 const ROLL_TWEEN = { duration: 0.6, ease: "easeInOut" } as const;
 
-const LABEL = "Open to relocation";
+const LABEL = ui.openToRelocation;
 /** Typewriter cycle: rapid type-in → caret blinks → letters fall away a couple at a time → brief empty beat → repeat. */
 const TYPE_MS = 40;
 const TYPE_JITTER_MS = 35; // random extra per keystroke so it reads as typed, not metronomic

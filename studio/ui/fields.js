@@ -82,6 +82,66 @@ function fieldShell(field, control, extra, forId = control.id) {
 let uid = 0;
 const nextId = () => `f${(uid += 1)}`;
 
+/**
+ * A textarea as tall as its text: no scrollbar, growing line by line while
+ * someone writes, and never shorter than its `rows`. The corner handle still
+ * drags it taller for room to draft; it won't drag shorter than the text.
+ * Fitted once the pane is in the document, whenever its width changes (a
+ * resized window, a card opening), and on every keystroke.
+ */
+function autoGrow(textarea) {
+  let set = 0;
+  let width = 0;
+  let dragged = 0;
+
+  const scroller = () => textarea.closest(".detail") ?? document.scrollingElement;
+
+  function fit() {
+    if (!textarea.isConnected || textarea.offsetParent === null) return;
+    // Measuring collapses the box for a moment, which would pull the pane's
+    // scroll position up with it, so the position is put back afterwards.
+    const pane = scroller();
+    const top = pane?.scrollTop ?? 0;
+    const style = getComputedStyle(textarea);
+    const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    textarea.style.height = "auto";
+    const content = textarea.scrollHeight + borders;
+    set = Math.ceil(Math.max(content, dragged));
+    textarea.style.height = `${set}px`;
+    if (pane) pane.scrollTop = top;
+  }
+
+  textarea.addEventListener("input", fit);
+  textarea.addEventListener("focus", fit);
+  // Letting go after a press on the box: if its height moved, the handle was
+  // dragged, and that height becomes its floor.
+  textarea.addEventListener("pointerdown", () => {
+    window.addEventListener("pointerup", () => {
+      const height = textarea.offsetHeight;
+      if (Math.abs(height - set) > 1) {
+        dragged = height;
+        fit();
+      }
+    }, { once: true });
+  });
+  new ResizeObserver(([entry]) => {
+    const box = entry.borderBoxSize?.[0];
+    const nextWidth = box ? box.inlineSize : textarea.offsetWidth;
+    const height = box ? box.blockSize : textarea.offsetHeight;
+    if (Math.abs(nextWidth - width) > 0.5) {
+      width = nextWidth;
+      fit();
+    } else if (Math.abs(height - set) > 1) {
+      // Not a height we set: the handle was dragged. Keep that as the floor.
+      dragged = height;
+      fit();
+    }
+  }).observe(textarea);
+  // Built off-document; by the next microtask the pane has been put in place.
+  queueMicrotask(fit);
+  return textarea;
+}
+
 /** Small round button used for add / remove / reorder. */
 function iconButton(name, title, onClick, disabled) {
   return el("button", {
@@ -333,13 +393,13 @@ function startDrag(container, item, downEvent) {
 function textControl(field, value, ctx) {
   const id = nextId();
   const control = field.type === "textarea"
-    ? el("textarea", {
+    ? autoGrow(el("textarea", {
         id,
         class: `f-input f-textarea${field.prose ? " f-textarea--prose" : ""}`,
         rows: field.rows || 3,
         value: value[field.name] ?? "",
         placeholder: field.placeholder || ""
-      })
+      }))
     : el("input", {
         id,
         type: "text",
@@ -367,12 +427,7 @@ function textControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  // The site turns an empty line into a new paragraph (components/content/Paragraphs.tsx).
-  const hint = field.type === "textarea"
-    ? el("p", { class: "f-hint" }, "Leave an empty line to start a new paragraph.")
-    : null;
-
-  return fieldShell(field, control, [count, hint]);
+  return fieldShell(field, control, count);
 }
 
 /**
@@ -382,13 +437,13 @@ function textControl(field, value, ctx) {
 function emphasisTextControl(field, value, ctx) {
   const id = nextId();
   const emphasisName = field.emphasisName || "emphasis";
-  const control = el("textarea", {
+  const control = autoGrow(el("textarea", {
     id,
     class: "f-input f-textarea f-emphasis-textarea",
     rows: field.rows || 3,
     value: value[field.name] ?? "",
     placeholder: field.placeholder || ""
-  });
+  }));
   const addButton = el("button", {
     type: "button",
     class: "f-btn f-btn--quiet f-emphasis-add",
@@ -540,6 +595,33 @@ function refControl(field, value, ctx) {
     (ctx.refs[field.source] || []).map((entry) => ({ value: entry.id, label: entry.label }))
   );
   return selectControl(field, value, ctx, options);
+}
+
+/**
+ * A few options shown side by side as one row of buttons (the same control as
+ * an image's Display switch), for a choice best seen all at once. The value
+ * is the option's `value`; `field.default` is what an unset key means.
+ */
+function choiceControl(field, value, ctx) {
+  const current = value[field.name] ?? field.default ?? field.options[0].value;
+  const group = el("div", { class: "f-seg", role: "radiogroup", "aria-label": field.label },
+    ...field.options.map((option) => el("button", {
+      type: "button",
+      role: "radio",
+      class: "f-seg-btn",
+      "aria-checked": String(option.value === current),
+      title: option.help,
+      onClick: (event) => {
+        value[field.name] = option.value;
+        for (const button of group.children) button.setAttribute("aria-checked", String(button === event.currentTarget));
+        ctx.onEdit();
+      }
+    }, option.label)));
+
+  return el("div", { class: fieldClass(field, "choice") },
+    el("span", { class: "f-label" }, field.label),
+    group,
+    field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
 
 /** The one kind of image whose playback the Studio can retime. */
@@ -1046,7 +1128,7 @@ function stringListControl(field, value, ctx) {
     // `multiline` lists hold paragraphs, so each row is a textarea that grows
     // with what's in it rather than a one-line input.
     const input = field.multiline
-      ? el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` })
+      ? autoGrow(el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` }))
       : el("input", { type: "text", class: "f-input", value: entry ?? "", "aria-label": `${field.label} ${index + 1}` });
     input.addEventListener("input", () => {
       list[index] = input.value;
@@ -1156,6 +1238,7 @@ const CONTROLS = {
   number: numberControl,
   boolean: booleanControl,
   ref: refControl,
+  choice: choiceControl,
   image: imageControl,
   imageDisplay: imageDisplayControl,
   color: colorControl,
