@@ -3,6 +3,7 @@ import { FlowDiagram } from "@/components/projects/diagrams/FlowDiagram";
 import { FLOW_DIAGRAMS } from "@/components/projects/diagrams/flows";
 import { THEMED_SVGS } from "@/components/projects/diagrams/themed";
 import { ThemedSvg } from "@/components/projects/diagrams/ThemedSvg";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 /**
  * The expanded case study: problem, constraints, approach, decisions, impact,
@@ -15,12 +16,12 @@ export function CaseStudy({ proof }: { proof: ProofView }) {
     <div className="pj-case-study">
       <h3 className="pj-proof-title">{proof.title}</h3>
       {proof.subtitle && <p className="pj-proof-subtitle">{proof.subtitle}</p>}
-      {proof.summary && <p className="pj-proof-summary">{proof.summary}</p>}
+      {proof.summary && <Paragraphs className="pj-proof-summary" text={proof.summary} />}
 
       {proof.sections.map((section) => (
         <section className="pj-proof-section" key={section.label}>
           <h4>{section.label}</h4>
-          {section.body && <p>{section.body}</p>}
+          {section.body && <Paragraphs text={section.body} />}
           {section.items && (
             <ul>
               {section.items.map((item) => <li key={item}>{item}</li>)}

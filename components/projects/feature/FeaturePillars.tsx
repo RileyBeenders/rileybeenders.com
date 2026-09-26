@@ -7,6 +7,7 @@ import type { FeaturePillar, FeatureScreenshot } from "@/types/resume";
 import { useInViewOnce } from "@/lib/useInViewOnce";
 import { useSpotlight } from "@/lib/useSpotlight";
 import { ThemedShot } from "@/components/projects/feature/ThemedShot";
+import { splitParagraphs } from "@/components/content/Paragraphs";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -54,11 +55,12 @@ function Pillar({
   const reduced = useReducedMotion();
   const panelId = useId();
   const onSpotMove = useSpotlight();
-  const [lead, ...rest] = pillar.body;
+  // An empty line inside a paragraph splits it too; the first of all of them is the lead.
+  const [lead, ...rest] = pillar.body.flatMap(splitParagraphs);
 
   const more = rest.length > 0 && (
     <div className="ft-pillar-more">
-      {rest.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+      {rest.map((paragraph, i) => <p data-para="" key={i}>{paragraph}</p>)}
     </div>
   );
 

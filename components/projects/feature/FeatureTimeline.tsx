@@ -8,6 +8,7 @@ import { REPO_URL } from "@/lib/site";
 import { useInViewOnce } from "@/lib/useInViewOnce";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { ThemedShot } from "@/components/projects/feature/ThemedShot";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -465,7 +466,7 @@ function TimelineCard({
           <span><b>{relation.label}</b> after {relation.fromTitle}</span>
         </p>
       )}
-      <p className="tl-card-summary">{entry.summary}</p>
+      <Paragraphs className="tl-card-summary" text={entry.summary} />
       {(entry.tags?.length || hasSize) && (
         <p className="tl-card-foot">
           {entry.tags?.map((tag) => <span className="tl-tag" key={tag}>{tag}</span>)}

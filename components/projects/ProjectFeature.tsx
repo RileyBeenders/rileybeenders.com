@@ -11,6 +11,7 @@ import { FeatureStats } from "@/components/projects/feature/FeatureStats";
 import { FeatureTimeline } from "@/components/projects/feature/FeatureTimeline";
 import { FeaturePillars } from "@/components/projects/feature/FeaturePillars";
 import { FeatureBackend } from "@/components/projects/feature/FeatureBackend";
+import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
 
 type ProjectFeatureProps = {
   feature: ProjectFeatureData;
@@ -66,7 +67,7 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
       <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
 
       <header className="ft-head">
-        {feature.intro && <ScrollWords className="ft-intro" text={feature.intro} />}
+        {splitParagraphs(feature.intro).map((paragraph, i) => <ScrollWords key={i} className="ft-intro" text={paragraph} />)}
         <Reveal delay={0.18} className="ft-head-action">
           {/* suppressHydrationWarning: like every other anchor on the site — a browser extension can stamp attributes onto <a> before hydration. */}
           <a className="bp-btn" href={REPO_URL} target="_blank" rel="noreferrer" suppressHydrationWarning>
@@ -106,7 +107,7 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
         <div className="ft-block">
           <Reveal><h2 className="ft-block-title">{feature.backend!.eyebrow ?? "Behind the site"}</h2></Reveal>
           {feature.backend!.intro && (
-            <Reveal delay={0.06}><p className="ft-block-note">{feature.backend!.intro}</p></Reveal>
+            <Reveal delay={0.06}><Paragraphs className="ft-block-note" text={feature.backend!.intro} /></Reveal>
           )}
           <FeatureBackend backend={feature.backend!} paletteId={paletteId} />
         </div>

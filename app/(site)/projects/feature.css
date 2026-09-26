@@ -27,6 +27,8 @@
   line-height: 1.55;
   color: var(--ink-soft);
 }
+/* An intro written as several paragraphs scrolls in as several blocks. */
+.ft-intro + .ft-intro { margin-top: 0.85em; }
 
 .ft-block { margin-top: clamp(40px, 6vh, 64px); }
 .ft-block-title {

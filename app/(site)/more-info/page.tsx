@@ -10,6 +10,7 @@ import { parseGanttFile } from "@/lib/gantt";
 import { APPLICATION_COLUMNS, buildApplicationRows, type PastApplication } from "@/lib/applications";
 import pastApplicationsData from "@/data/more-info/past-applications.json";
 import type { MoreInfoData } from "@/types/more-info";
+import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
 
 const data = moreInfoData as MoreInfoData;
 
@@ -38,7 +39,7 @@ export default function MoreInfoPage() {
           </Reveal>
           <Reveal delay={0.38}>
             <div style={{ marginTop: 26 }}>
-              {data.aboutHeader.description.map((paragraph) => (
+              {data.aboutHeader.description.flatMap(splitParagraphs).map((paragraph) => (
                 <p className="bp-prose" key={paragraph}>{paragraph}</p>
               ))}
             </div>
@@ -53,7 +54,7 @@ export default function MoreInfoPage() {
             <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.aboutMe.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
-                {data.aboutMe.description.map((paragraph) => (
+                {data.aboutMe.description.flatMap(splitParagraphs).map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
               </div>
@@ -69,7 +70,7 @@ export default function MoreInfoPage() {
             <Reveal><h2 className="bp-section-index">02&nbsp;&nbsp;{data.aboutSite.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
-                {data.aboutSite.description.map((paragraph) => (
+                {data.aboutSite.description.flatMap(splitParagraphs).map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
                 {data.aboutSite.readMore && (
@@ -113,7 +114,7 @@ export default function MoreInfoPage() {
                   {showTable ? (
                     <p className="bp-prose bp-table-note">Gray rows were applied to before this site and its tailored resumes.</p>
                   ) : null}
-                  {data.ganttSection.intro ? <p className="bp-prose">{data.ganttSection.intro}</p> : null}
+                  {data.ganttSection.intro ? <Paragraphs className="bp-prose" text={data.ganttSection.intro} /> : null}
                   {showChart ? <GanttChart chart={applicationTracker.chart} /> : null}
                 </div>
               </Reveal>

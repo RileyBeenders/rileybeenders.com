@@ -287,6 +287,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(10px, 1.6vw, 16px);
+  /* Frames can differ in shape; each caption stays under its own image. */
+  align-items: start;
 }
 
 .pj-shot { margin: 0; }
@@ -307,6 +309,9 @@
 .pj-shot-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .pj-shot-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* "Original": the frame takes the image's own shape, so nothing is cropped. */
+.pj-shot-btn--original { aspect-ratio: auto; }
+.pj-shot-btn--original img { height: auto; }
 /* Diagrams stand in as photos on projects that don't have any yet — they get
    letterboxed instead of cropped, so nothing important is clipped off. */
 .pj-shot-btn img.pj-shot-img--contain { object-fit: contain; padding: 22px; background: var(--paper); }
@@ -343,7 +348,7 @@
 }
 
 /* Before & after: the After is laid over the Before and uncovered up to the
-   bar. Everything is in percentages of the 4:3 frame, so a crop lined up in
+   bar. Everything is in percentages of the frame, so a crop lined up in
    the Studio holds at thumbnail and full-screen size alike. */
 .pj-shot-compare {
   position: relative;
@@ -365,7 +370,7 @@
 .cmp {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: var(--cmp-ratio, 4 / 3);
   overflow: hidden;
   cursor: ew-resize;
   touch-action: pan-y;
@@ -621,8 +626,8 @@
   transition: opacity 0.4s ease;
 }
 .pj-lb-figure img.is-loaded { opacity: 1; }
-/* A before/after in the viewer: as large as the 4:3 frame fits on screen. */
-.pj-lb-compare { width: min(100%, calc(78vh * 4 / 3)); }
+/* A before/after in the viewer: as large as its frame fits on screen. */
+.pj-lb-compare { width: min(100%, calc(78vh * var(--cmp-ratio, 4 / 3))); }
 .pj-lb-figure .cmp img { max-width: none; max-height: none; object-fit: cover; opacity: 1; transition: none; background: none; }
 .pj-lb-loading {
   font-size: 11px;

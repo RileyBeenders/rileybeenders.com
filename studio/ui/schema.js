@@ -41,6 +41,26 @@ const IMAGE_FIELDS = [
   { name: "src", type: "image", label: "Image", required: true, speedName: "speed", compareLabel: "Before" },
   // Default is the one image; "Before & after" adds `after` plus where each photo sits in the frame.
   { name: "display", type: "imageDisplay", label: "Display", afterName: "after", frameName: "frame", afterFrameName: "afterFrame" },
+  {
+    // The frame the gallery draws the image in. Unset is 4:3; "original" keeps the image's own shape, uncropped.
+    name: "aspect",
+    type: "select",
+    label: "Aspect ratio",
+    repaint: true,
+    help: "The shape of this image's frame in the gallery. Original shows the whole image with nothing cropped (a before & after uses 4:3 instead).",
+    options: [
+      { value: "", label: "4:3 (standard)" },
+      { value: "3:2", label: "3:2 (camera)" },
+      { value: "16:9", label: "16:9 (wide)" },
+      { value: "21:9", label: "21:9 (panorama)" },
+      { value: "1:1", label: "1:1 (square)" },
+      { value: "4:5", label: "4:5 (tall)" },
+      { value: "3:4", label: "3:4 (portrait)" },
+      { value: "2:3", label: "2:3 (portrait photo)" },
+      { value: "9:16", label: "9:16 (phone)" },
+      { value: "original", label: "Original (no crop)" }
+    ]
+  },
   { name: "alt", type: "text", label: "Alt text", required: true, help: "What the image shows, for screen readers." },
   { name: "caption", type: "text", label: "Caption", help: "Shown under the image in the gallery." },
   {

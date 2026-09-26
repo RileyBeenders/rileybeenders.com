@@ -14,12 +14,14 @@ type CompareImageProps = {
   frame?: ImageFrame;
   afterFrame?: ImageFrame;
   sizes: string;
+  /** Frame shape, width ÷ height. */
+  ratio: number;
   loading?: "eager" | "lazy";
   className?: string;
 };
 
 /**
- * One photo of a before/after pair inside the 4:3 frame. With a frame from
+ * One photo of a before/after pair inside the frame. With a frame from
  * the Studio's aligner the image is placed and cropped exactly as it was
  * lined up there (percentages of the frame, so it holds at any size);
  * without one it simply covers the frame, centred.
@@ -56,7 +58,7 @@ function Layer({ src, alt, frame, sizes, loading }: { src: string; alt: string; 
  * a bar the visitor drags (or moves with the arrow keys once focused). The
  * drag is horizontal only, so a phone can still scroll the page past it.
  */
-export function CompareImage({ before, after, alt, frame, afterFrame, sizes, loading, className }: CompareImageProps) {
+export function CompareImage({ before, after, alt, frame, afterFrame, sizes, ratio, loading, className }: CompareImageProps) {
   const [position, setPosition] = useState(50);
   const [dragging, setDragging] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -81,7 +83,7 @@ export function CompareImage({ before, after, alt, frame, afterFrame, sizes, loa
     moveTo(event.clientX);
   }
 
-  const style = { "--cmp-pos": `${position}%` } as CSSProperties;
+  const style = { "--cmp-pos": `${position}%`, "--cmp-ratio": ratio } as CSSProperties;
 
   return (
     <div

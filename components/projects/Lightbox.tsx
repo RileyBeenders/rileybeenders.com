@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectImage } from "@/types/resume";
 import { CompareImage } from "@/components/projects/CompareImage";
+import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 
 type LightboxProps = {
   images: ProjectImage[];
@@ -131,6 +132,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
             frame={image.frame}
             afterFrame={image.afterFrame}
             sizes="90vw"
+            ratio={aspectRatio(image.aspect) ?? DEFAULT_ASPECT}
             loading="eager"
           />
         ) : (

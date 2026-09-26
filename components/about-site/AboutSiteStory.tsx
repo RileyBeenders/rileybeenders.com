@@ -9,6 +9,7 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { CaseStudy } from "@/components/projects/CaseStudy";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -57,7 +58,7 @@ export function AboutSiteStory({ data, proof }: AboutSiteStoryProps) {
             <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;The site</h2></Reveal>
 
             <div className="pj-body">
-              <Reveal delay={0.06}><p className="pj-summary">{data.summary}</p></Reveal>
+              <Reveal delay={0.06}><Paragraphs className="pj-summary" text={data.summary} /></Reveal>
 
               {data.bullets.length > 0 && (
                 reduced ? (

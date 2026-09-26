@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectImage } from "@/types/resume";
 import { Lightbox } from "@/components/projects/Lightbox";
 import { CompareImage } from "@/components/projects/CompareImage";
+import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -45,6 +46,7 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
           frame={image.frame}
           afterFrame={image.afterFrame}
           sizes={SHOT_SIZES}
+          ratio={aspectRatio(image.aspect) ?? DEFAULT_ASPECT}
           loading={index === 0 ? "eager" : "lazy"}
         />
         <button
@@ -58,31 +60,49 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
       </div>
     );
   }
+  const ratio = aspectRatio(image.aspect);
   return (
     <button
       type="button"
-      className="pj-shot-btn"
+      className={`pj-shot-btn${ratio === null ? " pj-shot-btn--original" : ""}`}
+      style={ratio === null ? undefined : { aspectRatio: ratio }}
       onClick={onOpen}
       aria-label={`View ${image.caption || image.alt} full screen`}
     >
       {/* The originals are editor-managed photos that can run to several
           megabytes each — far more than a thumbnail needs. `fill` lets
-          next/image size against the fixed 4:3 frame without knowing the
+          next/image size against the frame (the image's aspect ratio,
+          4:3 unless the Studio says otherwise) without knowing the
           file's dimensions, and `sizes` tracks the grid (one column on
           phones, two in a full-width block, two in a half-width column), so
           the optimizer serves a frame-sized WebP here. The Lightbox is
           where the untouched original finally loads. An animated GIF is
           the exception: the optimizer would only pass it through whole,
           so it is fetched directly and keeps its timing and loop. */}
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes={SHOT_SIZES}
-        loading={index === 0 ? "eager" : "lazy"}
-        unoptimized={isGif(image.src)}
-        className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
-      />
+      {ratio === null ? (
+        // "Original": no frame to fill, so the image sets its own height and
+        // nothing is cropped. width/height only seed the ratio until it loads.
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={1600}
+          height={1200}
+          sizes={SHOT_SIZES}
+          loading={index === 0 ? "eager" : "lazy"}
+          unoptimized={isGif(image.src)}
+          style={{ width: "100%", height: "auto" }}
+        />
+      ) : (
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes={SHOT_SIZES}
+          loading={index === 0 ? "eager" : "lazy"}
+          unoptimized={isGif(image.src)}
+          className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
+        />
+      )}
       <span className="pj-shot-zoom" aria-hidden="true">
         <ZoomIcon />
       </span>
@@ -92,8 +112,9 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
 
 /**
  * A project's photos as a responsive grid — one image fills the row, two sit
- * side by side, more wrap into rows. Every cell is a fixed-aspect frame (no
- * clipped-height scroller), so the grid never needs its own scrollbar. Each
+ * side by side, more wrap into rows. Every cell is a fixed-aspect frame (4:3
+ * unless the image picks another shape in the Studio, or "Original" to draw
+ * it uncropped), so the grid never needs its own scrollbar. Each
  * cell opens the full-screen viewer, and uncovers itself with a scroll-timed
  * wipe rather than just fading in.
  */

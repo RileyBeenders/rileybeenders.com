@@ -78,13 +78,31 @@ so a save that didn't move the slider never rewrites it. Every referenced GIF
 is set to loop, slider or not; a GIF that only appears in the picker is left
 as it is until something refers to it.
 
+## Paragraphs
+
+Body text is plain text. In any multi-line field (a summary, a problem, an
+intro, a paragraph in a list of paragraphs), an empty line starts a new
+paragraph on the site; a single line break just flows on. Each such field
+says so under it. The site splits the text with `splitParagraphs` /
+`<Paragraphs>` in `components/content/Paragraphs.tsx`, and the resume PDF
+keeps it as one compact block.
+
+## Aspect ratio
+
+Each gallery image picks the shape of its frame on the site from **Aspect
+ratio**: 4:3 (the default, left out of the JSON), 3:2, 16:9, 21:9, 1:1, 4:5,
+3:4, 2:3 or 9:16, saved as `aspect`. **Original** draws the whole image at its
+own proportions with nothing cropped. A before & after uses the chosen shape
+for both photos and for its crop-and-align stage (Original compares in 4:3,
+since a comparison needs one fixed frame).
+
 ## Before & after images
 
 A gallery image's **Display** is either *Default* (the one image or GIF) or
 *Before & after*. A comparison keeps its first image in `src` as the Before and
 adds `after`; the site lays the After over the Before and the visitor drags a
 bar between them (arrow keys once it is focused). Under the After path is a
-crop-and-align stage in the same 4:3 frame the gallery draws: pick a photo, drag
+crop-and-align stage in the same frame the gallery draws (the image's aspect ratio): pick a photo, drag
 to move it, scroll or use Zoom to crop in, and *Overlay* shows the After at half
 strength so edges can be matched by eye. Where each photo sits is saved as
 `frame` / `afterFrame` (`{ x, y, w }`, percentages of the frame), so the crop

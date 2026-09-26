@@ -367,7 +367,12 @@ function textControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, control, count);
+  // The site turns an empty line into a new paragraph (components/content/Paragraphs.tsx).
+  const hint = field.type === "textarea"
+    ? el("p", { class: "f-hint" }, "Leave an empty line to start a new paragraph.")
+    : null;
+
+  return fieldShell(field, control, [count, hint]);
 }
 
 /**
@@ -523,6 +528,8 @@ function selectControl(field, value, ctx, options) {
     if (control.value === "") delete value[field.name];
     else value[field.name] = control.value;
     ctx.onEdit();
+    // A choice other controls draw from (the aligner reads the aspect ratio) repaints them.
+    if (field.repaint) ctx.onStructureChange();
   });
 
   return fieldShell(field, control);
@@ -659,45 +666,53 @@ function playbackControl(field, value, ctx) {
 const imageWatchers = new WeakMap();
 const notifyImageChange = (value) => imageWatchers.get(value)?.();
 
-/** Gallery frames on the site are 4:3; the aligner edits in the same shape so what lines up here lines up there. */
-const FRAME_ASPECT = 4 / 3;
+/**
+ * A gallery image's frame shape from its `aspect` ("16:9"), 4:3 when unset.
+ * "original" has no fixed shape, so a comparison (which needs one frame for
+ * both photos) falls back to 4:3. The aligner edits in the same shape the
+ * site draws, so what lines up here lines up there.
+ */
+export function frameRatio(aspect) {
+  const match = /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/.exec(aspect ?? "");
+  return match && Number(match[2]) > 0 ? Number(match[1]) / Number(match[2]) : 4 / 3;
+}
 const round2 = (n) => Math.round(n * 100) / 100;
 
 /**
- * Where an image sits inside the 4:3 frame, as percentages of the frame:
+ * Where an image sits inside the frame, as percentages of the frame:
  * `x`/`y` the top-left corner, `w` the width (height follows the image's own
  * shape). With no stored frame the image covers the frame, centred, which is
  * exactly what object-fit: cover draws on the site.
  */
-function coverWidth(aspect) {
-  return Math.max(100, (100 * aspect) / FRAME_ASPECT);
+function coverWidth(aspect, box) {
+  return Math.max(100, (100 * aspect) / box);
 }
-function heightOf(w, aspect) {
-  return (w * FRAME_ASPECT) / aspect;
+function heightOf(w, aspect, box) {
+  return (w * box) / aspect;
 }
-function clampFrame(frame, aspect) {
-  const w = Math.min(Math.max(frame.w, coverWidth(aspect)), coverWidth(aspect) * 4);
-  const h = heightOf(w, aspect);
+function clampFrame(frame, aspect, box) {
+  const w = Math.min(Math.max(frame.w, coverWidth(aspect, box)), coverWidth(aspect, box) * 4);
+  const h = heightOf(w, aspect, box);
   return {
     x: Math.min(0, Math.max(100 - w, frame.x)),
     y: Math.min(0, Math.max(100 - h, frame.y)),
     w
   };
 }
-function defaultFrame(aspect) {
-  const w = coverWidth(aspect);
-  return { x: (100 - w) / 2, y: (100 - heightOf(w, aspect)) / 2, w };
+function defaultFrame(aspect, box) {
+  const w = coverWidth(aspect, box);
+  return { x: (100 - w) / 2, y: (100 - heightOf(w, aspect, box)) / 2, w };
 }
-function readFrame(raw, aspect) {
+function readFrame(raw, aspect, box) {
   const ok = raw && ["x", "y", "w"].every((key) => typeof raw[key] === "number" && Number.isFinite(raw[key]));
-  return ok ? clampFrame(raw, aspect) : defaultFrame(aspect);
+  return ok ? clampFrame(raw, aspect, box) : defaultFrame(aspect, box);
 }
 
 /**
  * How a gallery image is shown: "Default" (the one image or GIF, as ever) or
  * "Before & after", where a second image sits over the first and a bar slides
  * between them. For a comparison it adds the After path and an aligner that
- * crops and moves each photo inside the site's 4:3 frame so the two line up.
+ * crops and moves each photo inside the image's frame so the two line up.
  * Owns `display`, `after`, `frame` and `afterFrame` on the entry.
  */
 function imageDisplayControl(field, value, ctx) {
@@ -737,7 +752,8 @@ function imageDisplayControl(field, value, ctx) {
 }
 
 /**
- * The crop-and-align stage: both photos in the site's 4:3 frame, the After
+ * The crop-and-align stage: both photos in the frame the site draws (the
+ * image's aspect ratio), the After
  * over the Before. Pick a layer, drag to move it, scroll or use the slider to
  * zoom. "Overlay" shows the After at half strength so edges can be lined up
  * by eye; "Slider" previews what the visitor gets.
@@ -747,6 +763,8 @@ function alignerControl(field, value, ctx) {
     before: { srcKey: "src", frameKey: field.frameName, label: "Before" },
     after: { srcKey: field.afterName, frameKey: field.afterFrameName, label: "After" }
   };
+  // Changing the aspect ratio repaints the card, so this is read once per stage.
+  const box = frameRatio(value.aspect);
   let active = "after";
   let view = "overlay";
   let split = 50;
@@ -765,7 +783,8 @@ function alignerControl(field, value, ctx) {
 
   const divider = el("div", { class: "f-align-divider", "aria-hidden": "true" });
   const empty = el("p", { class: "f-align-empty" });
-  const stage = el("div", { class: "f-align-stage" }, layers.before.box, layers.after.box, divider, empty);
+  // Tall shapes are capped at 420px high, narrowing instead, so the stage fits on screen.
+  const stage = el("div", { class: "f-align-stage", style: `aspect-ratio: ${box}; width: min(100%, ${Math.round(420 * box)}px)` }, layers.before.box, layers.after.box, divider, empty);
 
   const zoom = el("input", { type: "range", class: "f-range", min: "1", max: "4", step: "0.01", "aria-label": "Zoom" });
   const zoomRead = el("span", { class: "f-align-read" });
@@ -785,11 +804,11 @@ function alignerControl(field, value, ctx) {
   const layerPick = seg([["before", "Move Before"], ["after", "Move After"]], () => active, (id) => { active = id; });
   const viewPick = seg([["overlay", "Overlay"], ["slider", "Slider"]], () => view, (id) => { view = id; });
 
-  const frameOf = (layer) => readFrame(value[layer.frameKey], layer.aspect);
+  const frameOf = (layer) => readFrame(value[layer.frameKey], layer.aspect, box);
 
   function store(layer, frame) {
-    const clamped = clampFrame(frame, layer.aspect);
-    const base = defaultFrame(layer.aspect);
+    const clamped = clampFrame(frame, layer.aspect, box);
+    const base = defaultFrame(layer.aspect, box);
     const isDefault = Math.abs(clamped.w - base.w) < 0.05 && Math.abs(clamped.x - base.x) < 0.05 && Math.abs(clamped.y - base.y) < 0.05;
     if (isDefault) delete value[layer.frameKey];
     else value[layer.frameKey] = { x: round2(clamped.x), y: round2(clamped.y), w: round2(clamped.w) };
@@ -824,7 +843,7 @@ function alignerControl(field, value, ctx) {
     zoom.disabled = !ready;
     reset.disabled = !ready || !value[layer.frameKey];
     if (ready) {
-      const z = frameOf(layer).w / coverWidth(layer.aspect);
+      const z = frameOf(layer).w / coverWidth(layer.aspect, box);
       zoom.value = String(z);
       zoomRead.textContent = `${Math.round(z * 100)}%`;
     } else {
@@ -840,7 +859,7 @@ function alignerControl(field, value, ctx) {
     const layer = layers[active];
     if (!layer.aspect) return;
     const frame = frameOf(layer);
-    const w = coverWidth(layer.aspect) * z;
+    const w = coverWidth(layer.aspect, box) * z;
     const scale = w / frame.w;
     store(layer, { x: 50 - (50 - frame.x) * scale, y: 50 - (50 - frame.y) * scale, w });
   }
@@ -857,7 +876,7 @@ function alignerControl(field, value, ctx) {
     const layer = layers[active];
     if (!layer.aspect) return;
     event.preventDefault();
-    const z = frameOf(layer).w / coverWidth(layer.aspect);
+    const z = frameOf(layer).w / coverWidth(layer.aspect, box);
     zoomTo(Math.min(4, Math.max(1, z * (event.deltaY < 0 ? 1.05 : 1 / 1.05))));
   }, { passive: false });
 
@@ -899,7 +918,7 @@ function alignerControl(field, value, ctx) {
       el("label", { class: "f-align-zoom" }, "Zoom", zoom, zoomRead),
       reset),
     el("label", { class: "f-align-zoom f-align-split" }, "Preview divider", splitInput),
-    el("p", { class: "f-help" }, "Pick a photo, then drag it in the frame to move it and scroll (or use Zoom) to crop in. Overlay shows the After at half strength so edges can be matched. The frame is the same 4:3 shape the gallery uses."));
+    el("p", { class: "f-help" }, "Pick a photo, then drag it in the frame to move it and scroll (or use Zoom) to crop in. Overlay shows the After at half strength so edges can be matched. The frame is the shape set in Aspect ratio below, as the gallery draws it (Original compares in 4:3)."));
   place();
   return root;
 }

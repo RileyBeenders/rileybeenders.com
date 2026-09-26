@@ -9,15 +9,16 @@ import { PageSpine } from "@/components/blueprint/PageSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { getBuildStamp } from "@/lib/build-stamp";
+import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
 
 export default function HomePage() {
   const data = resumeData;
   // A drop cap only when the summary opens with a whole word ("Riley…"), never
   // when it would orphan an apostrophe ("I'm" → "I" + "'m").
-  const dropCap = /^[A-Za-z][A-Za-z]/.test(data.summary);
-  const summaryRest = dropCap ? data.summary.slice(1) : data.summary;
+  // An empty line in the summary starts a new paragraph; the drop cap opens the first.
+  const summaryParagraphs = splitParagraphs(data.summary);
+  const dropCap = /^[A-Za-z][A-Za-z]/.test(summaryParagraphs[0] ?? "");
   const siteLinkLabel = "RileyBeenders.com";
-  const [summaryBeforeLink, summaryAfterLink] = summaryRest.split(siteLinkLabel);
   const projectsById = new Map(data.projects.map((project) => [project.id, project]));
   const current = data.experience[0];
   const stamp = getBuildStamp();
@@ -70,14 +71,26 @@ export default function HomePage() {
               <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;Summary</h2></Reveal>
               <Reveal delay={0.06}>
                 <div>
-                  <p className="bp-prose">
-                    {dropCap && <span className="bp-dropcap">{data.summary.slice(0, 1)}</span>}
-                    {summaryBeforeLink}
-                    <a href="https://www.rileybeenders.com" target="_blank" rel="noreferrer" suppressHydrationWarning>
-                      {siteLinkLabel}
-                    </a>
-                    {summaryAfterLink}
-                  </p>
+                  {summaryParagraphs.map((paragraph, index) => {
+                    const capped = index === 0 && dropCap;
+                    const text = capped ? paragraph.slice(1) : paragraph;
+                    // The site's own name links to it, in whichever paragraph mentions it.
+                    const [beforeLink, ...afterLink] = text.split(siteLinkLabel);
+                    return (
+                      <p className="bp-prose" data-para="" key={index}>
+                        {capped && <span className="bp-dropcap">{paragraph.slice(0, 1)}</span>}
+                        {beforeLink}
+                        {afterLink.length > 0 && (
+                          <>
+                            <a href="https://www.rileybeenders.com" target="_blank" rel="noreferrer" suppressHydrationWarning>
+                              {siteLinkLabel}
+                            </a>
+                            {afterLink.join(siteLinkLabel)}
+                          </>
+                        )}
+                      </p>
+                    );
+                  })}
                 </div>
               </Reveal>
             </div>
@@ -99,7 +112,7 @@ export default function HomePage() {
                         <span className="bp-role-dates">{job.start} — {job.end}</span>
                       </div>
                       <p className="bp-role-org">{job.company} · {job.location}</p>
-                      {job.context && <p className="bp-role-context">{job.context}</p>}
+                      {job.context && <Paragraphs className="bp-role-context" text={job.context} />}
                       {job.bullets.length > 0 && (
                         <ul className="bp-bullets">
                           {job.bullets.map((bullet) => {

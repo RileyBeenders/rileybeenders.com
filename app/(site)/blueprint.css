@@ -455,6 +455,12 @@ html[data-theme="dark"] .bp {
 }
 .bp-prose + .bp-prose { margin-top: 20px; }
 
+/* Body text from the Studio: an empty line starts a new paragraph (Paragraphs.tsx
+   marks each with data-para). A paragraph sits a little under one line below the
+   last, whatever the block's own margins say; prose keeps its wider 20px. */
+p[data-para] + p[data-para] { margin-top: 0.85em; }
+p.bp-prose[data-para] + p.bp-prose[data-para] { margin-top: 20px; }
+
 .bp-dropcap {
   float: left;
   font-family: var(--bp-font-header), Georgia, serif;

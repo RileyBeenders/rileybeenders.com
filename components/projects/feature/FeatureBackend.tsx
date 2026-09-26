@@ -5,6 +5,7 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { ResumeDemo } from "@/components/projects/feature/demos/ResumeDemo";
 import { StudioDemo } from "@/components/projects/feature/demos/StudioDemo";
 import { SkillsDemo } from "@/components/projects/feature/demos/SkillsDemo";
+import { splitParagraphs } from "@/components/content/Paragraphs";
 
 function Demo({ item, paletteId }: { item: BackendItem; paletteId: string }) {
   switch (item.demo) {
@@ -35,7 +36,7 @@ export function FeatureBackend({ backend, paletteId }: { backend: FeatureBackend
           </Reveal>
           <div className="ft-back-notes">
             <Reveal delay={0.06}><h3 className="ft-back-title">{item.title}</h3></Reveal>
-            {item.body.map((paragraph, i) => (
+            {item.body.flatMap(splitParagraphs).map((paragraph, i) => (
               <Reveal key={i} delay={0.1 + i * 0.05}><p className="ft-back-body">{paragraph}</p></Reveal>
             ))}
             {item.notes && item.notes.length > 0 && (

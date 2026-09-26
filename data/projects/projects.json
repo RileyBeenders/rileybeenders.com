@@ -283,7 +283,27 @@
     "id": "unifi-network",
     "order": 5,
     "type": "Network Infrastructure",
-    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
+    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.\n\nThis is a test to see if it makes another paragraph.",
+    "images": [
+      {
+        "src": "/project-artifacts/unifi-network/IMG_7234.png",
+        "aspect": "9:16",
+        "alt": "",
+        "fit": "contain",
+        "display": "compare",
+        "after": "/project-artifacts/unifi-network/IMG_8139.png",
+        "frame": {
+          "x": -63.88,
+          "y": -57,
+          "w": 209.33
+        },
+        "afterFrame": {
+          "x": -20.62,
+          "y": 0,
+          "w": 133.33
+        }
+      }
+    ],
     "bullets": [],
     "additionalInfo": {
       "title": "Unifi Network",

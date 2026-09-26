@@ -28,6 +28,8 @@ export type ProjectImage = {
   alt: string;
   caption?: string;
   fit?: "cover" | "contain";
+  /** The shape of the image's gallery frame; omitted = 4:3. "original" draws the whole image uncropped. */
+  aspect?: ImageAspect;
   /**
    * GIF only: playback rate relative to the recording (2 = twice as fast).
    * The Studio bakes it into the file's frame delays on save, so the site
@@ -41,18 +43,21 @@ export type ProjectImage = {
   display?: "compare";
   /** The After image of a comparison. */
   after?: string;
-  /** Where the Before sits in the comparison's 4:3 frame; omitted = cover, centred. */
+  /** Where the Before sits in the comparison's frame; omitted = cover, centred. */
   frame?: ImageFrame;
-  /** Where the After sits in the comparison's 4:3 frame; omitted = cover, centred. */
+  /** Where the After sits in the comparison's frame; omitted = cover, centred. */
   afterFrame?: ImageFrame;
 };
 
 /**
- * An image's crop inside a 4:3 frame, as percentages of the frame: `x`/`y`
+ * An image's crop inside its frame (the image's `aspect`), as percentages of the frame: `x`/`y`
  * the image's top-left corner, `w` its width (its height follows its own
  * shape). Set in the Studio's aligner so a before and after line up.
  */
 export type ImageFrame = { x: number; y: number; w: number };
+
+/** The frame shapes the Studio offers for a gallery image. */
+export type ImageAspect = "3:2" | "16:9" | "21:9" | "1:1" | "4:5" | "3:4" | "2:3" | "9:16" | "original";
 
 export type Experience = {
   company: string;

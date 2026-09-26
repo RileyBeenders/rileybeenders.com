@@ -10,6 +10,7 @@ import { ProjectDateBox } from "@/components/projects/ProjectDateBox";
 import { CaseStudy } from "@/components/projects/CaseStudy";
 import { ProjectStatus } from "@/components/projects/ProjectStatus";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 type ProjectEntryProps = {
   view: ProjectView;
@@ -98,7 +99,7 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
 
             <div className="pj-body">
               {project.summary && (
-                <Reveal delay={0.26}><p className="pj-summary">{project.summary}</p></Reveal>
+                <Reveal delay={0.26}><Paragraphs className="pj-summary" text={project.summary} /></Reveal>
               )}
               {project.status && (
                 <Reveal delay={0.3}><ProjectStatus text={project.status} /></Reveal>
