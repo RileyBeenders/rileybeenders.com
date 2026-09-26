@@ -38,7 +38,9 @@ const ASSET_FIELDS = [
 
 const IMAGE_FIELDS = [
   // A GIF gets a playback-speed slider under its path, kept as `speed` beside `src`.
-  { name: "src", type: "image", label: "Image", required: true, speedName: "speed" },
+  { name: "src", type: "image", label: "Image", required: true, speedName: "speed", compareLabel: "Before" },
+  // Default is the one image; "Before & after" adds `after` plus where each photo sits in the frame.
+  { name: "display", type: "imageDisplay", label: "Display", afterName: "after", frameName: "frame", afterFrameName: "afterFrame" },
   { name: "alt", type: "text", label: "Alt text", required: true, help: "What the image shows, for screen readers." },
   { name: "caption", type: "text", label: "Caption", help: "Shown under the image in the gallery." },
   {

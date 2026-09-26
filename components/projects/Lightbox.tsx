@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectImage } from "@/types/resume";
+import { CompareImage } from "@/components/projects/CompareImage";
 
 type LightboxProps = {
   images: ProjectImage[];
@@ -86,6 +87,8 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") onClose();
+      // The arrows belong to a focused before/after bar, not to paging.
+      else if (event.target instanceof HTMLElement && event.target.closest(".cmp")) return;
       else if (event.key === "ArrowRight") step(1);
       else if (event.key === "ArrowLeft") step(-1);
     }
@@ -118,7 +121,21 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
       )}
 
       <figure className="pj-lb-figure">
-        <FullImage key={image.src} src={image.src} alt={image.alt} />
+        {image.display === "compare" && image.after ? (
+          <CompareImage
+            key={`${image.src}|${image.after}`}
+            className="pj-lb-compare"
+            before={image.src}
+            after={image.after}
+            alt={image.alt}
+            frame={image.frame}
+            afterFrame={image.afterFrame}
+            sizes="90vw"
+            loading="eager"
+          />
+        ) : (
+          <FullImage key={image.src} src={image.src} alt={image.alt} />
+        )}
         {(image.caption || images.length > 1) && (
           <figcaption>
             {image.caption}

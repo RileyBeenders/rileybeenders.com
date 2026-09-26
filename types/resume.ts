@@ -34,7 +34,25 @@ export type ProjectImage = {
    * never reads it — a browser plays a GIF at the file's own pace.
    */
   speed?: number;
+  /**
+   * Omitted: the one image (or GIF) as it is. "compare": `src` is the Before,
+   * `after` the After, and a bar slides between them.
+   */
+  display?: "compare";
+  /** The After image of a comparison. */
+  after?: string;
+  /** Where the Before sits in the comparison's 4:3 frame; omitted = cover, centred. */
+  frame?: ImageFrame;
+  /** Where the After sits in the comparison's 4:3 frame; omitted = cover, centred. */
+  afterFrame?: ImageFrame;
 };
+
+/**
+ * An image's crop inside a 4:3 frame, as percentages of the frame: `x`/`y`
+ * the image's top-left corner, `w` its width (its height follows its own
+ * shape). Set in the Studio's aligner so a before and after line up.
+ */
+export type ImageFrame = { x: number; y: number; w: number };
 
 export type Experience = {
   company: string;

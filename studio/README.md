@@ -78,6 +78,19 @@ so a save that didn't move the slider never rewrites it. Every referenced GIF
 is set to loop, slider or not; a GIF that only appears in the picker is left
 as it is until something refers to it.
 
+## Before & after images
+
+A gallery image's **Display** is either *Default* (the one image or GIF) or
+*Before & after*. A comparison keeps its first image in `src` as the Before and
+adds `after`; the site lays the After over the Before and the visitor drags a
+bar between them (arrow keys once it is focused). Under the After path is a
+crop-and-align stage in the same 4:3 frame the gallery draws: pick a photo, drag
+to move it, scroll or use Zoom to crop in, and *Overlay* shows the After at half
+strength so edges can be matched by eye. Where each photo sits is saved as
+`frame` / `afterFrame` (`{ x, y, w }`, percentages of the frame), so the crop
+holds at thumbnail and full-screen size. A photo left untouched has no frame
+and simply covers the frame, centred.
+
 ## Letting a phone in
 
 `next dev` itself listens on loopback only. Under `npm run site` the gate takes
@@ -134,7 +147,13 @@ to the viewport, so the rail, the list, and the editor scroll on their own.
 - Saving reads "Unsaved changes → Saving… → Saved 11:42 pm" and the toast says
   how many fields changed. If the file changed on disk underneath you, the save
   is refused and your copy is kept across the reload.
-- Ctrl+S saves. Alt+↑ / Alt+↓ reorders the focused list entry. "Open on the
+- Every reorderable thing (entries in the list, gallery images, bullets, list
+  rows) has a three-line grip. Grab it and the entry follows the pointer while
+  the others slide aside to show where it will land; let go and it settles
+  into that gap. Escape puts it back, and the list scrolls itself near the
+  pane's edges. Focus the grip and ↑ / ↓ move it one place. `makeSortable` in
+  `ui/fields.js` does all of it, moving only transforms until the drop.
+- Ctrl+S saves. Alt+↑ / Alt+↓ also reorders the focused list entry. "Open on the
   site" opens the page this file renders, reusing one window.
 
 `.impeccable/critique/` holds the design critique this rework answered; the

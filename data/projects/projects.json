@@ -319,9 +319,14 @@
       ],
       "assets": [
         {
-          "label": "Controls Architecture",
-          "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
+          "label": "Home network (RB-CGF)",
+          "src": "/project-artifacts/unifi-network/rb-cgf.svg",
+          "alt": "Network topology for my home network"
+        },
+        {
+          "label": "Proteor Printing Solutions",
+          "src": "/project-artifacts/unifi-network/proteor-printing.svg",
+          "alt": "Network topology for my current employer - Proteor Printing Solutions"
         }
       ]
     },
@@ -335,7 +340,6 @@
     "id": "linear-motion-platform",
     "order": 6,
     "type": "Motion Control / Product Platform",
-    "visible": false,
     "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
     "proofId": "linear-motion-platform",
     "bullets": [

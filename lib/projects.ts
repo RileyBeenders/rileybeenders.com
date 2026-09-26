@@ -1,4 +1,5 @@
 import type { Project, ProjectImage, ProofAsset, ProofPoint } from "@/types/resume";
+import { THEMED_SVGS } from "@/components/projects/diagrams/themed";
 
 /**
  * The projects page shows each project twice: the project entry itself, then
@@ -82,10 +83,12 @@ export function buildProofView(project: Project, proofs: ProofPoint[]): ProofVie
 
 /**
  * Diagrams stand in for photographs on projects that don't have any yet, so the
- * gallery column never renders empty.
+ * gallery column never renders empty. Full-sheet themed drawings stay in the
+ * case study only: shrunk into a 4:3 frame they can't be read, so a project
+ * whose diagrams are all themed renders text-only until it has photos.
  */
 function assetsAsImages(assets: ProofAsset[]): ProjectImage[] {
-  return assets.map((asset) => ({
+  return assets.filter((asset) => !THEMED_SVGS.has(asset.src)).map((asset) => ({
     src: asset.src,
     alt: asset.alt,
     caption: asset.label,

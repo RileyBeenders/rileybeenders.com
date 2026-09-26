@@ -607,6 +607,79 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .f-playback-preview:not([src]) { display: none; }
 .f-playback .f-help { margin-top: 0; }
 
+/* Display: Default or Before & after, and the crop-and-align stage. */
+.f-seg { display: inline-flex; border: 1px solid var(--rule); background: var(--paper); }
+.f-seg-btn {
+  padding: 6px 12px;
+  border: 0;
+  border-right: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.f-seg-btn:last-child { border-right: 0; }
+.f-seg-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.f-seg-btn[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+.f-seg--small .f-seg-btn { padding: 4px 10px; font-size: 12px; }
+.f-display { display: grid; gap: 0; }
+
+.f-align {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  max-width: 560px;
+}
+.f-align-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.f-align-stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.f-align-stage.is-panning { cursor: grabbing; }
+.f-align-layer { position: absolute; pointer-events: none; }
+.f-align-layer[hidden] { display: none; }
+.f-align-layer img { display: block; width: 100%; height: auto; }
+.f-align-layer.is-active { outline: 1px dashed var(--accent); outline-offset: -1px; }
+.f-align-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent);
+  pointer-events: none;
+}
+.f-align-divider[hidden] { display: none; }
+.f-align-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+.f-align-empty[hidden] { display: none; }
+.f-align-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.f-align-zoom { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 160px; font-size: 12px; color: var(--muted); }
+.f-align-split[hidden] { display: none; }
+.f-align-read { min-width: 3.5em; font-family: var(--mono); font-size: 12px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.f-align .f-align-reset { padding: 3px 10px; font-size: 12px; }
+.f-align .f-help { margin-top: 0; }
+
 /* --------------------------------------------------------------- color --- */
 .f-color-row { display: flex; align-items: center; gap: 8px; }
 .f-color-swatch {
@@ -699,6 +772,48 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-icon-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--ink) 9%, transparent); color: var(--ink); }
 .f-icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ------------------------------------------------------ drag to reorder --- */
+
+/* The three-line grip an entry is carried by: an open hand at rest, a closed
+   one while it is held. A lifted entry rides above its neighbours, which slide
+   aside with transforms (set inline by makeSortable) to show where it lands. */
+.f-grip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 28px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--faint);
+  cursor: grab;
+  touch-action: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .f-grip:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+}
+.f-grip:active { cursor: grabbing; }
+.f-card-grip { display: inline-flex; flex: none; margin-left: -6px; }
+
+/* While something is held: one cursor everywhere, no selection, and nothing
+   underneath reacts to the pointer (no hover flashes as entries slide by). */
+html.is-grabbing,
+html.is-grabbing * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+.is-sorting > * { pointer-events: none; }
+.is-dragging {
+  position: relative;
+  z-index: 5;
+  background: var(--paper);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 20%, transparent), 0 0 0 1px var(--accent);
+  will-change: transform;
+}
+.is-dragging .f-grip { color: var(--accent); }
+/* Settling into the gap, the lift comes off with it. */
+.is-dropping { box-shadow: 0 0 0 1px transparent; }
+
 
 .f-file { font-size: 12px; max-width: 230px; }
 .f-file-note { font-size: 12px; color: var(--muted); }

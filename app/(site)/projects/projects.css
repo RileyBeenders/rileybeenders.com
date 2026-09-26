@@ -342,6 +342,105 @@
   color: var(--faint);
 }
 
+/* Before & after: the After is laid over the Before and uncovered up to the
+   bar. Everything is in percentages of the 4:3 frame, so a crop lined up in
+   the Studio holds at thumbnail and full-screen size alike. */
+.pj-shot-compare {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: border-color 0.4s var(--ease);
+}
+.pj-shot-compare:hover { border-color: var(--ink); }
+.pj-shot-zoom--compare {
+  z-index: 3;
+  border: 0;
+  cursor: zoom-in;
+  opacity: 0.92;
+  transform: none;
+}
+.pj-shot-zoom--compare:hover { opacity: 1; }
+.pj-shot-zoom--compare:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cmp {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.cmp-layer { position: absolute; inset: 0; overflow: hidden; }
+.cmp-layer--after { clip-path: inset(0 0 0 var(--cmp-pos, 50%)); }
+.cmp-img { object-fit: cover; }
+.cmp-placed { position: absolute; }
+.cmp img { pointer-events: none; -webkit-user-drag: none; }
+
+.cmp-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--cmp-pos, 50%);
+  width: 2px;
+  margin-left: -1px;
+  /* Fixed light, not --paper: it sits on photographs, which don't change with the theme. */
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(8, 16, 26, 0.35);
+  pointer-events: none;
+}
+.cmp-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(8, 16, 26, 0.3);
+  border-radius: 50%;
+  background: #fff;
+  color: #0b1a2b;
+  box-shadow: 0 2px 10px rgba(8, 16, 26, 0.3);
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.cmp:hover .cmp-knob,
+.cmp.is-dragging .cmp-knob { transform: translate(-50%, -50%) scale(1.08); }
+.cmp:has(.cmp-range:focus-visible) .cmp-knob { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cmp-tag {
+  position: absolute;
+  top: 10px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(8, 16, 26, 0.62);
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+.cmp-tag--before { left: 10px; }
+.cmp-tag--after { right: 10px; }
+/* A label steps aside once the bar has nearly covered its side. */
+.cmp[data-edge="start"] .cmp-tag--before,
+.cmp[data-edge="end"] .cmp-tag--after { opacity: 0; }
+
+/* Kept for the keyboard and screen readers; the pointer drags the frame itself. */
+.cmp-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ---------------------------------------------------------- case study --- */
 
 .pj-case-study-wrap { overflow: hidden; }
@@ -468,6 +567,18 @@
 .pj-flow-head { stroke: var(--faint); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .pj-flow-pulse circle { fill: var(--accent); }
 
+/* A full-sheet drawing (components/projects/diagrams/ThemedSvg) takes the
+   whole row; it carries its own hairline frame, so it gets no border here. */
+.pj-proof-asset--wide { grid-column: 1 / -1; }
+/* Consecutive sheets get the site's hairline between them: --faint, the
+   section divider's tone, which stays visible on paper in both themes. */
+.pj-proof-asset--wide + .pj-proof-asset--wide {
+  margin-top: clamp(18px, 3vw, 30px);
+  padding-top: clamp(28px, 4vw, 44px);
+  border-top: 1px solid var(--faint);
+}
+.pj-themed-svg svg { display: block; width: 100%; height: auto; }
+
 /* ---------------------------------------------------------------- outro --- */
 
 .pj-outro { padding: clamp(56px, 12vh, 132px) 0 clamp(80px, 14vh, 160px); }
@@ -510,6 +621,9 @@
   transition: opacity 0.4s ease;
 }
 .pj-lb-figure img.is-loaded { opacity: 1; }
+/* A before/after in the viewer: as large as the 4:3 frame fits on screen. */
+.pj-lb-compare { width: min(100%, calc(78vh * 4 / 3)); }
+.pj-lb-figure .cmp img { max-width: none; max-height: none; object-fit: cover; opacity: 1; transition: none; background: none; }
 .pj-lb-loading {
   font-size: 11px;
   letter-spacing: 0.2em;

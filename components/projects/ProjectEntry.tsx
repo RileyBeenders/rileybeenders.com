@@ -60,7 +60,9 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
 
   const mediaRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: mediaProgress } = useScroll({
-    target: mediaRef,
+    // A text-only entry never renders the media column, and a target ref that
+    // stays unattached throws; it has no parallax to drive anyway.
+    target: images.length > 0 ? mediaRef : undefined,
     offset: ["start end", "end start"]
   });
   const mediaProgressSmooth = useSpring(mediaProgress, { stiffness: 220, damping: 36, mass: 0.4 });

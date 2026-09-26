@@ -7,7 +7,7 @@
  */
 
 import { SCHEMAS, RAIL } from "./schema.js";
-import { el, renderFields, normalize, thumbImage } from "./fields.js";
+import { el, renderFields, normalize, thumbImage, gripHandle, makeSortable } from "./fields.js";
 import { createDevicesPanel } from "./devices.js";
 
 const state = {
@@ -241,6 +241,7 @@ function paintList() {
     ...doc.data.map((entry, index) => {
       const hidden = isHidden(schema, entry);
       const row = el("div", { class: `list-item${index === selected ? " is-active" : ""}${hidden ? " is-hidden" : ""}` },
+        gripHandle(schema.title(entry)),
         el("button", {
           type: "button",
           class: "list-open",
@@ -275,38 +276,17 @@ function paintList() {
                   paintDetail();
                 }
               }, eyeIcon(hidden))
-            : null,
-          el("button", {
-            type: "button",
-            class: "f-icon-btn",
-            title: "Move up",
-            "aria-label": `Move ${schema.title(entry)} up`,
-            disabled: index === 0,
-            onClick: () => reorder(index, index - 1)
-          }, arrow("up")),
-          el("button", {
-            type: "button",
-            class: "f-icon-btn",
-            title: "Move down",
-            "aria-label": `Move ${schema.title(entry)} down`,
-            disabled: index === doc.data.length - 1,
-            onClick: () => reorder(index, index + 1)
-          }, arrow("down"))));
+            : null));
       return row;
     })
   );
+  makeSortable(dom.listBody, reorder, `list:${key}`);
 
   dom.listActions.replaceChildren(
     el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: addEntry }, "+ New"),
     el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: duplicateEntry, disabled: doc.data.length === 0 }, "Duplicate"),
     el("button", { type: "button", class: "f-btn f-btn--danger", onClick: deleteEntry, disabled: doc.data.length === 0 }, "Delete")
   );
-}
-
-function arrow(direction) {
-  const d = direction === "up" ? "M8 13V3m0 0L4 7m4-4 4 4" : "M8 3v10m0 0 4-4m-4 4-4-4";
-  return el("svg", { width: 13, height: 13, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" },
-    el("path", { d, stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 }
 
 function eyeIcon(off) {

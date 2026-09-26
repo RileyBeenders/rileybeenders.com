@@ -333,6 +333,8 @@ function gifRefs(data, found = new Map()) {
     for (const entry of data) gifRefs(entry, found);
   } else if (data && typeof data === "object") {
     if (isGifSrc(data.src) && !found.has(data.src)) found.set(data.src, speedOf(data));
+    // A comparison's After plays as recorded, but still loops.
+    if (isGifSrc(data.after) && !found.has(data.after)) found.set(data.after, 1);
     for (const value of Object.values(data)) {
       if (value && typeof value === "object") gifRefs(value, found);
     }

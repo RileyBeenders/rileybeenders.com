@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectImage } from "@/types/resume";
 import { Lightbox } from "@/components/projects/Lightbox";
+import { CompareImage } from "@/components/projects/CompareImage";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -22,7 +23,41 @@ const shotVariants = {
 /** An animated GIF plays at the file's own pace and loops as the file says; the Studio sets both. */
 const isGif = (src: string) => /\.gif$/i.test(src);
 
+const ZoomIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+    <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
+    <path d="M10.4 10.4 14 14M7 5.2v3.6M5.2 7h3.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+  </svg>
+);
+
+const SHOT_SIZES = "(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw";
+
 function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: () => void }): ReactNode {
+  // A before/after is dragged in place, so the frame can't also be the button:
+  // the full-screen viewer opens from its own corner control instead.
+  if (image.display === "compare" && image.after) {
+    return (
+      <div className="pj-shot-compare">
+        <CompareImage
+          before={image.src}
+          after={image.after}
+          alt={image.alt}
+          frame={image.frame}
+          afterFrame={image.afterFrame}
+          sizes={SHOT_SIZES}
+          loading={index === 0 ? "eager" : "lazy"}
+        />
+        <button
+          type="button"
+          className="pj-shot-zoom pj-shot-zoom--compare"
+          onClick={onOpen}
+          aria-label={`View ${image.caption || image.alt} full screen`}
+        >
+          <ZoomIcon />
+        </button>
+      </div>
+    );
+  }
   return (
     <button
       type="button"
@@ -43,16 +78,13 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
         src={image.src}
         alt={image.alt}
         fill
-        sizes="(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw"
+        sizes={SHOT_SIZES}
         loading={index === 0 ? "eager" : "lazy"}
         unoptimized={isGif(image.src)}
         className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
       />
       <span className="pj-shot-zoom" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-          <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
-          <path d="M10.4 10.4 14 14M7 5.2v3.6M5.2 7h3.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
+        <ZoomIcon />
       </span>
     </button>
   );
@@ -104,6 +136,7 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
 
       <p className="pj-gallery-note">
         {images.length === 1 ? "Click to enlarge" : `${images.length} images · click to enlarge`}
+        {images.some((image) => image.display === "compare" && image.after) && " · drag to compare"}
       </p>
 
       {openAt !== null && (
