@@ -84,7 +84,7 @@
     "order": 2,
     "type": "Windows Utility / PowerShell",
     "summary": "A one-line install that puts an App Auto Updater shortcut on a Windows desktop. It checks every installed application with WinGet, shows what can be updated, and upgrades each package on its own so a single failure never stops the rest.",
-    "status": "Initial draft. Photos and screenshots to come.",
+    "status": "Install using this powershell command: ``` irm https://www.rileybeenders.com/AutoWinUpdater | iex ```",
     "images": [
       {
         "src": "/project-artifacts/RBs-Auto-Win-Updater.gif",
@@ -159,8 +159,8 @@
       ]
     },
     "dates": {
-      "start": "2026-09-20",
-      "ongoing": true,
+      "start": "2026-09-19",
+      "end": "2026-09-21",
       "position": "top-right"
     }
   },
@@ -224,63 +224,9 @@
     }
   },
   {
-    "name": "Linear Motor Platform Standardization",
-    "id": "linear-motion-platform",
-    "order": 4,
-    "type": "Motion Control / Product Platform",
-    "visible": false,
-    "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
-    "proofId": "linear-motion-platform",
-    "bullets": [
-      {
-        "text": "Replaced servo-driven ballscrew assemblies and demonstrated 4-micron precision with a 30 kg moving mass at 4 m/s.",
-        "proofId": "linear-motion-platform"
-      },
-      {
-        "text": "Unified product architecture and created swappable mounts to reduce support complexity and make future scaling easier.",
-        "proofId": "linear-motion-platform"
-      }
-    ],
-    "additionalInfo": {
-      "title": "Linear Motor Platform Standardization",
-      "subtitle": "Higher-speed precision through a shared motion architecture",
-      "problem": "POSEIDON and ICARUS used servo-driven ballscrew assemblies that limited the opportunity to standardize service, mounts, and future performance across the product line.",
-      "constraints": [
-        "Move a 30 kg machine assembly",
-        "Support large-format printer geometries",
-        "Preserve precision at high travel speed",
-        "Keep mounts serviceable across products"
-      ],
-      "approach": [
-        "Converted both flagship platforms to linear-motor assemblies",
-        "Unified the architecture between products",
-        "Designed easily swappable mounts",
-        "Validated speed and positional performance on the machine platforms"
-      ],
-      "impact": [
-        "Achieved 4-micron precision at 4 m/s with a 30 kg moving mass",
-        "Reduced product-to-product architectural complexity",
-        "Created a more scalable foundation for support and future performance"
-      ],
-      "tools": [
-        "Linear motors",
-        "Motion control",
-        "Mechanical design",
-        "Precision testing"
-      ],
-      "assets": [
-        {
-          "label": "Motion Architecture",
-          "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract diagram of a standardized motion-control architecture"
-        }
-      ]
-    }
-  },
-  {
     "name": "PROTEOR Print",
     "id": "proteor-print",
-    "order": 5,
+    "order": 4,
     "type": "Remote Operations Software",
     "visible": false,
     "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
@@ -333,9 +279,115 @@
     }
   },
   {
+    "name": "Unified Ubiquiti Network",
+    "id": "unifi-network",
+    "order": 5,
+    "type": "Network Infrastructure",
+    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
+    "bullets": [],
+    "additionalInfo": {
+      "title": "Unifi Network",
+      "problem": "I wanted enterprise-grade networking capabilities without the steep learning curve, high upfront costs, and ongoing subscription or licensing fees typically associated with traditional enterprise solutions. I also needed a platform that could reliably support and centrally manage separate networks at my home, my parents’ home and my workplace.",
+      "rootCause": "Our consumer-grade Google Mesh network could not reliably handle the growing number of devices at work. As production expanded, multiple machines coming online simultaneously would sometimes be assigned the same IP address, creating conflicts and disrupting connectivity. The system did not consistently detect or resolve these conflicts, showing that we had outgrown the capabilities of the existing network.",
+      "constraints": [
+        "Avoid costly subscriptions, recurring licensing fees, and excessive upfront costs.",
+        "Provide centralized and reliable control over IP address assignment, network configuration, DNS, VLANs, port forwarding, and other essential networking services without introducing unnecessary complexity.",
+        "Minimize downtime and connectivity disruptions.",
+        "Provide better visibility and control than a consumer-grade mesh system.",
+        "Centrally manage multiple independent locations, including my home, my parents’ home, and my workplace."
+      ],
+      "approach": [
+        "Use VLANs to separate production equipment, work devices, and IoT devices for improved security and network management.",
+        "Use monitoring and network visibility tools to identify connectivity problems and resolve them more quickly.",
+        "Adopt the platform gradually, learning enterprise networking concepts without taking on the complexity of traditional enterprise solutions.",
+        "Use UniFi’s centralized interface to configure and monitor each location remotely."
+      ],
+      "impact": [
+        "Reduced IP conflicts and network-related downtime.",
+        "Greater scalability as new devices and equipment are added.",
+        "Improved security by separating production, work, and IoT devices with VLANs."
+      ],
+      "tools": [
+        "Ubiquiti UniFi Network Administration",
+        "Multi-Site Network Management",
+        "DHCP and IP Address Management",
+        "Server Network and VLAN Configuration",
+        "IoT and Production Network Segmentation",
+        "DNS and Subdomain Configuration",
+        "Reverse Proxy and Firewall Routing",
+        "Network Monitoring and Troubleshooting"
+      ],
+      "assets": [
+        {
+          "label": "Controls Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
+        }
+      ]
+    },
+    "dates": {
+      "start": "2024-03-07",
+      "ongoing": true
+    }
+  },
+  {
+    "name": "Linear Motor Platform Standardization",
+    "id": "linear-motion-platform",
+    "order": 6,
+    "type": "Motion Control / Product Platform",
+    "visible": false,
+    "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
+    "proofId": "linear-motion-platform",
+    "bullets": [
+      {
+        "text": "Replaced servo-driven ballscrew assemblies and demonstrated 4-micron precision with a 30 kg moving mass at 4 m/s.",
+        "proofId": "linear-motion-platform"
+      },
+      {
+        "text": "Unified product architecture and created swappable mounts to reduce support complexity and make future scaling easier.",
+        "proofId": "linear-motion-platform"
+      }
+    ],
+    "additionalInfo": {
+      "title": "Linear Motor Platform Standardization",
+      "subtitle": "Higher-speed precision through a shared motion architecture",
+      "problem": "POSEIDON and ICARUS used servo-driven ballscrew assemblies that limited the opportunity to standardize service, mounts, and future performance across the product line.",
+      "constraints": [
+        "Move a 30 kg machine assembly",
+        "Support large-format printer geometries",
+        "Preserve precision at high travel speed",
+        "Keep mounts serviceable across products"
+      ],
+      "approach": [
+        "Converted both flagship platforms to linear-motor assemblies",
+        "Unified the architecture between products",
+        "Designed easily swappable mounts",
+        "Validated speed and positional performance on the machine platforms"
+      ],
+      "impact": [
+        "Achieved 4-micron precision at 4 m/s with a 30 kg moving mass",
+        "Reduced product-to-product architectural complexity",
+        "Created a more scalable foundation for support and future performance"
+      ],
+      "tools": [
+        "Linear motors",
+        "Motion control",
+        "Mechanical design",
+        "Precision testing"
+      ],
+      "assets": [
+        {
+          "label": "Motion Architecture",
+          "src": "/project-artifacts/automation.svg",
+          "alt": "Abstract diagram of a standardized motion-control architecture"
+        }
+      ]
+    }
+  },
+  {
     "name": "Gen3 POSEIDON",
     "id": "gen3-poseidon",
-    "order": 6,
+    "order": 7,
     "type": "Large-Format Additive Manufacturing System",
     "visible": false,
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
@@ -390,7 +442,7 @@
   {
     "name": "THE KRAKEN",
     "id": "kraken",
-    "order": 7,
+    "order": 8,
     "type": "Custom Hybrid Additive Manufacturing System",
     "visible": false,
     "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
@@ -446,7 +498,7 @@
   {
     "name": "Engineering Operations Platform",
     "id": "internal-erp",
-    "order": 8,
+    "order": 9,
     "type": "Internal Software / Infrastructure",
     "visible": false,
     "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
@@ -501,7 +553,7 @@
   {
     "name": "Modular CAN-Bus Controls Architecture",
     "id": "modular-controls",
-    "order": 9,
+    "order": 10,
     "type": "Electrical / Manufacturing System",
     "visible": false,
     "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
@@ -543,47 +595,6 @@
         "Modular enclosures",
         "Wiring harnesses",
         "Supplier coordination"
-      ],
-      "assets": [
-        {
-          "label": "Controls Architecture",
-          "src": "/project-artifacts/automation.svg",
-          "alt": "Abstract diagram of a modular CAN-bus machine-control architecture"
-        }
-      ]
-    }
-  },
-  {
-    "name": "Unified Ubiquiti Network",
-    "id": "unifi-network",
-    "order": 10,
-    "type": "Network Infrastructure",
-    "visible": false,
-    "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house.",
-    "proofId": "unifi-network",
-    "bullets": [],
-    "additionalInfo": {
-      "title": "title",
-      "subtitle": "subtitle",
-      "problem": "Problem Statement goes here",
-      "constraints": [
-        "constraint01",
-        "constraint02",
-        "constraint03",
-        "constraint04"
-      ],
-      "approach": [
-        "approach01",
-        "approach02"
-      ],
-      "impact": [
-        "impact statement 01",
-        "impact statement 02",
-        "impact statement 03"
-      ],
-      "tools": [
-        "Connect back",
-        "to skills listed"
       ],
       "assets": [
         {

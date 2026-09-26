@@ -61,7 +61,14 @@
       "Reverse Proxy and Firewall Routing",
       "Server Network and VLAN Configuration",
       "Virtual Machine and Container Management",
-      "Windows/Linux Systems Administration"
+      "Windows/Linux Systems Administration",
+      "Ubiquiti UniFi Network Administration",
+      "DHCP and IP Address Management",
+      "Multi-Site Network Management",
+      "Network Monitoring and Troubleshooting",
+      "Wireless Network Design and Optimization",
+      "IoT and Production Network Segmentation",
+      "Network Security and Access Control"
     ]
   }
 ]

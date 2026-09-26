@@ -8,6 +8,7 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
 import { ProjectDateBox } from "@/components/projects/ProjectDateBox";
 import { CaseStudy } from "@/components/projects/CaseStudy";
+import { ProjectStatus } from "@/components/projects/ProjectStatus";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 
 type ProjectEntryProps = {
@@ -98,7 +99,7 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
                 <Reveal delay={0.26}><p className="pj-summary">{project.summary}</p></Reveal>
               )}
               {project.status && (
-                <Reveal delay={0.3}><p className="pj-status">{project.status}</p></Reveal>
+                <Reveal delay={0.3}><ProjectStatus text={project.status} /></Reveal>
               )}
 
               {project.bullets.length > 0 && (
