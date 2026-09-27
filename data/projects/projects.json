@@ -420,6 +420,7 @@
     "id": "gen3-poseidon",
     "order": 7,
     "type": "Large-Format Additive Manufacturing System",
+    "visible": false,
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
     "proofId": "gen3-poseidon",
     "bullets": [
@@ -585,6 +586,7 @@
     "id": "modular-controls",
     "order": 10,
     "type": "Electrical / Manufacturing System",
+    "visible": false,
     "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
     "proofId": "modular-controls",
     "bullets": [
@@ -639,11 +641,20 @@
     "id": "filament-innovations",
     "order": 11,
     "type": "Industrial Design",
-    "visible": false,
+    "images": [
+      {
+        "src": "/project-images/FilamentInnovations/IMG_4878.JPG",
+        "aspect": "16:9",
+        "alt": "",
+        "caption": "Renderings of bespoke machines I designed between 2020-2022, each tailored to a customer’s specific needs.",
+        "fit": "contain"
+      }
+    ],
     "bullets": [],
     "dates": {
       "start": "2020-03-10",
-      "end": "2025-01-31"
+      "end": "2025-01-31",
+      "position": "inline"
     }
   }
 ]
