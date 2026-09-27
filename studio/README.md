@@ -33,7 +33,7 @@ it by DNS rebinding.
 site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
 gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
 access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
-server.mjs      HTTP server: the JSON API, image uploads, folders, moves, static files, /api/access, /api/thumb, /api/gif, /site/ (site styles for previews)
+server.mjs      HTTP server: the JSON API, image uploads, folders, moves, static files, /api/access, /api/thumb, /api/gif, /site/ (site styles for previews), /api/photo-place (the projects page's Photo Mode)
 gif.mjs         retimes a GIF's frame delays and loop flag in place, without decoding it
 ui/
   index.html    the editor shell

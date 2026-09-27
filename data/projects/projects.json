@@ -654,7 +654,8 @@
     "id": "filament-innovations",
     "order": 11,
     "type": "Industrial Design",
-    "summary": "Some photos of the various machines I designed during the first few years being at Filament Innovations. Throughout this process, I held the following titles: Engineering Technician, Industrial Engineer and eventually Lead Electro-Mechanical Engineer.",
+    "summary": "Some photos of the various machines I designed during the first few years being at Filament Innovations. Throughout this process, I held the following titles: Engineering Technician, Industrial Engineer and eventually Lead Electro-Mechanical Engineer.\n\nThese are very old designs. I would look into the ICARUS-Lite as it is the most recent design.",
+    "status": "Documentation on the POSEIDON is coming soon",
     "images": [
       {
         "src": "/project-images/FilamentInnovations/IMG_4878.JPG",
@@ -666,7 +667,7 @@
         "src": "/project-images/FilamentInnovations/IMG_1683.png",
         "aspect": "9:16",
         "alt": "",
-        "caption": "Kratos - My very first design. This series would later be replaced by the Proteor ICARUS-Lite"
+        "caption": "2021 Kratos - My very first design. This series would later be replaced by the Proteor ICARUS-Lite"
       },
       {
         "src": "/project-images/FilamentInnovations/IMG_5307.png",
@@ -675,7 +676,7 @@
       },
       {
         "src": "/project-images/FilamentInnovations/5A2F8025-836C-4B1E-8862-61761B073155.JPG",
-        "alt": ""
+        "alt": "2022 -"
       },
       {
         "src": "/project-images/FilamentInnovations/FilamentInnovations_PrinterSpecSheets.pdf",
@@ -684,10 +685,6 @@
         "caption": "One of the original marketing brochures for our initial product line.",
         "pages": 3,
         "download": true
-      },
-      {
-        "src": "",
-        "alt": ""
       }
     ],
     "bullets": [],

@@ -5,6 +5,7 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
 import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
+import { PhotoModeProvider } from "@/components/projects/PhotoMode";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import projectsPageData from "@/data/projects/page.json";
 import { counted } from "@/lib/copy";
@@ -62,11 +63,14 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <ProjectListSpine>
-        {views.map((view, index) => (
-          <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
-        ))}
-      </ProjectListSpine>
+      {/* Photo Mode's toggle appears only on the dev site (components/projects/PhotoMode.tsx). */}
+      <PhotoModeProvider>
+        <ProjectListSpine>
+          {views.map((view, index) => (
+            <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
+          ))}
+        </ProjectListSpine>
+      </PhotoModeProvider>
 
       <footer className="pj-outro">
         <div className="bp-shell">

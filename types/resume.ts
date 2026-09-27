@@ -62,6 +62,26 @@ export type ProjectImage = {
   frame?: ImageFrame;
   /** Where the After sits in the comparison's frame; omitted = cover, centred. */
   afterFrame?: ImageFrame;
+  /**
+   * Set by Photo Mode on the dev site: the photo leaves the gallery and floats
+   * in the project's body text, which wraps around it. Omitted = in the gallery.
+   */
+  place?: ImagePlace;
+};
+
+/**
+ * Where a photo sits in its project's body text. Anchored to a paragraph or
+ * bullet rather than to pixels, so it stays inside the body (never over the
+ * title, the rules or the dates) at every screen width, and survives the
+ * text being edited: an anchor past the last block falls back to the last.
+ */
+export type ImagePlace = {
+  /** Which block the photo floats at the start of: the summary's paragraphs first, then the bullets. */
+  at: number;
+  /** Which edge of the body it floats against. */
+  side: "left" | "right";
+  /** Its width, as a percentage of the body's width. */
+  width: number;
 };
 
 /**

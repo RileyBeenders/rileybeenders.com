@@ -141,12 +141,13 @@ const MIME = {
 
 /* ------------------------------------------------------------- helpers --- */
 
-function sendJson(res, status, payload) {
+function sendJson(res, status, payload, headers = {}) {
   const body = JSON.stringify(payload);
   res.writeHead(status, {
     "content-type": "application/json; charset=utf-8",
     "content-length": Buffer.byteLength(body),
-    "cache-control": "no-store"
+    "cache-control": "no-store",
+    ...headers
   });
   res.end(body);
 }
@@ -812,6 +813,96 @@ async function readJson(req) {
   }
 }
 
+/* --------------------------------------------------------- photo mode --- */
+
+/**
+ * Photo Mode on the dev site (components/projects/PhotoMode.tsx) moves a
+ * project's photos into its body text. The page lives on another port, so
+ * this is the one endpoint that answers a cross-origin call, and only from
+ * a page this machine serves itself on a loopback address. The call must be
+ * JSON, which makes the browser ask first (the preflight below), so a plain
+ * form post from some other page can never reach it.
+ */
+const LOOPBACK_NAMES = new Set(["localhost", "127.0.0.1", "[::1]"]);
+const PLACE_WIDTH = { min: 15, max: 70 };
+
+function loopbackOrigin(req) {
+  const origin = req.headers.origin;
+  if (typeof origin !== "string") return null;
+  try {
+    const url = new URL(origin);
+    return url.protocol === "http:" && LOOPBACK_NAMES.has(url.hostname) ? url.origin : null;
+  } catch {
+    return null;
+  }
+}
+
+function corsHeaders(origin) {
+  return { "access-control-allow-origin": origin, vary: "Origin" };
+}
+
+/** `{ at, side, width }` cleaned up, `null` to send the photo back to the gallery, or a refusal. */
+function cleanPlace(raw) {
+  if (raw === null) return null;
+  if (typeof raw !== "object") throw refusal(422, "place must be an object or null.");
+  const at = Number(raw.at);
+  const width = Number(raw.width);
+  if (!Number.isInteger(at) || at < 0) throw refusal(422, "place.at must be a whole number, 0 or more.");
+  if (raw.side !== "left" && raw.side !== "right") throw refusal(422, 'place.side must be "left" or "right".');
+  if (!Number.isFinite(width)) throw refusal(422, "place.width must be a number.");
+  const clamped = Math.min(PLACE_WIDTH.max, Math.max(PLACE_WIDTH.min, width));
+  return { at, side: raw.side, width: Math.round(clamped * 10) / 10 };
+}
+
+/**
+ * POST /api/photo-place { project, index, src, place } — sets or clears one
+ * image's `place` and nothing else. It reads the file fresh, so it needs no
+ * revision; `src` must still match what sits at `index`, so a list reordered
+ * in the meantime is refused instead of moving the wrong photo.
+ */
+async function handlePhotoPlace(req, res) {
+  const origin = loopbackOrigin(req);
+  if (req.headers.origin !== undefined && !origin) return sendError(res, 403, "Photo Mode only answers the dev site on this machine.");
+  const cors = origin ? corsHeaders(origin) : {};
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(204, {
+      ...cors,
+      "access-control-allow-methods": "POST",
+      "access-control-allow-headers": "content-type",
+      "access-control-max-age": "600"
+    });
+    return res.end();
+  }
+  if (req.method !== "POST") return sendError(res, 405, "Method not allowed.");
+  if (!/^application\/json\b/i.test(req.headers["content-type"] || "")) {
+    return sendJson(res, 415, { error: "Send the placement as JSON." }, cors);
+  }
+
+  try {
+    const payload = await readJson(req);
+    const place = cleanPlace(payload?.place);
+    const current = await readDataFile("projects");
+    const project = current.data.find((entry) => entry?.id === payload?.project);
+    if (!project) throw refusal(404, `No project "${payload?.project}".`);
+    const image = Array.isArray(project.images) ? project.images[payload?.index] : undefined;
+    if (!image || image.src !== payload?.src) {
+      throw refusal(409, `The photos in "${project.name}" changed since the page loaded. Reload the page and try again.`);
+    }
+
+    if (place) image.place = place;
+    else delete image.place;
+
+    const revision = await writeDataFile("projects", current.data);
+    console.log(`  photo mode: ${project.id} #${payload.index} ${place ? `${place.side} of block ${place.at}, ${place.width}%` : "back to the gallery"}`);
+    return sendJson(res, 200, { revision, place }, cors);
+  } catch (error) {
+    const status = error?.status || 500;
+    if (status === 500) console.error(error);
+    return sendJson(res, status, { error: error?.message || "Something went wrong." }, cors);
+  }
+}
+
 function decodeSegment(raw) {
   try {
     return decodeURIComponent(raw);
@@ -822,6 +913,8 @@ function decodeSegment(raw) {
 
 async function handleApi(req, res, url, { store, siteUrl }) {
   const segments = url.pathname.split("/").filter(Boolean).map(decodeSegment).slice(1); // drop "api"
+
+  if (segments[0] === "photo-place" && segments.length === 1) return handlePhotoPlace(req, res);
 
   if (req.method === "GET" && segments[0] === "files" && segments.length === 1) {
     const files = await Promise.all(

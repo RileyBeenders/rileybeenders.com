@@ -293,7 +293,7 @@
   align-items: start;
 }
 
-.pj-shot { margin: 0; }
+.pj-shot { margin: 0; position: relative; }
 
 .pj-shot-btn {
   position: relative;
@@ -999,6 +999,278 @@
 .pj-lb-close { position: absolute; top: clamp(14px, 3vw, 28px); right: clamp(14px, 3vw, 28px); }
 .pj-lb-nav--prev { grid-column: 1; }
 .pj-lb-nav--next { grid-column: 3; }
+
+/* ----------------------------------------------------- floated photos --- */
+
+/* A photo placed in Photo Mode (components/projects/PhotoMode.tsx) floats at
+   the start of a paragraph or bullet and the text wraps around it. The body
+   swaps its flex column for ordinary flow, with the same spacing, so a float
+   keeps wrapping the paragraphs after its own. It is also its own formatting
+   context, so no float can escape it into the title, the rules or the dates,
+   and a size container, so a photo's width (cqi) is a share of the body. */
+.pj-body--flow {
+  --pj-flow-gap: clamp(12px, 2vh, 18px);
+  display: flow-root;
+  container-type: inline-size;
+  max-width: 88ch;
+}
+.pj-body--flow > * + * { margin-top: var(--pj-flow-gap); }
+/* The note's own 10px sat on top of the flex gap; in flow the two would collapse into one. */
+.pj-body--flow .pj-status { margin-top: calc(var(--pj-flow-gap) + 10px); }
+.pj-body--flow .pj-summary,
+.pj-body--flow .pj-status,
+.pj-body--flow .pj-bullets { max-width: none; }
+/* A floated photo between two paragraphs would break blueprint.css's p + p spacing. */
+.pj-body .pj-summary ~ .pj-summary { margin-top: 0.85em; }
+
+/* The bullets become a plain list with an inline marker: an outside marker
+   stays at the list's edge while its text wraps beside a left photo, so the
+   dot would sit on the far side of the picture. This one hangs just left of
+   whatever line it starts, photo or not. */
+.pj-body--flow .pj-bullets { display: block; list-style: none; padding-left: 0; }
+.pj-body--flow .pj-bullets > li { position: relative; padding-left: 20px; }
+.pj-body--flow .pj-bullets > li + li { margin-top: clamp(9px, 1.4vh, 14px); }
+.pj-body--flow .pj-bullets > li::before {
+  content: "";
+  display: inline-block;
+  width: 0.36em;
+  height: 0.36em;
+  margin: 0 calc(20px - 0.36em) 0 -20px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 0.16em;
+}
+
+.pj-inline {
+  width: calc(var(--pj-inline-w, 38) * 1cqi);
+  margin-top: 0.3em;
+  margin-bottom: 14px;
+}
+/* The side margin is wider than a bullet's hanging dot, so the dot never lands on the photo. */
+.pj-inline--left { float: left; clear: left; margin-right: clamp(24px, 2.6vw, 34px); }
+.pj-inline--right { float: right; clear: right; margin-left: clamp(24px, 2.6vw, 34px); }
+
+@media (max-width: 640px) {
+  /* Too narrow to wrap text beside a picture: each photo takes the full width, in reading order. */
+  .pj-inline,
+  .pj-inline--left,
+  .pj-inline--right { float: none; width: auto; margin: 4px 0 18px; }
+  .pj-body--flow .pj-bullets > li::before { position: absolute; left: 0; top: 0.66em; margin: 0; }
+  /* In a bullet the words come first, then the photo under them. */
+  .pj-body--flow .pj-bullets > li:has(> .pj-inline) { display: flex; flex-direction: column; }
+  .pj-body--flow .pj-bullets > li > .pj-inline { order: 1; margin: 12px 0 4px; }
+}
+
+/* ---------------------------------------------------------- photo mode --- */
+/* Dev only (npm run site): dragging photos in and out of the text. */
+
+.pj-photo-dock {
+  position: fixed;
+  right: clamp(14px, 2vw, 24px);
+  /* One control above "Edit in Studio", which owns the corner. */
+  bottom: calc(clamp(14px, 2vw, 24px) + 48px);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: min(320px, calc(100vw - 28px));
+}
+.pj-photo-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.38s var(--ease);
+}
+.pj-photo-toggle svg { color: var(--accent); flex: none; }
+.pj-photo-toggle:hover { border-color: var(--accent); transform: translateY(-2px); }
+.pj-photo-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pj-photo-toggle.is-on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--white));
+}
+.pj-photo-status {
+  padding: 9px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--white) 94%, transparent);
+  backdrop-filter: blur(10px);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.pj-photo-status--ok { color: var(--ink); border-color: var(--accent); }
+.pj-photo-status--error { color: var(--ink); border-color: #c2412d; box-shadow: inset 3px 0 0 #c2412d; }
+
+/* Where a photo may go: its own body text, and its own gallery. */
+.pj-entry.is-arranging .pj-body,
+.pj-entry.is-arranging .pj-entry-media {
+  outline: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+  outline-offset: 12px;
+}
+
+.pj-photo-grab {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  padding: 8px;
+  border: 1px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  cursor: grab;
+  touch-action: none;
+  transition: background-color 0.25s var(--ease);
+}
+.pj-photo-grab:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.pj-photo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+button.pj-photo-chip { cursor: pointer; }
+button.pj-photo-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pj-shot.is-lifted { opacity: 0.35; }
+
+.pj-photo-tools {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 2px;
+  max-width: calc(100% - 16px);
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 14%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.pj-inline.is-editing:hover .pj-photo-tools,
+.pj-inline.is-editing:focus-within .pj-photo-tools { opacity: 1; }
+.pj-photo-tools button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.pj-photo-tools button:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.pj-photo-tools button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pj-photo-tools button:disabled { opacity: 0.3; cursor: default; }
+
+/* The handle sits on the corner that faces the text: pull it into the text to grow the photo. */
+.pj-photo-resize {
+  position: absolute;
+  bottom: -8px;
+  z-index: 6;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ink) 25%, transparent);
+  cursor: ew-resize;
+  touch-action: none;
+}
+.pj-inline--right .pj-photo-resize { left: -8px; }
+.pj-inline--left .pj-photo-resize { right: -8px; }
+.pj-photo-resize:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pj-photo-size {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 6;
+  transform: translateX(-50%);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* With every photo in the text, this stands in for the gallery as a drop target. */
+.pj-photo-return {
+  margin-top: 26px;
+  padding: 16px;
+  border: 1px dashed var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* While a photo is carried: the ghost under the pointer, and where it would land. */
+.pj-photo-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.pj-photo-ghost {
+  position: fixed;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  background: var(--white);
+  box-shadow: 0 22px 48px color-mix(in srgb, var(--ink) 30%, transparent);
+  transform: rotate(-1.4deg) scale(1.03);
+  transition: opacity 0.2s var(--ease);
+}
+.pj-photo-ghost img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pj-photo-ghost.is-homeless { opacity: 0.55; }
+.pj-photo-drop {
+  position: fixed;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  border: 2px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  transition: left 0.18s var(--ease), top 0.18s var(--ease), width 0.18s var(--ease), height 0.18s var(--ease);
+}
+.pj-photo-drop span {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+html.pj-photo-dragging,
+html.pj-photo-dragging * { cursor: grabbing !important; user-select: none; }
+
+@media print {
+  .pj-photo-dock, .pj-photo-layer, .pj-photo-grab, .pj-photo-tools, .pj-photo-resize, .pj-photo-return { display: none !important; }
+}
 
 /* ------------------------------------------------------------- narrow --- */
 

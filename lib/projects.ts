@@ -29,6 +29,8 @@ export type ProjectView = {
   project: Project;
   /** Gallery images, falling back to the proof diagrams when there are no photos. */
   images: ProjectImage[];
+  /** True when `images` is the project's own list, so Photo Mode can save a placement back to it. */
+  ownImages: boolean;
   proof: ProofView | null;
 };
 
@@ -100,9 +102,10 @@ function assetsAsImages(assets: ProofAsset[]): ProjectImage[] {
 export function buildProjectViews(projects: Project[], proofs: ProofPoint[]): ProjectView[] {
   return projects.map((project) => {
     const proof = buildProofView(project, proofs);
-    const images = project.images?.length
-      ? project.images
+    const ownImages = Boolean(project.images?.length);
+    const images = ownImages
+      ? project.images!
       : assetsAsImages(project.additionalInfo?.assets ?? []);
-    return { project, images, proof };
+    return { project, images, ownImages, proof };
   });
 }

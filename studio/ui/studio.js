@@ -844,6 +844,35 @@ async function manageFiles() {
   }
 }
 
+/**
+ * Photo Mode on the dev site writes projects.json behind this window's back.
+ * Coming back to the Studio takes up the newer copy of any loaded file that
+ * has no unsaved edits here, so a later save isn't refused as stale. A file
+ * with edits keeps them; its save still says the file changed underneath.
+ */
+async function refreshUntouched() {
+  const changed = [];
+  for (const [key, doc] of Object.entries(state.docs)) {
+    if (doc.dirty) continue;
+    let payload;
+    try {
+      payload = await api(`/api/file/${key}`);
+    } catch {
+      continue;
+    }
+    if (doc.dirty || payload.revision === doc.revision) continue;
+    doc.data = payload.data;
+    doc.original = clone(payload.data);
+    doc.revision = payload.revision;
+    changed.push(doc.file);
+  }
+  if (changed.length === 0) return;
+  paintChrome();
+  paintList();
+  paintDetail();
+  toast(`Picked up changes made outside the Studio: ${changed.join(", ")}.`);
+}
+
 /* --------------------------------------------------------------- boot ---- */
 
 async function boot() {
@@ -879,6 +908,7 @@ async function boot() {
     if (!(await openFromHash())) await selectFile(RAIL[0].keys[0]);
     // The site's "Edit in Studio" control reuses this window and only changes the hash.
     window.addEventListener("hashchange", () => { openFromHash(); });
+    window.addEventListener("focus", () => { refreshUntouched(); });
     devices.start();
   } catch (error) {
     dom.detail.replaceChildren(el("p", { class: "f-empty f-empty--pane" }, `Could not reach the Studio server: ${error.message}`));

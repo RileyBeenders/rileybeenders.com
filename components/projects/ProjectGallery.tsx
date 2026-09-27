@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { Move } from "lucide-react";
 import type { ProjectImage } from "@/types/resume";
 import { DownloadIcon, Lightbox } from "@/components/projects/Lightbox";
 import { PostButton } from "@/components/projects/PostCard";
@@ -10,6 +11,7 @@ import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
 import { isPdf, pdfPreviewSrc } from "@/lib/media";
+import { canFloat, type ShownImage } from "@/lib/photo-place";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -43,7 +45,9 @@ const ZoomIcon = () => (
 
 const SHOT_SIZES = "(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw";
 
-function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: () => void }): ReactNode {
+type ShotButtonProps = { image: ProjectImage; index: number; onOpen: () => void; sizes?: string };
+
+export function ShotButton({ image, index, onOpen, sizes = SHOT_SIZES }: ShotButtonProps): ReactNode {
   // A captured post opens from a card of its own rather than a thumbnail: its
   // picture is a screenshot of someone else's page, which shrinks into an
   // unreadable grey rectangle and says nothing about what it is.
@@ -61,7 +65,7 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
           alt={image.alt}
           frame={image.frame}
           afterFrame={image.afterFrame}
-          sizes={SHOT_SIZES}
+          sizes={sizes}
           ratio={aspectRatio(image.aspect) ?? DEFAULT_ASPECT}
           loading={index === 0 ? "eager" : "lazy"}
         />
@@ -106,7 +110,7 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
           alt={image.alt}
           width={1600}
           height={1200}
-          sizes={SHOT_SIZES}
+          sizes={sizes}
           loading={index === 0 ? "eager" : "lazy"}
           unoptimized={isGif(shown)}
           style={{ width: "100%", height: "auto" }}
@@ -116,7 +120,7 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
           src={shown}
           alt={image.alt}
           fill
-          sizes={SHOT_SIZES}
+          sizes={sizes}
           loading={index === 0 ? "eager" : "lazy"}
           unoptimized={isGif(shown)}
           className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
@@ -142,6 +146,49 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
   );
 }
 
+/** Photo Mode's hold on a gallery photo: drag it into the text, or place it from the keyboard. */
+export type GalleryEditing = {
+  onGrab: (event: React.PointerEvent, figure: HTMLElement, item: ShownImage) => void;
+  onPlace: (item: ShownImage) => void;
+};
+
+type ProjectGalleryProps = {
+  /** Everything the full-screen viewer pages through. */
+  images: ProjectImage[];
+  projectName: string;
+  /**
+   * Which photos the grid draws, when an entry floats some of the others in
+   * its text; omitted = all of `images`. With `onOpen`, the entry owns the
+   * viewer, so a floated photo and a gallery one page through the same set.
+   */
+  items?: ShownImage[];
+  onOpen?: (at: number) => void;
+  /** Set while Photo Mode is on for this project. */
+  editing?: GalleryEditing;
+};
+
+function GrabLayer({ item, editing }: { item: ShownImage; editing: GalleryEditing }) {
+  return (
+    <div
+      className="pj-photo-grab"
+      onPointerDown={(event) => {
+        const figure = event.currentTarget.closest<HTMLElement>(".pj-shot");
+        if (figure) editing.onGrab(event, figure, item);
+      }}
+      title="Drag into the text"
+    >
+      <button
+        type="button"
+        className="pj-photo-chip"
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={() => editing.onPlace(item)}
+      >
+        <Move size={12} strokeWidth={2} aria-hidden="true" /> Place in text
+      </button>
+    </div>
+  );
+}
+
 /**
  * A project's photos as a responsive grid — one image fills the row, two sit
  * side by side, more wrap into rows. Every cell is a fixed-aspect frame (4:3
@@ -150,7 +197,7 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
  * cell opens the full-screen viewer, and uncovers itself with a scroll-timed
  * wipe rather than just fading in.
  */
-export function ProjectGallery({ images, projectName }: { images: ProjectImage[]; projectName: string }) {
+export function ProjectGallery({ images, projectName, items, onOpen, editing }: ProjectGalleryProps) {
   const [openAt, setOpenAt] = useState<number | null>(null);
   const reduced = useReducedMotion();
   // A card added in the Studio but not yet given a file would otherwise render
@@ -158,20 +205,28 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
   // fetches all over again. The viewer is handed the same filtered list, so the
   // indexes still line up.
   const shown = images.filter((image) => Boolean(image.src?.trim()));
-  const enlargeable = shown.filter((image) => !image.post);
-  const groupLabel = `${projectName} images — ${shown.length} in total`;
+  const grid = items ?? shown.map((image, at) => ({ image, index: at, at }));
+  const open = onOpen ?? setOpenAt;
+  const enlargeable = grid.filter(({ image }) => !image.post);
+  const groupLabel = `${projectName} images — ${grid.length} in total`;
 
-  if (shown.length === 0) return null;
+  if (grid.length === 0) return null;
+
+  const cell = (item: ShownImage) => (
+    <>
+      <ShotButton image={item.image} index={item.at} onOpen={() => open(item.at)} />
+      {item.image.caption && <figcaption>{item.image.caption}</figcaption>}
+      {editing && canFloat(item.image) && <GrabLayer item={item} editing={editing} />}
+    </>
+  );
+  const shotClass = `pj-shot${editing ? " is-editing" : ""}`;
 
   return (
     <div className="pj-gallery">
       {reduced ? (
         <div className="pj-gallery-grid" role="group" aria-label={groupLabel}>
-          {shown.map((image, index) => (
-            <figure className="pj-shot" key={`${image.src}-${index}`}>
-              <ShotButton image={image} index={index} onOpen={() => setOpenAt(index)} />
-              {image.caption && <figcaption>{image.caption}</figcaption>}
-            </figure>
+          {grid.map((item) => (
+            <figure className={shotClass} key={`${item.image.src}-${item.index}`}>{cell(item)}</figure>
           ))}
         </div>
       ) : (
@@ -184,10 +239,9 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
           viewport={{ once: true, amount: 0.25, margin: "0px 0px -60px 0px" }}
           variants={gridVariants}
         >
-          {shown.map((image, index) => (
-            <motion.figure className="pj-shot" key={`${image.src}-${index}`} variants={shotVariants}>
-              <ShotButton image={image} index={index} onOpen={() => setOpenAt(index)} />
-              {image.caption && <figcaption>{image.caption}</figcaption>}
+          {grid.map((item) => (
+            <motion.figure className={shotClass} key={`${item.image.src}-${item.index}`} variants={shotVariants}>
+              {cell(item)}
             </motion.figure>
           ))}
         </motion.div>
@@ -198,11 +252,11 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
       {enlargeable.length > 0 && (
         <p className="pj-gallery-note">
           {enlargeable.length === 1 ? ui.gallery.oneImage : fill(ui.gallery.manyImages, { count: enlargeable.length })}
-          {enlargeable.some((image) => image.display === "compare" && image.after) && ` · ${ui.gallery.dragToCompare}`}
+          {enlargeable.some(({ image }) => image.display === "compare" && image.after) && ` · ${ui.gallery.dragToCompare}`}
         </p>
       )}
 
-      {openAt !== null && (
+      {!onOpen && openAt !== null && (
         <Lightbox
           images={shown}
           index={openAt}
