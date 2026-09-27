@@ -77,7 +77,7 @@ const IMAGE_DIRS = {
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".avif"]);
 /**
  * Everything the picker lists and uploads accept: images, plus PDFs for the
- * gallery. A PDF shows as its first page, which the editor renders with
+ * artifact. A PDF shows as its first page, which the editor renders with
  * pdf.js and saves beside it as `<name>.pdf.png` (see /api/pdf-preview). The
  * preview belongs to its PDF, so the picker lists the PDF, not the PNG.
  */
@@ -1006,6 +1006,58 @@ async function handleApi(req, res, url, { store, siteUrl }) {
     if (isPdfName(filename)) await unlink(path.join(target.dir, `${filename}.png`)).catch(() => {});
     console.log(`  deleted ${target.folderPath}/${filename}`);
     return sendJson(res, 200, { ok: true });
+  }
+
+  /* ------------------------------------------------------ linkedin --- */
+
+  // A LinkedIn post kept as evidence: captured once, then the site's own.
+  // The capture needs a signed-in browser profile, which lives in
+  // .studio-cache/linkedin and is made by the sign-in window below.
+  if (segments[0] === "linkedin") {
+    const linkedin = await import("./linkedin.mjs");
+
+    // GET /api/linkedin — whether the saved profile can still see LinkedIn.
+    if (req.method === "GET" && segments.length === 1) {
+      if (!(await linkedin.hasProfile())) return sendJson(res, 200, { signedIn: false, profile: false });
+      const state = await linkedin.sessionState();
+      return sendJson(res, 200, { ...state, profile: true });
+    }
+
+    // POST /api/linkedin/sign-in — opens a visible window and waits there.
+    if (req.method === "POST" && segments[1] === "sign-in" && segments.length === 2) {
+      console.log("  opening a LinkedIn sign-in window…");
+      const state = await linkedin.signIn();
+      console.log(state.signedIn ? "  LinkedIn session saved" : "  LinkedIn sign-in was not completed");
+      return sendJson(res, 200, state);
+    }
+
+    // DELETE /api/linkedin — forgets the saved session.
+    if (req.method === "DELETE" && segments.length === 1) {
+      await linkedin.signOut();
+      console.log("  forgot the LinkedIn session");
+      return sendJson(res, 200, { signedIn: false, profile: false });
+    }
+
+    // POST /api/linkedin/capture { url, folder } — the picture and the words.
+    if (req.method === "POST" && segments[1] === "capture" && segments.length === 2) {
+      const raw = await readBody(req, 4096);
+      let payload;
+      try {
+        payload = JSON.parse(raw.toString("utf8"));
+      } catch {
+        return sendError(res, 400, "Request body was not valid JSON.");
+      }
+      const post = linkedin.normalizePostUrl(payload?.url);
+      if (!post) return sendError(res, 422, "That is not a LinkedIn post address (linkedin.com/posts/…).");
+      const target = resolveImageFolder(String(payload?.folder ?? "").split("/").filter(Boolean));
+      if (!target) return sendError(res, 422, "That folder is not one the editor writes to.");
+
+      const stamp = new Date().toISOString().slice(0, 10);
+      const basename = await uniquePath(target.dir, `linkedin-${stamp}.png`);
+      const result = await linkedin.capturePost({ url: post, outDir: target.dir, basename });
+      console.log(`  captured ${post} → ${target.folderPath}/${basename}`);
+      return sendJson(res, 201, { ...result, src: `/${target.folderPath}/${basename}` });
+    }
   }
 
   return sendError(res, 404, "No such endpoint.");

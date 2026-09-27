@@ -38,8 +38,13 @@
     "pdf": "PDF",
     "pages": "{count} pages",
     "onePage": "1 page",
-    "firstPageOf": "Page 1 of {count}",
-    "downloadPdf": "Download PDF"
+    "pageOf": "Page {page} of {count}",
+    "downloadPdf": "Download PDF",
+    "postSource": "LinkedIn",
+    "postView": "View LinkedIn post",
+    "postOriginal": "Redirect to LinkedIn",
+    "postCapture": "The post as it was captured",
+    "postCaptured": "Captured"
   },
   "dates": {
     "present": "Present"

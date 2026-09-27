@@ -704,6 +704,32 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .f-pdf-preview:not([src]) { display: none; }
 .f-pdf .f-help { margin-top: 0; }
 
+/* A post captured from LinkedIn: the address, the capture controls, and what
+   was read off the page — editable, because a thin capture is a normal outcome.
+   Wider than the PDF panel, since the post's own words live in it. */
+.f-post {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  max-width: 560px;
+}
+.f-post[hidden] { display: none; }
+/* Two classes deep so they outrank .f-btn, declared further down. */
+.f-post .f-btn { padding: 3px 8px; font-size: 12px; }
+.f-post .f-pdf-head .f-btn:last-child { margin-left: 0; }
+.f-post .f-pdf-head .f-pdf-summary { margin-left: auto; }
+/* Folded away until asked for: most artifacts are just photographs. */
+.f-post:has(.f-post-toggle:not([hidden])) { padding: 0; border: 0; background: none; }
+.f-post-toggle[hidden], .f-post-head[hidden], .f-post-body[hidden] { display: none; }
+.f-post-body { display: grid; gap: 10px; }
+.f-post-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.f-post .f-label--inline { display: grid; gap: 4px; }
+.f-post .f-help { margin-top: 0; }
+.f-post textarea { min-height: 6em; }
+
 /* Display: Default or Before & after, and the crop-and-align stage. */
 .f-seg { display: inline-flex; border: 1px solid var(--rule); background: var(--paper); }
 .f-seg-btn {

@@ -145,9 +145,19 @@ export type InterfaceData = {
     /** "{count} pages" beside it; `onePage` when there is only one. */
     pages: string;
     onePage: string;
-    /** Under a PDF in the full-screen viewer: "Page 1 of {count}". */
-    firstPageOf: string;
+    /** Under a PDF in the full-screen viewer, following the scroll: "Page {page} of {count}". */
+    pageOf: string;
     downloadPdf: string;
+    /** The source named on a captured post's card and on the button that opens it. */
+    postSource: string;
+    /** The button in the grid that opens a captured post. */
+    postView: string;
+    /** The link out to the post as it was published, offered inside the viewer. */
+    postOriginal: string;
+    /** Over the screenshot in the viewer, which is the evidence rather than the reading copy. */
+    postCapture: string;
+    /** Before the date the capture was taken: "Captured 14 September 2026". */
+    postCaptured: string;
   };
   dates: {
     present: string;

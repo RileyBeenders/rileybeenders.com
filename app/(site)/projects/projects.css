@@ -350,7 +350,8 @@
   color: #fff;
   pointer-events: none;
 }
-.pj-shot-download {
+.pj-shot-download,
+.pj-shot-post {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -364,8 +365,10 @@
   padding-bottom: 2px;
   transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
 }
-.pj-shot-download:hover { color: var(--accent); border-color: var(--accent); }
-.pj-shot-download:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pj-shot-download:hover,
+.pj-shot-post:hover { color: var(--accent); border-color: var(--accent); }
+.pj-shot-download:focus-visible,
+.pj-shot-post:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .pj-shot figcaption {
   margin-top: 7px;
@@ -661,6 +664,283 @@
   transition: opacity 0.4s ease;
 }
 .pj-lb-figure img.is-loaded { opacity: 1; }
+/* The screenshot of a captured post: the evidence behind the words rather than
+   the thing to read, so it is labelled and given the lesser half. A post is a
+   tall column of type, so it fills the width it is given and scrolls, instead
+   of being squeezed to fit a height at which none of it can be read. */
+.pj-post-capture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  min-width: 0;
+  width: min(100%, 460px);
+  max-height: 46vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.pj-post-capture img {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: auto;
+}
+.pj-post-capture figcaption {
+  order: -1; /* the label introduces the picture rather than trailing it */
+  position: sticky;
+  top: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+/* A PDF in the viewer: every page in one scrolling column, drawn by pdf.js
+   from the file itself. The gallery grid behind it still shows page one only. */
+.pj-lb-pdf {
+  width: min(100%, 900px);
+  max-height: 78vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.pj-lb-pdf:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.pj-lb-page {
+  position: relative;
+  flex: none;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.pj-lb-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Drawn a page at a time as the column is scrolled; fade each one in rather
+     than letting it snap from the placeholder. */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.pj-lb-page canvas.is-drawn { opacity: 1; }
+
+/* A captured post in the viewer: the site's own record of what it said. The
+   picture above it is what the post looked like; this is the part that survives
+   the post being edited or taken down, so it is typeset rather than
+   photographed.
+
+   Literal colours, not palette tokens. The viewer is portalled to <body> (see
+   Lightbox.tsx) and every token on the site is scoped to `.bp`, so a `var(--ink)`
+   in here resolves to nothing at all — which is why the rest of the viewer's
+   chrome is written in literals too. It is drawn as paper with ink in both
+   themes, as the PDF pages beside it are: inside the viewer, a document is on
+   paper. */
+.pj-post {
+  width: min(100%, 720px);
+  flex: none;
+  min-width: 0;
+  background: #fbfbf9;
+  padding: 22px 26px;
+  text-align: left;
+  max-height: 34vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(11, 26, 43, 0.28) transparent;
+}
+.pj-post-head {
+  border-bottom: 1px solid #d9dee3;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.pj-post-author {
+  margin: 0;
+  font-family: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #0b1a2b;
+}
+.pj-post-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pj-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #616b75;
+}
+.pj-post-body {
+  font-size: 16px;
+  line-height: 1.66;
+  color: #26333f;
+}
+.pj-post-body p { margin: 0 0 0.85em; white-space: pre-line; }
+.pj-post-body p:last-child { margin-bottom: 0; }
+/* The sign-off tags, set apart from the prose: part of the record, but not
+   something to read as a sentence. */
+.pj-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 14px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #616b75;
+}
+.pj-post-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #d9dee3;
+}
+.pj-post-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0b1a2b;
+  text-decoration: none;
+  border-bottom: 1px solid #d9dee3;
+  padding-bottom: 2px;
+  transition: border-color 0.3s cubic-bezier(0.22, 0.9, 0.28, 1);
+}
+.pj-post-link:hover { border-color: #0b1a2b; }
+.pj-post-link:focus-visible { outline: 2px solid #0b1a2b; outline-offset: 3px; }
+.pj-post-captured {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #838b92;
+}
+
+/* A captured post is two documents at once — what it said and a picture proving
+   it was said — and stacked they leave each other no room. Given the width they
+   sit side by side, each scrolling on its own, the record taking the larger
+   share because it is the part meant to be read. The figure wraps rather than
+   simply becoming a row, so the viewer's own caption and image count stay on
+   their own line underneath both instead of turning into a third column. */
+@media (min-width: 900px) {
+  .pj-lb-figure:has(.pj-post) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 28px;
+    width: 100%;
+  }
+  .pj-lb-figure:has(.pj-post) .pj-post {
+    max-height: 76vh;
+    width: min(56%, 680px);
+  }
+  .pj-lb-figure .pj-post-capture {
+    width: min(34%, 420px);
+    max-height: 76vh;
+  }
+  .pj-lb-figure:has(.pj-post) > figcaption { flex-basis: 100%; }
+}
+
+/* A captured post in the grid: the site's own card, not a picture of someone
+   else's page. It sits in the same 4:3 cell its neighbours do, so a row of
+   photographs and a post still line up, but it is typeset rather than
+   photographed — a screenshot at thumbnail size is only grey noise.
+   These are palette tokens, unlike the viewer's: the grid is inside `.bp`. */
+.pj-postcard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  /* No fixed ratio: the grid aligns its cells to the top, so the card can be
+     exactly as tall as what it holds instead of padding itself out to 4:3 and
+     leaving a hole between the words and the way in. */
+  padding: 20px 22px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.pj-postcard:hover { border-color: var(--ink); transform: translateY(-3px); }
+.pj-postcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pj-postcard-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pj-postcard-author {
+  font-family: var(--bp-font-subheader);
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pj-postcard-date {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+/* The opening of the post, clamped to whatever the cell has left. The line
+   clamp does the cutting, so the text ends on a full line with an ellipsis
+   rather than at whatever character the cell's height happened to fall on. */
+.pj-postcard-preview {
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--prose);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+}
+.pj-postcard-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 3px;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.pj-postcard:hover .pj-postcard-action { color: var(--accent); border-color: var(--accent); }
+.pj-postcard:hover .pj-postcard-action svg { transform: translateX(3px); }
+.pj-postcard-action svg { transition: transform 0.42s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-postcard, .pj-postcard-action, .pj-postcard-action svg { transition: none; }
+  .pj-postcard:hover { transform: none; }
+}
+
 /* A before/after in the viewer: as large as its frame fits on screen. */
 .pj-lb-compare { width: min(100%, calc(78vh * var(--cmp-ratio, 4 / 3))); }
 .pj-lb-figure .cmp img { max-width: none; max-height: none; object-fit: cover; opacity: 1; transition: none; background: none; }
@@ -737,5 +1017,6 @@
 @media (prefers-reduced-motion: reduce) {
   .pj-lightbox { animation: none; }
   .pj-lb-figure img { transition: none; }
+  .pj-lb-page canvas { transition: none; }
   .pj-toggle-icon { transition: none; }
 }

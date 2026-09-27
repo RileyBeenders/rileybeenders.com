@@ -64,7 +64,7 @@ const ASSET_FIELDS = [
 const IMAGE_FIELDS = [
   // A GIF gets a playback-speed slider under its path, kept as `speed` beside `src`. A PDF gets a
   // first-page preview, its page count as `pages`, and a `download` switch.
-  { name: "src", type: "image", label: "Image or PDF", required: true, speedName: "speed", pagesName: "pages", downloadName: "download", compareLabel: "Before" },
+  { name: "src", type: "image", label: "Image or PDF", required: true, speedName: "speed", pagesName: "pages", downloadName: "download", postName: "post", compareLabel: "Before" },
   // Default is the one image; "Before & after" adds `after` plus where each photo sits in the frame.
   { name: "display", type: "imageDisplay", label: "Display", afterName: "after", frameName: "frame", afterFrameName: "afterFrame" },
   {
@@ -73,7 +73,7 @@ const IMAGE_FIELDS = [
     type: "select",
     label: "Aspect ratio",
     repaint: true,
-    help: "The shape of this image's frame in the gallery. Original shows the whole image with nothing cropped (a before & after uses 4:3 instead). A PDF's first page shows whole unless you pick a shape.",
+    help: "The shape of this artifact's frame on the site. Original shows the whole image with nothing cropped (a before & after uses 4:3 instead). A PDF's first page shows whole unless you pick a shape.",
     options: [
       { value: "", label: "4:3 (standard)" },
       { value: "3:2", label: "3:2 (camera)" },
@@ -88,7 +88,7 @@ const IMAGE_FIELDS = [
     ]
   },
   { name: "alt", type: "text", label: "Alt text", required: true, help: "What the image shows, for screen readers." },
-  { name: "caption", type: "text", label: "Caption", help: "Shown under the image in the gallery." },
+  { name: "caption", type: "text", label: "Caption", help: "Shown under the artifact on the site." },
   {
     name: "fit",
     type: "select",
@@ -411,7 +411,7 @@ export const SCHEMAS = {
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
       { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
-      { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true },
+      { name: "images", type: "objectList", label: "Artifacts", itemLabel: "Artifact", fields: IMAGE_FIELDS, gallery: true },
       { name: "proofId", type: "ref", source: "proofs", label: "Linked proof", help: "Adds that proof's summary and tags to the case study, and its diagrams when there are none above. Left empty, a proof that names this project is used." },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
       {
@@ -459,7 +459,7 @@ export const SCHEMAS = {
     ],
     tabs: [
       { id: "overview", label: "Overview", fields: ["name", "id", "type", "order", "visible", "summary", "status", "dates"] },
-      { id: "gallery", label: "Gallery", fields: ["images"], count: "images" },
+      { id: "artifacts", label: "Artifacts", fields: ["images"], count: "images" },
       { id: "bullets", label: "Bullets", fields: ["bullets"], count: "bullets" },
       { id: "case-study", label: "Case study", fields: ["additionalInfo", "proofId"], unwrap: "additionalInfo" }
     ]
@@ -864,7 +864,7 @@ export const SCHEMAS = {
       { name: "storyHeading", type: "text", label: "Story heading", required: true, span: "half", help: "The section heading beside the summary; the site adds the number." },
       { name: "summary", type: "textarea", label: "Summary", rows: 4, required: true },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
-      { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true, always: true },
+      { name: "images", type: "objectList", label: "Artifacts", itemLabel: "Artifact", fields: IMAGE_FIELDS, gallery: true, always: true },
       {
         name: "caseStudy",
         type: "group",
@@ -979,7 +979,7 @@ export const SCHEMAS = {
       {
         name: "gallery",
         type: "group",
-        label: "Photo galleries",
+        label: "Artifacts",
         fields: [
           { name: "oneImage", type: "text", label: "Note under one image", required: true, span: "half" },
           { name: "manyImages", type: "text", label: "Note under several", required: true, span: "half", help: "{count} becomes the number of images." },
@@ -991,8 +991,13 @@ export const SCHEMAS = {
           { name: "pdf", type: "text", label: "PDF tag", required: true, span: "third" },
           { name: "pages", type: "text", label: "PDF page count", required: true, span: "third", help: "{count} is the number of pages." },
           { name: "onePage", type: "text", label: "…with one page", required: true, span: "third" },
-          { name: "firstPageOf", type: "text", label: "Full-screen: PDF page note", required: true, span: "half", help: "{count} is the number of pages." },
-          { name: "downloadPdf", type: "text", label: "Download PDF button", required: true, span: "half" }
+          { name: "pageOf", type: "text", label: "Full-screen: PDF page note", required: true, span: "half", help: "{page} is the page being read, {count} the number of pages." },
+          { name: "downloadPdf", type: "text", label: "Download PDF button", required: true, span: "half" },
+          { name: "postSource", type: "text", label: "Captured post: source", required: true, span: "third", help: "Named on the card and on the button that opens it." },
+          { name: "postView", type: "text", label: "Captured post: button", required: true, span: "third", help: "Opens the post on the project page." },
+          { name: "postOriginal", type: "text", label: "Captured post: link out", required: true, span: "third", help: "Offered inside the viewer; it may stop working once the post is gone." },
+          { name: "postCapture", type: "text", label: "Captured post: over the screenshot", required: true, span: "third" },
+          { name: "postCaptured", type: "text", label: "Captured post: before the date", required: true, span: "third" }
         ]
       },
       {

@@ -1019,8 +1019,237 @@ function alignerControl(field, value, ctx) {
       el("label", { class: "f-align-zoom" }, "Zoom", zoom, zoomRead),
       reset),
     el("label", { class: "f-align-zoom f-align-split" }, "Preview divider", splitInput),
-    el("p", { class: "f-help" }, "Pick a photo, then drag it in the frame to move it and scroll (or use Zoom) to crop in. Overlay shows the After at half strength so edges can be matched. The frame is the shape set in Aspect ratio below, as the gallery draws it (Original compares in 4:3)."));
+    el("p", { class: "f-help" }, "Pick a photo, then drag it in the frame to move it and scroll (or use Zoom) to crop in. Overlay shows the After at half strength so edges can be matched. The frame is the shape set in Aspect ratio below, as the site draws it (Original compares in 4:3)."));
   place();
+  return root;
+}
+
+
+/* ----------------------------------------------------------- posts --- */
+
+/**
+ * The folder a capture is written to: the one this artifact already points at,
+ * else whichever folder the project's other artifacts use, else the root. A
+ * brand-new artifact has no path yet, so without the sibling step every first
+ * capture would land in `project-images/` instead of beside its project.
+ */
+function folderFor(value, siblings) {
+  const holding = (src) => {
+    const segments = String(src ?? "").split("/").filter(Boolean);
+    segments.pop(); // the filename
+    return segments.join("/");
+  };
+  const sibling = (siblings ?? []).map((entry) => holding(entry?.src)).find(Boolean);
+  return holding(value?.src) || sibling || "project-images";
+}
+
+/**
+ * Whether the saved browser profile can still see LinkedIn.
+ *
+ * Answering costs a headless browser launch, and a project can hold a dozen
+ * artifacts, so the answer is shared across every panel and asked for only
+ * once — and only when a panel is actually opened, never just because one was
+ * drawn. `forgetSession()` drops it after a sign-in, a sign-out, or a capture
+ * refused for want of one.
+ */
+let sessionAsked = null;
+function linkedInSession() {
+  sessionAsked ??= fetch("/api/linkedin")
+    .then((response) => response.json())
+    .then((state) => state.signedIn === true)
+    .catch(() => false);
+  return sessionAsked;
+}
+const forgetSession = () => { sessionAsked = null; };
+
+/**
+ * The panel under an artifact's path for a post captured from LinkedIn.
+ *
+ * A post is not evidence you own: it can be edited, taken down, or lost with
+ * the account. Paste its address and **Capture** takes a picture of it and
+ * copies out its words, writing the picture into the artifact's folder and
+ * setting `src` to it. What it read lands in the fields below, editable,
+ * because LinkedIn's markup is theirs to change and a thin capture is a
+ * normal outcome rather than a failure. The site then shows the words as its
+ * own card, so the record survives the original.
+ *
+ * Kept beside `src` as `post` ({ url, author, date, text, capturedAt }).
+ * Clearing the address clears it and the artifact goes back to a plain image.
+ */
+function postControl(field, value, ctx) {
+  const name = field.postName;
+  const post = () => (value[name] ??= {});
+
+  const url = el("input", {
+    type: "text",
+    class: "f-input f-input--mono",
+    value: value[name]?.url ?? "",
+    placeholder: "https://www.linkedin.com/posts/\u2026"
+  });
+  const capture = el("button", { type: "button", class: "f-btn f-btn--quiet" }, "Capture");
+  const signIn = el("button", { type: "button", class: "f-btn f-btn--quiet", hidden: true }, "Sign in to LinkedIn");
+  const status = el("span", { class: "f-pdf-summary" });
+
+  const author = el("input", { type: "text", class: "f-input", value: value[name]?.author ?? "", placeholder: "Who posted it" });
+  const date = el("input", { type: "text", class: "f-input", value: value[name]?.date ?? "", placeholder: "As the post shows it" });
+  const text = el("textarea", { class: "f-input f-textarea", rows: 5, placeholder: "What the post said" });
+  text.value = value[name]?.text ?? "";
+  const captured = el("span", { class: "f-help" });
+
+  function showCaptured() {
+    const at = value[name]?.capturedAt;
+    captured.textContent = at ? `Captured ${new Date(at).toLocaleString()}` : "Not captured yet.";
+  }
+  showCaptured();
+
+  /** Writes a field back, dropping it from the JSON when it is blank. */
+  function bind(input, key) {
+    input.addEventListener("input", () => {
+      const next = input.value.trim();
+      if (next) post()[key] = next;
+      else if (value[name]) delete value[name][key];
+      ctx.onEdit();
+    });
+  }
+  bind(author, "author");
+  bind(date, "date");
+  bind(text, "text");
+
+  url.addEventListener("input", () => {
+    const next = url.value.trim();
+    if (next) post().url = next;
+    else if (value[name]) {
+      // No address, no record: an artifact without one is a plain image again.
+      delete value[name];
+      author.value = "";
+      date.value = "";
+      text.value = "";
+      showCaptured();
+    }
+    ctx.onEdit();
+  });
+
+  let busy = false;
+  function working(on, message) {
+    busy = on;
+    capture.disabled = on;
+    signIn.disabled = on;
+    status.textContent = message ?? "";
+  }
+
+  /**
+   * Offers the sign-in button unless there is a session. Answering means
+   * launching a browser, which takes a few seconds, so the panel says it is
+   * asking rather than sitting there looking ready.
+   */
+  async function checkSession() {
+    const pending = linkedInSession();
+    let settled = false;
+    pending.finally(() => { settled = true; });
+    // Only announce a wait that is actually going to be noticed.
+    setTimeout(() => { if (!settled && !busy) status.textContent = "checking the LinkedIn session\u2026"; }, 400);
+    const signedIn = await pending;
+    signIn.hidden = signedIn;
+    if (!busy) status.textContent = signedIn ? "" : "not signed in";
+  }
+
+  signIn.addEventListener("click", async () => {
+    if (busy) return;
+    working(true, "a browser window is open \u2014 sign in there\u2026");
+    try {
+      const response = await fetch("/api/linkedin/sign-in", { method: "POST" });
+      const state = await response.json();
+      if (!response.ok) throw new Error(state.error || "Signing in failed.");
+      forgetSession();
+      signIn.hidden = state.signedIn === true;
+      working(false, state.signedIn ? "signed in" : "sign-in was not finished");
+    } catch (error) {
+      working(false, error.message);
+    }
+  });
+
+  capture.addEventListener("click", async () => {
+    if (busy) return;
+    const address = url.value.trim();
+    if (!address) return working(false, "paste the post's address first");
+    working(true, "capturing\u2026");
+    try {
+      const response = await fetch("/api/linkedin/capture", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: address, folder: folderFor(value, ctx.siblings) })
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        // 401 means the saved session has lapsed; offer the window rather than just complaining.
+        if (response.status === 401) {
+          forgetSession();
+          signIn.hidden = false;
+        }
+        throw new Error(result.error || "The capture failed.");
+      }
+      // The picture becomes the artifact itself; the words sit beside it.
+      value.src = result.src;
+      // Alt text is required, and nobody wants to describe a screenshot by hand.
+      if (!String(value.alt ?? "").trim() && result.alt) value.alt = result.alt;
+      const record = post();
+      record.url = result.url;
+      record.capturedAt = result.capturedAt;
+      if (result.author) record.author = result.author;
+      if (result.date) record.date = result.date;
+      if (result.text) record.text = result.text;
+      url.value = result.url;
+      author.value = record.author ?? "";
+      date.value = record.date ?? "";
+      text.value = record.text ?? "";
+      showCaptured();
+      notifyImageChange(value);
+      ctx.onEdit();
+      working(false, result.partial
+        ? "captured, but some of it came back empty \u2014 fill in what is missing below"
+        : "captured");
+    } catch (error) {
+      working(false, error.message);
+    }
+  });
+
+  // Most artifacts are just photographs, so the panel stays folded away behind
+  // one line until it is wanted, and opens by itself for an artifact that
+  // already is a captured post.
+  const body = el("div", { class: "f-post-body" },
+    url,
+    el("div", { class: "f-post-fields" },
+      el("label", { class: "f-label f-label--inline" }, "Posted by", author),
+      el("label", { class: "f-label f-label--inline" }, "Posted", date)),
+    el("label", { class: "f-label f-label--inline" }, "What it said", text),
+    captured,
+    el("p", { class: "f-help" }, "Paste a LinkedIn post's address and Capture takes a picture of it into this artifact's folder, sets the image above to it, and copies out what it said. LinkedIn only answers a signed-in browser, so the editor keeps its own \u2014 sign in once and it remembers. Everything below is editable: the site shows these words, not the picture's, so the post outlives being edited or taken down."));
+
+  const toggle = el("button", { type: "button", class: "f-btn f-btn--quiet f-post-toggle" }, "From a LinkedIn post");
+  const head = el("div", { class: "f-pdf-head f-post-head" },
+    el("span", { class: "f-label f-label--inline" }, "Captured post"),
+    status,
+    signIn,
+    capture);
+
+  function open(on) {
+    body.hidden = !on;
+    head.hidden = !on;
+    toggle.hidden = on;
+    if (on) checkSession();
+  }
+
+  toggle.addEventListener("click", () => open(true));
+
+  const root = el("div", { class: "f-post", hidden: true }, toggle, head, body);
+
+  /** Offered for any artifact that is not a PDF; open already if this one is a post. */
+  root.refresh = (src) => {
+    root.hidden = isPdfSrc(src);
+    // Never asks the server here: drawing a form should not launch a browser.
+    open(Boolean(value[name]?.url));
+  };
+
   return root;
 }
 
@@ -1079,10 +1308,11 @@ async function makePdfPreview(src) {
 }
 
 /**
- * The row under a gallery PDF's path. The site shows only its first page, so
- * this makes that page's preview (whenever the PDF is new or has changed
- * since), says how many pages there are, and holds the switch that lets
- * visitors download the whole file. The page count and the switch are kept
+ * The row under an artifact PDF's path. The site's grid shows only its first
+ * page, so this makes that page's preview (whenever the PDF is new or has
+ * changed since), says how many pages there are, and holds the switch that lets
+ * visitors download the whole file. The full-screen viewer reads the PDF
+ * itself, so the later pages need nothing saved here. The page count and the switch are kept
  * beside `src` as `pages` and `download`. Hidden for anything but a PDF.
  */
 function pdfControl(field, value, ctx) {
@@ -1116,7 +1346,7 @@ function pdfControl(field, value, ctx) {
     el("div", { class: "f-switch-row" },
       toggle,
       el("span", { class: "f-label f-label--inline" }, "Visitors can download it")),
-    el("p", { class: "f-help" }, "The site shows only the first page, as a preview. With download on, a Download PDF button beside it gets the whole file."));
+    el("p", { class: "f-help" }, "The site shows the first page as the preview; opening it full screen scrolls every page. With download on, a Download PDF button beside it gets the whole file."));
 
   let src = null;
   let busy = false;
@@ -1191,6 +1421,7 @@ function imageControl(field, value, ctx) {
 
   const playback = field.speedName ? playbackControl(field, value, ctx) : null;
   const pdf = field.pagesName ? pdfControl(field, value, ctx) : null;
+  const post = field.postName ? postControl(field, value, ctx) : null;
   const preview = el("div", { class: "f-thumb" });
   function paint() {
     preview.replaceChildren(
@@ -1200,6 +1431,7 @@ function imageControl(field, value, ctx) {
     );
     playback?.refresh(input.value);
     pdf?.refresh(input.value);
+    post?.refresh(input.value);
     notifyImageChange(value);
   }
   paint();
@@ -1221,7 +1453,7 @@ function imageControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), [playback, pdf], id);
+  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), [playback, pdf, post], id);
 }
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
@@ -1516,7 +1748,9 @@ function objectListControl(field, value, ctx) {
         // Buttons inside a <summary> would also toggle it; the tools swallow the default action.
         el("div", { class: "f-row-tools", onClick: (event) => event.preventDefault() },
           iconButton("remove", "Remove", () => { list.splice(index, 1); openCards.delete(entry); ctx.onStructureChange(); }))),
-      el("div", { class: "f-card-body" }, renderFields(field.fields, entry, ctx)));
+      // `siblings` lets a field default to what the rest of the list does —
+      // a captured post is written beside the project's other artifacts.
+      el("div", { class: "f-card-body" }, renderFields(field.fields, entry, { ...ctx, siblings: list })));
     card.addEventListener("toggle", () => { if (card.open) openCards.add(entry); else openCards.delete(entry); });
     if (open) openCards.add(entry);
     return card;

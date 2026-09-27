@@ -14,7 +14,7 @@ Save here and the site hot-reloads. Each page of the dev site has an
 this editor on the file behind that page; **Open on the site** is the way back.
 Both reuse one window each, driven by the hash in this page's address
 (`#projects`, `#projects/icarus-lite` for one entry, or
-`#projects/icarus-lite/gallery` for one of its tabs), so a link into the
+`#projects/icarus-lite/artifacts` for one of its tabs), so a link into the
 Studio never reloads it or loses unsaved work.
 
 ## Why it lives outside the Next app
@@ -100,13 +100,13 @@ directly (the themed diagrams in `components/projects/diagrams/`, the folder
 `scripts/capture-site-screenshots.mjs` writes) is refused with the file that
 names it; move those in the code first.
 
-## PDFs in a gallery
+## PDFs as artifacts
 
-A gallery file can be a PDF (the picker offers PDFs for gallery images only,
-and uploads accept them). The site never shows the PDF itself: it shows a
-preview of the first page, which the editor draws with pdf.js (served from
-`node_modules/pdfjs-dist` at `/vendor/pdfjs/`) and saves beside the file as
-`<name>.pdf.png` through `POST /api/pdf-preview`. That happens as soon as the
+An artifact can be a PDF (the picker offers PDFs for artifacts only, and
+uploads accept them). In the grid the site shows a preview of the first page,
+which the editor draws with pdf.js (served from `node_modules/pdfjs-dist` at
+`/vendor/pdfjs/`) and saves beside the file as `<name>.pdf.png` through
+`POST /api/pdf-preview`. That happens as soon as the
 PDF is chosen, and again whenever the PDF is newer than its preview
 (`GET /api/pdf` says which); **Remake preview** forces it. The picker lists the
 PDF, not the PNG, and deleting a PDF deletes its preview.
@@ -114,16 +114,108 @@ PDF, not the PNG, and deleting a PDF deletes its preview.
 The panel under a PDF's path shows the preview and the page count (saved as
 `pages`) and holds **Visitors can download it** (saved as `download: true`,
 left out while off). With it on, the site puts a Download PDF link under the
-preview and in the full-screen viewer; with it off, visitors see only the
-first page. The PDF file itself still sits in `public/`, so anyone with its
-exact address can open it; the switch only decides whether the site offers it.
-A PDF keeps its page's own shape in the gallery unless Aspect ratio picks one,
-and Before & after is for images only.
+preview and in the full-screen viewer; with it off, visitors can still read
+every page but are not handed the file. The PDF itself sits in `public/`, so
+anyone with its exact address can open it; the switch only decides whether the
+site offers it.
+
+Opening a PDF full screen scrolls **every** page, not just the saved preview:
+`components/projects/PdfPages.tsx` loads pdf.js in the browser (a dynamic
+import, so only a visitor who opens a PDF fetches it) and draws each page into
+a canvas as it is scrolled to, with the caption following along ("Page 2 of
+3"). Only the grid uses the saved `<name>.pdf.png`, which is why a page of
+thumbnails never fetches a PDF. A PDF keeps its page's own shape in the grid
+unless Aspect ratio picks one, and Before & after is for images only.
+
+## LinkedIn posts as artifacts
+
+A post on LinkedIn is not evidence you own: it can be edited, taken down, or
+lost with the account. **From a LinkedIn post**, folded away under any
+artifact's path, turns one into something the site keeps.
+
+Paste the post's address and **Capture** takes a picture of it into this
+artifact's folder, points `src` at that picture, and copies out who posted it,
+when, and what it said. Those land in editable fields, because LinkedIn's markup
+is theirs to change and a thin capture is a normal outcome rather than a failure
+— the panel says so ("captured, but some of it came back empty") and you fill in
+the rest. Everything is kept beside `src` as `post`
+(`{ url, author, date, text, capturedAt }`). Clearing the address clears the
+record and the artifact goes back to being a plain image.
+
+The capture writes into the folder this artifact already points at, or, for a
+new one with no path yet, the folder the project's other artifacts use. It also
+fills in **Alt text** if that is still empty ("LinkedIn post by …"), since it is
+a required field and nobody wants to describe a screenshot by hand.
+
+What is deliberately left out and cleaned up:
+
+- **Comments.** On a permalink the replies sit in the same container as the
+  post and carry their own text node, so they are taken out of the page before
+  anything is read *or photographed* — by class name, and then by a sweep for
+  anything still calling itself a comment, since the names are LinkedIn's to
+  change. The author's byline is deliberately kept: a screenshot of a post with
+  no byline is not evidence of much.
+- **Hashtags.** LinkedIn labels every tag link with a hidden "hashtag" word for
+  screen readers, which is why they used to read "hashtag #usa", and it puts
+  each tag on its own line. The hidden nodes go with the rest, and a run of tags
+  is folded back into the one line it reads as. The site then sets that line
+  apart from the prose on the card.
+- **The date.** The page shows a relative age ("4yr"), which is true on the day
+  of the capture and wrong forever after. A LinkedIn activity id carries a Unix
+  millisecond timestamp in its top bits, so the real date is recovered from the
+  address instead and stored as an ISO stamp; the page's own wording is only the
+  fallback for an address with no id.
+
+On the site a captured post is **not** shown as a thumbnail. A screenshot of a
+post shrunk into a grid cell is a grey rectangle of unreadable type, which tells
+a visitor nothing and looks like a mistake, so the grid shows the site's own
+card instead: the source, who posted it, when, the opening of the post, and
+**View LinkedIn post**, which opens it.
+
+Opening it gives the record in full — the words set in the site's type, the
+hashtags apart from them, **Redirect to LinkedIn**, and the date the copy was
+taken — beside the screenshot, which is labelled as what it is ("The post as it
+was captured") and kept as the evidence rather than the reading copy. Given the
+width the two sit side by side, each scrolling on its own, the record taking the
+larger share; below 900px they stack, the record first. The way out to LinkedIn
+is offered on the understanding that it may not answer forever, which is the
+whole reason for keeping the copy.
+
+The hashtags are found by pattern at the end of the text rather than by the line
+the capture put them on, since the text is editable and passes through a
+textarea on the way back; two or more in a row is the test, so a lone
+"#3dprinting" ending a sentence stays in the sentence.
+
+### The signed-in browser
+
+LinkedIn answers a signed-out browser with HTTP 999 and its sign-up wall,
+headless or not, so a capture needs a session. Rather than ask for credentials
+or drive the real Chrome profile (which is locked while Chrome is running), the
+editor keeps its own browser profile in `.studio-cache/linkedin`:
+**Sign in to LinkedIn** opens a visible window, you sign in there as you
+normally would, and the cookies stay in that folder. It is git-ignored and must
+stay that way — it holds a live session.
+
+The session is asked about once per editor session and only when a panel is
+actually opened, because answering costs a headless browser launch. A capture
+refused for want of one comes back as a 401, the sign-in button reappears, and
+nothing is written to disk. Sessions lapse eventually; sign in again when the
+panel says "not signed in".
+
+`readPostInPage()` (the part most likely to be broken by a LinkedIn markup
+change) is exported rather than inlined, so it can be run against a fixture page
+instead of a live post.
+
+LinkedIn serves its wall two different ways and `studio/linkedin.mjs` has to
+catch both: `/feed/` **redirects** to `/login/?session_redirect=…` under an
+ordinary 200, while a post is walled **at its own address** under HTTP 999.
+Getting that wrong is not a harmless miss — a wall mistaken for a post gets
+screenshotted and saved as though it were the evidence.
 
 ## GIFs: speed and looping
 
 A browser plays a GIF at the pace written into the file, and loops it only if
-the file says so, so neither can be set from the site. Instead a gallery image
+the file says so, so neither can be set from the site. Instead an artifact
 whose path ends in `.gif` gets a **Playback speed** slider under it, from ¼×
 up to the fastest the recording allows (a frame can't be shown for less than
 2 hundredths of a second, so a 12.5 fps recording tops out at 4×). The readout
@@ -199,7 +291,7 @@ keeps it as one compact block.
 
 ## Aspect ratio
 
-Each gallery image picks the shape of its frame on the site from **Aspect
+Each artifact picks the shape of its frame on the site from **Aspect
 ratio**: 4:3 (the default, left out of the JSON), 3:2, 16:9, 21:9, 1:1, 4:5,
 3:4, 2:3 or 9:16, saved as `aspect`. **Original** draws the whole image at its
 own proportions with nothing cropped. A before & after uses the chosen shape
@@ -208,11 +300,11 @@ since a comparison needs one fixed frame).
 
 ## Before & after images
 
-A gallery image's **Display** is either *Default* (the one image or GIF) or
+An artifact's **Display** is either *Default* (the one image or GIF) or
 *Before & after*. A comparison keeps its first image in `src` as the Before and
 adds `after`; the site lays the After over the Before and the visitor drags a
 bar between them (arrow keys once it is focused). Under the After path is a
-crop-and-align stage in the same frame the gallery draws (the image's aspect ratio): pick a photo, drag
+crop-and-align stage in the same frame the site draws (the image's aspect ratio): pick a photo, drag
 to move it, scroll or use Zoom to crop in, and *Overlay* shows the After at half
 strength so edges can be matched by eye. Where each photo sits is saved as
 `frame` / `afterFrame` (`{ x, y, w }`, percentages of the frame), so the crop
@@ -280,21 +372,21 @@ and 2px dividers mark where one page of the site ends and the next begins.
 - Hidden entries are **drafts**: a muted name with a DRAFT caption, an accent
   dot on live ones, and the list header counts both ("1 on the site · 8 drafts").
 - A project is four tabs instead of one long form: **Overview** (name, ID,
-  category, order, visibility, summary, status, dates), **Gallery**,
+  category, order, visibility, summary, status, dates), **Artifacts**,
   **Bullets**, and **Case study** (the write-up behind the case-study toggle,
-  plus the linked proof). Gallery and Bullets show their count. The open tab
+  plus the linked proof). Artifacts and Bullets show their count. The open tab
   stays open as you move between projects, so you can work through every
-  gallery in a row; the tab row sticks to the top of the editor, ← / → move
+  project's artifacts in a row; the tab row sticks to the top of the editor, ← / → move
   along it, and the address bar remembers it. Tabs only change what is drawn:
   `schema.tabs` groups the fields, and the key order on disk is unchanged.
-- Gallery images, bullets, and other repeated cards are collapsible; their
+- Artifacts, bullets, and other repeated cards are collapsible; their
   title is their own content (the alt text, the first line of the bullet). A
   long entry (or a long tab, like Case study) gets a margin index of its
   sections.
 - Saving reads "Unsaved changes → Saving… → Saved 11:42 pm" and the toast says
   how many fields changed. If the file changed on disk underneath you, the save
   is refused and your copy is kept across the reload.
-- Every reorderable thing (entries in the list, gallery images, bullets, list
+- Every reorderable thing (entries in the list, artifacts, bullets, list
   rows) has a three-line grip. Grab it and the entry follows the pointer while
   the others slide aside to show where it will land; let go and it settles
   into that gap. Escape puts it back, and the list scrolls itself near the

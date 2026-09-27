@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectImage } from "@/types/resume";
 import { CompareImage } from "@/components/projects/CompareImage";
-import { isPdf, pdfPreviewSrc } from "@/lib/media";
+import { PdfPages } from "@/components/projects/PdfPages";
+import { PostCard } from "@/components/projects/PostCard";
+import { isPdf } from "@/lib/media";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
 
@@ -68,16 +70,28 @@ function FullImage({ src, alt }: { src: string; alt: string }) {
  */
 export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProps) {
   const [mounted, setMounted] = useState(false);
+  const [pdfAt, setPdfAt] = useState({ page: 1, total: 0 });
   const closeRef = useRef<HTMLButtonElement>(null);
   const restoreFocusTo = useRef<Element | null>(null);
 
   const image = images[index];
-  // A PDF opens as its first page only, with the whole file behind a download when the Studio allows it.
+  // A PDF opens as every page, scrollable, drawn from the file itself; the
+  // whole file sits behind a download when the Studio allows it.
   const pdf = image ? isPdf(image.src) : false;
+  // What pdf.js reports once the file is parsed, falling back to the count the
+  // Studio stored beside the file so the caption isn't blank while it loads.
+  const pdfTotal = pdfAt.total || image?.pages || 0;
   const step = useCallback(
     (delta: number) => onIndexChange((index + delta + images.length) % images.length),
     [index, images.length, onIndexChange]
   );
+
+  // PdfPages reports the page under the reader; a stable identity keeps its
+  // observers from being rebuilt on every render.
+  const onPdfPage = useCallback((page: number, total: number) => setPdfAt({ page, total }), []);
+
+  // Stepping to another file starts its count over.
+  useEffect(() => setPdfAt({ page: 1, total: 0 }), [image?.src]);
 
   useEffect(() => setMounted(true), []);
 
@@ -146,13 +160,30 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
             ratio={aspectRatio(image.aspect) ?? DEFAULT_ASPECT}
             loading="eager"
           />
+        ) : pdf ? (
+          <PdfPages key={image.src} src={image.src} alt={image.alt} onPageChange={onPdfPage} />
+        ) : image.post ? (
+          // The record first and the screenshot second, in the DOM as on the
+          // page: the words are what there is to read, the picture is what
+          // proves they were really posted.
+          <>
+            <PostCard post={image.post} />
+            <figure className="pj-post-capture">
+              <FullImage key={image.src} src={image.src} alt={image.alt} />
+              <figcaption>{ui.gallery.postCapture}</figcaption>
+            </figure>
+          </>
         ) : (
-          <FullImage key={image.src} src={pdf ? pdfPreviewSrc(image.src) : image.src} alt={image.alt} />
+          <FullImage key={image.src} src={image.src} alt={image.alt} />
         )}
         {(image.caption || images.length > 1 || pdf) && (
           <figcaption>
             {image.caption}
-            {pdf && image.pages ? <span className="pj-lb-count">{fill(ui.gallery.firstPageOf, { count: image.pages })}</span> : null}
+            {pdf && pdfTotal ? (
+              <span className="pj-lb-count">
+                {fill(ui.gallery.pageOf, { page: pdfAt.page, count: pdfTotal })}
+              </span>
+            ) : null}
             {pdf && image.download && (
               <a className="pj-lb-download" href={image.src} download suppressHydrationWarning>
                 <DownloadIcon />

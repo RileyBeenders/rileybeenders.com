@@ -477,6 +477,19 @@
     "type": "Custom Hybrid Additive Manufacturing System",
     "visible": false,
     "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
+    "images": [
+      {
+        "src": "/project-images/linkedin-2026-09-27-2.png",
+        "alt": "LinkedIn post by Michael Gorski",
+        "post": {
+          "url": "https://www.linkedin.com/posts/michael-gorski-61b6bb179_business-engineer-team-share-6855187389061578752-UO5f",
+          "capturedAt": "2026-09-27T17:11:55.104Z",
+          "author": "Michael Gorski",
+          "date": "2021-10-16T17:07:16.775Z",
+          "text": "Finally, after more long nights, early mornings, weekends, and more stress on the team than I would like to admit, the Filament Innovations team wrapped up the custom KRAKEN 3D Printer build. Utilizing all the hardware we could pack in her from DYZE DESIGN (Pulsar FGF and Typhoon High-Flow FDM), the custom build with a 4x8x4ft print area (with a bed leveling flatness of 560 microns at 100C bed temp) is 99% done, minus some odds and ends. Steven Fritzinger would roll in a 3am to start powder coating and I know Riley Beenders would burn the midnight oil on the CAD work, but those guys and the entire team put in the wrench time to get her done. Here, our electrical engineer, Riley Beenders is standing in the machine to show its true scale, because as DIVE DESIGN told us yesterday (who stopped by the shop to see her), pictures of the machine only do not do her justice. Special thanks to Will Drakas who was with us in August as an intern and helped get the frame built and aligned. She will be shipping on 10/20 to her new owner Atomic Props and Effects where they are going to do some massive pellet prints for their business!\n#business #engineer #team #shipping #work #hardware #usa #3dprinter #3dprinting #kraken #additivemanufacturing #saturday #america #fgf #pellet #design #electrical"
+        }
+      }
+    ],
     "proofId": "kraken",
     "bullets": [
       {
@@ -637,23 +650,50 @@
     }
   },
   {
-    "name": "Filament Innovations",
+    "name": "Filament Innovations Projects",
     "id": "filament-innovations",
     "order": 11,
     "type": "Industrial Design",
+    "summary": "Some photos of the various machines I designed during the first few years being at Filament Innovations. Throughout this process, I held the following titles: Engineering Technician, Industrial Engineer and eventually Lead Electro-Mechanical Engineer.",
     "images": [
       {
         "src": "/project-images/FilamentInnovations/IMG_4878.JPG",
         "aspect": "16:9",
         "alt": "",
-        "caption": "Renderings of bespoke machines I designed between 2020-2022, each tailored to a customer’s specific needs.",
-        "fit": "contain"
+        "caption": "Renderings of bespoke machines I designed between 2020-2022, each tailored to a customer’s specific needs."
+      },
+      {
+        "src": "/project-images/FilamentInnovations/IMG_1683.png",
+        "aspect": "9:16",
+        "alt": "",
+        "caption": "Kratos - My very first design. This series would later be replaced by the Proteor ICARUS-Lite"
+      },
+      {
+        "src": "/project-images/FilamentInnovations/IMG_5307.png",
+        "alt": "",
+        "caption": "2022 - The first custom dual-extrusion high detailed 3D printer we produced."
+      },
+      {
+        "src": "/project-images/FilamentInnovations/5A2F8025-836C-4B1E-8862-61761B073155.JPG",
+        "alt": ""
+      },
+      {
+        "src": "/project-images/FilamentInnovations/FilamentInnovations_PrinterSpecSheets.pdf",
+        "aspect": "3:4",
+        "alt": "",
+        "caption": "One of the original marketing brochures for our initial product line.",
+        "pages": 3,
+        "download": true
+      },
+      {
+        "src": "",
+        "alt": ""
       }
     ],
     "bullets": [],
     "dates": {
       "start": "2020-03-10",
-      "end": "2025-01-31",
+      "end": "2023-01-10",
       "position": "inline"
     }
   }

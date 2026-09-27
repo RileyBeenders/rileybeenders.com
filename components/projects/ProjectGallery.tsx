@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectImage } from "@/types/resume";
 import { DownloadIcon, Lightbox } from "@/components/projects/Lightbox";
+import { PostButton } from "@/components/projects/PostCard";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
@@ -43,6 +44,11 @@ const ZoomIcon = () => (
 const SHOT_SIZES = "(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw";
 
 function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: () => void }): ReactNode {
+  // A captured post opens from a card of its own rather than a thumbnail: its
+  // picture is a screenshot of someone else's page, which shrinks into an
+  // unreadable grey rectangle and says nothing about what it is.
+  if (image.post) return <PostButton post={image.post} onOpen={onOpen} />;
+
   // A before/after is dragged in place, so the frame can't also be the button:
   // the full-screen viewer opens from its own corner control instead.
   const pdf = isPdf(image.src);
@@ -147,15 +153,21 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
 export function ProjectGallery({ images, projectName }: { images: ProjectImage[]; projectName: string }) {
   const [openAt, setOpenAt] = useState<number | null>(null);
   const reduced = useReducedMotion();
-  const groupLabel = `${projectName} images — ${images.length} in total`;
+  // A card added in the Studio but not yet given a file would otherwise render
+  // an <Image> with src="" — which the browser resolves to the page itself and
+  // fetches all over again. The viewer is handed the same filtered list, so the
+  // indexes still line up.
+  const shown = images.filter((image) => Boolean(image.src?.trim()));
+  const enlargeable = shown.filter((image) => !image.post);
+  const groupLabel = `${projectName} images — ${shown.length} in total`;
 
-  if (images.length === 0) return null;
+  if (shown.length === 0) return null;
 
   return (
     <div className="pj-gallery">
       {reduced ? (
         <div className="pj-gallery-grid" role="group" aria-label={groupLabel}>
-          {images.map((image, index) => (
+          {shown.map((image, index) => (
             <figure className="pj-shot" key={`${image.src}-${index}`}>
               <ShotButton image={image} index={index} onOpen={() => setOpenAt(index)} />
               {image.caption && <figcaption>{image.caption}</figcaption>}
@@ -172,7 +184,7 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
           viewport={{ once: true, amount: 0.25, margin: "0px 0px -60px 0px" }}
           variants={gridVariants}
         >
-          {images.map((image, index) => (
+          {shown.map((image, index) => (
             <motion.figure className="pj-shot" key={`${image.src}-${index}`} variants={shotVariants}>
               <ShotButton image={image} index={index} onOpen={() => setOpenAt(index)} />
               {image.caption && <figcaption>{image.caption}</figcaption>}
@@ -181,14 +193,18 @@ export function ProjectGallery({ images, projectName }: { images: ProjectImage[]
         </motion.div>
       )}
 
-      <p className="pj-gallery-note">
-        {images.length === 1 ? ui.gallery.oneImage : fill(ui.gallery.manyImages, { count: images.length })}
-        {images.some((image) => image.display === "compare" && image.after) && ` · ${ui.gallery.dragToCompare}`}
-      </p>
+      {/* The note is about enlarging pictures, so it counts only the pictures:
+          a captured post carries its own "View LinkedIn post" instead. */}
+      {enlargeable.length > 0 && (
+        <p className="pj-gallery-note">
+          {enlargeable.length === 1 ? ui.gallery.oneImage : fill(ui.gallery.manyImages, { count: enlargeable.length })}
+          {enlargeable.some((image) => image.display === "compare" && image.after) && ` · ${ui.gallery.dragToCompare}`}
+        </p>
+      )}
 
       {openAt !== null && (
         <Lightbox
-          images={images}
+          images={shown}
           index={openAt}
           onIndexChange={setOpenAt}
           onClose={() => setOpenAt(null)}

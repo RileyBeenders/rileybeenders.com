@@ -45,15 +45,40 @@ export type ProjectImage = {
   after?: string;
   /**
    * PDF only (a `src` ending in .pdf): its page count, and whether visitors
-   * get a Download PDF button. The gallery shows just the first page, from the
-   * preview the Studio saves beside the file as `<src>.png`.
+   * get a Download PDF button. The gallery grid shows just the first page, from
+   * the preview the Studio saves beside the file as `<src>.png`; the full-screen
+   * viewer scrolls every page, drawn from the file.
    */
   pages?: number;
   download?: boolean;
+  /**
+   * A LinkedIn post this artifact is a capture of. `src` is the picture the
+   * Studio took of the post; this is what it said, kept beside it so the
+   * record survives the post being edited or taken down. The site shows the
+   * words as its own card and links back to the original.
+   */
+  post?: SocialPost;
   /** Where the Before sits in the comparison's frame; omitted = cover, centred. */
   frame?: ImageFrame;
   /** Where the After sits in the comparison's frame; omitted = cover, centred. */
   afterFrame?: ImageFrame;
+};
+
+/**
+ * A post captured from elsewhere, kept as evidence. Only `url` and
+ * `capturedAt` are certain: the rest is what the Studio could read off the
+ * page, corrected by hand where it came back thin.
+ */
+export type SocialPost = {
+  /** The original, linked from the card. */
+  url: string;
+  author?: string;
+  /** As the post showed it ("3mo", "May 2026") — not normalised, since it is a quotation. */
+  date?: string;
+  /** The post's words. */
+  text?: string;
+  /** ISO timestamp of the capture, shown on the card so the record dates itself. */
+  capturedAt: string;
 };
 
 /**
