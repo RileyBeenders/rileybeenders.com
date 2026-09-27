@@ -43,16 +43,29 @@ export function el(tag, props = {}, ...children) {
  */
 export function thumbImage(src, cssSize, props = {}) {
   const local = typeof src === "string" && src.startsWith("/") && !src.startsWith("//");
+  // A PDF is shown by its first page, the preview saved beside it.
+  const pdf = isPdfSrc(src);
+  const shown = pdf ? pdfPreviewSrc(src) : src;
   const img = el("img", {
     alt: "",
     loading: "lazy",
     decoding: "async",
     ...props,
-    src: local ? `/api/thumb?src=${encodeURIComponent(src)}&w=${Math.ceil(cssSize * (window.devicePixelRatio || 1))}` : src
+    src: local ? `/api/thumb?src=${encodeURIComponent(shown)}&w=${Math.ceil(cssSize * (window.devicePixelRatio || 1))}` : shown
   });
-  if (local) img.addEventListener("error", () => { img.src = src; }, { once: true });
+  // Should the copy fail, the original stands in; a PDF with no preview yet shows a plain PDF tile.
+  if (local) img.addEventListener("error", () => { img.src = pdf ? PDF_TILE : src; }, { once: true });
   return img;
 }
+
+/** A gallery file that is a PDF rather than an image. */
+export const isPdfSrc = (src) => typeof src === "string" && /\.pdf$/i.test(src);
+
+/** Where a PDF's first-page preview lives: beside it, as `<name>.pdf.png`. The site reads the same path. */
+export const pdfPreviewSrc = (src) => `${src}.png`;
+
+/** The stand-in for a PDF whose preview hasn't been made yet. */
+const PDF_TILE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="1" y="1" width="58" height="78" fill="#fff" stroke="#8b8d90" stroke-width="2"/><text x="30" y="47" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#6b6c70">PDF</text></svg>')}`;
 
 function icon(name) {
   const paths = {
@@ -798,6 +811,12 @@ function readFrame(raw, aspect, box) {
  * Owns `display`, `after`, `frame` and `afterFrame` on the entry.
  */
 function imageDisplayControl(field, value, ctx) {
+  // A PDF is shown by its first page; a comparison needs two photos.
+  if (isPdfSrc(value.src)) {
+    return el("div", { class: fieldClass(field, "display") },
+      el("span", { class: "f-label" }, field.label),
+      el("p", { class: "f-help" }, "A PDF shows as a preview of its first page. Before & after is for two images."));
+  }
   const compare = value[field.name] === "compare";
 
   const modes = [
@@ -1005,6 +1024,159 @@ function alignerControl(field, value, ctx) {
   return root;
 }
 
+/* ---------------------------------------------------------------- pdf --- */
+
+/** pdf.js, from the pdfjs-dist dev dependency (served by server.mjs), loaded the first time a PDF needs drawing. */
+let pdfjs = null;
+async function loadPdfjs() {
+  if (!pdfjs) {
+    pdfjs = import("/vendor/pdfjs/build/pdf.min.mjs").then((lib) => {
+      lib.GlobalWorkerOptions.workerSrc = "/vendor/pdfjs/build/pdf.worker.min.mjs";
+      return lib;
+    });
+    pdfjs.catch(() => { pdfjs = null; });
+  }
+  return pdfjs;
+}
+
+/** The longest side of a preview, in pixels: enough for the full-screen viewer, small enough to commit. */
+const PDF_PREVIEW_EDGE = 2000;
+
+/**
+ * Draws a PDF's first page with pdf.js and saves it beside the PDF as its
+ * preview. Resolves to the page count.
+ */
+async function makePdfPreview(src) {
+  const lib = await loadPdfjs();
+  const task = lib.getDocument({
+    url: src,
+    cMapUrl: "/vendor/pdfjs/cmaps/",
+    cMapPacked: true,
+    standardFontDataUrl: "/vendor/pdfjs/standard_fonts/",
+    wasmUrl: "/vendor/pdfjs/wasm/",
+    iccUrl: "/vendor/pdfjs/iccs/"
+  });
+  try {
+    const doc = await task.promise;
+    const page = await doc.getPage(1);
+    const base = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: PDF_PREVIEW_EDGE / Math.max(base.width, base.height) });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width);
+    canvas.height = Math.round(viewport.height);
+    // "print" draws in one pass; the on-screen intent waits on animation frames,
+    // which never come while the Studio tab is in the background.
+    await page.render({ canvas, viewport, background: "#ffffff", intent: "print" }).promise;
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    if (!blob) throw new Error("The page could not be drawn.");
+    const response = await fetch(`/api/pdf-preview?src=${encodeURIComponent(src)}`, { method: "POST", headers: { "content-type": "image/png" }, body: blob });
+    if (!response.ok) throw new Error((await response.json().catch(() => ({}))).error || `Saving the preview failed (${response.status}).`);
+    return doc.numPages;
+  } finally {
+    // Frees the worker and the parsed document.
+    task.destroy();
+  }
+}
+
+/**
+ * The row under a gallery PDF's path. The site shows only its first page, so
+ * this makes that page's preview (whenever the PDF is new or has changed
+ * since), says how many pages there are, and holds the switch that lets
+ * visitors download the whole file. The page count and the switch are kept
+ * beside `src` as `pages` and `download`. Hidden for anything but a PDF.
+ */
+function pdfControl(field, value, ctx) {
+  const pagesName = field.pagesName;
+  const downloadName = field.downloadName;
+
+  const preview = el("img", { class: "f-pdf-preview", alt: "", decoding: "async" });
+  const summary = el("span", { class: "f-pdf-summary" });
+  const remake = el("button", { type: "button", class: "f-btn f-btn--quiet f-pdf-remake" }, "Remake preview");
+  const toggle = el("button", {
+    type: "button",
+    class: "f-switch",
+    role: "switch",
+    "aria-checked": String(value[downloadName] === true),
+    "aria-label": "Visitors can download this PDF"
+  }, el("span", { class: "f-switch-thumb" }));
+  toggle.addEventListener("click", () => {
+    const next = toggle.getAttribute("aria-checked") !== "true";
+    toggle.setAttribute("aria-checked", String(next));
+    if (next) value[downloadName] = true;
+    else delete value[downloadName];
+    ctx.onEdit();
+  });
+
+  const root = el("div", { class: "f-pdf", hidden: true },
+    el("div", { class: "f-pdf-head" },
+      el("span", { class: "f-label f-label--inline" }, "PDF"),
+      summary,
+      remake),
+    preview,
+    el("div", { class: "f-switch-row" },
+      toggle,
+      el("span", { class: "f-label f-label--inline" }, "Visitors can download it")),
+    el("p", { class: "f-help" }, "The site shows only the first page, as a preview. With download on, a Download PDF button beside it gets the whole file."));
+
+  let src = null;
+  let busy = false;
+
+  function show(pages, note) {
+    const count = typeof pages === "number" ? `${pages} ${pages === 1 ? "page" : "pages"}` : "";
+    summary.textContent = [count, note].filter(Boolean).join(" · ");
+  }
+
+  async function ensure(force) {
+    const asked = src;
+    if (!asked || busy) return;
+    busy = true;
+    remake.disabled = true;
+    try {
+      const response = await fetch(`/api/pdf?src=${encodeURIComponent(asked)}`);
+      const info = await response.json();
+      if (!response.ok) throw new Error(info.error || "That PDF could not be found.");
+      if (asked !== src) return;
+      const known = typeof value[pagesName] === "number";
+      if (force || !info.fresh || !known) {
+        show(value[pagesName], "making the preview…");
+        const pages = await makePdfPreview(asked);
+        if (asked !== src) return;
+        if (value[pagesName] !== pages) {
+          value[pagesName] = pages;
+          ctx.onEdit();
+        }
+      }
+      preview.src = `/api/thumb?src=${encodeURIComponent(pdfPreviewSrc(asked))}&w=${Math.ceil(240 * (window.devicePixelRatio || 1))}&t=${Date.now()}`;
+      show(value[pagesName], "");
+      notifyImageChange(value);
+    } catch (error) {
+      if (asked === src) show(value[pagesName], `no preview: ${error.message}`);
+    } finally {
+      busy = false;
+      remake.disabled = false;
+    }
+  }
+
+  remake.addEventListener("click", () => ensure(true));
+
+  /** Called whenever the path changes: shows for a PDF, hides for anything else. */
+  root.refresh = (next) => {
+    if (!isPdfSrc(next)) {
+      root.hidden = true;
+      src = null;
+      return;
+    }
+    root.hidden = false;
+    if (next === src) return;
+    src = next;
+    preview.removeAttribute("src");
+    show(value[pagesName], "");
+    ensure(false);
+  };
+
+  return root;
+}
+
 function imageControl(field, value, ctx) {
   const id = nextId();
   // The gallery image doubles as the Before of a comparison, and says so.
@@ -1018,6 +1190,7 @@ function imageControl(field, value, ctx) {
   });
 
   const playback = field.speedName ? playbackControl(field, value, ctx) : null;
+  const pdf = field.pagesName ? pdfControl(field, value, ctx) : null;
   const preview = el("div", { class: "f-thumb" });
   function paint() {
     preview.replaceChildren(
@@ -1026,6 +1199,7 @@ function imageControl(field, value, ctx) {
         : el("span", { class: "f-thumb-empty" }, "no image")
     );
     playback?.refresh(input.value);
+    pdf?.refresh(input.value);
     notifyImageChange(value);
   }
   paint();
@@ -1038,7 +1212,8 @@ function imageControl(field, value, ctx) {
 
   const browse = el("button", { type: "button", class: "f-btn f-btn--quiet" }, "Browse…");
   browse.addEventListener("click", async () => {
-    const picked = await ctx.pickImage(input.value);
+    // Only a gallery file (one that can show a PDF's preview) is offered PDFs.
+    const picked = await ctx.pickImage(input.value, { pdf: Boolean(field.pagesName) });
     if (!picked) return;
     input.value = picked;
     value[field.name] = picked;
@@ -1046,7 +1221,7 @@ function imageControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), playback, id);
+  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), [playback, pdf], id);
 }
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
@@ -1286,6 +1461,12 @@ export function normalize(fields, value) {
         // Only a GIF has a pace to keep, and 1× is the file's own, so it needs no key.
         const speed = field.speedName ? value[field.speedName] : undefined;
         if (isGifSrc(text) && speedOf(speed) !== 1) trailing.push([field.speedName, speedOf(speed)]);
+        // Only a PDF has pages to count and a download to allow; download is left out while off.
+        if (field.pagesName && isPdfSrc(text)) {
+          const pages = value[field.pagesName];
+          if (Number.isInteger(pages) && pages > 0) trailing.push([field.pagesName, pages]);
+          if (value[field.downloadName] === true) trailing.push([field.downloadName, true]);
+        }
         break;
       }
       case "imageDisplay": {
@@ -1346,7 +1527,7 @@ export function normalize(fields, value) {
 
   for (const [key, entry] of trailing) out[key] = entry;
 
-  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.speedName ? [field.speedName] : []), ...(field.type === "imageDisplay" ? [field.afterName, field.frameName, field.afterFrameName] : [])]));
+  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.speedName ? [field.speedName] : []), ...(field.pagesName ? [field.pagesName, field.downloadName] : []), ...(field.type === "imageDisplay" ? [field.afterName, field.frameName, field.afterFrameName] : [])]));
   for (const [key, raw] of Object.entries(value)) {
     if (!known.has(key)) out[key] = raw;
   }

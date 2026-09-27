@@ -9,6 +9,7 @@
 import { SCHEMAS, RAIL } from "./schema.js";
 import { el, renderFields, normalize, thumbImage, gripHandle, makeSortable } from "./fields.js";
 import { createDevicesPanel } from "./devices.js";
+import { createFilePicker } from "./files.js";
 
 const state = {
   files: [],
@@ -19,8 +20,8 @@ const state = {
   docs: {},
   /** key -> index of the entry being edited, for array files */
   selection: {},
-  images: [],
-  imageFolders: []
+  /** key -> id of the open tab, for schemas with tabs. Kept as you move between entries. */
+  tab: {}
 };
 
 const dom = {
@@ -42,6 +43,7 @@ const dom = {
   confirm: document.querySelector("#confirm"),
   siteLink: document.querySelector("#site-link"),
   devicesBtn: document.querySelector("#devices"),
+  filesBtn: document.querySelector("#files-button"),
   devicesDialog: document.querySelector("#devices-dialog")
 };
 
@@ -326,6 +328,8 @@ function addEntry() {
   if (schema.orderField) entry[schema.orderField] = doc.data.length + 1;
   doc.data.push(entry);
   state.selection[state.activeKey] = doc.data.length - 1;
+  // A new entry starts where its name and ID are.
+  if (schema.tabs) state.tab[state.activeKey] = schema.tabs[0].id;
   markDirty();
   paintList();
   paintDetail();
@@ -394,8 +398,10 @@ function paintDetail() {
     refs: buildRefs(),
     onEdit: markDirty,
     onStructureChange: () => { markDirty(); paintList(); paintDetail(); },
-    pickImage: openImagePicker
+    pickImage
   };
+
+  dom.detail.classList.remove("has-tabs");
 
   if (schema.shape === "object") {
     const form = el("div", { class: "f-form f-form--page" }, renderFields(schema.fields, doc.data, ctx));
@@ -414,18 +420,109 @@ function paintDetail() {
         `Nothing here yet. “+ New” adds the first ${schema.label.toLowerCase()} entry; it shows on the site once it has a name and is switched on.`));
       return;
     }
-    const form = el("div", { class: "f-form" }, renderFields(schema.fields, entry, ctx));
-    dom.detail.replaceChildren(
-      el("div", { class: "detail-head" },
+    const tab = activeTab(key);
+    const form = el("div", { class: "f-form" }, tab ? tabFields(schema, tab, entry, ctx) : renderFields(schema.fields, entry, ctx));
+    const body = withIndex(form);
+    if (tab) {
+      body.setAttribute("role", "tabpanel");
+      body.id = "tab-panel";
+      body.setAttribute("aria-labelledby", `tab-${tab.id}`);
+      dom.detail.classList.add("has-tabs");
+    }
+    dom.detail.replaceChildren(...[
+      el("div", { class: `detail-head${tab ? " detail-head--tabbed" : ""}` },
         el("h2", {}, schema.title(entry)),
         schema.visibilityField
           ? (isHidden(schema, entry) ? el("span", { class: "tag tag--off" }, "Draft · not on the site") : el("span", { class: "tag" }, "On the site"))
           : null),
-      withIndex(form)
-    );
+      tab ? tabBar(schema, entry, tab) : null,
+      body
+    ].filter(Boolean));
   }
 
   dom.detail.scrollTop = scrollTop;
+}
+
+/* --------------------------------------------------------------- tabs ---- */
+
+/**
+ * A long entry is split into tabs (schema.tabs), one part of it open at a
+ * time: a project is its overview, its gallery, its bullets, and its case
+ * study. The open tab is kept per file, so moving to the next project stays on
+ * the same part of it — fill in every gallery without re-finding the gallery.
+ */
+function activeTab(key) {
+  const tabs = schemaFor(key)?.tabs;
+  if (!tabs) return null;
+  return tabs.find((tab) => tab.id === state.tab[key]) ?? tabs[0];
+}
+
+function selectTab(id) {
+  state.tab[state.activeKey] = id;
+  paintDetail();
+  dom.detail.scrollTo({ top: 0, behavior: "instant" });
+  // The row was redrawn under the pointer or the arrow key; keep focus on it.
+  dom.detail.querySelector(".detail-tab[aria-selected=\"true\"]")?.focus();
+  writeHash();
+}
+
+/** The row of tabs: a tablist, arrow keys move along it, and a list's length rides beside its name. */
+function tabBar(schema, entry, current) {
+  const tabs = schema.tabs;
+  const step = (event, index) => {
+    const next = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    selectTab(tabs[(next + tabs.length) % tabs.length].id);
+  };
+  return el("div", { class: "detail-tabs", role: "tablist", "aria-label": "Parts of this entry" },
+    ...tabs.map((tab, index) => {
+      const selected = tab.id === current.id;
+      const count = tab.count && Array.isArray(entry[tab.count]) ? entry[tab.count].length : 0;
+      return el("button", {
+        type: "button",
+        role: "tab",
+        id: `tab-${tab.id}`,
+        class: "detail-tab",
+        "aria-selected": String(selected),
+        "aria-controls": "tab-panel",
+        tabIndex: selected ? 0 : -1,
+        onClick: () => { if (!selected) selectTab(tab.id); },
+        onKeydown: (event) => step(event, index)
+      },
+        tab.label,
+        count > 0 ? el("span", { class: "detail-tab-count" }, String(count)) : null);
+    }));
+}
+
+/**
+ * The open tab's fields, in the tab's order. A tab whose `unwrap` names a
+ * group is that group's own page, so the group's fields are drawn straight
+ * onto it (its help as the lead) rather than in a box inside the tab.
+ */
+function tabFields(schema, tab, entry, ctx) {
+  const names = [...tab.fields];
+  // A field no tab names still shows, at the end of the first tab, so a new field is never lost.
+  if (tab === schema.tabs[0]) {
+    const placed = new Set(schema.tabs.flatMap((each) => each.fields));
+    names.push(...schema.fields.map((field) => field.name).filter((name) => !placed.has(name)));
+  }
+  const fragment = document.createDocumentFragment();
+  for (const name of names) {
+    const field = schema.fields.find((candidate) => candidate.name === name);
+    if (!field) continue;
+    if (name !== tab.unwrap) {
+      const rendered = renderFields([field], entry, ctx);
+      // A tab that is one field of the same name doesn't need to say it twice.
+      if (names.length === 1 && field.label === tab.label) rendered.firstElementChild?.classList.add("f-field--tab-solo");
+      fragment.append(rendered);
+      continue;
+    }
+    if (typeof entry[name] !== "object" || entry[name] === null) entry[name] = {};
+    if (field.help) fragment.append(el("p", { class: "f-help f-help--tab" }, field.help));
+    fragment.append(renderFields(field.fields, entry[name], ctx));
+  }
+  return fragment;
 }
 
 /**
@@ -485,10 +582,11 @@ function paintSiteLink() {
 /* ------------------------------------------------------------ file nav --- */
 
 /**
- * The address bar names what is open — `#projects`, or `#projects/icarus-lite`
- * for one entry — so a reload lands back on it, and the site's "Edit in
- * Studio" control can open the right file by linking here. Updated with
- * replaceState so it never adds history or scrolls anything.
+ * The address bar names what is open — `#projects`, `#projects/icarus-lite`
+ * for one entry, `#projects/icarus-lite/gallery` for a tab past the first —
+ * so a reload lands back on it, and the site's "Edit in Studio" control can
+ * open the right file by linking here. Updated with replaceState so it never
+ * adds history or scrolls anything.
  */
 function writeHash() {
   const key = state.activeKey;
@@ -499,15 +597,17 @@ function writeHash() {
   if (schema?.shape === "array" && schema.idField) {
     const id = doc?.data?.[state.selection[key] ?? 0]?.[schema.idField];
     if (id) hash += `/${encodeURIComponent(id)}`;
+    const tab = activeTab(key);
+    if (id && tab && tab !== schema.tabs[0]) hash += `/${tab.id}`;
   }
   if (window.location.hash !== hash) history.replaceState(null, "", hash);
 }
 
-/** `#projects/icarus-lite` → { key: "projects", id: "icarus-lite" }, or null when there is nothing usable. */
+/** `#projects/icarus-lite/gallery` → { key: "projects", id: "icarus-lite", tab: "gallery" }, or null when there is nothing usable. */
 function readHash() {
-  const [key, id] = window.location.hash.replace(/^#/, "").split("/");
+  const [key, id, tab] = window.location.hash.replace(/^#/, "").split("/");
   if (!key || !schemaFor(key)) return null;
-  return { key, id: id ? decodeURIComponent(id) : null };
+  return { key, id: id ? decodeURIComponent(id) : null, tab: tab || null };
 }
 
 /** Opens what the hash names — from a fresh load, or from the site's link changing it. */
@@ -520,6 +620,8 @@ async function openFromHash() {
     const index = doc.data.findIndex((entry) => entry?.[schema.idField] === target.id);
     if (index !== -1) state.selection[target.key] = index;
   }
+  // A link without a tab (the site's) leaves the open tab as it is.
+  if (target.tab && schema.tabs?.some((tab) => tab.id === target.tab)) state.tab[target.key] = target.tab;
   await selectFile(target.key);
   return true;
 }
@@ -651,165 +753,59 @@ function themeIcon(dark) {
   return svg;
 }
 
-/* -------------------------------------------------------- image picker --- */
+/* -------------------------------------------------------------- files ---- */
 
-async function refreshImages() {
-  const payload = await api("/api/images");
-  state.images = payload.images;
-  state.imageFolders = payload.folders;
+let movedWhileOpen = false;
+
+/**
+ * A file or folder moved or renamed in the picker. The server has already
+ * rewritten the data files on disk; this does the same to every copy open
+ * here (the saved baseline too, so a move never reads as an unsaved change),
+ * and takes each rewritten file's new revision when this copy was current
+ * with the old one, so the next save isn't refused as a conflict.
+ */
+function followMove({ from, to, rewrote }) {
+  const carry = (text) => (text === from || text.startsWith(`${from}/`) ? to + text.slice(from.length) : text);
+  // In place, so every object the open form holds stays the same object.
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    for (const [key, value] of Object.entries(node)) {
+      if (typeof value === "string") node[key] = carry(value);
+      else walk(value);
+    }
+  };
+  for (const [key, doc] of Object.entries(state.docs)) {
+    walk(doc.data);
+    walk(doc.original);
+    const written = rewrote.find((entry) => entry.key === key);
+    if (written && doc.revision === written.before) doc.revision = written.after;
+  }
+  movedWhileOpen = true;
 }
 
-/** A folder path, as segments the API can address individually. */
-const folderSegments = (folderPath) => folderPath.split("/").filter(Boolean);
+const files = createFilePicker({ api, dialog: dom.modal, toast, confirmDialog, onMoved: followMove });
 
-const NEW_FOLDER = "__new__";
+/**
+ * An image field's Browse… If anything moved while the picker was open, the
+ * form behind it is redrawn once it closes, after the field has taken what
+ * was chosen, so every path on screen is the new one.
+ */
+async function pickImage(current, options) {
+  const picked = await files.open(current, options);
+  if (movedWhileOpen) {
+    movedWhileOpen = false;
+    setTimeout(paintDetail);
+  }
+  return picked;
+}
 
-/** Resolves to a `/folder/name.png` path, or null if dismissed. */
-function openImagePicker(current) {
-  return new Promise((resolve) => {
-    let settled = false;
-    const finish = (value) => {
-      if (settled) return;
-      settled = true;
-      dom.modal.close();
-      dom.modal.replaceChildren();
-      resolve(value);
-    };
-
-    const grid = el("div", { class: "picker-grid" });
-    const filter = el("select", { class: "f-input f-select f-input--short" });
-
-    const currentFolder = state.images.find((image) => image.src === current)?.folder ?? "";
-    function paintFilterOptions() {
-      const previous = filter.value || currentFolder;
-      filter.replaceChildren(
-        el("option", { value: "" }, "All folders"),
-        ...state.imageFolders.map((name) => el("option", { value: name }, name))
-      );
-      filter.value = state.imageFolders.includes(previous) ? previous : "";
-    }
-    paintFilterOptions();
-    filter.addEventListener("change", paintGrid);
-
-    function paintGrid() {
-      const images = state.images.filter((image) => !filter.value || image.folder === filter.value);
-
-      grid.replaceChildren(
-        ...images.map((image) => {
-          const select = el("button", {
-            type: "button",
-            class: "picker-select",
-            onClick: () => finish(image.src)
-          },
-            // The cell is up to ~220px wide with a 96px-tall contain box; the longest edge decides.
-            thumbImage(image.src, 220),
-            el("span", { class: "picker-name" }, image.name),
-            el("span", { class: "picker-meta" }, `${image.folder} · ${Math.round(image.bytes / 1024)} KB`));
-
-          const remove = el("button", {
-            type: "button",
-            class: "picker-remove",
-            title: `Delete ${image.name}`,
-            "aria-label": `Delete ${image.name}`,
-            onClick: async (event) => {
-              event.stopPropagation();
-              const ok = await confirmDialog({ title: `Delete ${image.name}?`, body: `It is removed from ${image.folder} on disk. This can't be undone.`, action: "Delete", danger: true });
-              if (!ok) return;
-              try {
-                const parts = [...folderSegments(image.folder), image.name].map(encodeURIComponent).join("/");
-                await api(`/api/images/${parts}`, { method: "DELETE" });
-                await refreshImages();
-                paintFolderOptions();
-                paintFilterOptions();
-                paintGrid();
-                toast(`Deleted ${image.src}`);
-              } catch (error) {
-                toast(error.message, "error");
-              }
-            }
-          }, "×");
-
-          return el("div", { class: `picker-item${image.src === current ? " is-active" : ""}` }, select, remove);
-        })
-      );
-      if (images.length === 0) {
-        grid.replaceChildren(el("p", { class: "f-empty" }, filter.value ? `No images in ${filter.value} yet.` : "No images yet — upload one below."));
-      }
-      grid.querySelector(".picker-item.is-active")?.scrollIntoView({ block: "center" });
-    }
-    paintGrid();
-
-    const folder = el("select", { class: "f-input f-select f-input--short" });
-    const newFolder = el("input", {
-      type: "text",
-      class: "f-input f-input--mono f-input--short",
-      placeholder: "project-images/NewFolder",
-      hidden: true
-    });
-
-    function paintFolderOptions() {
-      const previous = folder.value;
-      folder.replaceChildren(
-        ...state.imageFolders.map((name) => el("option", { value: name }, name)),
-        el("option", { value: NEW_FOLDER }, "+ New subfolder…")
-      );
-      const preferred = previous || currentFolder;
-      folder.value = state.imageFolders.includes(preferred) ? preferred : state.imageFolders[0] || NEW_FOLDER;
-      newFolder.hidden = folder.value !== NEW_FOLDER;
-    }
-    paintFolderOptions();
-    folder.addEventListener("change", () => { newFolder.hidden = folder.value !== NEW_FOLDER; });
-
-    const file = el("input", { type: "file", accept: "image/*", class: "f-file" });
-    file.addEventListener("change", async () => {
-      const chosen = file.files?.[0];
-      if (!chosen) return;
-
-      const target = folder.value === NEW_FOLDER ? newFolder.value.trim().replace(/^\/+|\/+$/g, "") : folder.value;
-      if (!target) {
-        toast("Give the new subfolder a path, e.g. project-images/NewFolder", "error");
-        return;
-      }
-
-      try {
-        const parts = folderSegments(target).map(encodeURIComponent).join("/");
-        const uploaded = await api(`/api/images/${parts}?name=${encodeURIComponent(chosen.name)}`, {
-          method: "POST",
-          headers: { "content-type": chosen.type || "application/octet-stream" },
-          body: chosen
-        });
-        await refreshImages();
-        paintFolderOptions();
-        paintFilterOptions();
-        paintGrid();
-        toast(`Uploaded ${uploaded.src}`);
-        finish(uploaded.src);
-      } catch (error) {
-        toast(error.message, "error");
-      } finally {
-        file.value = "";
-      }
-    });
-
-    dom.modal.replaceChildren(
-      el("div", { class: "picker" },
-        el("div", { class: "picker-head" },
-          el("div", { class: "picker-head-title" },
-            el("h2", {}, "Choose an image"),
-            filter),
-          el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: () => finish(null) }, "Close")),
-        grid,
-        el("div", { class: "picker-foot" },
-          el("span", { class: "f-label f-label--inline" }, "Upload into"),
-          folder,
-          newFolder,
-          file,
-          el("span", { class: "f-file-note" }, "Images only, up to 16 MB. An existing name is never overwritten.")))
-    );
-
-    dom.modal.addEventListener("close", () => finish(null), { once: true });
-    dom.modal.showModal();
-  });
+/** The Files button in the corner: the same window, to look after the images rather than choose one. */
+async function manageFiles() {
+  await files.open(null, { manage: true });
+  if (movedWhileOpen) {
+    movedWhileOpen = false;
+    paintDetail();
+  }
 }
 
 /* --------------------------------------------------------------- boot ---- */
@@ -818,6 +814,7 @@ async function boot() {
   dom.saveBtn.addEventListener("click", save);
   dom.revertBtn.addEventListener("click", revert);
   dom.themeToggle.addEventListener("click", toggleTheme);
+  dom.filesBtn.addEventListener("click", manageFiles);
   paintTheme();
 
   window.addEventListener("keydown", (event) => {
@@ -834,8 +831,8 @@ async function boot() {
   const devices = createDevicesPanel({ api, dialog: dom.devicesDialog, button: dom.devicesBtn, toast, confirmDialog });
 
   try {
-    const [{ files, siteUrl }] = await Promise.all([api("/api/files"), refreshImages()]);
-    state.files = files;
+    const [{ files: served, siteUrl }] = await Promise.all([api("/api/files"), files.refresh()]);
+    state.files = served;
     if (siteUrl) state.siteUrl = siteUrl;
     // Projects and proofs load up front so the cross-link dropdowns are filled
     // in no matter which file you open first.

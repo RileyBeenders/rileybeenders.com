@@ -25,6 +25,7 @@
     "@types/node": "^26.1.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "pdfjs-dist": "^6.3.289",
     "playwright-core": "^1.63.0",
     "typescript": "^6.0.3"
   }

@@ -20,7 +20,7 @@
 
 import { createServer } from "node:http";
 import { createHash } from "node:crypto";
-import { readFile, writeFile, rename, mkdir, readdir, stat, unlink } from "node:fs/promises";
+import { readFile, writeFile, rename, mkdir, readdir, stat, unlink, rmdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { AccessStore, parseTarget } from "./access.mjs";
@@ -75,8 +75,26 @@ const IMAGE_DIRS = {
 };
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".avif"]);
+/**
+ * Everything the picker lists and uploads accept: images, plus PDFs for the
+ * gallery. A PDF shows as its first page, which the editor renders with
+ * pdf.js and saves beside it as `<name>.pdf.png` (see /api/pdf-preview). The
+ * preview belongs to its PDF, so the picker lists the PDF, not the PNG.
+ */
+const MEDIA_EXTS = new Set([...IMAGE_EXTS, ".pdf"]);
+const isPdfName = (name) => path.extname(name).toLowerCase() === ".pdf";
+const isPdfPreviewName = (name) => /\.pdf\.png$/i.test(name);
 const MAX_JSON_BYTES = 4 * 1024 * 1024;
 const MAX_IMAGE_BYTES = 16 * 1024 * 1024;
+const MAX_PREVIEW_BYTES = 12 * 1024 * 1024;
+
+/**
+ * pdf.js, from the `pdfjs-dist` dev dependency, served to the editor at
+ * /vendor/pdfjs/: the library and its worker, plus the font, character-map,
+ * colour-profile and decoder data some PDFs need to draw correctly.
+ */
+const PDFJS_DIR = path.join(ROOT, "node_modules", "pdfjs-dist");
+const PDFJS_FOLDERS = new Set(["build", "cmaps", "standard_fonts", "wasm", "iccs"]);
 const BACKUPS_KEPT = 25;
 
 /**
@@ -105,7 +123,10 @@ const MIME = {
   ".avif": "image/avif",
   ".ico": "image/x-icon",
   ".ttf": "font/ttf",
-  ".woff2": "font/woff2"
+  ".woff2": "font/woff2",
+  ".mjs": "text/javascript; charset=utf-8",
+  ".wasm": "application/wasm",
+  ".pdf": "application/pdf"
 };
 
 /* ------------------------------------------------------------- helpers --- */
@@ -275,9 +296,16 @@ async function scanImageDir(dir, folderPath, images, folders) {
       await scanImageDir(absolute, childPath, images, folders);
       continue;
     }
-    if (!IMAGE_EXTS.has(path.extname(entry.name).toLowerCase())) continue;
+    if (!MEDIA_EXTS.has(path.extname(entry.name).toLowerCase()) || isPdfPreviewName(entry.name)) continue;
     const info = await stat(absolute);
-    images.push({ src: `/${folderPath}/${entry.name}`, folder: folderPath, name: entry.name, bytes: info.size, modified: info.mtimeMs });
+    images.push({
+      src: `/${folderPath}/${entry.name}`,
+      folder: folderPath,
+      name: entry.name,
+      bytes: info.size,
+      modified: info.mtimeMs,
+      ...(isPdfName(entry.name) ? { kind: "pdf" } : {})
+    });
   }
 }
 
@@ -294,7 +322,164 @@ async function scanImages() {
 function sanitizeFilename(raw) {
   const base = path.basename(String(raw || "")).replace(/[^a-zA-Z0-9._-]/g, "-").replace(/^[.-]+/, "");
   if (!base) return null;
-  return IMAGE_EXTS.has(path.extname(base).toLowerCase()) ? base : null;
+  // A name that would pass for a PDF's preview is refused: that file is the editor's to write.
+  return MEDIA_EXTS.has(path.extname(base).toLowerCase()) && !isPdfPreviewName(base) ? base : null;
+}
+
+/** A folder name typed in the picker, in an upload's alphabet: spaces and the rest become dashes. */
+function sanitizeFolderName(raw) {
+  const name = String(raw || "").trim().replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^[.-]+/, "").replace(/-+$/, "").slice(0, 80);
+  return name && isSafeSegment(name) ? name : null;
+}
+
+/**
+ * A public path in the picker's folders — a folder ("/project-images/ICARUS-Lite")
+ * or a file in one — resolved to disk. Null for anything outside IMAGE_DIRS or
+ * with an unsafe segment. A leading slash is optional.
+ */
+function resolveImagePath(raw) {
+  if (typeof raw !== "string") return null;
+  const segments = raw.split("/").filter(Boolean);
+  const base = IMAGE_DIRS[segments[0]];
+  if (!base || !segments.slice(1).every(isSafeSegment)) return null;
+  return { segments, src: `/${segments.join("/")}`, absolute: path.join(base, ...segments.slice(1)), isRoot: segments.length === 1 };
+}
+
+const statOrNull = (absolute) => stat(absolute).catch(() => null);
+
+/** Files Windows and macOS leave in folders on their own; they don't make a folder "not empty". */
+const JUNK_FILES = new Set(["thumbs.db", "desktop.ini", ".ds_store"]);
+
+/* -------------------------------------------------- moving and references --- */
+
+/**
+ * `value` with the path `from` (a file, or a folder and everything in it)
+ * renamed to `to` wherever a string is exactly that path or starts inside it.
+ * `counter.count` says how many strings changed.
+ */
+function repath(value, from, to, counter) {
+  if (typeof value === "string") {
+    if (value !== from && !value.startsWith(`${from}/`)) return value;
+    counter.count += 1;
+    return to + value.slice(from.length);
+  }
+  if (Array.isArray(value)) return value.map((entry) => repath(entry, from, to, counter));
+  if (value && typeof value === "object") {
+    const out = {};
+    for (const [key, entry] of Object.entries(value)) out[key] = repath(entry, from, to, counter);
+    return out;
+  }
+  return value;
+}
+
+/** How often each data file the Studio edits refers to `src` (or to anything inside it). */
+async function dataRefs(src) {
+  const uses = [];
+  for (const [key, entry] of Object.entries(FILES)) {
+    const counter = { count: 0 };
+    repath((await readDataFile(key)).data, src, src, counter);
+    if (counter.count > 0) uses.push({ key, label: entry.label, count: counter.count });
+  }
+  return uses;
+}
+
+/**
+ * Source the Studio can't edit that names a path directly — a themed diagram
+ * in components/, a script that writes screenshots into a folder. Moving what
+ * they name would break them, so a move is refused while any do.
+ */
+const CODE_DIRS = ["app", "components", "lib", "scripts", "types", "data", "ResumeBuilder"];
+const CODE_EXTS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".css", ".json", ".md"]);
+
+async function codeRefs(src) {
+  const escaped = src.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // "/project-images/x" must not match "/project-images/x-old".
+  const pattern = new RegExp(`${escaped}(?![A-Za-z0-9._-])`);
+  const studioData = new Set(Object.values(FILES).map((entry) => path.join(ROOT, entry.file)));
+  const found = [];
+  async function walk(dir) {
+    let entries;
+    try {
+      entries = await readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      if (entry.name.startsWith(".") || entry.name === "node_modules") continue;
+      const absolute = path.join(dir, entry.name);
+      if (entry.isDirectory()) await walk(absolute);
+      else if (CODE_EXTS.has(path.extname(entry.name).toLowerCase()) && !studioData.has(absolute)) {
+        if (pattern.test(await readFile(absolute, "utf8"))) found.push(path.relative(ROOT, absolute).split(path.sep).join("/"));
+      }
+    }
+  }
+  for (const dir of CODE_DIRS) await walk(path.join(ROOT, dir));
+  return found;
+}
+
+function refusal(status, message) {
+  const error = new Error(message);
+  error.status = status;
+  return error;
+}
+
+/**
+ * Moves or renames a file or folder inside the image folders, then rewrites
+ * every data file that referred to it, so nothing on the site points at a
+ * path that is gone. `to` is the full new path; its last segment is the name,
+ * cleaned the way an upload's is. Each rewritten file is backed up first and
+ * reported with its revision before and after, so the editor can follow along.
+ */
+async function moveImagePath(fromRaw, toRaw) {
+  const from = resolveImagePath(fromRaw);
+  if (!from) throw refusal(404, "That isn't in the image folders.");
+  if (from.isRoot) throw refusal(422, `${from.segments[0]} is one of the Studio's own folders, so it stays where it is.`);
+  const source = await statOrNull(from.absolute);
+  if (!source) throw refusal(404, `${from.src} is no longer on disk.`);
+  const isFolder = source.isDirectory();
+
+  const toSegments = String(toRaw || "").split("/").filter(Boolean);
+  const parent = resolveImagePath(toSegments.slice(0, -1).join("/"));
+  const parentInfo = parent ? await statOrNull(parent.absolute) : null;
+  if (!parent || !parentInfo?.isDirectory()) throw refusal(404, "The folder it's going to isn't there.");
+
+  let name;
+  if (isFolder) {
+    name = sanitizeFolderName(toSegments.at(-1));
+    if (!name) throw refusal(422, "Give the folder a name.");
+  } else {
+    name = sanitizeFilename(toSegments.at(-1));
+    const ext = path.extname(from.absolute).toLowerCase();
+    if (!name || path.extname(name).toLowerCase() !== ext) throw refusal(422, `Keep the file's ${ext} ending.`);
+  }
+  const to = resolveImagePath(`${parent.src}/${name}`);
+  if (to.src === from.src) return { from: from.src, to: to.src, kind: isFolder ? "folder" : "file", rewrote: [] };
+  if (isFolder && to.src.startsWith(`${from.src}/`)) throw refusal(422, "A folder can't go inside itself.");
+  // Windows is case-insensitive: renaming a.jpg to A.jpg finds "itself" at the new path.
+  const sameFile = to.absolute.toLowerCase() === from.absolute.toLowerCase();
+  if (!sameFile && (await statOrNull(to.absolute))) throw refusal(409, `${parent.src} already has something named ${name}.`);
+
+  const code = await codeRefs(from.src);
+  if (code.length > 0) {
+    throw refusal(409, `${code.join(", ")} ${code.length === 1 ? "names" : "name"} ${from.src} directly, so it stays put. Move it in the code first.`);
+  }
+
+  await rename(from.absolute, to.absolute);
+  // A PDF's preview travels with it.
+  if (!isFolder && isPdfName(from.absolute)) await rename(`${from.absolute}.png`, `${to.absolute}.png`).catch(() => {});
+  console.log(`  moved ${from.src} → ${to.src}`);
+
+  const rewrote = [];
+  for (const [key, entry] of Object.entries(FILES)) {
+    const current = await readDataFile(key);
+    const counter = { count: 0 };
+    const next = repath(current.data, from.src, to.src, counter);
+    if (counter.count === 0) continue;
+    const after = await writeDataFile(key, next);
+    console.log(`  updated ${counter.count} ${counter.count === 1 ? "path" : "paths"} in ${entry.file}`);
+    rewrote.push({ key, label: entry.label, count: counter.count, before: current.revision, after });
+  }
+  return { from: from.src, to: to.src, kind: isFolder ? "folder" : "file", rewrote };
 }
 
 /** Adds `-2`, `-3`, … rather than overwriting an image already on disk. */
@@ -427,6 +612,65 @@ async function serveGifPreview(req, res, absolute, speed) {
   res.end(body);
 }
 
+/* ---------------------------------------------------------------- pdf --- */
+
+/**
+ * A PDF under one of the picker's folders, by its public path, with the
+ * preview that belongs to it. Null for anything else.
+ */
+function resolvePdf(src) {
+  if (typeof src !== "string" || !isPdfName(src)) return null;
+  const segments = src.split("/").filter(Boolean);
+  if (!IMAGE_DIRS[segments[0]] || !segments.every(isSafeSegment)) return null;
+  const absolute = safeJoin(PUBLIC_DIR, src);
+  return absolute ? { absolute, preview: `${absolute}.png`, previewSrc: `${src}.png` } : null;
+}
+
+/** GET /api/pdf?src=/project-images/x/report.pdf — whether its preview exists and is newer than the PDF. */
+async function servePdfInfo(res, url) {
+  const pdf = resolvePdf(url.searchParams.get("src"));
+  if (!pdf) return sendError(res, 404, "Not a PDF in the image folders.");
+  let info;
+  try {
+    info = await stat(pdf.absolute);
+  } catch {
+    return sendError(res, 404, "That PDF is not on disk.");
+  }
+  let preview = null;
+  try {
+    preview = await stat(pdf.preview);
+  } catch {
+    // Not made yet.
+  }
+  return sendJson(res, 200, {
+    bytes: info.size,
+    preview: pdf.previewSrc,
+    hasPreview: preview !== null,
+    // A PDF replaced after its preview was made needs a new one.
+    fresh: preview !== null && preview.mtimeMs >= info.mtimeMs
+  });
+}
+
+/** POST /api/pdf-preview?src=… with a PNG body: the first page, rendered by the editor, saved as `<pdf>.png`. */
+async function savePdfPreview(req, res, url) {
+  const pdf = resolvePdf(url.searchParams.get("src"));
+  if (!pdf) return sendError(res, 404, "Not a PDF in the image folders.");
+  try {
+    await stat(pdf.absolute);
+  } catch {
+    return sendError(res, 404, "That PDF is not on disk.");
+  }
+  const body = await readBody(req, MAX_PREVIEW_BYTES);
+  // Only a PNG is written, whatever the request claims to be.
+  const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  if (body.length < 8 || !body.subarray(0, 8).equals(PNG_SIGNATURE)) return sendError(res, 400, "The preview must be a PNG.");
+  const staging = `${pdf.preview}.studio-${process.pid}.tmp`;
+  await writeFile(staging, body);
+  await rename(staging, pdf.preview);
+  console.log(`  previewed ${pdf.previewSrc}`);
+  return sendJson(res, 201, { preview: pdf.previewSrc, bytes: body.length });
+}
+
 /* ---------------------------------------------------------- thumbnails --- */
 
 let sharpModule; // undefined until first use; null when it is not installed
@@ -548,6 +792,16 @@ async function serveStatic(res, absolute) {
   }
 }
 
+/** A small JSON request body, or a 400. */
+async function readJson(req) {
+  const raw = await readBody(req, 64 * 1024);
+  try {
+    return JSON.parse(raw.toString("utf8"));
+  } catch {
+    throw refusal(400, "Request body was not valid JSON.");
+  }
+}
+
 function decodeSegment(raw) {
   try {
     return decodeURIComponent(raw);
@@ -651,6 +905,58 @@ async function handleApi(req, res, url, { store, siteUrl }) {
     return serveGifInfo(res, url);
   }
 
+  if (req.method === "GET" && segments[0] === "pdf" && segments.length === 1) {
+    return servePdfInfo(res, url);
+  }
+
+  if (req.method === "POST" && segments[0] === "pdf-preview" && segments.length === 1) {
+    return savePdfPreview(req, res, url);
+  }
+
+  // The picker's file-manager side: new folders, empty-folder deletes, moves and renames.
+  if (req.method === "POST" && segments[0] === "folders" && segments.length === 1) {
+    const payload = await readJson(req);
+    const parent = resolveImagePath(payload?.parent);
+    const parentInfo = parent ? await statOrNull(parent.absolute) : null;
+    if (!parentInfo?.isDirectory()) return sendError(res, 404, "The folder to make it in isn't there.");
+    const name = sanitizeFolderName(payload?.name);
+    if (!name) return sendError(res, 422, "Give the folder a name: letters, numbers, dots, dashes or underscores.");
+    const folder = resolveImagePath(`${parent.src}/${name}`);
+    if (await statOrNull(folder.absolute)) return sendError(res, 409, `${parent.src} already has something named ${name}.`);
+    await mkdir(folder.absolute);
+    console.log(`  made ${folder.src}/`);
+    return sendJson(res, 201, { folder: folder.src.slice(1), name });
+  }
+
+  if (req.method === "DELETE" && segments[0] === "folders" && segments.length >= 3) {
+    const folder = resolveImagePath(segments.slice(1).join("/"));
+    if (!folder || folder.isRoot) return sendError(res, 404, "Unknown folder.");
+    let entries;
+    try {
+      entries = await readdir(folder.absolute);
+    } catch {
+      return sendError(res, 404, "That folder is already gone.");
+    }
+    const kept = entries.filter((name) => !JUNK_FILES.has(name.toLowerCase()));
+    if (kept.length > 0) return sendError(res, 409, `${folder.src} still holds ${kept.length} ${kept.length === 1 ? "thing" : "things"}. Move or delete ${kept.length === 1 ? "it" : "them"} first.`);
+    for (const junk of entries) await unlink(path.join(folder.absolute, junk));
+    await rmdir(folder.absolute);
+    console.log(`  deleted ${folder.src}/`);
+    return sendJson(res, 200, { ok: true });
+  }
+
+  if (req.method === "POST" && segments[0] === "move" && segments.length === 1) {
+    const payload = await readJson(req);
+    return sendJson(res, 200, await moveImagePath(payload?.from, payload?.to));
+  }
+
+  // GET /api/refs?src=/project-images/x.jpg — what refers to it, before it is deleted.
+  if (req.method === "GET" && segments[0] === "refs" && segments.length === 1) {
+    const target = resolveImagePath(url.searchParams.get("src"));
+    if (!target) return sendError(res, 404, "That isn't in the image folders.");
+    return sendJson(res, 200, { uses: await dataRefs(target.src), code: await codeRefs(target.src) });
+  }
+
   // Both routes address a folder by every segment after "images", e.g.
   // /api/images/project-images/ICARUS-Lite — which lets the picker upload
   // into, and delete from, subfolders exactly as it does the root folders.
@@ -660,7 +966,7 @@ async function handleApi(req, res, url, { store, siteUrl }) {
 
     const filename = sanitizeFilename(url.searchParams.get("name"));
     if (!filename) {
-      return sendError(res, 400, `Give the file a name ending in ${[...IMAGE_EXTS].join(", ")}.`);
+      return sendError(res, 400, `Give the file a name ending in ${[...MEDIA_EXTS].join(", ")}.`);
     }
 
     const body = await readBody(req, MAX_IMAGE_BYTES);
@@ -676,7 +982,7 @@ async function handleApi(req, res, url, { store, siteUrl }) {
   if (req.method === "DELETE" && segments[0] === "images" && segments.length >= 3) {
     const filename = segments[segments.length - 1];
     const target = resolveImageFolder(segments.slice(1, -1));
-    if (!target || !isSafeSegment(filename) || !IMAGE_EXTS.has(path.extname(filename).toLowerCase())) {
+    if (!target || !isSafeSegment(filename) || !MEDIA_EXTS.has(path.extname(filename).toLowerCase())) {
       return sendError(res, 404, "Unknown image.");
     }
 
@@ -686,6 +992,8 @@ async function handleApi(req, res, url, { store, siteUrl }) {
       if (error.code === "ENOENT") return sendError(res, 404, "That image is already gone.");
       throw error;
     }
+    // A PDF's preview goes with it.
+    if (isPdfName(filename)) await unlink(path.join(target.dir, `${filename}.png`)).catch(() => {});
     console.log(`  deleted ${target.folderPath}/${filename}`);
     return sendJson(res, 200, { ok: true });
   }
@@ -726,6 +1034,14 @@ export async function startStudio({
         const target = safeJoin(UI_DIR, url.pathname.slice("/studio".length));
         if (target && (await serveStatic(res, target))) return;
         return sendError(res, 404, "Not found.");
+      }
+
+      // pdf.js, for rendering a PDF's first page in the editor.
+      if (url.pathname.startsWith("/vendor/pdfjs/")) {
+        const rest = url.pathname.slice("/vendor/pdfjs/".length);
+        const target = PDFJS_FOLDERS.has(rest.split("/")[0]) ? safeJoin(PDFJS_DIR, "/" + rest) : null;
+        if (target && (await serveStatic(res, target))) return;
+        return sendError(res, 404, "pdf.js is not installed. Run npm install.");
       }
 
       // Everything else falls through to the site's public/ folder, so image

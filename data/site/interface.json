@@ -34,7 +34,12 @@
     "before": "Before",
     "after": "After",
     "loading": "Loading full-resolution image…",
-    "failed": "Couldn’t load the full-resolution image"
+    "failed": "Couldn’t load the full-resolution image",
+    "pdf": "PDF",
+    "pages": "{count} pages",
+    "onePage": "1 page",
+    "firstPageOf": "Page 1 of {count}",
+    "downloadPdf": "Download PDF"
   },
   "dates": {
     "present": "Present"

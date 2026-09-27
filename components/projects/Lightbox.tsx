@@ -4,8 +4,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectImage } from "@/types/resume";
 import { CompareImage } from "@/components/projects/CompareImage";
+import { isPdf, pdfPreviewSrc } from "@/lib/media";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
-import { ui } from "@/lib/copy";
+import { fill, ui } from "@/lib/copy";
+
+/** Beside a PDF, in the gallery and here, when the Studio allows downloading it. */
+export const DownloadIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M8 2.5v8m0 0L4.5 7M8 10.5 11.5 7M3 13.5h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 type LightboxProps = {
   images: ProjectImage[];
@@ -64,6 +72,8 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
   const restoreFocusTo = useRef<Element | null>(null);
 
   const image = images[index];
+  // A PDF opens as its first page only, with the whole file behind a download when the Studio allows it.
+  const pdf = image ? isPdf(image.src) : false;
   const step = useCallback(
     (delta: number) => onIndexChange((index + delta + images.length) % images.length),
     [index, images.length, onIndexChange]
@@ -123,7 +133,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
       )}
 
       <figure className="pj-lb-figure">
-        {image.display === "compare" && image.after ? (
+        {image.display === "compare" && image.after && !pdf ? (
           <CompareImage
             key={`${image.src}|${image.after}`}
             className="pj-lb-compare"
@@ -137,11 +147,18 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
             loading="eager"
           />
         ) : (
-          <FullImage key={image.src} src={image.src} alt={image.alt} />
+          <FullImage key={image.src} src={pdf ? pdfPreviewSrc(image.src) : image.src} alt={image.alt} />
         )}
-        {(image.caption || images.length > 1) && (
+        {(image.caption || images.length > 1 || pdf) && (
           <figcaption>
             {image.caption}
+            {pdf && image.pages ? <span className="pj-lb-count">{fill(ui.gallery.firstPageOf, { count: image.pages })}</span> : null}
+            {pdf && image.download && (
+              <a className="pj-lb-download" href={image.src} download suppressHydrationWarning>
+                <DownloadIcon />
+                <span>{ui.gallery.downloadPdf}</span>
+              </a>
+            )}
             {images.length > 1 && <span className="pj-lb-count">{index + 1} / {images.length}</span>}
           </figcaption>
         )}

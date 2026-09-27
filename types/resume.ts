@@ -43,6 +43,13 @@ export type ProjectImage = {
   display?: "compare";
   /** The After image of a comparison. */
   after?: string;
+  /**
+   * PDF only (a `src` ending in .pdf): its page count, and whether visitors
+   * get a Download PDF button. The gallery shows just the first page, from the
+   * preview the Studio saves beside the file as `<src>.png`.
+   */
+  pages?: number;
+  download?: boolean;
   /** Where the Before sits in the comparison's frame; omitted = cover, centred. */
   frame?: ImageFrame;
   /** Where the After sits in the comparison's frame; omitted = cover, centred. */

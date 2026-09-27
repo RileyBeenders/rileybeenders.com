@@ -11,6 +11,13 @@
  * room to write in plus a running word count, and `multiline: true` turns a
  * string list's rows into textareas for paragraphs.
  *
+ * `tabs` splits a list entry's form into pages, one open at a time. Each tab
+ * names the fields it shows, in the order it shows them; `unwrap` draws a
+ * group's own fields straight onto the tab instead of in a box, and `count`
+ * puts a list's length beside the tab's name. Tabs change nothing on disk
+ * either: `fields` still sets the key order. Name each field in one tab; a
+ * field no tab names is drawn at the end of the first.
+ *
  * RAIL, at the bottom, arranges the schemas in the editor's sidebar in the
  * order the site reads them.
  */
@@ -55,8 +62,9 @@ const ASSET_FIELDS = [
 ];
 
 const IMAGE_FIELDS = [
-  // A GIF gets a playback-speed slider under its path, kept as `speed` beside `src`.
-  { name: "src", type: "image", label: "Image", required: true, speedName: "speed", compareLabel: "Before" },
+  // A GIF gets a playback-speed slider under its path, kept as `speed` beside `src`. A PDF gets a
+  // first-page preview, its page count as `pages`, and a `download` switch.
+  { name: "src", type: "image", label: "Image or PDF", required: true, speedName: "speed", pagesName: "pages", downloadName: "download", compareLabel: "Before" },
   // Default is the one image; "Before & after" adds `after` plus where each photo sits in the frame.
   { name: "display", type: "imageDisplay", label: "Display", afterName: "after", frameName: "frame", afterFrameName: "afterFrame" },
   {
@@ -65,7 +73,7 @@ const IMAGE_FIELDS = [
     type: "select",
     label: "Aspect ratio",
     repaint: true,
-    help: "The shape of this image's frame in the gallery. Original shows the whole image with nothing cropped (a before & after uses 4:3 instead).",
+    help: "The shape of this image's frame in the gallery. Original shows the whole image with nothing cropped (a before & after uses 4:3 instead). A PDF's first page shows whole unless you pick a shape.",
     options: [
       { value: "", label: "4:3 (standard)" },
       { value: "3:2", label: "3:2 (camera)" },
@@ -294,21 +302,21 @@ export const SCHEMAS = {
       }
     }),
     fields: [
-      { name: "name", type: "text", label: "Name", required: true },
-      { name: "id", type: "slug", label: "ID", required: true, help: "Used in links and to match a proof. Lowercase, no spaces." },
-      { name: "order", type: "number", label: "Order", help: "Low numbers come first on the projects page." },
-      { name: "type", type: "text", label: "Category", placeholder: "Motion Control / Product Platform" },
+      { name: "name", type: "text", label: "Name", required: true, span: "half" },
+      { name: "id", type: "slug", label: "ID", required: true, span: "half", help: "Used in links and to match a proof. Lowercase, no spaces." },
+      { name: "order", type: "number", label: "Order", span: "third", help: "Low numbers come first on the projects page." },
+      { name: "type", type: "text", label: "Category", span: "half", placeholder: "Motion Control / Product Platform" },
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
       { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
       { name: "images", type: "objectList", label: "Gallery", itemLabel: "Image", fields: IMAGE_FIELDS, gallery: true },
-      { name: "proofId", type: "ref", source: "proofs", label: "Proof", help: "The write-up that slides in after this project." },
+      { name: "proofId", type: "ref", source: "proofs", label: "Linked proof", help: "Adds that proof's summary and tags to the case study, and its diagrams when there are none above. Left empty, a proof that names this project is used." },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true },
       {
         name: "additionalInfo",
         type: "group",
-        label: "Proof detail",
-        help: "The panel that slides in from the right on the projects page.",
+        label: "Case study",
+        help: "Opens under the project behind its case-study toggle. A section left empty is skipped.",
         fields: [
           { name: "title", type: "text", label: "Title" },
           { name: "subtitle", type: "text", label: "Subtitle" },
@@ -346,6 +354,12 @@ export const SCHEMAS = {
           }
         ]
       }
+    ],
+    tabs: [
+      { id: "overview", label: "Overview", fields: ["name", "id", "type", "order", "visible", "summary", "status", "dates"] },
+      { id: "gallery", label: "Gallery", fields: ["images"], count: "images" },
+      { id: "bullets", label: "Bullets", fields: ["bullets"], count: "bullets" },
+      { id: "case-study", label: "Case study", fields: ["additionalInfo", "proofId"], unwrap: "additionalInfo" }
     ]
   },
 
@@ -803,7 +817,12 @@ export const SCHEMAS = {
           { name: "before", type: "text", label: "Before tag", required: true, span: "third" },
           { name: "after", type: "text", label: "After tag", required: true, span: "third" },
           { name: "loading", type: "text", label: "Full-screen: loading", required: true, span: "half" },
-          { name: "failed", type: "text", label: "Full-screen: failed", required: true, span: "half" }
+          { name: "failed", type: "text", label: "Full-screen: failed", required: true, span: "half" },
+          { name: "pdf", type: "text", label: "PDF tag", required: true, span: "third" },
+          { name: "pages", type: "text", label: "PDF page count", required: true, span: "third", help: "{count} is the number of pages." },
+          { name: "onePage", type: "text", label: "…with one page", required: true, span: "third" },
+          { name: "firstPageOf", type: "text", label: "Full-screen: PDF page note", required: true, span: "half", help: "{count} is the number of pages." },
+          { name: "downloadPdf", type: "text", label: "Download PDF button", required: true, span: "half" }
         ]
       },
       {

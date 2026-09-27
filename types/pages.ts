@@ -110,6 +110,14 @@ export type InterfaceData = {
     after: string;
     loading: string;
     failed: string;
+    /** The tag on a PDF's preview. */
+    pdf: string;
+    /** "{count} pages" beside it; `onePage` when there is only one. */
+    pages: string;
+    onePage: string;
+    /** Under a PDF in the full-screen viewer: "Page 1 of {count}". */
+    firstPageOf: string;
+    downloadPdf: string;
   };
   dates: {
     present: string;

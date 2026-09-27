@@ -4,10 +4,11 @@ import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectImage } from "@/types/resume";
-import { Lightbox } from "@/components/projects/Lightbox";
+import { DownloadIcon, Lightbox } from "@/components/projects/Lightbox";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
+import { isPdf, pdfPreviewSrc } from "@/lib/media";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -25,6 +26,13 @@ const shotVariants = {
 /** An animated GIF plays at the file's own pace and loops as the file says; the Studio sets both. */
 const isGif = (src: string) => /\.gif$/i.test(src);
 
+/** "PDF · 12 pages", from the page count the Studio stores beside the file. */
+export function pdfTag(image: ProjectImage): string {
+  const pages = image.pages;
+  if (!pages) return ui.gallery.pdf;
+  return `${ui.gallery.pdf} · ${pages === 1 ? ui.gallery.onePage : fill(ui.gallery.pages, { count: pages })}`;
+}
+
 const ZoomIcon = () => (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
     <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
@@ -37,7 +45,8 @@ const SHOT_SIZES = "(max-width: 500px) 100vw, (max-width: 860px) 50vw, 25vw";
 function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: () => void }): ReactNode {
   // A before/after is dragged in place, so the frame can't also be the button:
   // the full-screen viewer opens from its own corner control instead.
-  if (image.display === "compare" && image.after) {
+  const pdf = isPdf(image.src);
+  if (image.display === "compare" && image.after && !pdf) {
     return (
       <div className="pj-shot-compare">
         <CompareImage
@@ -61,8 +70,11 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
       </div>
     );
   }
-  const ratio = aspectRatio(image.aspect);
-  return (
+  // A PDF is shown by its first page (the preview the Studio saved), whole
+  // unless the Studio picks a shape for it; the rest of the file never loads here.
+  const shown = pdf ? pdfPreviewSrc(image.src) : image.src;
+  const ratio = pdf && !image.aspect ? null : aspectRatio(image.aspect);
+  const frame = (
     <button
       type="button"
       className={`pj-shot-btn${ratio === null ? " pj-shot-btn--original" : ""}`}
@@ -84,30 +96,43 @@ function ShotButton({ image, index, onOpen }: { image: ProjectImage; index: numb
         // "Original": no frame to fill, so the image sets its own height and
         // nothing is cropped. width/height only seed the ratio until it loads.
         <Image
-          src={image.src}
+          src={shown}
           alt={image.alt}
           width={1600}
           height={1200}
           sizes={SHOT_SIZES}
           loading={index === 0 ? "eager" : "lazy"}
-          unoptimized={isGif(image.src)}
+          unoptimized={isGif(shown)}
           style={{ width: "100%", height: "auto" }}
         />
       ) : (
         <Image
-          src={image.src}
+          src={shown}
           alt={image.alt}
           fill
           sizes={SHOT_SIZES}
           loading={index === 0 ? "eager" : "lazy"}
-          unoptimized={isGif(image.src)}
+          unoptimized={isGif(shown)}
           className={image.fit === "contain" ? "pj-shot-img--contain" : undefined}
         />
       )}
+      {pdf && <span className="pj-shot-tag">{pdfTag(image)}</span>}
       <span className="pj-shot-zoom" aria-hidden="true">
         <ZoomIcon />
       </span>
     </button>
+  );
+
+  // Downloading is the Studio's switch; without it the site offers the first page only.
+  if (!pdf || !image.download) return frame;
+  return (
+    <>
+      {frame}
+      <a className="pj-shot-download" href={image.src} download suppressHydrationWarning>
+        <DownloadIcon />
+        <span>{ui.gallery.downloadPdf}</span>
+      </a>
+    </>
   );
 }
 

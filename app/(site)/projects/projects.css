@@ -332,6 +332,39 @@
 .pj-shot-btn:hover .pj-shot-zoom,
 .pj-shot-btn:focus-visible .pj-shot-zoom { opacity: 1; transform: translateY(0); }
 
+/* A PDF in the gallery: its first page, tagged, with the file behind a download
+   link when the Studio allows it. The page is drawn on white whatever the theme,
+   as paper is. */
+.pj-shot-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(8, 16, 26, 0.72);
+  color: #fff;
+  pointer-events: none;
+}
+.pj-shot-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.pj-shot-download:hover { color: var(--accent); border-color: var(--accent); }
+.pj-shot-download:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 .pj-shot figcaption {
   margin-top: 7px;
   font-size: 12px;
@@ -646,6 +679,21 @@
   text-align: center;
 }
 .pj-lb-count { font-size: 11px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
+.pj-lb-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.pj-lb-download:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.6); }
+.pj-lb-download:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 .pj-lb-close,
 .pj-lb-nav {
