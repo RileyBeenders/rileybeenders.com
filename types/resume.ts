@@ -352,6 +352,15 @@ export type LayoutSettings = {
   introAlign: IntroAlign;
 };
 
+/**
+ * Site-wide motion. `syncAnimations` puts every repeating animation (the Read
+ * more glints, the skill pills' borders, the rest) on one shared beat instead
+ * of each on its own offset. Left out of header.json, it is off.
+ */
+export type MotionSettings = {
+  syncAnimations?: boolean;
+};
+
 export type ResumeData = {
   siteMode?: "resume" | "coming-soon";
   person: {
@@ -369,6 +378,7 @@ export type ResumeData = {
   theme: ThemeSetting;
   fonts: FontSettings;
   layout: LayoutSettings;
+  motion?: MotionSettings;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
   skills: SkillGroup[];

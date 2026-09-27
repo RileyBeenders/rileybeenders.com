@@ -1129,6 +1129,23 @@ export const SCHEMAS = {
           }
         ]
       },
+      {
+        // Left out of header.json while off, so a save that didn't touch it changes nothing.
+        name: "motion",
+        type: "group",
+        label: "Motion",
+        help: "How the site's repeating animations run together.",
+        fields: [
+          {
+            name: "syncAnimations",
+            type: "boolean",
+            label: "Sync animations",
+            default: false,
+            omitWhenDefault: true,
+            help: "On: every repeating animation runs on one shared beat, so all the Read more glints sweep together and all the skill pills' borders move together. Off: each runs on its own offset, as the site does now."
+          }
+        ]
+      },
       { name: "resumePdfPath", type: "text", label: "Resume PDF path", span: "half", placeholder: "/api/resume-pdf", help: "What the “Download PDF” button fetches." }
     ]
   }

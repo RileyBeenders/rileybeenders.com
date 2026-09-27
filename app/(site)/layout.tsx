@@ -14,6 +14,7 @@ import { BpNav } from "@/components/blueprint/BpNav";
 import dynamic from "next/dynamic";
 import { BpFixedRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
+import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
@@ -112,6 +113,8 @@ function cssBlock(vars: Record<string, string>): string {
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
+  // Site Settings → Motion: every repeating animation on one shared beat (components/blueprint/AnimationSync.tsx).
+  const syncAnimations = resumeData.motion?.syncAnimations === true;
 
   const overrideCss = `
 .bp[data-theme-id] {
@@ -133,12 +136,13 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
 
   return (
     <ThemeProvider>
-      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId} data-intro-align={resumeData.layout.introAlign}>
+      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId} data-intro-align={resumeData.layout.introAlign} data-motion-sync={syncAnimations ? "" : undefined}>
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
         <BpNav name={resumeData.person.name} />
         {children}
         <BpFixedRelocationBadge />
+        {syncAnimations ? <AnimationSync /> : null}
         <StudioLink />
       </div>
     </ThemeProvider>

@@ -203,6 +203,10 @@
   0%, 64% { transform: translateX(-130%); }
   88%, 100% { transform: translateX(330%); }
 }
+/* Site Settings → Motion → Sync animations: every glint on one beat (no
+   stagger), and a hover only hides it, so it never falls out of step. */
+.bp[data-motion-sync] .bp-bullet-link-glint { animation-delay: 0s; }
+.bp[data-motion-sync] .bp-bullet-link:is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-glint { animation-play-state: running; }
 
 /* -------------------------------------------------------------- still --- */
 /* No movement: the fill turns to ink and nothing else changes. */

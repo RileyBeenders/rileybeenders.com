@@ -172,6 +172,13 @@
   45%, 100% { background-position: 167% 0; }
 }
 
+/* Site Settings → Motion → Sync animations: every pill's border on one beat
+   (no stagger), and a hover only hides it rather than pausing it, so it
+   never falls out of step. Marks restart after a hover; AnimationSync lines
+   them up again as they do. */
+.bp[data-motion-sync] .bp-pill--linked::after { animation-delay: 0s; }
+.bp[data-motion-sync] .bp-pill--linked:is(:hover, :focus-within, [data-hover])::after { animation-play-state: running; }
+
 /* Steady: an accent border, nothing moving. */
 .bp-pill--linked[data-border="steady"] { border-color: var(--accent); }
 
