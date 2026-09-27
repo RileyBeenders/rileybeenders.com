@@ -2,10 +2,11 @@
    Skill pills (.bp-pill), and skills linked to a project or proof
 
    A skill linked in the Studio (Skills → Links to) renders through
-   components/blueprint/LinkedSkill.tsx as .bp-pill--linked: a chain-link
-   icon, a border that marks it as linked (data-border), and a hover card
-   naming the project or proof with the site's Read more button
-   (data-reveal). Both are the Studio's Home page → Linked skills.
+   components/blueprint/LinkedSkill.tsx as .bp-pill--linked: a border that
+   marks it as linked (data-border), a chain-link icon that is the link and
+   turns and opens into a Read more button on hover, and a hover card naming
+   the project or proof (data-reveal). Both are the Studio's Home page →
+   Linked skills.
    Every color is a palette token, so each variant follows Site Settings →
    Overall theme in light and dark without a rule of its own.
 
@@ -61,11 +62,7 @@
   gap: 7px;
   padding-right: 12px;
   border-color: color-mix(in srgb, var(--accent) 38%, var(--rule));
-}
-.bp-pill-link {
-  flex: none;
-  color: var(--accent);
-  transition: transform 0.4s var(--ease);
+  transition: transform 0.34s var(--ease), border-color 0.34s ease, color 0.34s ease, box-shadow 0.34s ease, margin-right 0.36s var(--ease);
 }
 .bp-pill--linked:is(:hover, :focus-within, [data-hover]) {
   z-index: 10;
@@ -73,9 +70,60 @@
   border-color: var(--accent);
   color: var(--ink);
   box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent);
+  /* Opening widens the pill by the label (--more-w, measured by LinkedSkill)
+     plus the button's padding and gap (22px); the same amount comes back off
+     the margin, so it grows over the next pill instead of pushing it along,
+     and a pill at the end of a line never wraps away from the pointer. */
+  margin-right: calc(-1 * (var(--more-w, 64px) + 22px));
+  transition-delay: 0s, 0s, 0s, 0s, 0.24s;
 }
-/* The link turns a quarter, as if clicking into place. */
-.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-pill-link { transform: rotate(-45deg); }
+
+/* The chain link is the link. Hovering or focusing the pill turns it a half
+   turn; then the pill opens to show Read more beside it as a small accent
+   button, the site's Read more in miniature. Closing runs it backwards: the
+   label folds away first, then the link turns back. */
+.bp-pill-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: padding 0.36s var(--ease), gap 0.36s var(--ease), background-color 0.3s ease, color 0.3s ease;
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-pill-more {
+  gap: 6px;
+  padding: 3px 8px 4px;
+  background-color: var(--accent);
+  color: var(--on-accent);
+  transition-delay: 0.24s;
+}
+.bp-pill-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.bp-pill-link {
+  flex: none;
+  transition: transform 0.34s var(--ease) 0.2s;
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-pill-link {
+  transform: rotate(-180deg);
+  transition-delay: 0s;
+}
+.bp-pill-more-label {
+  display: block;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.36s var(--ease);
+}
+.bp-pill-more-label > span { display: inline-block; }
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-pill-more-label {
+  width: var(--more-w, 64px);
+  transition-delay: 0.24s;
+}
 
 /* The border marks sit on this layer, over the pill's own border. */
 .bp-pill--linked::after {
@@ -184,8 +232,8 @@
 
 /* --------------------------------------------------------- hover card --- */
 /* Placed by LinkedSkill just before it opens: data-align start / center / end,
-   and --caret-x for the card's pointer. The card is always in the page, so
-   its Read more link stays in the tab order and focusing it opens the card. */
+   and --caret-x for the card's pointer. It only names the project or proof;
+   the link is the pill's own Read more, and focusing that opens the card. */
 .bp-skill-card {
   --card-x: -50%;
   --card-y: 6px;
@@ -232,20 +280,6 @@
   letter-spacing: 0.06em;
   color: var(--muted);
 }
-/* The Read more button pops in just after the card. */
-.bp-skill-card-action {
-  margin-top: 8px;
-  opacity: 0;
-  transform: translateY(5px) scale(0.96);
-  transform-origin: left center;
-  transition: opacity 0.2s ease, transform 0.34s var(--ease);
-}
-.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-skill-card-action {
-  opacity: 1;
-  transform: none;
-  transition-delay: 0.09s;
-}
-.bp-skill-card .bp-bullet-link { margin-left: 0; vertical-align: 0; }
 
 /* Card: floats above the pill with a pointer down to it. The strip under the
    card bridges the gap, so moving onto the card never closes it. */
@@ -376,9 +410,9 @@
    above. */
 @media print {
   .bp-pill,
-  .bp-pill--linked { border-color: #999; box-shadow: none; background: #fff; }
+  .bp-pill--linked { border-color: #999; box-shadow: none; background: #fff; margin-right: 0; }
   .bp-skill-card,
-  .bp-pill-link,
+  .bp-pill-more,
   .bp-pill--linked::before,
   .bp-pill--linked::after { display: none !important; }
 }

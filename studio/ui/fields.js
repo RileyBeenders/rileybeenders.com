@@ -1324,16 +1324,22 @@ const LINK_ICON_PATH = "M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8"
  */
 function linkedSkillPreview(site, border, reveal) {
   const sample = site?.sampleSkill ?? { name: "SolidWorks", target: "ICARUS-Lite", detail: "Project · Industrial Design" };
-  return el("span", { class: "bp-pill bp-pill--linked", "data-border": border, "data-reveal": reveal || "card", style: "--k: 0" },
+  const labelText = el("span", {}, site?.readMoreLabel || "Read more");
+  const pill = el("span", { class: "bp-pill bp-pill--linked", "data-border": border, "data-reveal": reveal || "card", style: "--k: 0" },
     el("span", { class: "bp-pill-name" }, sample.name),
-    el("svg", { class: "bp-pill-link", width: 13, height: 13, viewBox: "0 0 24 24", fill: "none" },
-      el("path", { d: LINK_ICON_PATH, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" })),
+    // The icon is the link: on hover it turns, then the pill opens to Read more.
+    el("span", { class: "bp-pill-more" },
+      el("svg", { class: "bp-pill-link", width: 13, height: 13, viewBox: "0 0 24 24", fill: "none" },
+        el("path", { d: LINK_ICON_PATH, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" })),
+      el("span", { class: "bp-pill-more-label" }, labelText)),
     reveal
       ? el("span", { class: "bp-skill-card" },
         el("span", { class: "bp-skill-card-name" }, sample.target),
-        el("span", { class: "bp-skill-card-detail" }, sample.detail),
-        el("span", { class: "bp-skill-card-action" }, readMorePreview(site?.readMoreMotion || "sweep", site?.readMoreLabel || "Read more")))
+        el("span", { class: "bp-skill-card-detail" }, sample.detail))
       : null);
+  // The label's width, which the pill opens by, as LinkedSkill measures it once the preview is on screen.
+  requestAnimationFrame(() => { if (labelText.scrollWidth) pill.style.setProperty("--more-w", `${Math.ceil(labelText.scrollWidth)}px`); });
+  return pill;
 }
 
 /**

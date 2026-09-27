@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
-import { BulletLink } from "@/components/blueprint/BulletLink";
 import type { SkillTarget } from "@/lib/skill-links";
-import type { LinkedSkillBorder, LinkedSkillReveal, ReadMoreAnimation } from "@/types/pages";
+import type { LinkedSkillBorder, LinkedSkillReveal } from "@/types/pages";
 
 type LinkedSkillProps = {
   name: string;
@@ -12,9 +12,9 @@ type LinkedSkillProps = {
   kindLabel: string;
   border: LinkedSkillBorder;
   reveal: LinkedSkillReveal;
+  /** The words the pill opens to (the site's Read more label). */
   readMoreLabel: string;
-  readMoreMotion: ReadMoreAnimation;
-  /** Its place among the page's linked skills, which staggers the border loops and the Read more glint. */
+  /** Its place among the page's linked skills, which staggers the border loops. */
   index: number;
 };
 
@@ -22,6 +22,8 @@ type LinkedSkillProps = {
 const EDGE = 12;
 /** The callout's leader runs this far out from the pill's corner before its label starts. */
 const CALLOUT_REACH = 16;
+/** What opening adds beyond the label: the button's side padding and its gap (skill-pills.css). */
+const OPEN_EXTRA = 22;
 
 /** The chain link at the end of a linked pill (lucide's link-2). */
 function LinkIcon() {
@@ -34,31 +36,44 @@ function LinkIcon() {
 
 /**
  * A skill pill that points at the project or proof behind it (Skills → Links
- * to, in the Studio). The border marks it as linked (`data-border`), and
- * hovering or focusing it opens a card (`data-reveal`) naming what it links
- * to, with the site's Read more button. Both are the Studio's Home page →
- * Linked skills, styled in app/(site)/skill-pills.css.
+ * to, in the Studio). The border marks it as linked (`data-border`). The
+ * chain link at its end is the link itself: hovering or focusing the pill
+ * turns the icon a half turn, then the pill opens to show the Read more
+ * label beside it as a small accent button. A card (`data-reveal`) still
+ * names the project or proof above the pill. Both are the Studio's Home
+ * page → Linked skills, styled in app/(site)/skill-pills.css.
  *
- * The card is always in the page, faded out, so its Read more link stays in
- * the tab order: tabbing to it opens the card through :focus-within. Just
- * before it opens, the card is placed so it stays inside the window
- * (`data-align`, and `--caret-x` for the card's pointer).
+ * Opening would widen the pill and push the pills after it along (and at the
+ * end of a line, wrap it away from the pointer, closing it again). So the
+ * label's width is measured just before it opens (`--more-w`) and the pill
+ * takes that back with a negative margin: it grows over its neighbour
+ * instead of moving it. The card is placed at the same moment so it stays
+ * inside the window (`data-align`, and `--caret-x` for its pointer).
  *
  * The Studio's picker builds the same markup for its previews
  * (linkedSkillPreview in studio/ui/fields.js); change the two together.
  */
-export function LinkedSkill({ name, target, kindLabel, border, reveal, readMoreLabel, readMoreMotion, index }: LinkedSkillProps) {
+export function LinkedSkill({ name, target, kindLabel, border, reveal, readMoreLabel, index }: LinkedSkillProps) {
   const ref = useRef<HTMLSpanElement>(null);
 
   const place = () => {
     const pill = ref.current;
-    const card = pill?.querySelector<HTMLElement>(".bp-skill-card");
-    if (!pill || !card) return;
+    if (!pill) return;
+    const label = pill.querySelector<HTMLElement>(".bp-pill-more-label > span");
+    const labelWidth = label ? Math.ceil(label.scrollWidth) : 0;
+    pill.style.setProperty("--more-w", `${labelWidth}px`);
+
+    const card = pill.querySelector<HTMLElement>(".bp-skill-card");
+    if (!card) return;
     const view = document.documentElement.clientWidth;
-    const box = pill.getBoundingClientRect();
+    // The card is placed against the pill as it will be once open: wider by the label and OPEN_EXTRA.
+    const closed = pill.getBoundingClientRect();
+    const opened = (label?.parentElement?.getBoundingClientRect().width ?? 0) > 1;
+    const box = { left: closed.left, width: closed.width + (opened ? 0 : labelWidth + OPEN_EXTRA) };
+    const right = box.left + box.width;
     const width = card.offsetWidth;
     let align: "start" | "center" | "end";
-    if (reveal === "callout") align = box.right + CALLOUT_REACH + width > view - EDGE ? "end" : "start";
+    if (reveal === "callout") align = right + CALLOUT_REACH + width > view - EDGE ? "end" : "start";
     else if (reveal === "tab") align = box.left + width > view - EDGE ? "end" : "start";
     else {
       const middle = box.left + box.width / 2;
@@ -82,20 +97,20 @@ export function LinkedSkill({ name, target, kindLabel, border, reveal, readMoreL
       onFocus={place}
     >
       <span className="bp-pill-name">{name}</span>
-      <LinkIcon />
-      <span className="bp-skill-card">
-        <span className="bp-skill-card-name" aria-hidden="true">{target.name}</span>
-        <span className="bp-skill-card-detail" aria-hidden="true">{detail}</span>
-        <span className="bp-skill-card-action">
-          <BulletLink
-            href={target.href}
-            projectName={target.name}
-            label={readMoreLabel}
-            motion={readMoreMotion}
-            index={index}
-            ariaLabel={`${name}: see ${target.name} (${kindLabel.toLowerCase()})`}
-          />
+      <Link
+        href={target.href}
+        className="bp-pill-more"
+        aria-label={`${name}: see ${target.name} (${kindLabel.toLowerCase()})`}
+        suppressHydrationWarning
+      >
+        <LinkIcon />
+        <span className="bp-pill-more-label" aria-hidden="true">
+          <span>{readMoreLabel}</span>
         </span>
+      </Link>
+      <span className="bp-skill-card" aria-hidden="true">
+        <span className="bp-skill-card-name">{target.name}</span>
+        <span className="bp-skill-card-detail">{detail}</span>
       </span>
     </span>
   );

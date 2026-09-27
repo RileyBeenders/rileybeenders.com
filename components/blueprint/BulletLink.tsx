@@ -25,8 +25,8 @@ function Arrow() {
 }
 
 /**
- * The "Read more" button at the end of a resume bullet, and inside a linked
- * skill's hover card (LinkedSkill). How it moves is the
+ * The "Read more" button at the end of a resume bullet. (A linked skill has
+ * its own, smaller one that opens out of its link icon: LinkedSkill.) How it moves is the
  * Studio's Home page → Read more button, written as `data-motion` and styled
  * in app/(site)/bullet-link.css. The markup is the same for every variant
  * except where one needs more: the roll splits the label into letters, the

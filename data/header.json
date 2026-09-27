@@ -44,5 +44,8 @@
   "layout": {
     "introAlign": "full"
   },
+  "motion": {
+    "syncAnimations": true
+  },
   "resumePdfPath": "/api/resume-pdf"
 }

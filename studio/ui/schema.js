@@ -655,7 +655,7 @@ export const SCHEMAS = {
         name: "linkedSkills",
         type: "group",
         label: "Linked skills",
-        help: "A skill linked to a project or proof (Skills → each item's link) gets a link icon and a border that says so. Hovering it, or tabbing to it, opens what it links to with the Read more button above. It only shows while the Projects page is on and what it links to is published. Colors follow Site Settings → Overall theme.",
+        help: "A skill linked to a project or proof (Skills → each item's link) gets a link icon and a border that says so. Hovering it, or tabbing to it, turns the icon and opens the pill into a Read more button (the label above), and shows what it links to. It only shows while the Projects page is on and what it links to is published. Colors follow Site Settings → Overall theme.",
         fields: [
           {
             name: "border",

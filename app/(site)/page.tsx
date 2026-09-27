@@ -186,7 +186,6 @@ export default function HomePage() {
                                 border={page.linkedSkills?.border || "orbit"}
                                 reveal={page.linkedSkills?.reveal || "card"}
                                 readMoreLabel={ui.bulletReadMore}
-                                readMoreMotion={readMoreMotion}
                                 index={linkedSkillCount++}
                               />
                             );

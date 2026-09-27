@@ -25,7 +25,7 @@
     "animation": "glint"
   },
   "linkedSkills": {
-    "border": "marks",
+    "border": "signal",
     "reveal": "callout",
     "labels": {
       "project": "Project",
