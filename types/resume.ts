@@ -291,6 +291,25 @@ export type ComingSoonContent = {
   signals: string[];
 };
 
+/**
+ * A skill that points at the work behind it: exactly one of `projectId` or
+ * `proofId`. Kept beside `items` rather than in it, so every other reader of
+ * the skills (the resume PDF, the agent procedures) still sees plain strings.
+ */
+export type SkillLink = {
+  /** The item in the group's `items`, word for word. */
+  skill: string;
+  projectId?: string;
+  proofId?: string;
+};
+
+export type SkillGroup = {
+  category: string;
+  items: string[];
+  /** Optional links from items to a project or proof, in item order. */
+  links?: SkillLink[];
+};
+
 export type ResumeVisibility = {
   experienceProjectButtons: boolean;
   experienceProofButtons: boolean;
@@ -352,10 +371,7 @@ export type ResumeData = {
   layout: LayoutSettings;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
-  skills: {
-    category: string;
-    items: string[];
-  }[];
+  skills: SkillGroup[];
   experience: Experience[];
   projects: Project[];
   education: Education;

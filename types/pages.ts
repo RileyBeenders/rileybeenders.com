@@ -15,6 +15,22 @@ export type LinkText = {
   href: string;
 };
 
+/**
+ * How a resume bullet's "Read more" button moves: `data-motion` on the link,
+ * styled in app/(site)/bullet-link.css and chosen in the Studio's Home page
+ * (READ_MORE_MOTIONS in studio/ui/schema.js).
+ */
+export type ReadMoreAnimation = "sweep" | "roll" | "launch" | "offset" | "trace" | "glint" | "still";
+
+/**
+ * How a skill linked to a project or proof marks its border, and how it
+ * shows what it links to on hover: `data-border` / `data-reveal` on the
+ * pill, styled in app/(site)/skill-pills.css and chosen in the Studio's
+ * Home page (SKILL_BORDERS / SKILL_REVEALS in studio/ui/schema.js).
+ */
+export type LinkedSkillBorder = "orbit" | "march" | "pulse" | "marks" | "signal" | "steady";
+export type LinkedSkillReveal = "card" | "tab" | "callout";
+
 /** data/home/page.json — everything on the home page that isn't resume content. */
 export type HomePageData = {
   meta: PageMeta & {
@@ -34,6 +50,20 @@ export type HomePageData = {
     experience: string;
     skills: string;
     education: string;
+  };
+  /** The "Read more" button at the end of a resume bullet that links to its project. */
+  readMore: {
+    animation: ReadMoreAnimation;
+  };
+  /** Skills linked to a project or proof (Skills → Links to) in the Skills section. */
+  linkedSkills: {
+    border: LinkedSkillBorder;
+    reveal: LinkedSkillReveal;
+    /** The kind of thing a skill links to, in the hover card's second line. */
+    labels: {
+      project: string;
+      proof: string;
+    };
   };
   footer: {
     note: string;

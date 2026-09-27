@@ -33,7 +33,7 @@ it by DNS rebinding.
 site.mjs        `npm run site`: hosts the gate and the Studio in one process, spawns `next dev` behind them
 gate.mjs        the device gate on :3000 — proxies to `next dev`, lets this machine and allowed devices through
 access.mjs      the grants the gate enforces (who, until when), address rules, the knock list
-server.mjs      HTTP server: the JSON API, image uploads, folders, moves, static files, /api/access, /api/thumb, /api/gif
+server.mjs      HTTP server: the JSON API, image uploads, folders, moves, static files, /api/access, /api/thumb, /api/gif, /site/ (site styles for previews)
 gif.mjs         retimes a GIF's frame delays and loop flag in place, without decoding it
 ui/
   index.html    the editor shell
@@ -156,6 +156,35 @@ these through `lib/copy.ts`; the types are in `types/pages.ts`.
 How the intro under a page headline sits (Left, Centered, Right or Full
 width) is one choice for every page, in Site Settings → Layout.
 
+How the "Read more" button at the end of a resume bullet moves is **Home
+page → Read more button**: seven cards (Ink sweep, Letter roll, Arrow launch,
+Offset print, Trace, Glint, Still), each playing the real button when hovered
+or focused. The previews are drawn by the site's own
+`app/(site)/bullet-link.css`, which the server hands out read-only at
+`/site/bullet-link.css` (`SITE_STYLES` in `server.mjs`), in the palette Site
+Settings holds right now, saved or not, and in the Studio's light or dark
+mode. The choice is saved as `readMore.animation` in `data/home/page.json`.
+
+## Linked skills
+
+In **Skills**, every item has a link picker beside it: No link, a project, or
+a proof (drafts are marked). The links are saved beside the group's items as
+`links: [{ skill, projectId | proofId }]`, keyed by the item's text, so the
+items themselves stay plain strings for the resume PDF and everything else
+that reads them. Retyping an item carries its link along; removing an item
+drops its link. The rail counts them ("16 items · 8 linked").
+
+On the home page a linked skill gets a link icon, a border that marks it, and
+a card that opens on hover (or when its Read more is tabbed to) naming the
+project or proof, with the Read more button. A link only shows while the
+Projects page is on and its target is published; a proof link opens the
+case study of the project it sits in. How the border moves and how the card
+opens are **Home page → Linked skills**: six borders (Orbit, Marching dashes,
+Ping, Registration marks, Signal, Steady) and three layouts (Card, Tab,
+Callout), previewed on one of your real linked skills by the site's own
+`app/(site)/skill-pills.css` (`/site/skill-pills.css`), plus the words the
+card uses for a project and a proof.
+
 Still in code: the interactive demo replicas on About this site, the
 flowchart text in `components/projects/diagrams/flows.ts`, and labels only a
 screen reader hears.
@@ -238,6 +267,8 @@ Electric palette, the same 16-inside-96 blueprint grid, square hairline
 surfaces, the site's 2px accent focus ring, and the monogram as favicon and
 brand. It runs on system fonts because it never ships. The workspace is locked
 to the viewport, so the rail, the list, and the editor scroll on their own.
+The editor fills the rest of the window and resizes with it, keeping the same
+gap on its right as on its left.
 
 Three surface tones separate the chrome from the work, all mixed from the
 palette's own ink and paper: in light mode a white page, a light gray rail and

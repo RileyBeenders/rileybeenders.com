@@ -1296,8 +1296,153 @@ function paletteControl(field, value, ctx) {
     field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
 
+/**
+ * The site's resume-bullet "Read more" button, as components/blueprint/BulletLink.tsx
+ * renders it, for a preview styled by the site's own app/(site)/bullet-link.css
+ * (linked from index.html). A span, since it sits inside the card's button.
+ */
+function readMorePreview(motion, label) {
+  const arrow = () => el("svg", { width: 11, height: 11, viewBox: "0 0 16 16", fill: "none" },
+    el("path", { d: "M4 12L12 4m0 0H5.5M12 4v6.5", stroke: "currentColor", "stroke-width": 1.5, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+  const letters = motion === "roll"
+    ? Array.from(label, (char, position) => el("span", { "data-ch": char, style: `--c: ${position}` }, char))
+    : [el("span", {}, label)];
+  return el("span", { class: "bp-bullet-link", "data-motion": motion },
+    motion === "glint" ? el("span", { class: "bp-bullet-link-glint", style: "--i: 0" }) : null,
+    el("span", { class: "bp-bullet-link-label" }, ...letters),
+    el("span", { class: "bp-bullet-link-arrow" }, arrow(), arrow()));
+}
+
+/** lucide's link-2, the icon at the end of a linked skill. */
+const LINK_ICON_PATH = "M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8";
+
+/**
+ * A home-page skill linked to a project or proof, as
+ * components/blueprint/LinkedSkill.tsx renders it, for a preview styled by the
+ * site's app/(site)/skill-pills.css. `reveal` null leaves the hover card out
+ * (the Border picker shows the pill alone).
+ */
+function linkedSkillPreview(site, border, reveal) {
+  const sample = site?.sampleSkill ?? { name: "SolidWorks", target: "ICARUS-Lite", detail: "Project · Industrial Design" };
+  return el("span", { class: "bp-pill bp-pill--linked", "data-border": border, "data-reveal": reveal || "card", style: "--k: 0" },
+    el("span", { class: "bp-pill-name" }, sample.name),
+    el("svg", { class: "bp-pill-link", width: 13, height: 13, viewBox: "0 0 24 24", fill: "none" },
+      el("path", { d: LINK_ICON_PATH, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" })),
+    reveal
+      ? el("span", { class: "bp-skill-card" },
+        el("span", { class: "bp-skill-card-name" }, sample.target),
+        el("span", { class: "bp-skill-card-detail" }, sample.detail),
+        el("span", { class: "bp-skill-card-action" }, readMorePreview(site?.readMoreMotion || "sweep", site?.readMoreLabel || "Read more")))
+      : null);
+}
+
+/**
+ * What each `motionChoice` field previews (`field.preview`), from the option
+ * and the object the field sits in.
+ */
+const MOTION_PREVIEWS = {
+  readMore: (option, value, ctx) => readMorePreview(option.value, ctx.site?.readMoreLabel || "Read more"),
+  skillBorder: (option, value, ctx) => linkedSkillPreview(ctx.site, option.value, null),
+  // The hover card on the border chosen beside it.
+  skillReveal: (option, value, ctx) => linkedSkillPreview(ctx.site, value.border || "orbit", option.value)
+};
+
+/** The site tokens a preview stage takes from `ctx.site.palette`, per mode (see .f-motion-stage). */
+const STAGE_TOKENS = ["paper", "white", "ink", "accent", "onAccent", "pillText", "muted", "rule"];
+
+/**
+ * A card per way something on the site can move, each playing the real thing
+ * on a patch of the site's paper, in the palette Site Settings has chosen
+ * (`ctx.site.palette`, light or dark to match this editor). Hovering or
+ * focusing a card plays its hover state through `data-hover`. The value is
+ * the option's `value`; `field.default` is what an unset key means.
+ * `field.repaint` redraws the form on a choice, for other previews that show
+ * this one.
+ */
+function motionChoiceControl(field, value, ctx) {
+  const current = value[field.name] || field.default || field.options[0].value;
+  const palette = ctx.site?.palette;
+  const stageStyle = palette
+    ? ["light", "dark"].flatMap((mode) => STAGE_TOKENS.map((key) => `--site-${mode}-${key}: ${palette[mode][key]}`)).join("; ")
+    : undefined;
+  const preview = MOTION_PREVIEWS[field.preview] ?? MOTION_PREVIEWS.readMore;
+  const reveal = field.preview === "skillReveal";
+
+  const cards = field.options.map((option) => {
+    const demo = preview(option, value, ctx);
+    const play = (on) => { if (on) demo.setAttribute("data-hover", ""); else demo.removeAttribute("data-hover"); };
+    return el("button", {
+      type: "button",
+      role: "radio",
+      class: "f-motion-card",
+      "aria-checked": String(option.value === current),
+      onClick: (event) => {
+        value[field.name] = option.value;
+        for (const card of cards) card.setAttribute("aria-checked", String(card === event.currentTarget));
+        ctx.onEdit();
+        if (field.repaint) ctx.onStructureChange();
+      },
+      onPointerenter: () => play(true),
+      onPointerleave: () => play(false),
+      onFocus: () => play(true),
+      onBlur: () => play(false)
+    },
+      el("span", { class: "f-palette-check" }, icon("check")),
+      el("span", {
+        class: `f-motion-stage bp${reveal ? " f-motion-stage--reveal" : ""}`,
+        "data-layout": reveal ? option.value : undefined,
+        style: stageStyle,
+        "aria-hidden": "true"
+      }, demo),
+      el("span", { class: "f-palette-name" }, option.label),
+      el("span", { class: "f-palette-desc" }, option.help));
+  });
+
+  return el("div", { class: fieldClass(field, "motion") },
+    el("span", { class: "f-label" }, field.label),
+    el("div", { class: `f-motion-grid${reveal ? " f-motion-grid--wide" : ""}`, role: "radiogroup", "aria-label": field.label }, ...cards),
+    field.help ? el("p", { class: "f-help" }, field.help) : null);
+}
+
+/**
+ * A list row's link to a project or proof (a stringList with `linksName`, the
+ * home page's skills). The links live beside the list as
+ * `[{ skill, projectId | proofId }]`, keyed by the row's text, so the list
+ * itself stays plain strings for everything else that reads it.
+ */
+function listLinkSelect(field, list, links, index, ctx) {
+  const link = links.find((entry) => entry.skill === list[index]);
+  const current = link?.projectId ? `project:${link.projectId}` : link?.proofId ? `proof:${link.proofId}` : "";
+  const option = (kind, ref) => el("option", { value: `${kind}:${ref.id}`, selected: `${kind}:${ref.id}` === current }, ref.draft ? `${ref.label} (draft)` : ref.label);
+  const known = current === "" || [...(ctx.refs.projects || []).map((ref) => `project:${ref.id}`), ...(ctx.refs.proofs || []).map((ref) => `proof:${ref.id}`)].includes(current);
+
+  const select = el("select", {
+    class: `f-input f-select f-row-link${current ? " is-linked" : ""}`,
+    "aria-label": `${field.label} ${index + 1}: links to`,
+    title: "The project or proof this links to"
+  },
+    el("option", { value: "", selected: current === "" }, "No link"),
+    el("optgroup", { label: "Projects" }, ...(ctx.refs.projects || []).map((ref) => option("project", ref))),
+    el("optgroup", { label: "Proofs" }, ...(ctx.refs.proofs || []).map((ref) => option("proof", ref))),
+    // Keep a link whose target is gone rather than silently dropping it.
+    known ? null : el("option", { value: current, selected: true }, `${current.split(":")[1]} (missing)`));
+
+  select.addEventListener("change", () => {
+    const skill = list[index];
+    for (let at = links.length - 1; at >= 0; at--) if (links[at].skill === skill) links.splice(at, 1);
+    const [kind, id] = select.value.split(":");
+    if (id) links.push(kind === "project" ? { skill, projectId: id } : { skill, proofId: id });
+    select.classList.toggle("is-linked", Boolean(id));
+    ctx.onEdit();
+  });
+  return select;
+}
+
 function stringListControl(field, value, ctx) {
   const list = Array.isArray(value[field.name]) ? value[field.name] : (value[field.name] = []);
+  const links = field.linksName
+    ? (Array.isArray(value[field.linksName]) ? value[field.linksName] : (value[field.linksName] = []))
+    : null;
 
   const rows = list.map((entry, index) => {
     // `multiline` lists hold paragraphs, so each row is a textarea that grows
@@ -1306,12 +1451,15 @@ function stringListControl(field, value, ctx) {
       ? autoGrow(el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` }))
       : el("input", { type: "text", class: "f-input", value: entry ?? "", "aria-label": `${field.label} ${index + 1}` });
     input.addEventListener("input", () => {
+      // A link follows its row's text as it is retyped.
+      if (links) for (const link of links) if (link.skill === list[index]) link.skill = input.value;
       list[index] = input.value;
       ctx.onEdit();
     });
     return el("div", { class: `f-row${field.multiline ? " f-row--multiline" : ""}` },
       gripHandle(`${field.label} ${index + 1}`),
       input,
+      links ? listLinkSelect(field, list, links, index, ctx) : null,
       el("div", { class: "f-row-tools" },
         iconButton("remove", "Remove", () => { list.splice(index, 1); ctx.onStructureChange(); })));
   });
@@ -1418,6 +1566,7 @@ const CONTROLS = {
   imageDisplay: imageDisplayControl,
   color: colorControl,
   palette: paletteControl,
+  motionChoice: motionChoiceControl,
   stringList: stringListControl,
   objectList: objectListControl,
   group: groupControl
@@ -1494,6 +1643,17 @@ export function normalize(fields, value) {
       case "stringList": {
         const list = (Array.isArray(raw) ? raw : []).map((entry) => String(entry).trim()).filter((entry) => entry !== "");
         if (list.length > 0 || keep) out[field.name] = list;
+        // Links follow the list's order, one per item at most, and go with the item they named.
+        if (field.linksName) {
+          const kept = (Array.isArray(value[field.linksName]) ? value[field.linksName] : [])
+            .filter((link) => link && typeof link.skill === "string" && (link.projectId || link.proofId));
+          const links = [...new Set(list)].flatMap((item) => {
+            const link = kept.find((entry) => entry.skill.trim() === item);
+            if (!link) return [];
+            return [link.projectId ? { skill: item, projectId: link.projectId } : { skill: item, proofId: link.proofId }];
+          });
+          if (links.length > 0) trailing.push([field.linksName, links]);
+        }
         break;
       }
       case "objectList": {
@@ -1527,7 +1687,7 @@ export function normalize(fields, value) {
 
   for (const [key, entry] of trailing) out[key] = entry;
 
-  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.speedName ? [field.speedName] : []), ...(field.pagesName ? [field.pagesName, field.downloadName] : []), ...(field.type === "imageDisplay" ? [field.afterName, field.frameName, field.afterFrameName] : [])]));
+  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.linksName ? [field.linksName] : []), ...(field.speedName ? [field.speedName] : []), ...(field.pagesName ? [field.pagesName, field.downloadName] : []), ...(field.type === "imageDisplay" ? [field.afterName, field.frameName, field.afterFrameName] : [])]));
   for (const [key, raw] of Object.entries(value)) {
     if (!known.has(key)) out[key] = raw;
   }

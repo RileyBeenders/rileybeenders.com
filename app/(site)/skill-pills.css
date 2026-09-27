@@ -1,0 +1,377 @@
+/* ==========================================================================
+   Skill pills (.bp-pill), and skills linked to a project or proof
+
+   A skill linked in the Studio (Skills → Links to) renders through
+   components/blueprint/LinkedSkill.tsx as .bp-pill--linked: a chain-link
+   icon, a border that marks it as linked (data-border), and a hover card
+   naming the project or proof with the site's Read more button
+   (data-reveal). Both are the Studio's Home page → Linked skills.
+   Every color is a palette token, so each variant follows Site Settings →
+   Overall theme in light and dark without a rule of its own.
+
+   The Studio loads this same file (studio/server.mjs serves it at
+   /site/skill-pills.css) for its pickers' previews, and plays a card's hover
+   by setting data-hover on the pill; that is why every hover rule also
+   matches [data-hover]. The border loops run at most every 5–6s, each pill
+   on its own beat (--k), and stop while the pill is hovered.
+
+   Reduced motion: blueprint.css's blanket rule ends every loop on its first
+   frame and snaps the card open; the tinted border and the icon still say
+   "linked".
+   ========================================================================== */
+
+@property --bp-orbit {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --bp-reg {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 4px;
+}
+
+.bp-skill-group + .bp-skill-group { margin-top: 26px; }
+.bp-skill-group h3 {
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+.bp-pills { display: flex; flex-wrap: wrap; gap: 9px; }
+.bp-pill {
+  padding: 8px 16px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  font-size: 14px;
+  color: var(--pill-text);
+  transition: transform 0.34s var(--ease), border-color 0.34s ease, color 0.34s ease, box-shadow 0.34s ease;
+}
+.bp-pill:hover {
+  transform: translateY(-3px);
+  border-color: var(--ink);
+  color: var(--ink);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+/* ------------------------------------------------------------- linked --- */
+.bp-pill--linked {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 12px;
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--rule));
+}
+.bp-pill-link {
+  flex: none;
+  color: var(--accent);
+  transition: transform 0.4s var(--ease);
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) {
+  z-index: 10;
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  color: var(--ink);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+/* The link turns a quarter, as if clicking into place. */
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-pill-link { transform: rotate(-45deg); }
+
+/* The border marks sit on this layer, over the pill's own border. */
+.bp-pill--linked::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover])::after {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+/* Orbit: a comet of accent runs clockwise round the border, one lap in 6s.
+   2px wide (over the border and 1px out) so it reads against the tint. */
+.bp-pill--linked[data-border="orbit"]::after {
+  inset: -2px;
+  padding: 2px;
+  background: conic-gradient(from var(--bp-orbit), transparent 0deg, color-mix(in srgb, var(--accent) 35%, transparent) 50deg, var(--accent) 88deg, transparent 88deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: bp-orbit 6s linear infinite;
+  animation-delay: calc(var(--k, 0) * -0.85s);
+}
+@keyframes bp-orbit { to { --bp-orbit: 360deg; } }
+
+/* Marching dashes: a drafting hidden line in accent, creeping clockwise. */
+.bp-pill--linked[data-border="march"]::after {
+  background:
+    linear-gradient(90deg, var(--accent) 50%, transparent 0) 0 0 / 8px 1px repeat-x,
+    linear-gradient(90deg, var(--accent) 50%, transparent 0) 0 100% / 8px 1px repeat-x,
+    linear-gradient(0deg, var(--accent) 50%, transparent 0) 0 0 / 1px 8px repeat-y,
+    linear-gradient(0deg, var(--accent) 50%, transparent 0) 100% 0 / 1px 8px repeat-y;
+  animation: bp-march 2.4s linear infinite;
+}
+@keyframes bp-march { to { background-position: 8px 0, -8px 100%, 0 -8px, 100% 8px; } }
+
+/* Ping: an accent ring leaves the border and fades, every 5s. */
+.bp-pill--linked[data-border="pulse"]::after {
+  outline: 1px solid var(--accent);
+  outline-offset: 0;
+  opacity: 0;
+  animation: bp-ping 5s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+  animation-delay: calc(var(--k, 0) * -0.7s);
+}
+@keyframes bp-ping {
+  0% { outline-offset: 0; opacity: 0.9; }
+  40%, 100% { outline-offset: 7px; opacity: 0; }
+}
+
+/* Registration marks: accent corner ticks that settle in and out, like a
+   plate being lined up, and close onto the corners on hover. */
+.bp-pill--linked[data-border="marks"]::after {
+  inset: calc(-1px - var(--bp-reg));
+  background:
+    linear-gradient(var(--accent), var(--accent)) left top / 7px 1px,
+    linear-gradient(var(--accent), var(--accent)) left top / 1px 7px,
+    linear-gradient(var(--accent), var(--accent)) right top / 7px 1px,
+    linear-gradient(var(--accent), var(--accent)) right top / 1px 7px,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 7px 1px,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 1px 7px,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 7px 1px,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 1px 7px;
+  background-repeat: no-repeat;
+  animation: bp-register 5s ease-in-out infinite;
+  animation-delay: calc(var(--k, 0) * -0.7s);
+  transition: opacity 0.3s ease, --bp-reg 0.3s var(--ease);
+}
+.bp-pill--linked[data-border="marks"]:is(:hover, :focus-within, [data-hover])::after {
+  --bp-reg: 0px;
+  opacity: 1;
+  animation: none;
+}
+@keyframes bp-register {
+  0%, 100% { --bp-reg: 4px; }
+  50% { --bp-reg: 1px; }
+}
+
+/* Signal: a short pulse of accent runs along the bottom edge, like current
+   on a trace, every 5.5s. */
+.bp-pill--linked[data-border="signal"]::after {
+  inset: auto -1px -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent) 35% 65%, transparent) no-repeat;
+  background-size: 40% 100%;
+  background-position: -67% 0;
+  animation: bp-signal 5.5s ease-in-out infinite;
+  animation-delay: calc(var(--k, 0) * -0.8s);
+}
+@keyframes bp-signal {
+  0% { background-position: -67% 0; }
+  45%, 100% { background-position: 167% 0; }
+}
+
+/* Steady: an accent border, nothing moving. */
+.bp-pill--linked[data-border="steady"] { border-color: var(--accent); }
+
+/* --------------------------------------------------------- hover card --- */
+/* Placed by LinkedSkill just before it opens: data-align start / center / end,
+   and --caret-x for the card's pointer. The card is always in the page, so
+   its Read more link stays in the tab order and focusing it opens the card. */
+.bp-skill-card {
+  --card-x: -50%;
+  --card-y: 6px;
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  display: grid;
+  justify-items: start;
+  gap: 3px;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 24px));
+  padding: 12px 14px 13px;
+  border: 1px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--ink) 28%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--card-x), var(--card-y));
+  /* The delay on the way out lets the pointer cross from the pill to the card. */
+  transition: opacity 0.2s ease 0.12s, transform 0.3s var(--ease) 0.12s;
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-skill-card {
+  --card-y: 0px;
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+.bp-pill--linked[data-align="start"] .bp-skill-card { left: -1px; --card-x: 0px; }
+.bp-pill--linked[data-align="end"] .bp-skill-card { left: auto; right: -1px; --card-x: 0px; }
+
+.bp-skill-card-name {
+  font-family: var(--bp-font-subheader, Georgia), "Iowan Old Style", Georgia, serif;
+  font-size: 19px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.bp-skill-card-detail {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+/* The Read more button pops in just after the card. */
+.bp-skill-card-action {
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(5px) scale(0.96);
+  transform-origin: left center;
+  transition: opacity 0.2s ease, transform 0.34s var(--ease);
+}
+.bp-pill--linked:is(:hover, :focus-within, [data-hover]) .bp-skill-card-action {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.09s;
+}
+.bp-skill-card .bp-bullet-link { margin-left: 0; vertical-align: 0; }
+
+/* Card: floats above the pill with a pointer down to it. The strip under the
+   card bridges the gap, so moving onto the card never closes it. */
+.bp-pill--linked[data-reveal="card"] .bp-skill-card::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: var(--caret-x, 50%);
+  width: 9px;
+  height: 9px;
+  margin: -4px 0 0 -5px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: var(--white);
+  transform: rotate(45deg);
+}
+.bp-pill--linked[data-reveal="card"] .bp-skill-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 14px;
+}
+
+/* Tab: a drawer that unrolls from under the pill, in the pill's own accent
+   border, so the two read as one piece. */
+.bp-pill--linked[data-reveal="tab"] .bp-skill-card {
+  --card-x: 0px;
+  --card-y: 0px;
+  left: -1px;
+  top: 100%;
+  bottom: auto;
+  min-width: calc(100% + 2px);
+  padding: 10px 14px 12px;
+  border-color: var(--accent);
+  box-shadow: 0 16px 26px -16px color-mix(in srgb, var(--ink) 32%, transparent);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.36s var(--ease) 0.12s, opacity 0.2s ease 0.12s;
+}
+.bp-pill--linked[data-reveal="tab"]:is(:hover, :focus-within, [data-hover]) .bp-skill-card {
+  clip-path: inset(0 -32px -44px -32px);
+  transition-delay: 0s;
+}
+.bp-pill--linked[data-reveal="tab"][data-align="end"] .bp-skill-card { left: auto; right: -1px; }
+
+/* Callout: a drawing's leader line runs up from the pill's corner to a label
+   underlined by its shoulder, ending in a dot on the pill. */
+.bp-pill--linked[data-reveal="callout"] .bp-skill-card {
+  --card-x: 0px;
+  --card-y: 0px;
+  left: calc(100% + 16px);
+  bottom: calc(100% + 16px);
+  padding: 6px 4px 9px;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+  box-shadow: none;
+}
+.bp-pill--linked[data-reveal="callout"][data-align="end"] .bp-skill-card { left: auto; right: calc(100% + 16px); }
+.bp-pill--linked[data-reveal="callout"] .bp-skill-card > * {
+  transform: translateX(-6px);
+  transition: transform 0.34s var(--ease) 0.12s;
+}
+.bp-pill--linked[data-reveal="callout"]:is(:hover, :focus-within, [data-hover]) .bp-skill-card > * {
+  transform: none;
+  transition-delay: 0.1s;
+}
+/* The leader: from the label's lower corner down to the pill's, drawn out. */
+.bp-pill--linked[data-reveal="callout"] .bp-skill-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 23px;
+  height: 1px;
+  background: var(--ink);
+  transform-origin: 0 50%;
+  transform: rotate(135deg) scaleX(0);
+  transition: transform 0.26s var(--ease) 0.12s;
+}
+.bp-pill--linked[data-reveal="callout"]:is(:hover, :focus-within, [data-hover]) .bp-skill-card::before {
+  transform: rotate(135deg) scaleX(1);
+  transition-delay: 0s;
+}
+.bp-pill--linked[data-reveal="callout"][data-align="end"] .bp-skill-card::before {
+  left: auto;
+  right: 0;
+  transform-origin: 100% 50%;
+  transform: rotate(-135deg) scaleX(0);
+}
+.bp-pill--linked[data-reveal="callout"][data-align="end"]:is(:hover, :focus-within, [data-hover]) .bp-skill-card::before {
+  transform: rotate(-135deg) scaleX(1);
+}
+/* The strip along the leader keeps the card open while the pointer climbs it. */
+.bp-pill--linked[data-reveal="callout"] .bp-skill-card::after {
+  content: "";
+  position: absolute;
+  left: -18px;
+  right: 0;
+  top: 100%;
+  height: 18px;
+}
+.bp-pill--linked[data-reveal="callout"][data-align="end"] .bp-skill-card::after { left: 0; right: -18px; }
+/* The leader's dot, on the pill's corner. */
+.bp-pill--linked[data-reveal="callout"]::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.2s ease 0.12s, transform 0.3s var(--ease) 0.12s;
+}
+.bp-pill--linked[data-reveal="callout"][data-align="end"]::before { right: auto; left: -3px; }
+.bp-pill--linked[data-reveal="callout"]:is(:hover, :focus-within, [data-hover])::before {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+/* Print: plain pills on white, as the document the home page imitates. Here
+   rather than in blueprint.css, which loads first and would lose to the rules
+   above. */
+@media print {
+  .bp-pill,
+  .bp-pill--linked { border-color: #999; box-shadow: none; background: #fff; }
+  .bp-skill-card,
+  .bp-pill-link,
+  .bp-pill--linked::before,
+  .bp-pill--linked::after { display: none !important; }
+}

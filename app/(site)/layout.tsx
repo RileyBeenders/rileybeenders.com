@@ -18,6 +18,8 @@ import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
 import "./blueprint.css";
+import "./bullet-link.css";
+import "./skill-pills.css";
 import homePage from "@/data/home/page.json";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;

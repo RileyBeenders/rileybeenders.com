@@ -1,0 +1,220 @@
+/* ==========================================================================
+   The "Read more" button at the end of a resume bullet (.bp-bullet-link)
+
+   One accent button, several ways to move. Which one is the Studio's
+   Home page → Read more button (data/home/page.json → readMore.animation),
+   written onto the link as data-motion by components/blueprint/BulletLink.tsx.
+   Every color is a palette token, so each variant follows Site Settings →
+   Overall theme in light and dark without a rule of its own.
+
+   The Studio loads this same file (studio/server.mjs serves it at
+   /site/bullet-link.css) to preview each variant in its picker, and plays a
+   card's hover state by setting data-hover on the preview; that is why every
+   hover rule also matches [data-hover].
+
+   Reduced motion: blueprint.css's blanket rule snaps every transition and
+   animation here to its end state, which is a complete look for each one.
+   ========================================================================== */
+
+/* The trace variant's drawn length, registered so it can transition. */
+@property --bp-trace {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.bp .bp-bullet-link {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  padding: 3px 10px 4px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  white-space: nowrap;
+  vertical-align: 1px;
+  transition:
+    color 0.42s var(--ease),
+    background-color 0.42s ease,
+    border-color 0.42s ease,
+    box-shadow 0.42s var(--ease),
+    transform 0.42s var(--ease);
+}
+.bp-bullet-link > * { position: relative; z-index: 1; }
+.bp-bullet-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.bp-bullet-link-label { display: inline-block; }
+
+/* Two arrows stacked in one cell; only the launch ever shows the second. */
+.bp-bullet-link-arrow { display: inline-grid; }
+.bp-bullet-link-arrow > svg { grid-area: 1 / 1; transition: transform 0.3s var(--ease); }
+.bp-bullet-link-arrow > svg + svg { visibility: hidden; }
+
+/* Most variants nudge the arrow up and out, toward where the link goes. */
+.bp-bullet-link:is([data-motion="sweep"], [data-motion="roll"], [data-motion="offset"], [data-motion="trace"], [data-motion="glint"]):is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-arrow > svg:first-child {
+  transform: translate(2px, -2px);
+}
+
+/* ------------------------------------------------ sweep (the original) --- */
+/* Ink wipes across from the left. The glint variant hovers the same way. */
+.bp-bullet-link:is([data-motion="sweep"], [data-motion="glint"])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.48s var(--ease);
+}
+.bp .bp-bullet-link:is([data-motion="sweep"], [data-motion="glint"]):is(:hover, :focus-visible, [data-hover]) {
+  color: var(--paper);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+.bp-bullet-link:is([data-motion="sweep"], [data-motion="glint"]):is(:hover, :focus-visible, [data-hover])::before {
+  transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------- roll --- */
+/* Each letter rolls up to a fresh copy of itself, left to right, while the
+   fill turns to ink. The letters are split into spans by BulletLink, each
+   carrying its index as --c and its character as data-ch for the copy. */
+/* clip-path rather than overflow, which would move the label's baseline. */
+.bp-bullet-link[data-motion="roll"] .bp-bullet-link-label { clip-path: inset(0); }
+.bp-bullet-link[data-motion="roll"] .bp-bullet-link-label > span {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.42s var(--ease);
+  transition-delay: calc(var(--c, 0) * 22ms);
+}
+.bp-bullet-link[data-motion="roll"] .bp-bullet-link-label > span::after {
+  content: attr(data-ch);
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.bp .bp-bullet-link[data-motion="roll"]:is(:hover, :focus-visible, [data-hover]) {
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.bp-bullet-link[data-motion="roll"]:is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-label > span {
+  transform: translateY(-100%);
+}
+
+/* ------------------------------------------------------------- launch --- */
+/* The arrow flies off the top-right corner and a second one slides in from
+   the bottom-left to take its place. The fill stays the accent: shading it
+   toward ink would lighten it in dark mode, under text chosen to read on
+   the accent itself. */
+.bp-bullet-link[data-motion="launch"] .bp-bullet-link-arrow { clip-path: inset(-1px); }
+.bp-bullet-link[data-motion="launch"] .bp-bullet-link-arrow > svg { transition: transform 0.44s var(--ease); }
+.bp-bullet-link[data-motion="launch"] .bp-bullet-link-arrow > svg + svg {
+  visibility: visible;
+  transform: translate(-140%, 140%);
+}
+.bp .bp-bullet-link[data-motion="launch"]:is(:hover, :focus-visible, [data-hover]) {
+  transform: translateY(-1px);
+}
+.bp-bullet-link[data-motion="launch"]:is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-arrow > svg:first-child {
+  transform: translate(140%, -140%);
+}
+.bp-bullet-link[data-motion="launch"]:is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-arrow > svg + svg {
+  transform: translate(0, 0);
+  transition-delay: 0.1s;
+}
+
+/* ------------------------------------------------------------- offset --- */
+/* Lifts off the page onto a hard ink shadow, like a second print plate
+   set slightly out of register, and presses flat again on click. */
+.bp .bp-bullet-link[data-motion="offset"] { box-shadow: 0 0 0 0 var(--ink); }
+.bp .bp-bullet-link[data-motion="offset"]:is(:hover, :focus-visible, [data-hover]) {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+.bp .bp-bullet-link[data-motion="offset"]:active {
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 0 var(--ink);
+  transition-duration: 0.12s;
+}
+
+/* -------------------------------------------------------------- trace --- */
+/* A hairline of ink draws itself around the button, clockwise from the
+   top-left corner, like a pen outlining a part on the sheet. The ring sits
+   outside the button, so this variant lets it overflow. */
+.bp .bp-bullet-link[data-motion="trace"] { overflow: visible; }
+.bp-bullet-link[data-motion="trace"]::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: 0;
+  padding: 1px;
+  border-radius: 9px;
+  background: conic-gradient(from -72deg, var(--ink) var(--bp-trace), transparent 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: --bp-trace 0.36s ease;
+}
+/* The site's stroke-draw curve (bp-draw-in in blueprint.css), not --ease,
+   which would finish most of the ring before the eye catches it drawing. */
+.bp-bullet-link[data-motion="trace"]:is(:hover, :focus-visible, [data-hover])::after {
+  --bp-trace: 100%;
+  transition: --bp-trace 0.9s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.bp-bullet-link[data-motion="trace"]:focus-visible { outline-offset: 7px; }
+
+/* -------------------------------------------------------------- glint --- */
+/* A soft light passes over the button every few seconds, each link on its
+   own beat (--i, its place on the page), and holds still while hovered,
+   which sweeps in the ink like the original. */
+.bp .bp-bullet-link-glint {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  transform: translateX(-130%);
+  animation: bp-glint 6.5s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+  animation-delay: calc(var(--i, 0) * -1.3s);
+  transition: opacity 0.2s ease;
+}
+.bp-bullet-link:is(:hover, :focus-visible, [data-hover]) .bp-bullet-link-glint {
+  animation-play-state: paused;
+  opacity: 0;
+}
+@keyframes bp-glint {
+  0%, 64% { transform: translateX(-130%); }
+  88%, 100% { transform: translateX(330%); }
+}
+
+/* -------------------------------------------------------------- still --- */
+/* No movement: the fill turns to ink and nothing else changes. */
+.bp .bp-bullet-link[data-motion="still"] { transition-duration: 0.2s; }
+.bp .bp-bullet-link[data-motion="still"]:is(:hover, :focus-visible, [data-hover]) {
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* The printed resume has no buttons. (blueprint.css's print rule for this is
+   too weak to beat `.bp .bp-bullet-link` above.) */
+@media print {
+  .bp .bp-bullet-link { display: none; }
+}

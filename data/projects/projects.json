@@ -421,12 +421,6 @@
     "order": 7,
     "type": "Large-Format Additive Manufacturing System",
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
-    "images": [
-      {
-        "src": "",
-        "alt": ""
-      }
-    ],
     "proofId": "gen3-poseidon",
     "bullets": [
       {

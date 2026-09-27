@@ -21,6 +21,17 @@
     "skills": "Skills",
     "education": "Education"
   },
+  "readMore": {
+    "animation": "glint"
+  },
+  "linkedSkills": {
+    "border": "marks",
+    "reveal": "callout",
+    "labels": {
+      "project": "Project",
+      "proof": "Proof"
+    }
+  },
   "footer": {
     "note": "A website built to house my experience, compiled into one place for the next challenge.",
     "sheetLabel": "Sheet",

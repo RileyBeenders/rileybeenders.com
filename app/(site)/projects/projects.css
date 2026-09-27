@@ -258,6 +258,8 @@
 /* -------------------------------------------------------------- toggle --- */
 
 .pj-toggle {
+  /* A link to #project-<id>-case-study lands here; clear the sticky nav. */
+  scroll-margin-top: 120px;
   display: inline-flex;
   align-items: center;
   gap: 8px;

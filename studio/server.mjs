@@ -95,6 +95,16 @@ const MAX_PREVIEW_BYTES = 12 * 1024 * 1024;
  */
 const PDFJS_DIR = path.join(ROOT, "node_modules", "pdfjs-dist");
 const PDFJS_FOLDERS = new Set(["build", "cmaps", "standard_fonts", "wasm", "iccs"]);
+
+/**
+ * Site stylesheets the editor borrows so a preview is drawn by the site's own
+ * rules, served read-only at /site/<name>. Named one by one: nothing else
+ * under app/ is reachable.
+ */
+const SITE_STYLES = {
+  "bullet-link.css": path.join(ROOT, "app", "(site)", "bullet-link.css"),
+  "skill-pills.css": path.join(ROOT, "app", "(site)", "skill-pills.css")
+};
 const BACKUPS_KEPT = 25;
 
 /**
@@ -1032,6 +1042,14 @@ export async function startStudio({
       // Editor assets.
       if (url.pathname.startsWith("/studio/")) {
         const target = safeJoin(UI_DIR, url.pathname.slice("/studio".length));
+        if (target && (await serveStatic(res, target))) return;
+        return sendError(res, 404, "Not found.");
+      }
+
+      // The site's own styles for a preview (the Read more picker).
+      if (url.pathname.startsWith("/site/")) {
+        const name = url.pathname.slice("/site/".length);
+        const target = Object.hasOwn(SITE_STYLES, name) ? SITE_STYLES[name] : null;
         if (target && (await serveStatic(res, target))) return;
         return sendError(res, 404, "Not found.");
       }

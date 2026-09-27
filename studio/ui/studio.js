@@ -6,7 +6,7 @@
  * refused if the file changed on disk underneath you.
  */
 
-import { SCHEMAS, RAIL } from "./schema.js";
+import { SCHEMAS, RAIL, sitePaletteColors } from "./schema.js";
 import { el, renderFields, normalize, thumbImage, gripHandle, makeSortable } from "./fields.js";
 import { createDevicesPanel } from "./devices.js";
 import { createFilePicker } from "./files.js";
@@ -118,7 +118,7 @@ function schemaFor(key) {
   return SCHEMAS[key];
 }
 
-/** Options for the "links to project / proof" dropdowns. */
+/** Options for the "links to project / proof" dropdowns. `draft` marks one that isn't on the site. */
 function buildRefs() {
   const refs = { projects: [], proofs: [] };
   for (const key of Object.keys(refs)) {
@@ -126,9 +126,44 @@ function buildRefs() {
     if (!Array.isArray(doc?.data)) continue;
     refs[key] = doc.data
       .filter((entry) => typeof entry.id === "string" && entry.id !== "")
-      .map((entry) => ({ id: entry.id, label: `${schemaFor(key).title(entry)} — ${entry.id}` }));
+      .map((entry) => ({ id: entry.id, label: `${schemaFor(key).title(entry)} — ${entry.id}`, draft: entry.visible === false }));
   }
   return refs;
+}
+
+/**
+ * A real linked skill to preview Home page → Linked skills with: the
+ * shortest-named one whose project or proof is published (so it fits the
+ * preview), and the card text the site would give it. Falls back to a stand-in.
+ */
+function sampleLinkedSkill() {
+  const projects = (state.docs.projects?.data || []).filter((entry) => entry.visible !== false);
+  const proofs = (state.docs.proofs?.data || []).filter((entry) => entry.visible !== false);
+  const labels = state.docs.homePage?.data?.linkedSkills?.labels || {};
+  const samples = (state.docs.skills?.data || []).flatMap((group) => (group.links || []).flatMap((link) => {
+    if (link.projectId) {
+      const project = projects.find((entry) => entry.id === link.projectId);
+      return project ? [{ name: link.skill, target: project.name, detail: [labels.project || "Project", project.type].filter(Boolean).join(" · ") }] : [];
+    }
+    const proof = proofs.find((entry) => entry.id === link.proofId);
+    const project = proof && (projects.find((entry) => entry.proofId === proof.id) ?? projects.find((entry) => entry.id === proof.projectId));
+    return proof && project ? [{ name: link.skill, target: proof.title, detail: `${labels.proof || "Proof"} · ${project.name}` }] : [];
+  }));
+  return samples.sort((a, b) => a.name.length - b.name.length)[0] ?? null;
+}
+
+/**
+ * How the site looks right now, for previews drawn in its colors rather than
+ * the Studio's: Site Settings' palette (unsaved edits included), the words
+ * and animation of a resume bullet's Read more button, and a linked skill.
+ */
+function siteLook() {
+  return {
+    palette: sitePaletteColors(state.docs.header?.data?.theme),
+    readMoreLabel: state.docs.interface?.data?.bulletReadMore || "Read more",
+    readMoreMotion: state.docs.homePage?.data?.readMore?.animation || "sweep",
+    sampleSkill: sampleLinkedSkill()
+  };
 }
 
 function markDirty() {
@@ -396,6 +431,7 @@ function paintDetail() {
 
   const ctx = {
     refs: buildRefs(),
+    site: siteLook(),
     onEdit: markDirty,
     onStructureChange: () => { markDirty(); paintList(); paintDetail(); },
     pickImage
@@ -835,8 +871,10 @@ async function boot() {
     state.files = served;
     if (siteUrl) state.siteUrl = siteUrl;
     // Projects and proofs load up front so the cross-link dropdowns are filled
-    // in no matter which file you open first.
-    await Promise.all([loadDoc("projects"), loadDoc("proofs")]);
+    // in no matter which file you open first; Site Settings, the labels and
+    // the skills so previews can be drawn in the site's palette, with its
+    // words and a real linked skill (siteLook).
+    await Promise.all([loadDoc("projects"), loadDoc("proofs"), loadDoc("header"), loadDoc("interface"), loadDoc("skills")]);
     // Open what the address bar names, else page one, the same place a visitor starts.
     if (!(await openFromHash())) await selectFile(RAIL[0].keys[0]);
     // The site's "Edit in Studio" control reuses this window and only changes the hash.

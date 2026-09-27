@@ -491,15 +491,15 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 /* Sized to its text by autoGrow() in fields.js, so it never needs a scrollbar;
    the corner handle still drags it taller. */
 .f-textarea { resize: vertical; line-height: 1.55; overflow-y: hidden; }
+/* As wide as the sheet, like every other field, so a long paragraph takes fewer lines. */
 .f-textarea--prose {
   min-height: 16rem;
-  max-width: 72ch;
   padding: 16px 18px;
   font-family: var(--serif);
   font-size: 16px;
   line-height: 1.7;
 }
-.f-count { margin: 6px 0 0; max-width: 72ch; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.f-count { margin: 6px 0 0; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .f-select { appearance: auto; }
 
 /* ---------------------------------------------------------- emphasis --- */
@@ -827,6 +827,93 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   align-items: center;
   justify-content: center;
 }
+
+/* -------------------------------------------------------- motion cards --- */
+/* The Read more picker: each card plays the site's own button, styled by
+   app/(site)/bullet-link.css (linked in index.html), on a patch of the site's
+   paper and grid. The site's colors arrive as --site-<mode>-<token> on the
+   stage (fields.js → motionChoiceControl) and become the tokens that sheet
+   reads, light or dark to match this editor; the fallbacks are Default's. */
+.f-motion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.f-motion-card {
+  position: relative;
+  /* A column from the top: a button otherwise centers its content, so cards
+     with shorter descriptions would sit their previews lower than the row's. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid var(--rule);
+  padding: 8px 8px 11px;
+  text-align: left;
+  background: var(--panel);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.f-motion-card:hover { border-color: var(--ink); }
+.f-motion-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.f-motion-card[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+.f-motion-card .f-palette-check { display: none; z-index: 2; }
+.f-motion-card[aria-checked="true"] .f-palette-check { display: flex; }
+.f-motion-card .f-palette-name,
+.f-motion-card .f-palette-desc { padding-inline: 3px; }
+.f-motion-stage {
+  --paper: var(--site-light-paper, #fbfbf9);
+  --white: var(--site-light-white, #ffffff);
+  --ink: var(--site-light-ink, #0b1a2b);
+  --accent: var(--site-light-accent, #e3342f);
+  --on-accent: var(--site-light-onAccent, #fbfbf9);
+  --pill-text: var(--site-light-pillText, #4a5c6b);
+  --muted: var(--site-light-muted, #616b75);
+  --rule: var(--site-light-rule, #d9dee3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 76px;
+  margin-bottom: 10px;
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: center;
+  color: var(--ink);
+  font-family: var(--serif);
+}
+:root[data-theme="dark"] .f-motion-stage {
+  --paper: var(--site-dark-paper, #0d1b2a);
+  --white: var(--site-dark-white, #142a3d);
+  --ink: var(--site-dark-ink, #eef3f7);
+  --accent: var(--site-dark-accent, #ff6b62);
+  --on-accent: var(--site-dark-onAccent, #0d1b2a);
+  --pill-text: var(--site-dark-pillText, #a9b8c5);
+  --muted: var(--site-dark-muted, #9da5ad);
+  --rule: var(--site-dark-rule, #24384a);
+}
+.f-motion-stage .bp-bullet-link { margin-left: 0; }
+/* Linked skills → On hover: room for the card, with the pill placed so its
+   layout fits (a card or callout rises above it, a tab drops below). */
+.f-motion-grid--wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.f-motion-stage--reveal {
+  height: 214px;
+  padding: 18px;
+  overflow: hidden;
+  align-items: flex-end;
+}
+.f-motion-stage--reveal[data-layout="tab"] { align-items: flex-start; }
+.f-motion-stage--reveal[data-layout="callout"] { justify-content: flex-start; }
+.f-motion-stage .bp-skill-card { max-width: 260px; }
+.f-motion-stage[data-layout="callout"] .bp-skill-card { max-width: 220px; }
+
+/* A skill's link to a project or proof, beside its text (fields.js → listLinkSelect). */
+.f-row-link { flex: 0 1 34%; min-width: 150px; font-size: 13px; color: var(--muted); }
+.f-row-link.is-linked { color: var(--ink); border-color: var(--accent); }
 
 /* ------------------------------------------------------------- buttons --- */
 

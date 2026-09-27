@@ -38,6 +38,12 @@
       "Siemens NX",
       "SolidWorks",
       "Visual Studio Code"
+    ],
+    "links": [
+      {
+        "skill": "GitHub",
+        "projectId": "auto-app-updater"
+      }
     ]
   },
   {
@@ -69,6 +75,40 @@
       "Wireless Network Design and Optimization",
       "IoT and Production Network Segmentation",
       "Network Security and Access Control"
+    ],
+    "links": [
+      {
+        "skill": "DNS and Subdomain Configuration",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "Reverse Proxy and Firewall Routing",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "Server Network and VLAN Configuration",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "Ubiquiti UniFi Network Administration",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "DHCP and IP Address Management",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "Multi-Site Network Management",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "Network Monitoring and Troubleshooting",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "IoT and Production Network Segmentation",
+        "projectId": "unifi-network"
+      }
     ]
   }
 ]

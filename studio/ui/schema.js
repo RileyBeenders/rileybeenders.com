@@ -102,62 +102,75 @@ const IMAGE_FIELDS = [
 ];
 
 /**
- * Ten hand-picked presets plus Customization. Swatches are the light-mode
- * preview only — each preset's full light/dark token set (and the ramp that
- * derives ink-soft/muted/faint/rule/prose/pill-text from just these five
- * seeds) lives in lib/palettes.ts and lib/palette.ts on the site side. Keep
- * the two in sync by hand; they change together and rarely.
+ * Ten hand-picked presets plus Customization. `swatch` is the light mode's
+ * seeds and `swatchDark` the dark mode's; the palette card shows paper, ink,
+ * accent and blue from `swatch`, and previews drawn in the site's colors (the
+ * Home page's Read more and Linked skills pickers) use the rest. Each preset's
+ * full light/dark token set (and the ramp that derives ink-soft/muted/faint/
+ * rule/prose/pill-text from just these five seeds) lives in lib/palettes.ts
+ * and lib/palette.ts on the site side. Keep the two in sync by hand; they
+ * change together and rarely.
  */
 const PALETTE_OPTIONS = [
   {
     id: "default", name: "Default",
     description: "The site's original paper-and-ink palette with a red accent.",
-    swatch: { paper: "#fbfbf9", ink: "#0b1a2b", accent: "#e3342f", blue: "#2f86c4" }
+    swatch: { paper: "#fbfbf9", white: "#ffffff", ink: "#0b1a2b", accent: "#e3342f", blue: "#2f86c4" },
+    swatchDark: { paper: "#0d1b2a", white: "#142a3d", ink: "#eef3f7", accent: "#ff6b62", blue: "#5aa9e6" }
   },
   {
     id: "electric", name: "Electric",
     description: "Tesla-inspired white canvas in light, Bugatti-inspired near-black canvas in dark — one electric-blue accent both ways.",
-    swatch: { paper: "#ffffff", ink: "#171a20", accent: "#3e6ae1", blue: "#3e6ae1" }
+    swatch: { paper: "#ffffff", white: "#f4f4f4", ink: "#171a20", accent: "#3e6ae1", blue: "#3e6ae1" },
+    swatchDark: { paper: "#000000", white: "#141414", ink: "#ffffff", accent: "#3e6ae1", blue: "#3e6ae1" }
   },
   {
     id: "forest", name: "Forest",
     description: "Sage paper, deep forest ink, burnt-orange accent.",
-    swatch: { paper: "#f8f7f0", ink: "#1a2b1f", accent: "#c1622b", blue: "#2f7a63" }
+    swatch: { paper: "#f8f7f0", white: "#ffffff", ink: "#1a2b1f", accent: "#c1622b", blue: "#2f7a63" },
+    swatchDark: { paper: "#0f1a13", white: "#17261c", ink: "#eef3ea", accent: "#e2793f", blue: "#4fae8f" }
   },
   {
     id: "twilight", name: "Twilight",
     description: "Pale lavender paper, indigo ink, violet accent.",
-    swatch: { paper: "#f7f6fb", ink: "#1c1930", accent: "#7c4dbd", blue: "#3aa0c9" }
+    swatch: { paper: "#f7f6fb", white: "#ffffff", ink: "#1c1930", accent: "#7c4dbd", blue: "#3aa0c9" },
+    swatchDark: { paper: "#14101f", white: "#201a33", ink: "#f1eef7", accent: "#a875e0", blue: "#5cc2e8" }
   },
   {
     id: "terracotta", name: "Terracotta",
     description: "Warm sand paper, espresso ink, clay-red accent.",
-    swatch: { paper: "#fbf4ec", ink: "#2e1d14", accent: "#c1502e", blue: "#2d7d82" }
+    swatch: { paper: "#fbf4ec", white: "#fffaf4", ink: "#2e1d14", accent: "#c1502e", blue: "#2d7d82" },
+    swatchDark: { paper: "#1d130c", white: "#2a1d13", ink: "#f8ede2", accent: "#e07750", blue: "#4fa6ac" }
   },
   {
     id: "ocean", name: "Ocean",
     description: "Ice-blue paper, deep navy ink, coral accent.",
-    swatch: { paper: "#f3f8fb", ink: "#0d2436", accent: "#e8604a", blue: "#1f9ad6" }
+    swatch: { paper: "#f3f8fb", white: "#ffffff", ink: "#0d2436", accent: "#e8604a", blue: "#1f9ad6" },
+    swatchDark: { paper: "#08161f", white: "#0f2331", ink: "#eaf4f9", accent: "#ff8468", blue: "#4fc3ee" }
   },
   {
     id: "graphite", name: "Graphite",
     description: "Restrained near-grayscale with a single charcoal accent.",
-    swatch: { paper: "#f6f6f4", ink: "#161616", accent: "#3a3a3a", blue: "#7d8590" }
+    swatch: { paper: "#f6f6f4", white: "#ffffff", ink: "#161616", accent: "#3a3a3a", blue: "#7d8590" },
+    swatchDark: { paper: "#121212", white: "#1c1c1c", ink: "#f2f2f0", accent: "#d0d0d0", blue: "#8f97a1" }
   },
   {
     id: "amber", name: "Amber",
     description: "Cream paper, dark umber ink, gold accent.",
-    swatch: { paper: "#fbf6e9", ink: "#2b2210", accent: "#b8791a", blue: "#2f6b5e" }
+    swatch: { paper: "#fbf6e9", white: "#fffdf5", ink: "#2b2210", accent: "#b8791a", blue: "#2f6b5e" },
+    swatchDark: { paper: "#1c160a", white: "#281f0f", ink: "#f7efd9", accent: "#e2a53f", blue: "#4f9a89" }
   },
   {
     id: "rose", name: "Rose",
     description: "Blush paper, deep plum ink, magenta accent.",
-    swatch: { paper: "#fbf3f5", ink: "#2c1420", accent: "#c13d6b", blue: "#5a5ec7" }
+    swatch: { paper: "#fbf3f5", white: "#fffafb", ink: "#2c1420", accent: "#c13d6b", blue: "#5a5ec7" },
+    swatchDark: { paper: "#1c0f15", white: "#291b21", ink: "#f8e9ee", accent: "#ec6d97", blue: "#8890e8" }
   },
   {
     id: "slate", name: "Slate",
     description: "Cool gray paper, slate-navy ink, teal accent.",
-    swatch: { paper: "#f4f6f8", ink: "#10202e", accent: "#0d8f8f", blue: "#3355a4" }
+    swatch: { paper: "#f4f6f8", white: "#ffffff", ink: "#10202e", accent: "#0d8f8f", blue: "#3355a4" },
+    swatchDark: { paper: "#0a1620", white: "#12212e", ink: "#eaf0f4", accent: "#38c6c6", blue: "#6f89d6" }
   },
   {
     id: "custom", name: "Customization",
@@ -165,6 +178,95 @@ const PALETTE_OPTIONS = [
     // No swatch: the palette control previews this one from the custom
     // colors themselves instead of a fixed swatch.
   }
+];
+
+const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+
+/** WCAG relative luminance, as lib/palette.ts computes it. */
+function luminance(hex) {
+  const [r, g, b] = [1, 3, 5].map((at) => {
+    const v = parseInt(hex.slice(at, at + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+/** Two hex colors mixed in sRGB, t = 0 → a, t = 1 → b (lib/palette.ts → mix). */
+function mix(a, b, t) {
+  const channel = (hex, at) => parseInt(hex.slice(at, at + 2), 16);
+  return "#" + [1, 3, 5]
+    .map((at) => Math.round(channel(a, at) + (channel(b, at) - channel(a, at)) * t).toString(16).padStart(2, "0"))
+    .join("");
+}
+
+/**
+ * The colors the site is drawn in under a theme setting (Site Settings →
+ * Overall theme, saved or not), for previews that should look like the site
+ * rather than the Studio: paper, white (the surface), ink and accent in each
+ * mode, the text the site sets on the accent (lib/palette.ts → onAccentFor:
+ * whichever of paper and ink reads better on it), and the pill-text, muted
+ * and rule tints it derives from ink and paper. A Customization color that
+ * isn't a full hex yet falls back to Default's.
+ */
+export function sitePaletteColors(theme) {
+  const preset = PALETTE_OPTIONS.find((option) => option.id === theme?.paletteId && option.swatch) ?? PALETTE_OPTIONS[0];
+  const custom = theme?.paletteId === "custom" ? theme.custom : null;
+  const mode = (seeds, fallback) => {
+    const pick = (key) => (HEX_COLOR.test(seeds?.[key] ?? "") ? seeds[key] : fallback[key]);
+    const colors = { paper: pick("paper"), white: pick("white"), ink: pick("ink"), accent: pick("accent") };
+    colors.onAccent = contrast(colors.paper, colors.accent) >= contrast(colors.ink, colors.accent) ? colors.paper : colors.ink;
+    // The tint ramp lib/palette.ts derives from ink toward paper (RAMP there).
+    colors.pillText = mix(colors.ink, colors.paper, 0.29);
+    colors.muted = mix(colors.ink, colors.paper, 0.36);
+    colors.rule = mix(colors.ink, colors.paper, 0.87);
+    return colors;
+  };
+  return {
+    light: mode(custom ? custom.light : preset.swatch, PALETTE_OPTIONS[0].swatch),
+    dark: mode(custom ? custom.dark : preset.swatchDark, PALETTE_OPTIONS[0].swatchDark)
+  };
+}
+
+/**
+ * The ways a resume bullet's "Read more" button can move. Each value is a
+ * `data-motion` styled in app/(site)/bullet-link.css (and the
+ * ReadMoreAnimation type in types/pages.ts); the picker previews each one
+ * with that same stylesheet, in the site's palette.
+ */
+const READ_MORE_MOTIONS = [
+  { value: "sweep", label: "Ink sweep", help: "Ink wipes in from the left and the arrow lifts. The original." },
+  { value: "roll", label: "Letter roll", help: "Each letter rolls up to a fresh copy, left to right, as the fill turns to ink." },
+  { value: "launch", label: "Arrow launch", help: "The arrow flies off the corner and a new one slides in behind it." },
+  { value: "offset", label: "Offset print", help: "Lifts onto a hard ink shadow, like a plate out of register, and presses flat on click." },
+  { value: "trace", label: "Trace", help: "A hairline of ink draws itself around the button, like a pen outlining a part." },
+  { value: "glint", label: "Glint", help: "A soft light crosses the button every few seconds. Hover sweeps in the ink." },
+  { value: "still", label: "Still", help: "No movement. The fill simply turns to ink." }
+];
+
+/**
+ * How a skill linked to a project or proof marks its border, and how its
+ * hover card opens. Each value is a `data-border` / `data-reveal` styled in
+ * app/(site)/skill-pills.css (the LinkedSkillBorder / LinkedSkillReveal
+ * types in types/pages.ts); the pickers preview each with that stylesheet.
+ */
+const SKILL_BORDERS = [
+  { value: "orbit", label: "Orbit", help: "A comet of accent circles the border, one slow lap every six seconds." },
+  { value: "march", label: "Marching dashes", help: "A dashed accent line, like a drawing's hidden line, creeps round the border." },
+  { value: "pulse", label: "Ping", help: "An accent ring leaves the border and fades every few seconds." },
+  { value: "marks", label: "Registration marks", help: "Accent corner ticks settle in and out, then close onto the corners on hover." },
+  { value: "signal", label: "Signal", help: "A short pulse of accent runs along the bottom edge, like current on a trace." },
+  { value: "steady", label: "Steady", help: "An accent border and the link icon, with nothing moving." }
+];
+
+const SKILL_REVEALS = [
+  { value: "card", label: "Card", help: "A card floats up above the skill, pointing at it, with the Read more button." },
+  { value: "tab", label: "Tab", help: "A drawer unrolls from under the skill in its accent border." },
+  { value: "callout", label: "Callout", help: "A drawing's leader line runs from the skill's corner up to an underlined label." }
 ];
 
 /** Every option next/font/google preloads in app/(site)/layout.tsx — see lib/fonts.ts. */
@@ -436,11 +538,19 @@ export const SCHEMAS = {
     label: "Skills",
     shape: "array",
     title: (item) => item.category || "Untitled group",
-    subtitle: (item) => `${(item.items || []).length} items`,
+    subtitle: (item) => [`${(item.items || []).length} items`, (item.links || []).length ? `${item.links.length} linked` : ""].filter(Boolean).join(" · "),
     blank: () => ({ category: "New group", items: [] }),
     fields: [
       { name: "category", type: "text", label: "Category", required: true },
-      { name: "items", type: "stringList", label: "Items", always: true }
+      {
+        name: "items",
+        type: "stringList",
+        label: "Items",
+        always: true,
+        // Each row's link picker writes `links` beside `items`: [{ skill, projectId | proofId }].
+        linksName: "links",
+        help: "Link a skill to the project or proof that shows it, and on the home page it gets a link icon, a marked border and a card that opens on hover (Home page → Linked skills). A draft target is kept but not shown until it's published."
+      }
     ]
   },
 
@@ -519,6 +629,66 @@ export const SCHEMAS = {
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
           { name: "skills", type: "text", label: "Skills", required: true, span: "half" },
           { name: "education", type: "text", label: "Education", required: true, span: "half" }
+        ]
+      },
+      {
+        name: "readMore",
+        type: "group",
+        label: "Read more button",
+        help: "The button at the end of a resume bullet that links to its project, shown while Site Settings → Visibility → Project links on resume bullets is on. Its words are Navigation & labels → Resume bullet link, and its colors follow Site Settings → Overall theme, light and dark.",
+        fields: [
+          {
+            name: "animation",
+            type: "motionChoice",
+            preview: "readMore",
+            label: "Animation",
+            default: "sweep",
+            always: true,
+            // The Linked skills previews carry this button too, so they redraw with the new choice.
+            repaint: true,
+            options: READ_MORE_MOTIONS,
+            help: "Hover or focus a card to play it. The previews use the site's palette, in the Studio's light or dark mode."
+          }
+        ]
+      },
+      {
+        name: "linkedSkills",
+        type: "group",
+        label: "Linked skills",
+        help: "A skill linked to a project or proof (Skills → each item's link) gets a link icon and a border that says so. Hovering it, or tabbing to it, opens what it links to with the Read more button above. It only shows while the Projects page is on and what it links to is published. Colors follow Site Settings → Overall theme.",
+        fields: [
+          {
+            name: "border",
+            type: "motionChoice",
+            preview: "skillBorder",
+            label: "Border",
+            default: "orbit",
+            always: true,
+            // The On hover previews show this border, so they redraw with the new choice.
+            repaint: true,
+            options: SKILL_BORDERS,
+            help: "Each linked skill keeps its own beat, and the border settles while it's hovered."
+          },
+          {
+            name: "reveal",
+            type: "motionChoice",
+            preview: "skillReveal",
+            label: "On hover",
+            default: "card",
+            always: true,
+            options: SKILL_REVEALS,
+            help: "Near the edge of the window the card turns to stay on screen."
+          },
+          {
+            name: "labels",
+            type: "group",
+            label: "Words in the card",
+            help: "The second line reads \"Project · its category\" or \"Proof · its project\".",
+            fields: [
+              { name: "project", type: "text", label: "A project", required: true, span: "third", placeholder: "Project" },
+              { name: "proof", type: "text", label: "A proof", required: true, span: "third", placeholder: "Proof" }
+            ]
+          }
         ]
       },
       {

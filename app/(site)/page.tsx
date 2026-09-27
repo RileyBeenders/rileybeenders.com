@@ -1,4 +1,3 @@
-import Link from "next/link";
 import resumeData from "@/data/resumeData";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BpActions } from "@/components/blueprint/BpActions";
@@ -7,6 +6,9 @@ import { HeroRibbon } from "@/components/blueprint/HeroRibbon";
 import { BpHeroRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { PageSpine } from "@/components/blueprint/PageSpine";
 import { BackToTop } from "@/components/blueprint/BackToTop";
+import { BulletLink } from "@/components/blueprint/BulletLink";
+import { LinkedSkill } from "@/components/blueprint/LinkedSkill";
+import { skillTargets } from "@/lib/skill-links";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { getBuildStamp } from "@/lib/build-stamp";
 import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
@@ -27,6 +29,10 @@ export default function HomePage() {
   const projectsById = new Map(data.projects.map((project) => [project.id, project]));
   const current = data.experience[0];
   const stamp = getBuildStamp();
+  // Home page → Read more button in the Studio; a blank choice is the original sweep.
+  const readMoreMotion = page.readMore?.animation || "sweep";
+  let readMoreCount = 0;
+  let linkedSkillCount = 0;
 
   return (
     <main className="hp">
@@ -132,17 +138,13 @@ export default function HomePage() {
                                     className="bp-bullet-emphasis"
                                   />
                                 {project && (
-                                  <Link
+                                  <BulletLink
                                     href={`/projects#project-${project.id}`}
-                                    className="bp-bullet-link"
-                                    aria-label={`See the ${project.name} project`}
-                                    suppressHydrationWarning
-                                  >
-                                    <span>{ui.bulletReadMore}</span>
-                                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                      <path d="M4 12L12 4m0 0H5.5M12 4v6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                  </Link>
+                                    projectName={project.name}
+                                    label={ui.bulletReadMore}
+                                    motion={readMoreMotion}
+                                    index={readMoreCount++}
+                                  />
                                 )}
                                 </span>
                               </li>
@@ -165,18 +167,35 @@ export default function HomePage() {
             <div className="bp-section-grid">
               <Reveal><h2 className="bp-section-index">03&nbsp;&nbsp;{page.headings.skills}</h2></Reveal>
               <div>
-                {data.skills.map((group, index) => (
-                  <Reveal key={group.category} delay={Math.min(index, 3) * 0.06}>
-                    <div className="bp-skill-group">
-                      <h3>{group.category}</h3>
-                      <div className="bp-pills">
-                        {group.items.map((item) => (
-                          <span className="bp-pill" key={item}>{item}</span>
-                        ))}
+                {data.skills.map((group, index) => {
+                  const targets = skillTargets(group, data);
+                  return (
+                    <Reveal key={group.category} delay={Math.min(index, 3) * 0.06}>
+                      <div className="bp-skill-group">
+                        <h3>{group.category}</h3>
+                        <div className="bp-pills">
+                          {group.items.map((item) => {
+                            const target = targets.get(item);
+                            if (!target) return <span className="bp-pill" key={item}>{item}</span>;
+                            return (
+                              <LinkedSkill
+                                key={item}
+                                name={item}
+                                target={target}
+                                kindLabel={page.linkedSkills?.labels?.[target.kind] || (target.kind === "project" ? "Project" : "Proof")}
+                                border={page.linkedSkills?.border || "orbit"}
+                                reveal={page.linkedSkills?.reveal || "card"}
+                                readMoreLabel={ui.bulletReadMore}
+                                readMoreMotion={readMoreMotion}
+                                index={linkedSkillCount++}
+                              />
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  </Reveal>
-                ))}
+                    </Reveal>
+                  );
+                })}
               </div>
             </div>
           </div>

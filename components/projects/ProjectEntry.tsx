@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { ProjectView } from "@/lib/projects";
@@ -59,6 +59,18 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
   const [expanded, setExpanded] = useState(false);
   const reduced = useReducedMotion();
   const panelId = useId();
+  // A link to this case study (a skill linked to a proof, lib/skill-links.ts)
+  // names the toggle's id, so the browser scrolls to it; this opens it.
+  const caseStudyAnchor = `project-${project.id}-case-study`;
+
+  useEffect(() => {
+    const openIfNamed = () => {
+      if (window.location.hash === `#${caseStudyAnchor}`) setExpanded(true);
+    };
+    openIfNamed();
+    window.addEventListener("hashchange", openIfNamed);
+    return () => window.removeEventListener("hashchange", openIfNamed);
+  }, [caseStudyAnchor]);
 
   const mediaRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: mediaProgress } = useScroll({
@@ -135,6 +147,7 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               <Reveal delay={0.32}>
                 <button
                   type="button"
+                  id={caseStudyAnchor}
                   className="pj-toggle"
                   aria-expanded={expanded}
                   aria-controls={panelId}
