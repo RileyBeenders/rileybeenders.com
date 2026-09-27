@@ -310,6 +310,8 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--faint) transparent;
+  /* The scrollbar's room is kept on both sides, so the gaps match and nothing shifts when it appears. */
+  scrollbar-gutter: stable both-edges;
 }
 /* Single-document files have no list, so the editor takes that column too. */
 .list-pane[hidden] ~ .detail { grid-column: 2 / -1; }
@@ -320,7 +322,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  max-width: 994px;
   padding-bottom: 14px;
   margin-bottom: 20px;
   border-bottom: 2px solid var(--ink);
@@ -344,8 +345,10 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 
 /* The long form's own margin index: the site's section-index pattern, sticky
    beside the sheet, one link per top-level field or group. */
-.detail-body { display: grid; grid-template-columns: minmax(0, 820px); gap: 24px; align-items: start; }
-.detail-body.has-index { grid-template-columns: 150px minmax(0, 820px); }
+/* The sheet runs to the pane's right edge, as wide as the window allows, with
+   the same gap on the right as on the left (the pane's own padding). */
+.detail-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+.detail-body.has-index { grid-template-columns: 150px minmax(0, 1fr); }
 .detail-index {
   position: sticky;
   top: 0;
@@ -379,7 +382,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   display: flex;
   flex-wrap: wrap;
   gap: 0 28px;
-  max-width: 994px;
   margin-bottom: 20px;
   border-bottom: 2px solid var(--ink);
   background-color: var(--paper);
