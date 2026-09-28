@@ -179,9 +179,10 @@
       {
         "text": "Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, support, and training.",
         "emphasis": [
-          "THE KRAKEN"
+          "THE KRAKEN",
+          "world's largest 3D-printed statue"
         ],
-        "proofId": "kraken"
+        "projectId": "filament-innovations"
       }
     ]
   },
