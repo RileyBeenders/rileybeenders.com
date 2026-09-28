@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SiteAnalytics from "@/components/SiteAnalytics";
 import homePage from "@/data/home/page.json";
 import header from "@/data/header.json";
 import "./base.css";
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {THEME_INIT_SCRIPT}
         </Script>
         {children}
-        <Analytics />
+        <SiteAnalytics />
         <SpeedInsights />
       </body>
     </html>

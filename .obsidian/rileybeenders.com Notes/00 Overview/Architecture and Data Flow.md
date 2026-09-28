@@ -12,13 +12,13 @@ tags: [overview, architecture]
 - **lucide-react** — one icon (`ExternalLink`) in `JobsTable`
 - **mermaid** — renders the job-tracker Gantt chart client-side ([[GanttChart JobsTable and gantt.ts]])
 - **jsPDF** — generates the downloadable resume PDF server-side ([[Resume PDF Pipeline]])
-- **@vercel/analytics** + **@vercel/speed-insights** — mounted in the root `app/layout.tsx`
+- **@vercel/analytics** + **@vercel/speed-insights** — mounted in the root `app/layout.tsx`; analytics goes through the `SiteAnalytics` client wrapper, which adds the owner opt-out and a per-visit state/city event ([[Site Analytics]])
 - **next/font/google** — eight faces preloaded as CSS variables in `app/(site)/layout.tsx` (Instrument Serif, Spectral, Playfair Display, Fraunces, Source Serif 4, Inter, Space Grotesk, IBM Plex Mono); `header.json.fonts` picks which one fills `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body`. **next/og** + a bundled TTF render the OG image and apple icon
 - **playwright-core** (dev only) — drives the machine's own Chrome/Edge for `scripts/capture-site-screenshots.mjs` and `scripts/check-anchor-hydration.mjs`; never part of the site bundle
 
 ## Two-layer layout
 
-- **`app/layout.tsx`** (root) — shell only: `<html>`/`<body>`, imports `app/base.css` (a bare reset), mounts Analytics + SpeedInsights, and sets static `metadata` (title, description, OpenGraph, Twitter, `metadataBase`). No chrome, no fonts.
+- **`app/layout.tsx`** (root) — shell only: `<html>`/`<body>`, imports `app/base.css` (a bare reset), mounts `SiteAnalytics` + SpeedInsights, and sets static `metadata` (title, description, OpenGraph, Twitter, `metadataBase`). No chrome, no fonts.
 - **`app/(site)/layout.tsx`** — the visible site: loads the eight Google faces as CSS variables, imports `app/(site)/blueprint.css`, resolves the Studio's palette choice (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and the font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark), wraps everything in `ThemeProvider`, and renders `<BpNav>` above `{children}` and `<BpFixedRelocationBadge>` below (docked bottom-right on every page except `/`, whose hero owns its own badge), plus `<StudioLink>` in development only (the "Edit in Studio" control, see [[Blueprint UI Components]]). Every page route lives in this `(site)` group.
 
 ## Data flow, end to end

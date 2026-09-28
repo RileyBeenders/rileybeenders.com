@@ -35,7 +35,7 @@ Full annotated tree of `rileybeenders.com` on the **`main`** branch (post Bluepr
   rileybeenders.com Notes/     # ← you are here
 
 app/
-  layout.tsx                   # ROOT layout: <html>/<body>, base.css, Analytics, SpeedInsights, static metadata + OpenGraph/Twitter
+  layout.tsx                   # ROOT layout: <html>/<body>, base.css, SiteAnalytics, SpeedInsights, static metadata + OpenGraph/Twitter
   base.css                     # shared shell reset only (box-sizing, body, img, .sr-only)
   icon.svg                     # static favicon — hand-drawn static form of the BpMark monogram
   apple-icon.tsx               # iOS home-screen icon, rendered via next/og ImageResponse
@@ -52,10 +52,12 @@ app/
     contact/page.tsx           # /contact — hero + <BpActions> + Details prose, copy from data/contact/contact.json, email spelled out once
     more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable> (each gated by ganttSection.chartVisible / tableVisible — table only today)
   api/resume-pdf/route.ts      # Node-runtime API route: generates the live resume PDF on demand
+  api/geo/route.ts             # returns the visitor's country/region/city from Vercel's IP headers, for the analytics Visit event
 
 components/
   GanttChart.tsx               # client-side mermaid Gantt renderer for the job tracker
   JobsTable.tsx                # renders the parsed job-tracker markdown table
+  SiteAnalytics.tsx            # client wrapper for Vercel <Analytics>: va-disable opt-out, ?analytics=off/on, per-session "Visit" event with region + city
   blueprint/
     BpNav.tsx                  # sticky top nav (client, usePathname for active link) + brand mark + <BpThemeToggle>
     BpThemeToggle.tsx          # light/dark switch in the nav (uses ThemeProvider's useTheme)

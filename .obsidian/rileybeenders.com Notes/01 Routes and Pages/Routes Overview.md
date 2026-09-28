@@ -14,12 +14,13 @@ All routes are Next.js App Router server components. None use dynamic segments �
 | `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] (the tracker section shows when `ganttSection.chartVisible` or `tableVisible` is on — currently table only) | "More Info \| Riley Beenders" |
 | `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
 | `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → PDF binary, no HTML | n/a |
+| `/api/geo` | `app/api/geo/route.ts` | `GET` → JSON `{ country, region, city }` from Vercel's IP headers, for the analytics Visit event — see [[Site Analytics]] | n/a |
 
 Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes Next wires up automatically). See [[Design System (Blueprint Press)]].
 
 ## Root layout — `app/layout.tsx`
 
-- Shell only: `<html lang="en" data-scroll-behavior="smooth">`, `<body suppressHydrationWarning>`, `{children}`, then `<Analytics />` and `<SpeedInsights />`. Imports `app/base.css` (a bare reset — box-sizing, body margin, `img`, `a`, `.sr-only`).
+- Shell only: `<html lang="en" data-scroll-behavior="smooth">`, `<body suppressHydrationWarning>`, `{children}`, then `<SiteAnalytics />` (Vercel `<Analytics />` with an owner opt-out and a per-visit state/city event — see [[Site Analytics]]) and `<SpeedInsights />`. Imports `app/base.css` (a bare reset — box-sizing, body margin, `img`, `a`, `.sr-only`).
 - `metadata` is a static object: `metadataBase: new URL("https://rileybeenders.com")` (needed so the generated `opengraph-image` resolves to an absolute URL), a fixed `title`/`description`, plus `openGraph` and `twitter` blocks that both use the title "Riley's Professional Portfolio".
 - No `siteMode` / `comingSoon` branching — that logic was removed with the reskin.
 
@@ -77,7 +78,14 @@ Because it uses `fs`, this page can't be statically exported without the file pr
 
 Full generator detail in [[Resume PDF Pipeline]].
 
+## `/api/geo` — `app/api/geo/route.ts`
+
+- `dynamic = "force-dynamic"`, `Cache-Control: no-store`.
+- `GET(request)` returns `{ country, region, city }` from the `x-vercel-ip-country` / `x-vercel-ip-country-region` / `x-vercel-ip-city` request headers (city URL-decoded). Stores nothing. Locally the headers don't exist, so every field is `null`.
+- Only caller is `SiteAnalytics`, once per tab session. Detail in [[Site Analytics]].
+
 ## Related
+- [[Site Analytics]]
 - [[Architecture and Data Flow]]
 - [[About This Site Page]]
 - [[Blueprint Nav and Mark]]

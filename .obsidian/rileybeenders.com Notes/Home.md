@@ -36,6 +36,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[GanttChart JobsTable and gantt.ts]] — the client mermaid Gantt chart, the tracker table, and the shared parser
 - [[Projects Route (BpComingSoon)]] — the projects page: `ProjectEntry`, spine, gallery, lightbox, the optional per-project date box
 - [[About This Site Page]] — `/about-this-site`: the running date bar, `CountUp` stats, the time-scaled commit timeline, pillars, pinned screenshots, and the scripts and Studio entry behind them
+- [[Site Analytics]] — the Vercel Web Analytics wrapper: owner opt-out (`?analytics=off`), and the per-visit state/city `Visit` event fed by `/api/geo`
 
 ### Data Layer
 - [[Data Layer and Types]] — types, the `resumeData.ts` merge pipeline, `header.json`, the dead "coming soon" schema
