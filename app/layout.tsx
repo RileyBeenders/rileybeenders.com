@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import homePage from "@/data/home/page.json";
+import header from "@/data/header.json";
 import "./base.css";
 
 // Runs before hydration so the correct theme is on <html> for first paint —
 // otherwise the page would flash light before React mounts and applies it.
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
 
-const TITLE = "Riley Beenders | R&D, Electromechanical and Automation Engineer";
-const DESCRIPTION =
-  "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation.";
+// The home page's tab title, description and share title, edited in the Studio (Home page → Browser tab).
+const TITLE = homePage.meta.title;
+const DESCRIPTION = homePage.meta.description;
+const SHARE_TITLE = homePage.meta.shareTitle;
 
 export const metadata: Metadata = {
   // Required for the generated opengraph-image to be emitted as an absolute
@@ -20,14 +23,14 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    siteName: "Riley Beenders",
+    siteName: header.person.name,
     url: "https://rileybeenders.com",
-    title: "Riley's Professional Portfolio",
+    title: SHARE_TITLE,
     description: DESCRIPTION
   },
   twitter: {
     card: "summary_large_image",
-    title: "Riley's Professional Portfolio",
+    title: SHARE_TITLE,
     description: DESCRIPTION
   }
 };

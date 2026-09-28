@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ui } from "@/lib/copy";
 
 /**
  * Bottom-left return to the top of the page. It keeps its own corner — pages
@@ -28,7 +29,7 @@ export function BackToTop() {
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M8 13V3m0 0L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <span>Back to Top</span>
+      <span>{ui.backToTop}</span>
     </button>
   );
 }

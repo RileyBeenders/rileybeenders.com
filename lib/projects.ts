@@ -1,4 +1,6 @@
 import type { Project, ProjectImage, ProofAsset, ProofPoint } from "@/types/resume";
+import { THEMED_SVGS } from "@/components/projects/diagrams/themed";
+import { ui } from "@/lib/copy";
 
 /**
  * The projects page shows each project twice: the project entry itself, then
@@ -27,6 +29,8 @@ export type ProjectView = {
   project: Project;
   /** Gallery images, falling back to the proof diagrams when there are no photos. */
   images: ProjectImage[];
+  /** True when `images` is the project's own list, so Photo Mode can save a placement back to it. */
+  ownImages: boolean;
   proof: ProofView | null;
 };
 
@@ -55,12 +59,12 @@ export function buildProofView(project: Project, proofs: ProofPoint[]): ProofVie
   if (!info && !proof) return null;
 
   const sections = [
-    prose("Problem", info?.problem),
-    prose("Root cause", info?.rootCause),
-    list("Constraints", info?.constraints),
-    list("Approach", info?.approach),
-    list("Design decisions", info?.designDecisions),
-    list("Impact", info?.impact)
+    prose(ui.caseStudy.problem, info?.problem),
+    prose(ui.caseStudy.rootCause, info?.rootCause),
+    list(ui.caseStudy.constraints, info?.constraints),
+    list(ui.caseStudy.approach, info?.approach),
+    list(ui.caseStudy.designDecisions, info?.designDecisions),
+    list(ui.caseStudy.impact, info?.impact)
   ].filter((section): section is ProofSection => section !== null);
 
   const summary = proof?.summary ?? project.summary;
@@ -82,10 +86,12 @@ export function buildProofView(project: Project, proofs: ProofPoint[]): ProofVie
 
 /**
  * Diagrams stand in for photographs on projects that don't have any yet, so the
- * gallery column never renders empty.
+ * gallery column never renders empty. Full-sheet themed drawings stay in the
+ * case study only: shrunk into a 4:3 frame they can't be read, so a project
+ * whose diagrams are all themed renders text-only until it has photos.
  */
 function assetsAsImages(assets: ProofAsset[]): ProjectImage[] {
-  return assets.map((asset) => ({
+  return assets.filter((asset) => !THEMED_SVGS.has(asset.src)).map((asset) => ({
     src: asset.src,
     alt: asset.alt,
     caption: asset.label,
@@ -96,9 +102,10 @@ function assetsAsImages(assets: ProofAsset[]): ProjectImage[] {
 export function buildProjectViews(projects: Project[], proofs: ProofPoint[]): ProjectView[] {
   return projects.map((project) => {
     const proof = buildProofView(project, proofs);
-    const images = project.images?.length
-      ? project.images
+    const ownImages = Boolean(project.images?.length);
+    const images = ownImages
+      ? project.images!
       : assetsAsImages(project.additionalInfo?.assets ?? []);
-    return { project, images, proof };
+    return { project, images, ownImages, proof };
   });
 }

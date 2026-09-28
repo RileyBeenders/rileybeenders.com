@@ -1,8 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import { ImageResponse } from "next/og";
+import homePage from "@/data/home/page.json";
+import header from "@/data/header.json";
 
-export const alt = "Riley's Professional Portfolio";
+// The Home page's share title, set on two lines (its first word, then the rest),
+// with straight apostrophes turned typographic as the serif expects.
+const SHARE_TITLE = homePage.meta.shareTitle;
+const [TITLE_FIRST, ...TITLE_REST] = SHARE_TITLE.replace(/'/g, "’").split(" ");
+
+export const alt = SHARE_TITLE;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -84,8 +91,8 @@ export default async function OpengraphImage() {
               color: INK
             }}
           >
-            <div style={{ display: "flex" }}>Riley&rsquo;s</div>
-            <div style={{ display: "flex" }}>Professional Portfolio</div>
+            <div style={{ display: "flex" }}>{TITLE_FIRST}</div>
+            {TITLE_REST.length > 0 && <div style={{ display: "flex" }}>{TITLE_REST.join(" ")}</div>}
           </div>
 
           <div style={{ display: "flex", width: 660, height: 3, backgroundColor: INK, marginTop: 40 }} />
@@ -100,7 +107,7 @@ export default async function OpengraphImage() {
               fontFamily: "Instrument Serif"
             }}
           >
-            rileybeenders.com &nbsp;·&nbsp; Bethlehem, PA
+            {homePage.footer.sheetLink.text} &nbsp;·&nbsp; {header.person.location}
           </div>
         </div>
       </div>

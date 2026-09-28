@@ -28,13 +28,88 @@ export type ProjectImage = {
   alt: string;
   caption?: string;
   fit?: "cover" | "contain";
+  /** The shape of the image's gallery frame; omitted = 4:3. "original" draws the whole image uncropped. */
+  aspect?: ImageAspect;
   /**
    * GIF only: playback rate relative to the recording (2 = twice as fast).
    * The Studio bakes it into the file's frame delays on save, so the site
    * never reads it — a browser plays a GIF at the file's own pace.
    */
   speed?: number;
+  /**
+   * Omitted: the one image (or GIF) as it is. "compare": `src` is the Before,
+   * `after` the After, and a bar slides between them.
+   */
+  display?: "compare";
+  /** The After image of a comparison. */
+  after?: string;
+  /**
+   * PDF only (a `src` ending in .pdf): its page count, and whether visitors
+   * get a Download PDF button. The gallery grid shows just the first page, from
+   * the preview the Studio saves beside the file as `<src>.png`; the full-screen
+   * viewer scrolls every page, drawn from the file.
+   */
+  pages?: number;
+  download?: boolean;
+  /**
+   * A LinkedIn post this artifact is a capture of. `src` is the picture the
+   * Studio took of the post; this is what it said, kept beside it so the
+   * record survives the post being edited or taken down. The site shows the
+   * words as its own card and links back to the original.
+   */
+  post?: SocialPost;
+  /** Where the Before sits in the comparison's frame; omitted = cover, centred. */
+  frame?: ImageFrame;
+  /** Where the After sits in the comparison's frame; omitted = cover, centred. */
+  afterFrame?: ImageFrame;
+  /**
+   * Set by Photo Mode on the dev site: the photo leaves the gallery and floats
+   * in the project's body text, which wraps around it. Omitted = in the gallery.
+   */
+  place?: ImagePlace;
 };
+
+/**
+ * Where a photo sits in its project's body text. Anchored to a paragraph or
+ * bullet rather than to pixels, so it stays inside the body (never over the
+ * title, the rules or the dates) at every screen width, and survives the
+ * text being edited: an anchor past the last block falls back to the last.
+ */
+export type ImagePlace = {
+  /** Which block the photo floats at the start of: the summary's paragraphs first, then the bullets. */
+  at: number;
+  /** Which edge of the body it floats against. */
+  side: "left" | "right";
+  /** Its width, as a percentage of the body's width. */
+  width: number;
+};
+
+/**
+ * A post captured from elsewhere, kept as evidence. Only `url` and
+ * `capturedAt` are certain: the rest is what the Studio could read off the
+ * page, corrected by hand where it came back thin.
+ */
+export type SocialPost = {
+  /** The original, linked from the card. */
+  url: string;
+  author?: string;
+  /** As the post showed it ("3mo", "May 2026") — not normalised, since it is a quotation. */
+  date?: string;
+  /** The post's words. */
+  text?: string;
+  /** ISO timestamp of the capture, shown on the card so the record dates itself. */
+  capturedAt: string;
+};
+
+/**
+ * An image's crop inside its frame (the image's `aspect`), as percentages of the frame: `x`/`y`
+ * the image's top-left corner, `w` its width (its height follows its own
+ * shape). Set in the Studio's aligner so a before and after line up.
+ */
+export type ImageFrame = { x: number; y: number; w: number };
+
+/** The frame shapes the Studio offers for a gallery image. */
+export type ImageAspect = "3:2" | "16:9" | "21:9" | "1:1" | "4:5" | "3:4" | "2:3" | "9:16" | "original";
 
 export type Experience = {
   company: string;
@@ -172,8 +247,14 @@ export type FeaturePillar = {
 /** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
 export type ProjectFeature = {
   intro?: string;
+  /** The repository button beside the intro. */
+  repoLabel?: string;
   stats?: ProjectStat[];
+  timelineTitle?: string;
+  /** How to use the timeline, under its title. */
+  timelineNote?: string;
   timeline?: TimelineEntry[];
+  pillarsTitle?: string;
   pillars?: FeaturePillar[];
   screenshots?: FeatureScreenshot[];
   backend?: FeatureBackend;
@@ -255,6 +336,25 @@ export type ComingSoonContent = {
   signals: string[];
 };
 
+/**
+ * A skill that points at the work behind it: exactly one of `projectId` or
+ * `proofId`. Kept beside `items` rather than in it, so every other reader of
+ * the skills (the resume PDF, the agent procedures) still sees plain strings.
+ */
+export type SkillLink = {
+  /** The item in the group's `items`, word for word. */
+  skill: string;
+  projectId?: string;
+  proofId?: string;
+};
+
+export type SkillGroup = {
+  category: string;
+  items: string[];
+  /** Optional links from items to a project or proof, in item order. */
+  links?: SkillLink[];
+};
+
 export type ResumeVisibility = {
   experienceProjectButtons: boolean;
   experienceProofButtons: boolean;
@@ -286,6 +386,26 @@ export type FontRole = "header" | "subheader" | "body";
 /** Values are ids from lib/fonts.ts. */
 export type FontSettings = Record<FontRole, string>;
 
+/**
+ * How the intro under a page headline sits (Projects, More Info, About this
+ * site): against the left edge, centred, against the right edge, or across
+ * the full width of the page.
+ */
+export type IntroAlign = "left" | "center" | "right" | "full";
+
+export type LayoutSettings = {
+  introAlign: IntroAlign;
+};
+
+/**
+ * Site-wide motion. `syncAnimations` puts every repeating animation (the Read
+ * more glints, the skill pills' borders, the rest) on one shared beat instead
+ * of each on its own offset. Left out of header.json, it is off.
+ */
+export type MotionSettings = {
+  syncAnimations?: boolean;
+};
+
 export type ResumeData = {
   siteMode?: "resume" | "coming-soon";
   person: {
@@ -302,12 +422,11 @@ export type ResumeData = {
   visibility: ResumeVisibility;
   theme: ThemeSetting;
   fonts: FontSettings;
+  layout: LayoutSettings;
+  motion?: MotionSettings;
   resumePdfPath: string;
   comingSoon?: ComingSoonContent;
-  skills: {
-    category: string;
-    items: string[];
-  }[];
+  skills: SkillGroup[];
   experience: Experience[];
   projects: Project[];
   education: Education;

@@ -43,21 +43,32 @@ export function el(tag, props = {}, ...children) {
  */
 export function thumbImage(src, cssSize, props = {}) {
   const local = typeof src === "string" && src.startsWith("/") && !src.startsWith("//");
+  // A PDF is shown by its first page, the preview saved beside it.
+  const pdf = isPdfSrc(src);
+  const shown = pdf ? pdfPreviewSrc(src) : src;
   const img = el("img", {
     alt: "",
     loading: "lazy",
     decoding: "async",
     ...props,
-    src: local ? `/api/thumb?src=${encodeURIComponent(src)}&w=${Math.ceil(cssSize * (window.devicePixelRatio || 1))}` : src
+    src: local ? `/api/thumb?src=${encodeURIComponent(shown)}&w=${Math.ceil(cssSize * (window.devicePixelRatio || 1))}` : shown
   });
-  if (local) img.addEventListener("error", () => { img.src = src; }, { once: true });
+  // Should the copy fail, the original stands in; a PDF with no preview yet shows a plain PDF tile.
+  if (local) img.addEventListener("error", () => { img.src = pdf ? PDF_TILE : src; }, { once: true });
   return img;
 }
 
+/** A gallery file that is a PDF rather than an image. */
+export const isPdfSrc = (src) => typeof src === "string" && /\.pdf$/i.test(src);
+
+/** Where a PDF's first-page preview lives: beside it, as `<name>.pdf.png`. The site reads the same path. */
+export const pdfPreviewSrc = (src) => `${src}.png`;
+
+/** The stand-in for a PDF whose preview hasn't been made yet. */
+const PDF_TILE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="1" y="1" width="58" height="78" fill="#fff" stroke="#8b8d90" stroke-width="2"/><text x="30" y="47" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#6b6c70">PDF</text></svg>')}`;
+
 function icon(name) {
   const paths = {
-    up: "M8 13V3m0 0L4 7m4-4 4 4",
-    down: "M8 3v10m0 0 4-4m-4 4-4-4",
     remove: "M4 4l8 8M12 4l-8 8",
     add: "M8 3v10M3 8h10",
     check: "M3 8.5 6.5 12 13 4"
@@ -84,6 +95,66 @@ function fieldShell(field, control, extra, forId = control.id) {
 let uid = 0;
 const nextId = () => `f${(uid += 1)}`;
 
+/**
+ * A textarea as tall as its text: no scrollbar, growing line by line while
+ * someone writes, and never shorter than its `rows`. The corner handle still
+ * drags it taller for room to draft; it won't drag shorter than the text.
+ * Fitted once the pane is in the document, whenever its width changes (a
+ * resized window, a card opening), and on every keystroke.
+ */
+function autoGrow(textarea) {
+  let set = 0;
+  let width = 0;
+  let dragged = 0;
+
+  const scroller = () => textarea.closest(".detail") ?? document.scrollingElement;
+
+  function fit() {
+    if (!textarea.isConnected || textarea.offsetParent === null) return;
+    // Measuring collapses the box for a moment, which would pull the pane's
+    // scroll position up with it, so the position is put back afterwards.
+    const pane = scroller();
+    const top = pane?.scrollTop ?? 0;
+    const style = getComputedStyle(textarea);
+    const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    textarea.style.height = "auto";
+    const content = textarea.scrollHeight + borders;
+    set = Math.ceil(Math.max(content, dragged));
+    textarea.style.height = `${set}px`;
+    if (pane) pane.scrollTop = top;
+  }
+
+  textarea.addEventListener("input", fit);
+  textarea.addEventListener("focus", fit);
+  // Letting go after a press on the box: if its height moved, the handle was
+  // dragged, and that height becomes its floor.
+  textarea.addEventListener("pointerdown", () => {
+    window.addEventListener("pointerup", () => {
+      const height = textarea.offsetHeight;
+      if (Math.abs(height - set) > 1) {
+        dragged = height;
+        fit();
+      }
+    }, { once: true });
+  });
+  new ResizeObserver(([entry]) => {
+    const box = entry.borderBoxSize?.[0];
+    const nextWidth = box ? box.inlineSize : textarea.offsetWidth;
+    const height = box ? box.blockSize : textarea.offsetHeight;
+    if (Math.abs(nextWidth - width) > 0.5) {
+      width = nextWidth;
+      fit();
+    } else if (Math.abs(height - set) > 1) {
+      // Not a height we set: the handle was dragged. Keep that as the floor.
+      dragged = height;
+      fit();
+    }
+  }).observe(textarea);
+  // Built off-document; by the next microtask the pane has been put in place.
+  queueMicrotask(fit);
+  return textarea;
+}
+
 /** Small round button used for add / remove / reorder. */
 function iconButton(name, title, onClick, disabled) {
   return el("button", {
@@ -102,18 +173,246 @@ function moveItem(list, from, to) {
   list.splice(to, 0, entry);
 }
 
+/** The three-line handle an entry is dragged by. A button, so ↑ / ↓ can move it from the keyboard too. */
+export function gripHandle(label) {
+  return el("button", {
+    type: "button",
+    class: "f-grip",
+    title: "Drag to reorder (or focus and press ↑ / ↓)",
+    "aria-label": `Reorder ${label}. Drag, or press up or down arrow.`
+  },
+    el("svg", { width: 14, height: 14, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" },
+      el("path", { d: "M3 4.5h10M3 8h10M3 11.5h10", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round" })));
+}
+
+/** A keyboard move repaints the list, so the grip that moved is found again by list and position. */
+let pendingGripFocus = null;
+
+function scrollParent(node) {
+  for (let parent = node.parentElement; parent; parent = parent.parentElement) {
+    if (/(auto|scroll)/.test(getComputedStyle(parent).overflowY)) return parent;
+  }
+  return null;
+}
+
+/** Pixels the pointer must travel before a press on a grip becomes a drag, so a click never lifts anything. */
+const DRAG_THRESHOLD = 4;
+/** Neighbours making room and the drop settling: short, on the site's ease-out curve. */
+const SLIDE_MS = 180;
+
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/**
+ * Grab-and-place reordering for the direct children of `container`, the way
+ * dnd-kit's sortable works: pressing an item's `.f-grip` and moving a few
+ * pixels lifts it, the item follows the pointer, and its neighbours slide
+ * aside (transforms only; nothing in the DOM moves mid-drag) to show where it
+ * will land. Letting go settles it into that gap, then `onMove(from, to)`
+ * updates the data and repaints into the same layout, so nothing jumps.
+ * Escape puts it back. With the grip focused, ↑ / ↓ move the item one place,
+ * instantly. `id` names the list so focus can follow a keyboard move across
+ * the repaint. A container that outlives repaints (the entry list) can be
+ * passed again; it only rebinds.
+ */
+export function makeSortable(container, onMove, id) {
+  container.dataset.sortId = id;
+  const bound = Boolean(container.sortable);
+  container.sortable = { onMove, id };
+  focusPendingGrip(id);
+  if (bound) return container;
+  bindSortable(container);
+  return container;
+}
+
+function focusPendingGrip(id) {
+  if (pendingGripFocus?.id !== id) return;
+  const { index } = pendingGripFocus;
+  pendingGripFocus = null;
+  // The repaint builds the new list off-document; by the next microtask it is in place.
+  queueMicrotask(() => {
+    const target = document.querySelector(`[data-sort-id="${CSS.escape(id)}"]`);
+    target?.children[index]?.querySelector(".f-grip")?.focus();
+  });
+}
+
+function bindSortable(container) {
+  const items = () => [...container.children];
+  /** The grip this event came from, if it belongs to this list and not to a list nested inside one of its cards. */
+  const ownGrip = (event) => {
+    const grip = event.target.closest?.(".f-grip");
+    return grip && grip.closest("[data-sort-id]") === container ? grip : null;
+  };
+
+  container.addEventListener("keydown", (event) => {
+    const grip = ownGrip(event);
+    if (!grip || (event.key !== "ArrowUp" && event.key !== "ArrowDown")) return;
+    const from = items().findIndex((node) => node.contains(grip));
+    const to = from + (event.key === "ArrowUp" ? -1 : 1);
+    event.preventDefault();
+    if (from < 0 || to < 0 || to >= items().length) return;
+    pendingGripFocus = { id: container.sortable.id, index: to };
+    container.sortable.onMove(from, to);
+  });
+
+  container.addEventListener("pointerdown", (event) => {
+    const grip = ownGrip(event);
+    if (!grip || event.button !== 0 || container.classList.contains("is-settling")) return;
+    const item = items().find((node) => node.contains(grip));
+    if (!item) return;
+    event.preventDefault(); // no text selection, no native drag
+    grip.focus({ preventScroll: true });
+    startDrag(container, item, event);
+  });
+}
+
+function startDrag(container, item, downEvent) {
+  const pointerId = downEvent.pointerId;
+  const startX = downEvent.clientX;
+  const startY = downEvent.clientY;
+  let pointerY = startY;
+  let active = false;
+  let frame = 0;
+
+  // Measured once, when the press turns into a drag.
+  let list, from, to, rects, gap, scroller, scrollStart, minDy, maxDy;
+
+  function lift() {
+    active = true;
+    list = [...container.children];
+    from = list.indexOf(item);
+    to = from;
+    rects = list.map((node) => node.getBoundingClientRect());
+    gap = parseFloat(getComputedStyle(container).rowGap) || 0;
+    scroller = scrollParent(container);
+    scrollStart = scroller?.scrollTop ?? 0;
+    // The lifted item can travel from the first slot to the last, no further.
+    minDy = rects[0].top - rects[from].top;
+    maxDy = rects[list.length - 1].bottom - rects[from].bottom;
+
+    container.classList.add("is-sorting");
+    item.classList.add("is-dragging");
+    document.documentElement.classList.add("is-grabbing");
+    const slide = reducedMotion() ? "none" : `transform ${SLIDE_MS}ms var(--ease)`;
+    for (const node of list) if (node !== item) node.style.transition = slide;
+    update();
+    if (scroller) frame = requestAnimationFrame(edgeScroll);
+  }
+
+  /** Near the top or bottom of the scrolling pane, keep scrolling while the pointer rests there. */
+  function edgeScroll() {
+    const box = scroller.getBoundingClientRect();
+    const edge = 48;
+    const over = pointerY < box.top + edge
+      ? pointerY - (box.top + edge)
+      : pointerY > box.bottom - edge ? pointerY - (box.bottom - edge) : 0;
+    if (over) {
+      scroller.scrollTop += Math.max(-18, Math.min(18, over / 3));
+      update();
+    }
+    frame = requestAnimationFrame(edgeScroll);
+  }
+
+  /** Moves the item under the pointer and makes room for it where it would land. */
+  function update() {
+    const scrolled = scroller ? scroller.scrollTop - scrollStart : 0;
+    const dy = Math.max(minDy, Math.min(maxDy, pointerY - startY + scrolled));
+    item.style.transform = `translate3d(0, ${dy}px, 0)`;
+
+    // It lands wherever its centre now sits among the others' centres (pinned
+    // against either end, it has reached that end).
+    const centre = rects[from].top + rects[from].height / 2 + dy;
+    let next = from;
+    for (let i = from + 1; i < list.length; i += 1) {
+      if (centre >= rects[i].top + rects[i].height / 2) next = i;
+    }
+    for (let i = from - 1; i >= 0; i -= 1) {
+      if (centre <= rects[i].top + rects[i].height / 2) next = i;
+    }
+    if (next !== to) {
+      to = next;
+      const room = rects[from].height + gap;
+      list.forEach((node, i) => {
+        if (node === item) return;
+        const shift = i > from && i <= to ? -room : i < from && i >= to ? room : 0;
+        node.style.transform = shift ? `translate3d(0, ${shift}px, 0)` : "";
+      });
+    }
+  }
+
+  function onPointerMove(event) {
+    if (event.pointerId !== pointerId) return;
+    pointerY = event.clientY;
+    if (active) update();
+    else if (Math.hypot(event.clientX - startX, event.clientY - startY) >= DRAG_THRESHOLD) lift();
+  }
+  const onPointerUp = (event) => { if (event.pointerId === pointerId) end(true); };
+  const onPointerCancel = (event) => { if (event.pointerId === pointerId) end(false); };
+  function onKeyDown(event) {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    event.stopPropagation();
+    end(false);
+  }
+
+  /** Settles the item into its gap (or back home when cancelled), then commits the move. */
+  function end(commit) {
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+    window.removeEventListener("pointercancel", onPointerCancel);
+    window.removeEventListener("keydown", onKeyDown, true);
+    cancelAnimationFrame(frame);
+    if (!active) return;
+
+    if (!commit) {
+      to = from;
+      for (const node of list) if (node !== item) node.style.transform = "";
+    }
+    // The gap is the heights of the entries it passed, plus the spacing between them.
+    let offset = 0;
+    for (let i = from + 1; i <= to; i += 1) offset += rects[i].height + gap;
+    for (let i = to; i < from; i += 1) offset -= rects[i].height + gap;
+    const duration = reducedMotion() ? 0 : SLIDE_MS;
+    container.classList.add("is-settling");
+    item.classList.add("is-dropping");
+    item.style.transition = duration ? `transform ${duration}ms var(--ease), box-shadow ${duration}ms var(--ease)` : "none";
+    // Layout already moved with any scrolling, so the gap is the whole offset.
+    item.style.transform = offset ? `translate3d(0, ${offset}px, 0)` : "translate3d(0, 0, 0)";
+
+    window.setTimeout(() => {
+      // Put the DOM in the order it shows and drop every transform in the same
+      // frame, then let the data catch up: the repaint draws this same layout.
+      for (const node of list) {
+        node.style.transition = "none";
+        node.style.transform = "";
+      }
+      if (to > from) list[to].after(item);
+      else if (to < from) container.insertBefore(item, list[to]);
+      item.classList.remove("is-dragging", "is-dropping");
+      container.classList.remove("is-sorting", "is-settling");
+      document.documentElement.classList.remove("is-grabbing");
+      for (const node of list) node.style.transition = "";
+      if (to !== from) container.sortable.onMove(from, to);
+    }, duration);
+  }
+
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  window.addEventListener("pointercancel", onPointerCancel);
+  window.addEventListener("keydown", onKeyDown, true);
+}
+
 /* ------------------------------------------------------------- controls --- */
 
 function textControl(field, value, ctx) {
   const id = nextId();
   const control = field.type === "textarea"
-    ? el("textarea", {
+    ? autoGrow(el("textarea", {
         id,
         class: `f-input f-textarea${field.prose ? " f-textarea--prose" : ""}`,
         rows: field.rows || 3,
         value: value[field.name] ?? "",
         placeholder: field.placeholder || ""
-      })
+      }))
     : el("input", {
         id,
         type: "text",
@@ -151,13 +450,13 @@ function textControl(field, value, ctx) {
 function emphasisTextControl(field, value, ctx) {
   const id = nextId();
   const emphasisName = field.emphasisName || "emphasis";
-  const control = el("textarea", {
+  const control = autoGrow(el("textarea", {
     id,
     class: "f-input f-textarea f-emphasis-textarea",
     rows: field.rows || 3,
     value: value[field.name] ?? "",
     placeholder: field.placeholder || ""
-  });
+  }));
   const addButton = el("button", {
     type: "button",
     class: "f-btn f-btn--quiet f-emphasis-add",
@@ -297,6 +596,8 @@ function selectControl(field, value, ctx, options) {
     if (control.value === "") delete value[field.name];
     else value[field.name] = control.value;
     ctx.onEdit();
+    // A choice other controls draw from (the aligner reads the aspect ratio) repaints them.
+    if (field.repaint) ctx.onStructureChange();
   });
 
   return fieldShell(field, control);
@@ -307,6 +608,33 @@ function refControl(field, value, ctx) {
     (ctx.refs[field.source] || []).map((entry) => ({ value: entry.id, label: entry.label }))
   );
   return selectControl(field, value, ctx, options);
+}
+
+/**
+ * A few options shown side by side as one row of buttons (the same control as
+ * an image's Display switch), for a choice best seen all at once. The value
+ * is the option's `value`; `field.default` is what an unset key means.
+ */
+function choiceControl(field, value, ctx) {
+  const current = value[field.name] ?? field.default ?? field.options[0].value;
+  const group = el("div", { class: "f-seg", role: "radiogroup", "aria-label": field.label },
+    ...field.options.map((option) => el("button", {
+      type: "button",
+      role: "radio",
+      class: "f-seg-btn",
+      "aria-checked": String(option.value === current),
+      title: option.help,
+      onClick: (event) => {
+        value[field.name] = option.value;
+        for (const button of group.children) button.setAttribute("aria-checked", String(button === event.currentTarget));
+        ctx.onEdit();
+      }
+    }, option.label)));
+
+  return el("div", { class: fieldClass(field, "choice") },
+    el("span", { class: "f-label" }, field.label),
+    group,
+    field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
 
 /** The one kind of image whose playback the Studio can retime. */
@@ -425,8 +753,664 @@ function playbackControl(field, value, ctx) {
   return root;
 }
 
+/**
+ * Who wants to hear when an entry's image paths change: the before/after
+ * aligner redraws as either path is typed or picked. One listener per entry;
+ * a repaint's new aligner replaces the old one.
+ */
+const imageWatchers = new WeakMap();
+const notifyImageChange = (value) => imageWatchers.get(value)?.();
+
+/**
+ * A gallery image's frame shape from its `aspect` ("16:9"), 4:3 when unset.
+ * "original" has no fixed shape, so a comparison (which needs one frame for
+ * both photos) falls back to 4:3. The aligner edits in the same shape the
+ * site draws, so what lines up here lines up there.
+ */
+export function frameRatio(aspect) {
+  const match = /^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/.exec(aspect ?? "");
+  return match && Number(match[2]) > 0 ? Number(match[1]) / Number(match[2]) : 4 / 3;
+}
+const round2 = (n) => Math.round(n * 100) / 100;
+
+/**
+ * Where an image sits inside the frame, as percentages of the frame:
+ * `x`/`y` the top-left corner, `w` the width (height follows the image's own
+ * shape). With no stored frame the image covers the frame, centred, which is
+ * exactly what object-fit: cover draws on the site.
+ */
+function coverWidth(aspect, box) {
+  return Math.max(100, (100 * aspect) / box);
+}
+function heightOf(w, aspect, box) {
+  return (w * box) / aspect;
+}
+function clampFrame(frame, aspect, box) {
+  const w = Math.min(Math.max(frame.w, coverWidth(aspect, box)), coverWidth(aspect, box) * 4);
+  const h = heightOf(w, aspect, box);
+  return {
+    x: Math.min(0, Math.max(100 - w, frame.x)),
+    y: Math.min(0, Math.max(100 - h, frame.y)),
+    w
+  };
+}
+function defaultFrame(aspect, box) {
+  const w = coverWidth(aspect, box);
+  return { x: (100 - w) / 2, y: (100 - heightOf(w, aspect, box)) / 2, w };
+}
+function readFrame(raw, aspect, box) {
+  const ok = raw && ["x", "y", "w"].every((key) => typeof raw[key] === "number" && Number.isFinite(raw[key]));
+  return ok ? clampFrame(raw, aspect, box) : defaultFrame(aspect, box);
+}
+
+/**
+ * How a gallery image is shown: "Default" (the one image or GIF, as ever) or
+ * "Before & after", where a second image sits over the first and a bar slides
+ * between them. For a comparison it adds the After path and an aligner that
+ * crops and moves each photo inside the image's frame so the two line up.
+ * Owns `display`, `after`, `frame` and `afterFrame` on the entry.
+ */
+function imageDisplayControl(field, value, ctx) {
+  // A PDF is shown by its first page; a comparison needs two photos.
+  if (isPdfSrc(value.src)) {
+    return el("div", { class: fieldClass(field, "display") },
+      el("span", { class: "f-label" }, field.label),
+      el("p", { class: "f-help" }, "A PDF shows as a preview of its first page. Before & after is for two images."));
+  }
+  const compare = value[field.name] === "compare";
+
+  const modes = [
+    { id: "", label: "Default", help: "One image or GIF." },
+    { id: "compare", label: "Before & after", help: "Two images with a bar that slides between them." }
+  ];
+  const toggle = el("div", { class: "f-seg", role: "radiogroup", "aria-label": field.label },
+    ...modes.map((mode) => el("button", {
+      type: "button",
+      role: "radio",
+      class: "f-seg-btn",
+      "aria-checked": String((mode.id === "compare") === compare),
+      title: mode.help,
+      onClick: () => {
+        if ((mode.id === "compare") === compare) return;
+        if (mode.id) value[field.name] = mode.id;
+        else delete value[field.name];
+        ctx.onEdit();
+        ctx.onStructureChange();
+      }
+    }, mode.label)));
+
+  const head = el("div", { class: fieldClass(field, "display") },
+    el("span", { class: "f-label" }, field.label),
+    toggle,
+    el("p", { class: "f-help" }, compare
+      ? "The image above is the Before. Drag the bar on the site to reveal the After."
+      : "Switch to Before & after to compare this image with a second one."));
+
+  if (!compare) return head;
+
+  const after = imageControl({ name: field.afterName, type: "image", label: "After", required: true }, value, ctx);
+  return el("div", { class: "f-display" }, head, after, alignerControl(field, value, ctx));
+}
+
+/**
+ * The crop-and-align stage: both photos in the frame the site draws (the
+ * image's aspect ratio), the After
+ * over the Before. Pick a layer, drag to move it, scroll or use the slider to
+ * zoom. "Overlay" shows the After at half strength so edges can be lined up
+ * by eye; "Slider" previews what the visitor gets.
+ */
+function alignerControl(field, value, ctx) {
+  const layers = {
+    before: { srcKey: "src", frameKey: field.frameName, label: "Before" },
+    after: { srcKey: field.afterName, frameKey: field.afterFrameName, label: "After" }
+  };
+  // Changing the aspect ratio repaints the card, so this is read once per stage.
+  const box = frameRatio(value.aspect);
+  let active = "after";
+  let view = "overlay";
+  let split = 50;
+
+  for (const layer of Object.values(layers)) {
+    layer.img = el("img", { alt: "", draggable: false, decoding: "async" });
+    layer.box = el("div", { class: "f-align-layer" }, layer.img);
+    layer.aspect = 0;
+    layer.src = null;
+    layer.img.addEventListener("load", () => {
+      layer.aspect = layer.img.naturalWidth / layer.img.naturalHeight || 0;
+      place();
+    });
+  }
+  layers.after.box.classList.add("f-align-layer--after");
+
+  const divider = el("div", { class: "f-align-divider", "aria-hidden": "true" });
+  const empty = el("p", { class: "f-align-empty" });
+  // Tall shapes are capped at 420px high, narrowing instead, so the stage fits on screen.
+  const stage = el("div", { class: "f-align-stage", style: `aspect-ratio: ${box}; width: min(100%, ${Math.round(420 * box)}px)` }, layers.before.box, layers.after.box, divider, empty);
+
+  const zoom = el("input", { type: "range", class: "f-range", min: "1", max: "4", step: "0.01", "aria-label": "Zoom" });
+  const zoomRead = el("span", { class: "f-align-read" });
+  const splitInput = el("input", { type: "range", class: "f-range", min: "0", max: "100", step: "1", value: "50", "aria-label": "Preview divider" });
+  const reset = el("button", { type: "button", class: "f-btn f-btn--quiet f-align-reset" }, "Reset");
+
+  const seg = (options, current, onPick) => el("div", { class: "f-seg f-seg--small", role: "radiogroup" },
+    ...options.map(([id, label]) => el("button", {
+      type: "button", role: "radio", class: "f-seg-btn", "aria-checked": String(id === current()),
+      onClick: (event) => {
+        onPick(id);
+        for (const button of event.currentTarget.parentElement.children) button.setAttribute("aria-checked", String(button === event.currentTarget));
+        place();
+      }
+    }, label)));
+
+  const layerPick = seg([["before", "Move Before"], ["after", "Move After"]], () => active, (id) => { active = id; });
+  const viewPick = seg([["overlay", "Overlay"], ["slider", "Slider"]], () => view, (id) => { view = id; });
+
+  const frameOf = (layer) => readFrame(value[layer.frameKey], layer.aspect, box);
+
+  function store(layer, frame) {
+    const clamped = clampFrame(frame, layer.aspect, box);
+    const base = defaultFrame(layer.aspect, box);
+    const isDefault = Math.abs(clamped.w - base.w) < 0.05 && Math.abs(clamped.x - base.x) < 0.05 && Math.abs(clamped.y - base.y) < 0.05;
+    if (isDefault) delete value[layer.frameKey];
+    else value[layer.frameKey] = { x: round2(clamped.x), y: round2(clamped.y), w: round2(clamped.w) };
+    ctx.onEdit();
+    place();
+  }
+
+  function place() {
+    for (const [name, layer] of Object.entries(layers)) {
+      const src = value[layer.srcKey];
+      if (src !== layer.src) {
+        layer.src = src;
+        layer.aspect = 0;
+        if (src) layer.img.src = thumbImage(src, 640).src;
+        else layer.img.removeAttribute("src");
+      }
+      layer.box.hidden = !src || !layer.aspect;
+      layer.box.classList.toggle("is-active", name === active);
+      if (!layer.aspect) continue;
+      const frame = frameOf(layer);
+      Object.assign(layer.box.style, { left: `${frame.x}%`, top: `${frame.y}%`, width: `${frame.w}%` });
+    }
+    const afterBox = layers.after.box;
+    afterBox.style.opacity = view === "overlay" ? "0.5" : "1";
+    afterBox.style.clipPath = view === "slider" ? `inset(0 0 0 ${split}%)` : "";
+    divider.hidden = view !== "slider";
+    divider.style.left = `${split}%`;
+    splitInput.parentElement && (splitInput.parentElement.hidden = view !== "slider");
+
+    const layer = layers[active];
+    const ready = Boolean(layer.aspect);
+    zoom.disabled = !ready;
+    reset.disabled = !ready || !value[layer.frameKey];
+    if (ready) {
+      const z = frameOf(layer).w / coverWidth(layer.aspect, box);
+      zoom.value = String(z);
+      zoomRead.textContent = `${Math.round(z * 100)}%`;
+    } else {
+      zoomRead.textContent = "";
+    }
+    const missing = [layers.before, layers.after].filter((l) => !value[l.srcKey]).map((l) => l.label);
+    empty.hidden = missing.length === 0;
+    empty.textContent = missing.length ? `Choose the ${missing.join(" and ")} image to line them up.` : "";
+  }
+
+  /** Zooms the active layer about the frame's centre, so the part in view stays in view. */
+  function zoomTo(z) {
+    const layer = layers[active];
+    if (!layer.aspect) return;
+    const frame = frameOf(layer);
+    const w = coverWidth(layer.aspect, box) * z;
+    const scale = w / frame.w;
+    store(layer, { x: 50 - (50 - frame.x) * scale, y: 50 - (50 - frame.y) * scale, w });
+  }
+
+  zoom.addEventListener("input", () => zoomTo(Number(zoom.value)));
+  splitInput.addEventListener("input", () => { split = Number(splitInput.value); place(); });
+  reset.addEventListener("click", () => {
+    delete value[layers[active].frameKey];
+    ctx.onEdit();
+    place();
+  });
+
+  stage.addEventListener("wheel", (event) => {
+    const layer = layers[active];
+    if (!layer.aspect) return;
+    event.preventDefault();
+    const z = frameOf(layer).w / coverWidth(layer.aspect, box);
+    zoomTo(Math.min(4, Math.max(1, z * (event.deltaY < 0 ? 1.05 : 1 / 1.05))));
+  }, { passive: false });
+
+  stage.addEventListener("pointerdown", (event) => {
+    const layer = layers[active];
+    if (!layer.aspect || event.button !== 0) return;
+    event.preventDefault();
+    try { stage.setPointerCapture(event.pointerId); } catch { /* the pointer is already gone */ }
+    stage.classList.add("is-panning");
+    const start = frameOf(layer);
+    const box = stage.getBoundingClientRect();
+    const x0 = event.clientX;
+    const y0 = event.clientY;
+    const move = (moveEvent) => store(layer, {
+      x: start.x + ((moveEvent.clientX - x0) / box.width) * 100,
+      y: start.y + ((moveEvent.clientY - y0) / box.height) * 100,
+      w: start.w
+    });
+    const end = () => {
+      stage.classList.remove("is-panning");
+      stage.removeEventListener("pointermove", move);
+      stage.removeEventListener("pointerup", end);
+      stage.removeEventListener("pointercancel", end);
+    };
+    stage.addEventListener("pointermove", move);
+    stage.addEventListener("pointerup", end);
+    stage.addEventListener("pointercancel", end);
+  });
+
+  imageWatchers.set(value, place);
+
+  const root = el("div", { class: "f-align" },
+    el("div", { class: "f-align-head" },
+      el("span", { class: "f-label f-label--inline" }, "Crop & align"),
+      viewPick),
+    stage,
+    el("div", { class: "f-align-tools" },
+      layerPick,
+      el("label", { class: "f-align-zoom" }, "Zoom", zoom, zoomRead),
+      reset),
+    el("label", { class: "f-align-zoom f-align-split" }, "Preview divider", splitInput),
+    el("p", { class: "f-help" }, "Pick a photo, then drag it in the frame to move it and scroll (or use Zoom) to crop in. Overlay shows the After at half strength so edges can be matched. The frame is the shape set in Aspect ratio below, as the site draws it (Original compares in 4:3)."));
+  place();
+  return root;
+}
+
+
+/* ----------------------------------------------------------- posts --- */
+
+/**
+ * The folder a capture is written to: the one this artifact already points at,
+ * else whichever folder the project's other artifacts use, else the root. A
+ * brand-new artifact has no path yet, so without the sibling step every first
+ * capture would land in `project-images/` instead of beside its project.
+ */
+function folderFor(value, siblings) {
+  const holding = (src) => {
+    const segments = String(src ?? "").split("/").filter(Boolean);
+    segments.pop(); // the filename
+    return segments.join("/");
+  };
+  const sibling = (siblings ?? []).map((entry) => holding(entry?.src)).find(Boolean);
+  return holding(value?.src) || sibling || "project-images";
+}
+
+/**
+ * Whether the saved browser profile can still see LinkedIn.
+ *
+ * Answering costs a headless browser launch, and a project can hold a dozen
+ * artifacts, so the answer is shared across every panel and asked for only
+ * once — and only when a panel is actually opened, never just because one was
+ * drawn. `forgetSession()` drops it after a sign-in, a sign-out, or a capture
+ * refused for want of one.
+ */
+let sessionAsked = null;
+function linkedInSession() {
+  sessionAsked ??= fetch("/api/linkedin")
+    .then((response) => response.json())
+    .then((state) => state.signedIn === true)
+    .catch(() => false);
+  return sessionAsked;
+}
+const forgetSession = () => { sessionAsked = null; };
+
+/**
+ * The panel under an artifact's path for a post captured from LinkedIn.
+ *
+ * A post is not evidence you own: it can be edited, taken down, or lost with
+ * the account. Paste its address and **Capture** takes a picture of it and
+ * copies out its words, writing the picture into the artifact's folder and
+ * setting `src` to it. What it read lands in the fields below, editable,
+ * because LinkedIn's markup is theirs to change and a thin capture is a
+ * normal outcome rather than a failure. The site then shows the words as its
+ * own card, so the record survives the original.
+ *
+ * Kept beside `src` as `post` ({ url, author, date, text, capturedAt }).
+ * Clearing the address clears it and the artifact goes back to a plain image.
+ */
+function postControl(field, value, ctx) {
+  const name = field.postName;
+  const post = () => (value[name] ??= {});
+
+  const url = el("input", {
+    type: "text",
+    class: "f-input f-input--mono",
+    value: value[name]?.url ?? "",
+    placeholder: "https://www.linkedin.com/posts/\u2026"
+  });
+  const capture = el("button", { type: "button", class: "f-btn f-btn--quiet" }, "Capture");
+  const signIn = el("button", { type: "button", class: "f-btn f-btn--quiet", hidden: true }, "Sign in to LinkedIn");
+  const status = el("span", { class: "f-pdf-summary" });
+
+  const author = el("input", { type: "text", class: "f-input", value: value[name]?.author ?? "", placeholder: "Who posted it" });
+  const date = el("input", { type: "text", class: "f-input", value: value[name]?.date ?? "", placeholder: "As the post shows it" });
+  const text = el("textarea", { class: "f-input f-textarea", rows: 5, placeholder: "What the post said" });
+  text.value = value[name]?.text ?? "";
+  const captured = el("span", { class: "f-help" });
+
+  function showCaptured() {
+    const at = value[name]?.capturedAt;
+    captured.textContent = at ? `Captured ${new Date(at).toLocaleString()}` : "Not captured yet.";
+  }
+  showCaptured();
+
+  /** Writes a field back, dropping it from the JSON when it is blank. */
+  function bind(input, key) {
+    input.addEventListener("input", () => {
+      const next = input.value.trim();
+      if (next) post()[key] = next;
+      else if (value[name]) delete value[name][key];
+      ctx.onEdit();
+    });
+  }
+  bind(author, "author");
+  bind(date, "date");
+  bind(text, "text");
+
+  url.addEventListener("input", () => {
+    const next = url.value.trim();
+    if (next) post().url = next;
+    else if (value[name]) {
+      // No address, no record: an artifact without one is a plain image again.
+      delete value[name];
+      author.value = "";
+      date.value = "";
+      text.value = "";
+      showCaptured();
+    }
+    ctx.onEdit();
+  });
+
+  let busy = false;
+  function working(on, message) {
+    busy = on;
+    capture.disabled = on;
+    signIn.disabled = on;
+    status.textContent = message ?? "";
+  }
+
+  /**
+   * Offers the sign-in button unless there is a session. Answering means
+   * launching a browser, which takes a few seconds, so the panel says it is
+   * asking rather than sitting there looking ready.
+   */
+  async function checkSession() {
+    const pending = linkedInSession();
+    let settled = false;
+    pending.finally(() => { settled = true; });
+    // Only announce a wait that is actually going to be noticed.
+    setTimeout(() => { if (!settled && !busy) status.textContent = "checking the LinkedIn session\u2026"; }, 400);
+    const signedIn = await pending;
+    signIn.hidden = signedIn;
+    if (!busy) status.textContent = signedIn ? "" : "not signed in";
+  }
+
+  signIn.addEventListener("click", async () => {
+    if (busy) return;
+    working(true, "a browser window is open \u2014 sign in there\u2026");
+    try {
+      const response = await fetch("/api/linkedin/sign-in", { method: "POST" });
+      const state = await response.json();
+      if (!response.ok) throw new Error(state.error || "Signing in failed.");
+      forgetSession();
+      signIn.hidden = state.signedIn === true;
+      working(false, state.signedIn ? "signed in" : "sign-in was not finished");
+    } catch (error) {
+      working(false, error.message);
+    }
+  });
+
+  capture.addEventListener("click", async () => {
+    if (busy) return;
+    const address = url.value.trim();
+    if (!address) return working(false, "paste the post's address first");
+    working(true, "capturing\u2026");
+    try {
+      const response = await fetch("/api/linkedin/capture", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: address, folder: folderFor(value, ctx.siblings) })
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        // 401 means the saved session has lapsed; offer the window rather than just complaining.
+        if (response.status === 401) {
+          forgetSession();
+          signIn.hidden = false;
+        }
+        throw new Error(result.error || "The capture failed.");
+      }
+      // The picture becomes the artifact itself; the words sit beside it.
+      value.src = result.src;
+      // Alt text is required, and nobody wants to describe a screenshot by hand.
+      if (!String(value.alt ?? "").trim() && result.alt) value.alt = result.alt;
+      const record = post();
+      record.url = result.url;
+      record.capturedAt = result.capturedAt;
+      if (result.author) record.author = result.author;
+      if (result.date) record.date = result.date;
+      if (result.text) record.text = result.text;
+      url.value = result.url;
+      author.value = record.author ?? "";
+      date.value = record.date ?? "";
+      text.value = record.text ?? "";
+      showCaptured();
+      notifyImageChange(value);
+      ctx.onEdit();
+      working(false, result.partial
+        ? "captured, but some of it came back empty \u2014 fill in what is missing below"
+        : "captured");
+    } catch (error) {
+      working(false, error.message);
+    }
+  });
+
+  // Most artifacts are just photographs, so the panel stays folded away behind
+  // one line until it is wanted, and opens by itself for an artifact that
+  // already is a captured post.
+  const body = el("div", { class: "f-post-body" },
+    url,
+    el("div", { class: "f-post-fields" },
+      el("label", { class: "f-label f-label--inline" }, "Posted by", author),
+      el("label", { class: "f-label f-label--inline" }, "Posted", date)),
+    el("label", { class: "f-label f-label--inline" }, "What it said", text),
+    captured,
+    el("p", { class: "f-help" }, "Paste a LinkedIn post's address and Capture takes a picture of it into this artifact's folder, sets the image above to it, and copies out what it said. LinkedIn only answers a signed-in browser, so the editor keeps its own \u2014 sign in once and it remembers. Everything below is editable: the site shows these words, not the picture's, so the post outlives being edited or taken down."));
+
+  const toggle = el("button", { type: "button", class: "f-btn f-btn--quiet f-post-toggle" }, "From a LinkedIn post");
+  const head = el("div", { class: "f-pdf-head f-post-head" },
+    el("span", { class: "f-label f-label--inline" }, "Captured post"),
+    status,
+    signIn,
+    capture);
+
+  function open(on) {
+    body.hidden = !on;
+    head.hidden = !on;
+    toggle.hidden = on;
+    if (on) checkSession();
+  }
+
+  toggle.addEventListener("click", () => open(true));
+
+  const root = el("div", { class: "f-post", hidden: true }, toggle, head, body);
+
+  /** Offered for any artifact that is not a PDF; open already if this one is a post. */
+  root.refresh = (src) => {
+    root.hidden = isPdfSrc(src);
+    // Never asks the server here: drawing a form should not launch a browser.
+    open(Boolean(value[name]?.url));
+  };
+
+  return root;
+}
+
+/* ---------------------------------------------------------------- pdf --- */
+
+/** pdf.js, from the pdfjs-dist dev dependency (served by server.mjs), loaded the first time a PDF needs drawing. */
+let pdfjs = null;
+async function loadPdfjs() {
+  if (!pdfjs) {
+    pdfjs = import("/vendor/pdfjs/build/pdf.min.mjs").then((lib) => {
+      lib.GlobalWorkerOptions.workerSrc = "/vendor/pdfjs/build/pdf.worker.min.mjs";
+      return lib;
+    });
+    pdfjs.catch(() => { pdfjs = null; });
+  }
+  return pdfjs;
+}
+
+/** The longest side of a preview, in pixels: enough for the full-screen viewer, small enough to commit. */
+const PDF_PREVIEW_EDGE = 2000;
+
+/**
+ * Draws a PDF's first page with pdf.js and saves it beside the PDF as its
+ * preview. Resolves to the page count.
+ */
+async function makePdfPreview(src) {
+  const lib = await loadPdfjs();
+  const task = lib.getDocument({
+    url: src,
+    cMapUrl: "/vendor/pdfjs/cmaps/",
+    cMapPacked: true,
+    standardFontDataUrl: "/vendor/pdfjs/standard_fonts/",
+    wasmUrl: "/vendor/pdfjs/wasm/",
+    iccUrl: "/vendor/pdfjs/iccs/"
+  });
+  try {
+    const doc = await task.promise;
+    const page = await doc.getPage(1);
+    const base = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: PDF_PREVIEW_EDGE / Math.max(base.width, base.height) });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width);
+    canvas.height = Math.round(viewport.height);
+    // "print" draws in one pass; the on-screen intent waits on animation frames,
+    // which never come while the Studio tab is in the background.
+    await page.render({ canvas, viewport, background: "#ffffff", intent: "print" }).promise;
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    if (!blob) throw new Error("The page could not be drawn.");
+    const response = await fetch(`/api/pdf-preview?src=${encodeURIComponent(src)}`, { method: "POST", headers: { "content-type": "image/png" }, body: blob });
+    if (!response.ok) throw new Error((await response.json().catch(() => ({}))).error || `Saving the preview failed (${response.status}).`);
+    return doc.numPages;
+  } finally {
+    // Frees the worker and the parsed document.
+    task.destroy();
+  }
+}
+
+/**
+ * The row under an artifact PDF's path. The site's grid shows only its first
+ * page, so this makes that page's preview (whenever the PDF is new or has
+ * changed since), says how many pages there are, and holds the switch that lets
+ * visitors download the whole file. The full-screen viewer reads the PDF
+ * itself, so the later pages need nothing saved here. The page count and the switch are kept
+ * beside `src` as `pages` and `download`. Hidden for anything but a PDF.
+ */
+function pdfControl(field, value, ctx) {
+  const pagesName = field.pagesName;
+  const downloadName = field.downloadName;
+
+  const preview = el("img", { class: "f-pdf-preview", alt: "", decoding: "async" });
+  const summary = el("span", { class: "f-pdf-summary" });
+  const remake = el("button", { type: "button", class: "f-btn f-btn--quiet f-pdf-remake" }, "Remake preview");
+  const toggle = el("button", {
+    type: "button",
+    class: "f-switch",
+    role: "switch",
+    "aria-checked": String(value[downloadName] === true),
+    "aria-label": "Visitors can download this PDF"
+  }, el("span", { class: "f-switch-thumb" }));
+  toggle.addEventListener("click", () => {
+    const next = toggle.getAttribute("aria-checked") !== "true";
+    toggle.setAttribute("aria-checked", String(next));
+    if (next) value[downloadName] = true;
+    else delete value[downloadName];
+    ctx.onEdit();
+  });
+
+  const root = el("div", { class: "f-pdf", hidden: true },
+    el("div", { class: "f-pdf-head" },
+      el("span", { class: "f-label f-label--inline" }, "PDF"),
+      summary,
+      remake),
+    preview,
+    el("div", { class: "f-switch-row" },
+      toggle,
+      el("span", { class: "f-label f-label--inline" }, "Visitors can download it")),
+    el("p", { class: "f-help" }, "The site shows the first page as the preview; opening it full screen scrolls every page. With download on, a Download PDF button beside it gets the whole file."));
+
+  let src = null;
+  let busy = false;
+
+  function show(pages, note) {
+    const count = typeof pages === "number" ? `${pages} ${pages === 1 ? "page" : "pages"}` : "";
+    summary.textContent = [count, note].filter(Boolean).join(" · ");
+  }
+
+  async function ensure(force) {
+    const asked = src;
+    if (!asked || busy) return;
+    busy = true;
+    remake.disabled = true;
+    try {
+      const response = await fetch(`/api/pdf?src=${encodeURIComponent(asked)}`);
+      const info = await response.json();
+      if (!response.ok) throw new Error(info.error || "That PDF could not be found.");
+      if (asked !== src) return;
+      const known = typeof value[pagesName] === "number";
+      if (force || !info.fresh || !known) {
+        show(value[pagesName], "making the preview…");
+        const pages = await makePdfPreview(asked);
+        if (asked !== src) return;
+        if (value[pagesName] !== pages) {
+          value[pagesName] = pages;
+          ctx.onEdit();
+        }
+      }
+      preview.src = `/api/thumb?src=${encodeURIComponent(pdfPreviewSrc(asked))}&w=${Math.ceil(240 * (window.devicePixelRatio || 1))}&t=${Date.now()}`;
+      show(value[pagesName], "");
+      notifyImageChange(value);
+    } catch (error) {
+      if (asked === src) show(value[pagesName], `no preview: ${error.message}`);
+    } finally {
+      busy = false;
+      remake.disabled = false;
+    }
+  }
+
+  remake.addEventListener("click", () => ensure(true));
+
+  /** Called whenever the path changes: shows for a PDF, hides for anything else. */
+  root.refresh = (next) => {
+    if (!isPdfSrc(next)) {
+      root.hidden = true;
+      src = null;
+      return;
+    }
+    root.hidden = false;
+    if (next === src) return;
+    src = next;
+    preview.removeAttribute("src");
+    show(value[pagesName], "");
+    ensure(false);
+  };
+
+  return root;
+}
+
 function imageControl(field, value, ctx) {
   const id = nextId();
+  // The gallery image doubles as the Before of a comparison, and says so.
+  if (field.compareLabel && value.display === "compare") field = { ...field, label: field.compareLabel };
   const input = el("input", {
     id,
     type: "text",
@@ -436,6 +1420,8 @@ function imageControl(field, value, ctx) {
   });
 
   const playback = field.speedName ? playbackControl(field, value, ctx) : null;
+  const pdf = field.pagesName ? pdfControl(field, value, ctx) : null;
+  const post = field.postName ? postControl(field, value, ctx) : null;
   const preview = el("div", { class: "f-thumb" });
   function paint() {
     preview.replaceChildren(
@@ -444,6 +1430,9 @@ function imageControl(field, value, ctx) {
         : el("span", { class: "f-thumb-empty" }, "no image")
     );
     playback?.refresh(input.value);
+    pdf?.refresh(input.value);
+    post?.refresh(input.value);
+    notifyImageChange(value);
   }
   paint();
 
@@ -455,7 +1444,8 @@ function imageControl(field, value, ctx) {
 
   const browse = el("button", { type: "button", class: "f-btn f-btn--quiet" }, "Browse…");
   browse.addEventListener("click", async () => {
-    const picked = await ctx.pickImage(input.value);
+    // Only a gallery file (one that can show a PDF's preview) is offered PDFs.
+    const picked = await ctx.pickImage(input.value, { pdf: Boolean(field.pagesName) });
     if (!picked) return;
     input.value = picked;
     value[field.name] = picked;
@@ -463,7 +1453,7 @@ function imageControl(field, value, ctx) {
     ctx.onEdit();
   });
 
-  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), playback, id);
+  return fieldShell(field, el("div", { class: "f-image-row" }, preview, el("div", { class: "f-image-controls" }, input, browse)), [playback, pdf, post], id);
 }
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
@@ -538,33 +1528,188 @@ function paletteControl(field, value, ctx) {
     field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
 
+/**
+ * The site's resume-bullet "Read more" button, as components/blueprint/BulletLink.tsx
+ * renders it, for a preview styled by the site's own app/(site)/bullet-link.css
+ * (linked from index.html). A span, since it sits inside the card's button.
+ */
+function readMorePreview(motion, label) {
+  const arrow = () => el("svg", { width: 11, height: 11, viewBox: "0 0 16 16", fill: "none" },
+    el("path", { d: "M4 12L12 4m0 0H5.5M12 4v6.5", stroke: "currentColor", "stroke-width": 1.5, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+  const letters = motion === "roll"
+    ? Array.from(label, (char, position) => el("span", { "data-ch": char, style: `--c: ${position}` }, char))
+    : [el("span", {}, label)];
+  return el("span", { class: "bp-bullet-link", "data-motion": motion },
+    motion === "glint" ? el("span", { class: "bp-bullet-link-glint", style: "--i: 0" }) : null,
+    el("span", { class: "bp-bullet-link-label" }, ...letters),
+    el("span", { class: "bp-bullet-link-arrow" }, arrow(), arrow()));
+}
+
+/** lucide's link-2, the icon at the end of a linked skill. */
+const LINK_ICON_PATH = "M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8";
+
+/**
+ * A home-page skill linked to a project or proof, as
+ * components/blueprint/LinkedSkill.tsx renders it, for a preview styled by the
+ * site's app/(site)/skill-pills.css. `reveal` null leaves the hover card out
+ * (the Border picker shows the pill alone).
+ */
+function linkedSkillPreview(site, border, reveal) {
+  const sample = site?.sampleSkill ?? { name: "SolidWorks", target: "ICARUS-Lite", detail: "Project · Industrial Design" };
+  const labelText = el("span", {}, site?.readMoreLabel || "Read more");
+  const pill = el("span", { class: "bp-pill bp-pill--linked", "data-border": border, "data-reveal": reveal || "card", style: "--k: 0" },
+    el("span", { class: "bp-pill-name" }, sample.name),
+    // The icon is the link: on hover it turns, then the pill opens to Read more.
+    el("span", { class: "bp-pill-more" },
+      el("svg", { class: "bp-pill-link", width: 13, height: 13, viewBox: "0 0 24 24", fill: "none" },
+        el("path", { d: LINK_ICON_PATH, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" })),
+      el("span", { class: "bp-pill-more-label" }, labelText)),
+    reveal
+      ? el("span", { class: "bp-skill-card" },
+        el("span", { class: "bp-skill-card-name" }, sample.target),
+        el("span", { class: "bp-skill-card-detail" }, sample.detail))
+      : null);
+  // The label's width, which the pill opens by, as LinkedSkill measures it once the preview is on screen.
+  requestAnimationFrame(() => { if (labelText.scrollWidth) pill.style.setProperty("--more-w", `${Math.ceil(labelText.scrollWidth)}px`); });
+  return pill;
+}
+
+/**
+ * What each `motionChoice` field previews (`field.preview`), from the option
+ * and the object the field sits in.
+ */
+const MOTION_PREVIEWS = {
+  readMore: (option, value, ctx) => readMorePreview(option.value, ctx.site?.readMoreLabel || "Read more"),
+  skillBorder: (option, value, ctx) => linkedSkillPreview(ctx.site, option.value, null),
+  // The hover card on the border chosen beside it.
+  skillReveal: (option, value, ctx) => linkedSkillPreview(ctx.site, value.border || "orbit", option.value)
+};
+
+/** The site tokens a preview stage takes from `ctx.site.palette`, per mode (see .f-motion-stage). */
+const STAGE_TOKENS = ["paper", "white", "ink", "accent", "onAccent", "pillText", "muted", "rule"];
+
+/**
+ * A card per way something on the site can move, each playing the real thing
+ * on a patch of the site's paper, in the palette Site Settings has chosen
+ * (`ctx.site.palette`, light or dark to match this editor). Hovering or
+ * focusing a card plays its hover state through `data-hover`. The value is
+ * the option's `value`; `field.default` is what an unset key means.
+ * `field.repaint` redraws the form on a choice, for other previews that show
+ * this one.
+ */
+function motionChoiceControl(field, value, ctx) {
+  const current = value[field.name] || field.default || field.options[0].value;
+  const palette = ctx.site?.palette;
+  const stageStyle = palette
+    ? ["light", "dark"].flatMap((mode) => STAGE_TOKENS.map((key) => `--site-${mode}-${key}: ${palette[mode][key]}`)).join("; ")
+    : undefined;
+  const preview = MOTION_PREVIEWS[field.preview] ?? MOTION_PREVIEWS.readMore;
+  const reveal = field.preview === "skillReveal";
+
+  const cards = field.options.map((option) => {
+    const demo = preview(option, value, ctx);
+    const play = (on) => { if (on) demo.setAttribute("data-hover", ""); else demo.removeAttribute("data-hover"); };
+    return el("button", {
+      type: "button",
+      role: "radio",
+      class: "f-motion-card",
+      "aria-checked": String(option.value === current),
+      onClick: (event) => {
+        value[field.name] = option.value;
+        for (const card of cards) card.setAttribute("aria-checked", String(card === event.currentTarget));
+        ctx.onEdit();
+        if (field.repaint) ctx.onStructureChange();
+      },
+      onPointerenter: () => play(true),
+      onPointerleave: () => play(false),
+      onFocus: () => play(true),
+      onBlur: () => play(false)
+    },
+      el("span", { class: "f-palette-check" }, icon("check")),
+      el("span", {
+        class: `f-motion-stage bp${reveal ? " f-motion-stage--reveal" : ""}`,
+        "data-layout": reveal ? option.value : undefined,
+        style: stageStyle,
+        "aria-hidden": "true"
+      }, demo),
+      el("span", { class: "f-palette-name" }, option.label),
+      el("span", { class: "f-palette-desc" }, option.help));
+  });
+
+  return el("div", { class: fieldClass(field, "motion") },
+    el("span", { class: "f-label" }, field.label),
+    el("div", { class: `f-motion-grid${reveal ? " f-motion-grid--wide" : ""}`, role: "radiogroup", "aria-label": field.label }, ...cards),
+    field.help ? el("p", { class: "f-help" }, field.help) : null);
+}
+
+/**
+ * A list row's link to a project or proof (a stringList with `linksName`, the
+ * home page's skills). The links live beside the list as
+ * `[{ skill, projectId | proofId }]`, keyed by the row's text, so the list
+ * itself stays plain strings for everything else that reads it.
+ */
+function listLinkSelect(field, list, links, index, ctx) {
+  const link = links.find((entry) => entry.skill === list[index]);
+  const current = link?.projectId ? `project:${link.projectId}` : link?.proofId ? `proof:${link.proofId}` : "";
+  const option = (kind, ref) => el("option", { value: `${kind}:${ref.id}`, selected: `${kind}:${ref.id}` === current }, ref.draft ? `${ref.label} (draft)` : ref.label);
+  const known = current === "" || [...(ctx.refs.projects || []).map((ref) => `project:${ref.id}`), ...(ctx.refs.proofs || []).map((ref) => `proof:${ref.id}`)].includes(current);
+
+  const select = el("select", {
+    class: `f-input f-select f-row-link${current ? " is-linked" : ""}`,
+    "aria-label": `${field.label} ${index + 1}: links to`,
+    title: "The project or proof this links to"
+  },
+    el("option", { value: "", selected: current === "" }, "No link"),
+    el("optgroup", { label: "Projects" }, ...(ctx.refs.projects || []).map((ref) => option("project", ref))),
+    el("optgroup", { label: "Proofs" }, ...(ctx.refs.proofs || []).map((ref) => option("proof", ref))),
+    // Keep a link whose target is gone rather than silently dropping it.
+    known ? null : el("option", { value: current, selected: true }, `${current.split(":")[1]} (missing)`));
+
+  select.addEventListener("change", () => {
+    const skill = list[index];
+    for (let at = links.length - 1; at >= 0; at--) if (links[at].skill === skill) links.splice(at, 1);
+    const [kind, id] = select.value.split(":");
+    if (id) links.push(kind === "project" ? { skill, projectId: id } : { skill, proofId: id });
+    select.classList.toggle("is-linked", Boolean(id));
+    ctx.onEdit();
+  });
+  return select;
+}
+
 function stringListControl(field, value, ctx) {
   const list = Array.isArray(value[field.name]) ? value[field.name] : (value[field.name] = []);
+  const links = field.linksName
+    ? (Array.isArray(value[field.linksName]) ? value[field.linksName] : (value[field.linksName] = []))
+    : null;
 
   const rows = list.map((entry, index) => {
     // `multiline` lists hold paragraphs, so each row is a textarea that grows
     // with what's in it rather than a one-line input.
     const input = field.multiline
-      ? el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` })
+      ? autoGrow(el("textarea", { class: "f-input f-textarea", rows: field.rows || 3, value: entry ?? "", "aria-label": `${field.label} ${index + 1}` }))
       : el("input", { type: "text", class: "f-input", value: entry ?? "", "aria-label": `${field.label} ${index + 1}` });
     input.addEventListener("input", () => {
+      // A link follows its row's text as it is retyped.
+      if (links) for (const link of links) if (link.skill === list[index]) link.skill = input.value;
       list[index] = input.value;
       ctx.onEdit();
     });
     return el("div", { class: `f-row${field.multiline ? " f-row--multiline" : ""}` },
+      gripHandle(`${field.label} ${index + 1}`),
       input,
+      links ? listLinkSelect(field, list, links, index, ctx) : null,
       el("div", { class: "f-row-tools" },
-        iconButton("up", "Move up", () => { moveItem(list, index, index - 1); ctx.onStructureChange(); }, index === 0),
-        iconButton("down", "Move down", () => { moveItem(list, index, index + 1); ctx.onStructureChange(); }, index === list.length - 1),
         iconButton("remove", "Remove", () => { list.splice(index, 1); ctx.onStructureChange(); })));
   });
+
+  const reorder = (from, to) => { moveItem(list, from, to); ctx.onStructureChange(); };
 
   const add = el("button", { type: "button", class: "f-btn f-btn--quiet" }, icon("add"), ` Add ${field.label.replace(/s$/, "").toLowerCase()}`);
   add.addEventListener("click", () => { list.push(""); ctx.onStructureChange(); });
 
   return el("div", { class: fieldClass(field, "list") },
     el("span", { class: "f-label" }, field.label),
-    rows.length === 0 ? el("p", { class: "f-empty" }, "Nothing yet.") : el("div", { class: "f-rows" }, ...rows),
+    rows.length === 0 ? el("p", { class: "f-empty" }, "Nothing yet.") : makeSortable(el("div", { class: "f-rows" }, ...rows), reorder, field.name),
     add,
     field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
@@ -594,16 +1739,18 @@ function objectListControl(field, value, ctx) {
 
     const card = el("details", { class: "f-card", open: open || undefined },
       el("summary", { class: "f-card-head" },
+        // A press on the grip lifts the card; the click it leaves behind must not toggle it.
+        el("span", { class: "f-card-grip", onClick: (event) => event.preventDefault() }, gripHandle(`${field.itemLabel || "item"} ${index + 1}`)),
         el("svg", { class: "f-card-caret", width: 12, height: 12, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" },
           el("path", { d: "M6 3l5 5-5 5", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round" })),
         thumb,
         cardSummary(field, entry, index),
         // Buttons inside a <summary> would also toggle it; the tools swallow the default action.
         el("div", { class: "f-row-tools", onClick: (event) => event.preventDefault() },
-          iconButton("up", "Move up", () => { moveItem(list, index, index - 1); ctx.onStructureChange(); }, index === 0),
-          iconButton("down", "Move down", () => { moveItem(list, index, index + 1); ctx.onStructureChange(); }, index === list.length - 1),
           iconButton("remove", "Remove", () => { list.splice(index, 1); openCards.delete(entry); ctx.onStructureChange(); }))),
-      el("div", { class: "f-card-body" }, renderFields(field.fields, entry, ctx)));
+      // `siblings` lets a field default to what the rest of the list does —
+      // a captured post is written beside the project's other artifacts.
+      el("div", { class: "f-card-body" }, renderFields(field.fields, entry, { ...ctx, siblings: list })));
     card.addEventListener("toggle", () => { if (card.open) openCards.add(entry); else openCards.delete(entry); });
     if (open) openCards.add(entry);
     return card;
@@ -619,7 +1766,9 @@ function objectListControl(field, value, ctx) {
 
   return el("div", { class: fieldClass(field, "list") },
     el("span", { class: "f-label" }, field.label),
-    cards.length === 0 ? el("p", { class: "f-empty" }, "Nothing yet.") : el("div", { class: "f-cards" }, ...cards),
+    cards.length === 0
+      ? el("p", { class: "f-empty" }, "Nothing yet.")
+      : makeSortable(el("div", { class: "f-cards" }, ...cards), (from, to) => { moveItem(list, from, to); ctx.onStructureChange(); }, field.name),
     add,
     field.help ? el("p", { class: "f-help" }, field.help) : null);
 }
@@ -652,9 +1801,12 @@ const CONTROLS = {
   number: numberControl,
   boolean: booleanControl,
   ref: refControl,
+  choice: choiceControl,
   image: imageControl,
+  imageDisplay: imageDisplayControl,
   color: colorControl,
   palette: paletteControl,
+  motionChoice: motionChoiceControl,
   stringList: stringListControl,
   objectList: objectListControl,
   group: groupControl
@@ -698,6 +1850,24 @@ export function normalize(fields, value) {
         // Only a GIF has a pace to keep, and 1× is the file's own, so it needs no key.
         const speed = field.speedName ? value[field.speedName] : undefined;
         if (isGifSrc(text) && speedOf(speed) !== 1) trailing.push([field.speedName, speedOf(speed)]);
+        // Only a PDF has pages to count and a download to allow; download is left out while off.
+        if (field.pagesName && isPdfSrc(text)) {
+          const pages = value[field.pagesName];
+          if (Number.isInteger(pages) && pages > 0) trailing.push([field.pagesName, pages]);
+          if (value[field.downloadName] === true) trailing.push([field.downloadName, true]);
+        }
+        break;
+      }
+      case "imageDisplay": {
+        // Only a comparison has anything to keep; switching back to Default drops the After.
+        if (raw !== "compare") break;
+        trailing.push([field.name, "compare"]);
+        const after = isBlank(value[field.afterName]) ? "" : String(value[field.afterName]).trim();
+        trailing.push([field.afterName, after]);
+        for (const key of [field.frameName, field.afterFrameName]) {
+          const frame = value[key];
+          if (frame && typeof frame === "object") trailing.push([key, { x: frame.x, y: frame.y, w: frame.w }]);
+        }
         break;
       }
       case "emphasisText": {
@@ -713,6 +1883,17 @@ export function normalize(fields, value) {
       case "stringList": {
         const list = (Array.isArray(raw) ? raw : []).map((entry) => String(entry).trim()).filter((entry) => entry !== "");
         if (list.length > 0 || keep) out[field.name] = list;
+        // Links follow the list's order, one per item at most, and go with the item they named.
+        if (field.linksName) {
+          const kept = (Array.isArray(value[field.linksName]) ? value[field.linksName] : [])
+            .filter((link) => link && typeof link.skill === "string" && (link.projectId || link.proofId));
+          const links = [...new Set(list)].flatMap((item) => {
+            const link = kept.find((entry) => entry.skill.trim() === item);
+            if (!link) return [];
+            return [link.projectId ? { skill: item, projectId: link.projectId } : { skill: item, proofId: link.proofId }];
+          });
+          if (links.length > 0) trailing.push([field.linksName, links]);
+        }
         break;
       }
       case "objectList": {
@@ -746,7 +1927,7 @@ export function normalize(fields, value) {
 
   for (const [key, entry] of trailing) out[key] = entry;
 
-  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.speedName ? [field.speedName] : [])]));
+  const known = new Set(fields.flatMap((field) => [field.name, ...(field.emphasisName ? [field.emphasisName] : []), ...(field.linksName ? [field.linksName] : []), ...(field.speedName ? [field.speedName] : []), ...(field.pagesName ? [field.pagesName, field.downloadName] : []), ...(field.type === "imageDisplay" ? [field.afterName, field.frameName, field.afterFrameName] : [])]));
   for (const [key, raw] of Object.entries(value)) {
     if (!known.has(key)) out[key] = raw;
   }

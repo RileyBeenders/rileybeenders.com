@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Riley Beenders | R&D, Electromechanical and Automation Engineer",
+    "description": "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation.",
+    "shareTitle": "Riley's Professional Portfolio"
+  },
+  "hero": {
+    "lines": [
+      "Riley",
+      "Beenders"
+    ],
+    "currentRole": "{company}, since {start}"
+  },
+  "summaryLink": {
+    "text": "RileyBeenders.com",
+    "href": "https://www.rileybeenders.com"
+  },
+  "headings": {
+    "summary": "Summary",
+    "experience": "Experience",
+    "skills": "Skills",
+    "education": "Education"
+  },
+  "readMore": {
+    "animation": "glint"
+  },
+  "linkedSkills": {
+    "border": "signal",
+    "reveal": "callout",
+    "labels": {
+      "project": "Project",
+      "proof": "Proof"
+    }
+  },
+  "footer": {
+    "note": "A website built to house my experience, compiled into one place for the next challenge.",
+    "sheetLabel": "Sheet",
+    "sheetLink": {
+      "text": "rileybeenders.com",
+      "href": "https://rileybeenders.com"
+    },
+    "revisionLabel": "Rev.",
+    "locationLabel": "Drawn in"
+  }
+}

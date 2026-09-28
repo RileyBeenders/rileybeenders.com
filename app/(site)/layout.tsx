@@ -14,10 +14,14 @@ import { BpNav } from "@/components/blueprint/BpNav";
 import dynamic from "next/dynamic";
 import { BpFixedRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
+import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
 import "./blueprint.css";
+import "./bullet-link.css";
+import "./skill-pills.css";
+import homePage from "@/data/home/page.json";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;
 // picking a font just points --bp-font-header/subheader/body at one of these.
@@ -97,9 +101,8 @@ const FONT_VARIABLES = [
 ].join(" ");
 
 export const metadata: Metadata = {
-  title: "Riley Beenders | R&D, Electromechanical and Automation Engineer",
-  description:
-    "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation."
+  title: homePage.meta.title,
+  description: homePage.meta.description
 };
 
 function cssBlock(vars: Record<string, string>): string {
@@ -110,6 +113,8 @@ function cssBlock(vars: Record<string, string>): string {
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
+  // Site Settings → Motion: every repeating animation on one shared beat (components/blueprint/AnimationSync.tsx).
+  const syncAnimations = resumeData.motion?.syncAnimations === true;
 
   const overrideCss = `
 .bp[data-theme-id] {
@@ -131,12 +136,13 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
 
   return (
     <ThemeProvider>
-      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId}>
+      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId} data-intro-align={resumeData.layout.introAlign} data-motion-sync={syncAnimations ? "" : undefined}>
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
-        <BpNav />
+        <BpNav name={resumeData.person.name} />
         {children}
         <BpFixedRelocationBadge />
+        {syncAnimations ? <AnimationSync /> : null}
         <StudioLink />
       </div>
     </ThemeProvider>

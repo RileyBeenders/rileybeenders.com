@@ -17,9 +17,8 @@ import "./about-site.css";
 const data = aboutSiteData as AboutSiteData;
 
 export const metadata: Metadata = {
-  title: "About this site | Riley Beenders",
-  description:
-    "The site as its own case study: the Blueprint Press design, the AI agent skills that maintain it, and a commit-by-commit timeline of how far it has come."
+  title: data.meta.title,
+  description: data.meta.description
 };
 
 export default function AboutThisSitePage() {
@@ -52,7 +51,7 @@ export default function AboutThisSitePage() {
             <div className="bp-rule" style={{ marginTop: 32 }} />
           </Reveal>
           <Reveal delay={0.44}>
-            <p className="bp-prose as-tagline">{data.hero.tagline}</p>
+            <p className="bp-prose as-tagline bp-page-intro">{data.hero.tagline}</p>
           </Reveal>
         </div>
       </section>
@@ -67,12 +66,8 @@ export default function AboutThisSitePage() {
 
       <footer className="pj-outro">
         <div className="bp-shell">
-          <p className="bp-outro-lead">Still moving.</p>
-          <p className="bp-prose" style={{ marginTop: 18 }}>
-            Everything on this page is edited from the Studio and refreshed by an agent as
-            the repository grows. If the timeline ends before today, that is a to-do, not
-            the end.
-          </p>
+          <p className="bp-outro-lead">{data.outro.lead}</p>
+          <p className="bp-prose" style={{ marginTop: 18 }}>{data.outro.body}</p>
         </div>
       </footer>
 

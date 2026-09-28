@@ -7,6 +7,12 @@
    (lib/palette.ts: 0.25 / 0.36 / 0.50 / 0.87) pre-computed for this ink/paper
    pair, since a plain stylesheet can't import the TypeScript that derives them.
    Re-derive them here whenever the ramp or the preset changes.
+
+   Three surfaces tell the chrome from the work: the top bar, the rail, and
+   the page. Each is the palette's own ink mixed into its paper, so they stay
+   the preset's neutrals. Light: white page, the rail at 6% ink, the top bar at
+   10%. Dark: the top bar keeps Electric's black, the rail is 6% white, the
+   page 10%, and cards and inputs (--panel) lift one step above the page.
    ========================================================================== */
 
 :root {
@@ -17,6 +23,9 @@
   --muted: #6b6c70;
   --faint: #8b8d90;
   --rule: #e1e1e2;
+  --chrome-top: #e8e8e9;
+  --chrome-rail: #f1f1f2;
+  --rail-rule: #c9cacd;
   --accent: #3e6ae1;
   --on-accent: #ffffff;
   --shadow: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent);
@@ -25,6 +34,13 @@
   --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --topbar: 60px;
+  /* The 16-inside-96 blueprint grid, in whichever ink the theme sets. */
+  --grid-lines:
+    linear-gradient(color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px);
+  --grid-size: 16px 16px, 16px 16px, 96px 96px, 96px 96px;
   color-scheme: light;
   accent-color: var(--accent);
 }
@@ -32,13 +48,16 @@
 /* The init script in index.html stamps data-theme on <html> before first
    paint: the saved choice, or the OS setting when nothing has been saved. */
 :root[data-theme="dark"] {
-  --paper: #000000;
-  --panel: #141414;
+  --paper: #1a1a1a;
+  --panel: #242424;
   --ink: #ffffff;
   --ink-soft: #bfbfbf;
   --muted: #a3a3a3;
-  --faint: #808080;
-  --rule: #212121;
+  --faint: #858585;
+  --rule: #2e2e2e;
+  --chrome-top: #000000;
+  --chrome-rail: #0f0f0f;
+  --rail-rule: #3a3a3a;
   --accent: #3e6ae1;
   --on-accent: #ffffff;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -60,12 +79,8 @@ body {
   font-size: 14px;
   color: var(--ink);
   background-color: var(--paper);
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--ink) 4.5%, transparent) 1px, transparent 1px),
-    linear-gradient(color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--ink) 8.5%, transparent) 1px, transparent 1px);
-  background-size: 16px 16px, 16px 16px, 96px 96px, 96px 96px;
+  background-image: var(--grid-lines);
+  background-size: var(--grid-size);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -89,8 +104,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   min-height: var(--topbar);
   padding: 10px 20px;
   border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(10px);
+  background: var(--chrome-top);
 }
 
 .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -143,7 +157,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   height: 9px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 2px var(--paper);
+  box-shadow: 0 0 0 2px var(--chrome-top);
 }
 .devices-knock::after {
   content: "";
@@ -172,13 +186,14 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   overflow-y: auto;
   padding: 14px 10px;
   border-right: 1px solid var(--rule);
+  background: var(--chrome-rail);
 }
 
 /* One group per page of the site, read top to bottom. The hairline between
    groups is a page break: everything above it lives on one page, everything
    below it on the next. */
 .rail-group { display: flex; flex-direction: column; gap: 2px; }
-.rail-group + .rail-group { margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--rule); }
+.rail-group + .rail-group { margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--rail-rule); }
 
 .rail-item {
   display: flex;
@@ -195,7 +210,8 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   transition: background 0.18s var(--ease);
 }
 .rail-item:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
-.rail-item.is-active { background: var(--panel); border-color: var(--rule); color: var(--ink); font-weight: 600; }
+/* The open file takes the page's own color, like a tab joined to the sheet it opens. */
+.rail-item.is-active { background: var(--paper); border-color: var(--rail-rule); color: var(--ink); font-weight: 600; }
 .rail-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Stays gray even on the active item: it marks a utility, not site content. */
 .rail-icon { flex: none; color: var(--muted); }
@@ -289,10 +305,13 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .detail {
   min-height: 0;
   overflow-y: auto;
-  padding: 22px clamp(18px, 3vw, 40px) 96px;
+  /* The foot clears the Files button in the corner, which grows with the screen. */
+  padding: 22px clamp(18px, 3vw, 40px) 128px;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--faint) transparent;
+  /* The scrollbar's room is kept on both sides, so the gaps match and nothing shifts when it appears. */
+  scrollbar-gutter: stable both-edges;
 }
 /* Single-document files have no list, so the editor takes that column too. */
 .list-pane[hidden] ~ .detail { grid-column: 2 / -1; }
@@ -303,7 +322,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  max-width: 994px;
   padding-bottom: 14px;
   margin-bottom: 20px;
   border-bottom: 2px solid var(--ink);
@@ -327,8 +345,10 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 
 /* The long form's own margin index: the site's section-index pattern, sticky
    beside the sheet, one link per top-level field or group. */
-.detail-body { display: grid; grid-template-columns: minmax(0, 820px); gap: 24px; align-items: start; }
-.detail-body.has-index { grid-template-columns: 150px minmax(0, 820px); }
+/* The sheet runs to the pane's right edge, as wide as the window allows, with
+   the same gap on the right as on the left (the pane's own padding). */
+.detail-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+.detail-body.has-index { grid-template-columns: 150px minmax(0, 1fr); }
 .detail-index {
   position: sticky;
   top: 0;
@@ -346,6 +366,64 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   text-decoration: none;
 }
 .detail-index a:hover { color: var(--accent); }
+
+/* A tabbed entry (schema.tabs): the title block's 2px rule moves under a row
+   of tabs, and the open tab's mark sits on it in the accent. The row sticks
+   to the top of the pane so a long gallery or case study never has to be
+   scrolled back up to switch; it wears the page's grid, fixed to the viewport
+   like the body's, so it can't be seen at rest and only covers what scrolls
+   under it. The margin index and every jump land below it. */
+.detail.has-tabs { scroll-padding-top: 44px; }
+.detail-head--tabbed { margin-bottom: 0; padding-bottom: 6px; border-bottom: 0; }
+.detail-tabs {
+  position: sticky;
+  top: -22px;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+  background-color: var(--paper);
+  background-image: var(--grid-lines);
+  background-size: var(--grid-size);
+  background-attachment: fixed;
+}
+.detail-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 12px 0 10px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.18s var(--ease);
+}
+.detail-tab:hover, .detail-tab[aria-selected="true"] { color: var(--ink); }
+.detail-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  background: var(--accent);
+}
+.detail-tab:focus-visible { outline-offset: 2px; }
+.detail-tab-count { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Sticky offsets count from inside the pane's 22px top padding, hence -22px above. */
+.has-tabs .detail-index { top: 36px; }
+/* Doubled so it outranks .f-help, which is declared further down. */
+.f-help.f-help--tab { margin: 0 0 18px; }
+/* The Gallery tab's one field is the gallery: its label stays for screen readers only. */
+.f-field--tab-solo > .f-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* -------------------------------------------------------------- fields --- */
 
@@ -410,17 +488,18 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-input--mono { font-family: var(--mono); font-size: 13px; }
 .f-input--short { width: auto; min-width: 150px; }
-.f-textarea { resize: vertical; line-height: 1.55; }
+/* Sized to its text by autoGrow() in fields.js, so it never needs a scrollbar;
+   the corner handle still drags it taller. */
+.f-textarea { resize: vertical; line-height: 1.55; overflow-y: hidden; }
+/* As wide as the sheet, like every other field, so a long paragraph takes fewer lines. */
 .f-textarea--prose {
   min-height: 16rem;
-  max-width: 72ch;
   padding: 16px 18px;
   font-family: var(--serif);
   font-size: 16px;
   line-height: 1.7;
-  field-sizing: content;
 }
-.f-count { margin: 6px 0 0; max-width: 72ch; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.f-count { margin: 6px 0 0; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .f-select { appearance: auto; }
 
 /* ---------------------------------------------------------- emphasis --- */
@@ -516,7 +595,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .f-row-tools { display: flex; align-items: center; gap: 1px; flex: none; }
 /* Paragraph rows: the textarea grows with its text and the tools sit on its first line. */
 .f-row--multiline { align-items: flex-start; }
-.f-row--multiline .f-textarea { min-height: 4.6em; field-sizing: content; }
+.f-row--multiline .f-textarea { min-height: 4.6em; }
 .f-row--multiline .f-row-tools { padding-top: 6px; }
 
 /* Cards are <details>: a one-line summary built from the card's own content
@@ -606,6 +685,123 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-playback-preview:not([src]) { display: none; }
 .f-playback .f-help { margin-top: 0; }
+/* A gallery PDF: its first-page preview, page count, and the download switch. */
+.f-pdf {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  max-width: 440px;
+}
+.f-pdf[hidden] { display: none; }
+.f-pdf-head { display: flex; align-items: baseline; gap: 10px; }
+.f-pdf-summary { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Two classes deep so it outranks .f-btn, which is declared further down. */
+.f-pdf .f-pdf-remake { margin-left: auto; padding: 3px 8px; font-size: 12px; }
+.f-pdf-preview { display: block; width: 160px; border: 1px solid var(--rule); background: #fff; }
+.f-pdf-preview:not([src]) { display: none; }
+.f-pdf .f-help { margin-top: 0; }
+
+/* A post captured from LinkedIn: the address, the capture controls, and what
+   was read off the page — editable, because a thin capture is a normal outcome.
+   Wider than the PDF panel, since the post's own words live in it. */
+.f-post {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  max-width: 560px;
+}
+.f-post[hidden] { display: none; }
+/* Two classes deep so they outrank .f-btn, declared further down. */
+.f-post .f-btn { padding: 3px 8px; font-size: 12px; }
+.f-post .f-pdf-head .f-btn:last-child { margin-left: 0; }
+.f-post .f-pdf-head .f-pdf-summary { margin-left: auto; }
+/* Folded away until asked for: most artifacts are just photographs. */
+.f-post:has(.f-post-toggle:not([hidden])) { padding: 0; border: 0; background: none; }
+.f-post-toggle[hidden], .f-post-head[hidden], .f-post-body[hidden] { display: none; }
+.f-post-body { display: grid; gap: 10px; }
+.f-post-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.f-post .f-label--inline { display: grid; gap: 4px; }
+.f-post .f-help { margin-top: 0; }
+.f-post textarea { min-height: 6em; }
+
+/* Display: Default or Before & after, and the crop-and-align stage. */
+.f-seg { display: inline-flex; border: 1px solid var(--rule); background: var(--paper); }
+.f-seg-btn {
+  padding: 6px 12px;
+  border: 0;
+  border-right: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.f-seg-btn:last-child { border-right: 0; }
+.f-seg-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.f-seg-btn[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+.f-seg--small .f-seg-btn { padding: 4px 10px; font-size: 12px; }
+.f-display { display: grid; gap: 0; }
+
+.f-align {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+  max-width: 560px;
+}
+.f-align-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.f-align-stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.f-align-stage.is-panning { cursor: grabbing; }
+.f-align-layer { position: absolute; pointer-events: none; }
+.f-align-layer[hidden] { display: none; }
+.f-align-layer img { display: block; width: 100%; height: auto; }
+.f-align-layer.is-active { outline: 1px dashed var(--accent); outline-offset: -1px; }
+.f-align-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent);
+  pointer-events: none;
+}
+.f-align-divider[hidden] { display: none; }
+.f-align-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+.f-align-empty[hidden] { display: none; }
+.f-align-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.f-align-zoom { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 160px; font-size: 12px; color: var(--muted); }
+.f-align-split[hidden] { display: none; }
+.f-align-read { min-width: 3.5em; font-family: var(--mono); font-size: 12px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.f-align .f-align-reset { padding: 3px 10px; font-size: 12px; }
+.f-align .f-help { margin-top: 0; }
 
 /* --------------------------------------------------------------- color --- */
 .f-color-row { display: flex; align-items: center; gap: 8px; }
@@ -658,6 +854,93 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   justify-content: center;
 }
 
+/* -------------------------------------------------------- motion cards --- */
+/* The Read more picker: each card plays the site's own button, styled by
+   app/(site)/bullet-link.css (linked in index.html), on a patch of the site's
+   paper and grid. The site's colors arrive as --site-<mode>-<token> on the
+   stage (fields.js → motionChoiceControl) and become the tokens that sheet
+   reads, light or dark to match this editor; the fallbacks are Default's. */
+.f-motion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.f-motion-card {
+  position: relative;
+  /* A column from the top: a button otherwise centers its content, so cards
+     with shorter descriptions would sit their previews lower than the row's. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid var(--rule);
+  padding: 8px 8px 11px;
+  text-align: left;
+  background: var(--panel);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.f-motion-card:hover { border-color: var(--ink); }
+.f-motion-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.f-motion-card[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+.f-motion-card .f-palette-check { display: none; z-index: 2; }
+.f-motion-card[aria-checked="true"] .f-palette-check { display: flex; }
+.f-motion-card .f-palette-name,
+.f-motion-card .f-palette-desc { padding-inline: 3px; }
+.f-motion-stage {
+  --paper: var(--site-light-paper, #fbfbf9);
+  --white: var(--site-light-white, #ffffff);
+  --ink: var(--site-light-ink, #0b1a2b);
+  --accent: var(--site-light-accent, #e3342f);
+  --on-accent: var(--site-light-onAccent, #fbfbf9);
+  --pill-text: var(--site-light-pillText, #4a5c6b);
+  --muted: var(--site-light-muted, #616b75);
+  --rule: var(--site-light-rule, #d9dee3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 76px;
+  margin-bottom: 10px;
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: center;
+  color: var(--ink);
+  font-family: var(--serif);
+}
+:root[data-theme="dark"] .f-motion-stage {
+  --paper: var(--site-dark-paper, #0d1b2a);
+  --white: var(--site-dark-white, #142a3d);
+  --ink: var(--site-dark-ink, #eef3f7);
+  --accent: var(--site-dark-accent, #ff6b62);
+  --on-accent: var(--site-dark-onAccent, #0d1b2a);
+  --pill-text: var(--site-dark-pillText, #a9b8c5);
+  --muted: var(--site-dark-muted, #9da5ad);
+  --rule: var(--site-dark-rule, #24384a);
+}
+.f-motion-stage .bp-bullet-link { margin-left: 0; }
+/* Linked skills → On hover: room for the card, with the pill placed so its
+   layout fits (a card or callout rises above it, a tab drops below). */
+.f-motion-grid--wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.f-motion-stage--reveal {
+  height: 214px;
+  padding: 18px;
+  overflow: hidden;
+  align-items: flex-end;
+}
+.f-motion-stage--reveal[data-layout="tab"] { align-items: flex-start; }
+.f-motion-stage--reveal[data-layout="callout"] { justify-content: flex-start; }
+.f-motion-stage .bp-skill-card { max-width: 260px; }
+.f-motion-stage[data-layout="callout"] .bp-skill-card { max-width: 220px; }
+
+/* A skill's link to a project or proof, beside its text (fields.js → listLinkSelect). */
+.f-row-link { flex: 0 1 34%; min-width: 150px; font-size: 13px; color: var(--muted); }
+.f-row-link.is-linked { color: var(--ink); border-color: var(--accent); }
+
 /* ------------------------------------------------------------- buttons --- */
 
 .f-btn {
@@ -699,6 +982,48 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .f-icon-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--ink) 9%, transparent); color: var(--ink); }
 .f-icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ------------------------------------------------------ drag to reorder --- */
+
+/* The three-line grip an entry is carried by: an open hand at rest, a closed
+   one while it is held. A lifted entry rides above its neighbours, which slide
+   aside with transforms (set inline by makeSortable) to show where it lands. */
+.f-grip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 28px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--faint);
+  cursor: grab;
+  touch-action: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .f-grip:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+}
+.f-grip:active { cursor: grabbing; }
+.f-card-grip { display: inline-flex; flex: none; margin-left: -6px; }
+
+/* While something is held: one cursor everywhere, no selection, and nothing
+   underneath reacts to the pointer (no hover flashes as entries slide by). */
+html.is-grabbing,
+html.is-grabbing * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+.is-sorting > * { pointer-events: none; }
+.is-dragging {
+  position: relative;
+  z-index: 5;
+  background: var(--paper);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 20%, transparent), 0 0 0 1px var(--accent);
+  will-change: transform;
+}
+.is-dragging .f-grip { color: var(--accent); }
+/* Settling into the gap, the lift comes off with it. */
+.is-dropping { box-shadow: 0 0 0 1px transparent; }
+
 
 .f-file { font-size: 12px; max-width: 230px; }
 .f-file-note { font-size: 12px; color: var(--muted); }
@@ -764,7 +1089,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 /* Errors keep the ink slab and take an accent edge, so brand and failure never share a color. */
 .toast--error { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 
-/* -------------------------------------------------------------- picker --- */
+/* -------------------------------------------------------------- modals --- */
 
 .modal {
   width: min(920px, calc(100vw - 40px));
@@ -777,7 +1102,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 }
 .modal::backdrop { background: color-mix(in srgb, #08101a 45%, transparent); backdrop-filter: blur(2px); }
 
-.picker { display: flex; flex-direction: column; max-height: inherit; }
+/* The head every Studio dialog shares: its title, and Close. */
 .picker-head {
   display: flex;
   align-items: center;
@@ -789,71 +1114,209 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .picker-head h2 { font-size: 15px; }
 .picker-head-title { display: flex; align-items: center; gap: 12px; }
 
-.picker-grid {
+/* --------------------------------------------------------------- files --- */
+/* The image picker as a small Explorer window (ui/files.js): an address bar,
+   the open folder's contents with folders first, and a foot that says what is
+   selected and chooses it. It keeps one height, so moving between folders
+   never makes the window jump. */
+
+.modal--files { height: min(78vh, 720px); }
+.files { display: flex; flex-direction: column; height: 100%; }
+
+.files-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.files-bar-actions { display: flex; gap: 6px; flex: none; }
+.files-bar .f-btn svg { flex: none; }
+
+.files-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+.files-icon-btn:hover:not(:disabled) { border-color: var(--ink); }
+.files-icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* The address bar: every folder on the way to this one is a crumb, and each
+   crumb takes drops, so a file can go back up without leaving the folder. */
+.files-path {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-height: 36px;
+  padding: 2px 6px;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.files-crumb {
+  flex: none;
+  padding: 5px 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.files-crumb:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); }
+.files-crumb[aria-current="location"] { color: var(--ink); font-weight: 600; cursor: default; }
+.files-crumb[aria-current="location"]:hover { background: transparent; }
+.files-crumb-sep { display: inline-flex; flex: none; color: var(--faint); }
+
+.files-grid {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  padding: 16px 18px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  align-content: start;
+  gap: 8px;
+  padding: 14px 18px;
+  outline: none;
   scrollbar-width: thin;
   scrollbar-color: var(--faint) transparent;
 }
-.picker-item { position: relative; }
-.picker-select {
+/* Files from the desktop, held over the open folder. */
+.files-grid.is-drop {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.files-tile {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  padding: 8px;
-  border: 1px solid var(--rule);
-  background: var(--panel);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+  gap: 2px;
+  padding: 7px;
+  border: 1px solid transparent;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.picker-select:hover { border-color: var(--ink); transform: translateY(-2px); }
-.picker-item.is-active .picker-select { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
-.picker-select img {
-  width: 100%;
+.files-tile:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); border-color: var(--rule); }
+.files-tile.is-selected { background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: color-mix(in srgb, var(--accent) 60%, var(--rule)); }
+.files-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.files-tile.is-dragged { opacity: 0.4; }
+/* A folder, or a crumb, with something held over it. */
+.files-tile.is-drop,
+.files-crumb.is-drop {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.files-visual {
+  display: grid;
+  place-items: center;
   height: 96px;
-  object-fit: contain;
+  overflow: hidden;
   background: color-mix(in srgb, var(--ink) 5%, transparent);
 }
-.picker-name { font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.picker-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.files-visual img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.files-visual--folder { background: transparent; color: var(--ink-soft); }
+.files-visual--folder svg { fill: color-mix(in srgb, var(--ink) 5%, transparent); stroke-width: 1.3; }
+.files-tile.is-selected .files-visual--folder,
+.files-tile.is-drop .files-visual--folder { color: var(--accent); }
+.files-tile.is-drop .files-visual--folder svg { fill: color-mix(in srgb, var(--accent) 20%, transparent); }
 
-.picker-remove {
+.files-name { margin-top: 4px; font-size: 12.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.files-name-input { margin-top: 3px; padding: 3px 6px; font-size: 12.5px; }
+/* The file the field holds now. */
+.files-tag {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  background: var(--paper);
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+  top: 11px;
+  left: 11px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--on-accent);
+  pointer-events: none;
 }
-.picker-item:hover .picker-remove,
-.picker-remove:focus-visible { opacity: 1; }
-.picker-remove:hover { color: var(--accent); border-color: var(--accent); }
+.files-empty { grid-column: 1 / -1; margin: 48px 0; font-size: 13px; font-style: italic; text-align: center; color: var(--muted); }
 
-.picker-foot {
+.files-foot {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  padding: 13px 18px;
+  padding: 12px 18px;
   border-top: 1px solid var(--rule);
+}
+.files-status {
+  flex: 1;
+  min-width: 160px;
+  font-size: 12.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.files-foot-actions { display: flex; align-items: center; gap: 6px; }
+.files-foot-gap { width: 10px; }
+/* "· Used in Projects" beside the selection: a step darker than the facts before it. */
+.files-usage { color: var(--ink-soft); }
+
+/* The Files button: the Studio's corner, as "Edit in Studio" is the site's
+   (components/blueprint/StudioLink.tsx), in the same place and type, with
+   the Studio's square corners. It opens the picker to look after files.
+   Everything is in em off a size that grows with the screen, so it keeps
+   its presence on a large display instead of shrinking into the corner. */
+.files-launch {
+  position: fixed;
+  right: clamp(16px, 1.6vw, 36px);
+  bottom: clamp(16px, 1.6vw, 36px);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  padding: 1.1em 1.7em;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--rule));
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 32px color-mix(in srgb, #08101a 20%, transparent);
+  font: inherit;
+  /* Capped at 14.5px: about 132×56, halfway between the original 91×37
+     and the 19px cap it first had, which read as too large. */
+  font-size: clamp(14px, 0.35vw + 9px, 14.5px);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.38s var(--ease), background-color 0.3s ease;
+}
+.files-launch svg { flex: none; width: 1.6em; height: 1.6em; color: var(--accent); }
+.files-launch:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--paper));
+  transform: translateY(-2px);
+}
+
+@media (max-width: 620px) {
+  .files-bar { flex-wrap: wrap; }
+  .files-path { order: -1; flex-basis: 100%; }
 }
 
 /* ------------------------------------------------------------- devices --- */
@@ -926,12 +1389,14 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
   .workspace { grid-template-columns: 1fr; overflow: visible; }
   .rail { flex-direction: row; flex-wrap: wrap; gap: 6px; overflow: visible; border-right: 0; border-bottom: 1px solid var(--rule); }
   .rail-group { flex-direction: row; flex-wrap: wrap; }
-  .rail-group + .rail-group { margin: 0 0 0 4px; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--rule); }
+  .rail-group + .rail-group { margin: 0 0 0 4px; padding: 0 0 0 10px; border-top: 0; border-left: 2px solid var(--rail-rule); }
   .list-pane { border-right: 0; border-bottom: 1px solid var(--rule); max-height: 320px; }
   .list-pane[hidden] ~ .detail { grid-column: auto; }
   .detail { overflow: visible; }
   .detail-body.has-index { grid-template-columns: minmax(0, 1fr); }
   .detail-index { position: static; flex-direction: row; flex-wrap: wrap; gap: 4px 16px; }
+  /* The page scrolls here, not the pane, so the tabs stay in the flow. */
+  .detail-tabs { position: static; background: none; }
   .topbar { grid-template-columns: 1fr; text-align: left; }
   .topbar-mid { text-align: left; }
   .topbar-right { justify-content: flex-start; }

@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "More Info | Riley Beenders",
+    "description": "Background on this site and a live look at the job search behind it."
+  },
   "aboutHeader": {
     "title": "More Info",
     "description": [
@@ -26,6 +30,12 @@
   "ganttSection": {
     "chartVisible": false,
     "tableVisible": true,
-    "title": "Application Tracker"
+    "title": "Application Tracker",
+    "tableNote": "Gray rows were applied to before this site and its tailored resumes.",
+    "statusKey": {
+      "received": "Application received",
+      "interviewing": "Interviewing",
+      "closed": "No longer in consideration"
+    }
   }
 }

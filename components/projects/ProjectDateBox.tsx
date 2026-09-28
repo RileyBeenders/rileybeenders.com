@@ -3,6 +3,7 @@
 import type { ProjectDates } from "@/types/resume";
 import { formatDate, isIsoDate } from "@/lib/dates";
 import { useInViewOnce } from "@/lib/useInViewOnce";
+import { ui } from "@/lib/copy";
 
 type ProjectDateBoxProps = {
   dates: ProjectDates;
@@ -22,7 +23,7 @@ type ProjectDateBoxProps = {
 export function ProjectDateBox({ dates, position = "top-right", size = "default" }: ProjectDateBoxProps) {
   const { ref, inView } = useInViewOnce<HTMLDivElement>(0.5, "0px 0px -20px 0px");
   const ongoing = dates.ongoing === true;
-  const end = ongoing ? "Present" : dates.end ? formatDate(dates.end) : null;
+  const end = ongoing ? ui.dates.present : dates.end ? formatDate(dates.end) : null;
   const machineStart = isIsoDate(dates.start) ? dates.start : undefined;
   const machineEnd = !ongoing && isIsoDate(dates.end) ? dates.end : undefined;
 

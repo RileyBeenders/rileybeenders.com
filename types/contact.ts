@@ -1,3 +1,5 @@
+import type { PageMeta } from "@/types/pages";
+
 export type ContactHero = {
   title: string;
   tagline: string;
@@ -10,6 +12,7 @@ export type ContactDetails = {
 };
 
 export type ContactData = {
+  meta: PageMeta;
   hero: ContactHero;
   details: ContactDetails;
 };

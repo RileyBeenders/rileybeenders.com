@@ -97,7 +97,45 @@
 }
 
 .pj-summary { font-size: clamp(15px, 1.3vw, 18px); line-height: 1.62; color: var(--ink-soft); max-width: 56ch; }
-.pj-status { margin-top: 10px; font-size: 14px; line-height: 1.5; font-style: italic; color: var(--muted); max-width: 56ch; }
+.pj-status { margin-top: 10px; font-size: 14px; line-height: 1.5; font-style: italic; color: var(--muted); max-width: 56ch; display: flex; flex-direction: column; gap: 8px; }
+
+.pj-code {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  font-style: normal;
+}
+.pj-code-pre {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.pj-code-copy {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  align-self: stretch;
+  border: 0;
+  border-left: 1px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.pj-code-copy:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.pj-code-copy:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
 
 .pj-bullets {
   margin: 0;
@@ -220,6 +258,8 @@
 /* -------------------------------------------------------------- toggle --- */
 
 .pj-toggle {
+  /* A link to #project-<id>-case-study lands here; clear the sticky nav. */
+  scroll-margin-top: 120px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -249,9 +289,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(10px, 1.6vw, 16px);
+  /* Frames can differ in shape; each caption stays under its own image. */
+  align-items: start;
 }
 
-.pj-shot { margin: 0; }
+.pj-shot { margin: 0; position: relative; }
 
 .pj-shot-btn {
   position: relative;
@@ -269,6 +311,9 @@
 .pj-shot-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .pj-shot-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* "Original": the frame takes the image's own shape, so nothing is cropped. */
+.pj-shot-btn--original { aspect-ratio: auto; }
+.pj-shot-btn--original img { height: auto; }
 /* Diagrams stand in as photos on projects that don't have any yet — they get
    letterboxed instead of cropped, so nothing important is clipped off. */
 .pj-shot-btn img.pj-shot-img--contain { object-fit: contain; padding: 22px; background: var(--paper); }
@@ -289,6 +334,42 @@
 .pj-shot-btn:hover .pj-shot-zoom,
 .pj-shot-btn:focus-visible .pj-shot-zoom { opacity: 1; transform: translateY(0); }
 
+/* A PDF in the gallery: its first page, tagged, with the file behind a download
+   link when the Studio allows it. The page is drawn on white whatever the theme,
+   as paper is. */
+.pj-shot-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(8, 16, 26, 0.72);
+  color: #fff;
+  pointer-events: none;
+}
+.pj-shot-download,
+.pj-shot-post {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.pj-shot-download:hover,
+.pj-shot-post:hover { color: var(--accent); border-color: var(--accent); }
+.pj-shot-download:focus-visible,
+.pj-shot-post:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 .pj-shot figcaption {
   margin-top: 7px;
   font-size: 12px;
@@ -302,6 +383,105 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--faint);
+}
+
+/* Before & after: the After is laid over the Before and uncovered up to the
+   bar. Everything is in percentages of the frame, so a crop lined up in
+   the Studio holds at thumbnail and full-screen size alike. */
+.pj-shot-compare {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: border-color 0.4s var(--ease);
+}
+.pj-shot-compare:hover { border-color: var(--ink); }
+.pj-shot-zoom--compare {
+  z-index: 3;
+  border: 0;
+  cursor: zoom-in;
+  opacity: 0.92;
+  transform: none;
+}
+.pj-shot-zoom--compare:hover { opacity: 1; }
+.pj-shot-zoom--compare:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cmp {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--cmp-ratio, 4 / 3);
+  overflow: hidden;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.cmp-layer { position: absolute; inset: 0; overflow: hidden; }
+.cmp-layer--after { clip-path: inset(0 0 0 var(--cmp-pos, 50%)); }
+.cmp-img { object-fit: cover; }
+.cmp-placed { position: absolute; }
+.cmp img { pointer-events: none; -webkit-user-drag: none; }
+
+.cmp-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--cmp-pos, 50%);
+  width: 2px;
+  margin-left: -1px;
+  /* Fixed light, not --paper: it sits on photographs, which don't change with the theme. */
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(8, 16, 26, 0.35);
+  pointer-events: none;
+}
+.cmp-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(8, 16, 26, 0.3);
+  border-radius: 50%;
+  background: #fff;
+  color: #0b1a2b;
+  box-shadow: 0 2px 10px rgba(8, 16, 26, 0.3);
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.cmp:hover .cmp-knob,
+.cmp.is-dragging .cmp-knob { transform: translate(-50%, -50%) scale(1.08); }
+.cmp:has(.cmp-range:focus-visible) .cmp-knob { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cmp-tag {
+  position: absolute;
+  top: 10px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(8, 16, 26, 0.62);
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+.cmp-tag--before { left: 10px; }
+.cmp-tag--after { right: 10px; }
+/* A label steps aside once the bar has nearly covered its side. */
+.cmp[data-edge="start"] .cmp-tag--before,
+.cmp[data-edge="end"] .cmp-tag--after { opacity: 0; }
+
+/* Kept for the keyboard and screen readers; the pointer drags the frame itself. */
+.cmp-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ---------------------------------------------------------- case study --- */
@@ -430,6 +610,18 @@
 .pj-flow-head { stroke: var(--faint); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .pj-flow-pulse circle { fill: var(--accent); }
 
+/* A full-sheet drawing (components/projects/diagrams/ThemedSvg) takes the
+   whole row; it carries its own hairline frame, so it gets no border here. */
+.pj-proof-asset--wide { grid-column: 1 / -1; }
+/* Consecutive sheets get the site's hairline between them: --faint, the
+   section divider's tone, which stays visible on paper in both themes. */
+.pj-proof-asset--wide + .pj-proof-asset--wide {
+  margin-top: clamp(18px, 3vw, 30px);
+  padding-top: clamp(28px, 4vw, 44px);
+  border-top: 1px solid var(--faint);
+}
+.pj-themed-svg svg { display: block; width: 100%; height: auto; }
+
 /* ---------------------------------------------------------------- outro --- */
 
 .pj-outro { padding: clamp(56px, 12vh, 132px) 0 clamp(80px, 14vh, 160px); }
@@ -472,6 +664,286 @@
   transition: opacity 0.4s ease;
 }
 .pj-lb-figure img.is-loaded { opacity: 1; }
+/* The screenshot of a captured post: the evidence behind the words rather than
+   the thing to read, so it is labelled and given the lesser half. A post is a
+   tall column of type, so it fills the width it is given and scrolls, instead
+   of being squeezed to fit a height at which none of it can be read. */
+.pj-post-capture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  min-width: 0;
+  width: min(100%, 460px);
+  max-height: 46vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.pj-post-capture img {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: auto;
+}
+.pj-post-capture figcaption {
+  order: -1; /* the label introduces the picture rather than trailing it */
+  position: sticky;
+  top: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+/* A PDF in the viewer: every page in one scrolling column, drawn by pdf.js
+   from the file itself. The gallery grid behind it still shows page one only. */
+.pj-lb-pdf {
+  width: min(100%, 900px);
+  max-height: 78vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.pj-lb-pdf:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.pj-lb-page {
+  position: relative;
+  flex: none;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.pj-lb-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Drawn a page at a time as the column is scrolled; fade each one in rather
+     than letting it snap from the placeholder. */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.pj-lb-page canvas.is-drawn { opacity: 1; }
+
+/* A captured post in the viewer: the site's own record of what it said. The
+   picture above it is what the post looked like; this is the part that survives
+   the post being edited or taken down, so it is typeset rather than
+   photographed.
+
+   Literal colours, not palette tokens. The viewer is portalled to <body> (see
+   Lightbox.tsx) and every token on the site is scoped to `.bp`, so a `var(--ink)`
+   in here resolves to nothing at all — which is why the rest of the viewer's
+   chrome is written in literals too. It is drawn as paper with ink in both
+   themes, as the PDF pages beside it are: inside the viewer, a document is on
+   paper. */
+.pj-post {
+  width: min(100%, 720px);
+  flex: none;
+  min-width: 0;
+  background: #fbfbf9;
+  padding: 22px 26px;
+  text-align: left;
+  max-height: 34vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(11, 26, 43, 0.28) transparent;
+}
+.pj-post-head {
+  border-bottom: 1px solid #d9dee3;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.pj-post-author {
+  margin: 0;
+  font-family: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #0b1a2b;
+}
+.pj-post-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pj-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #616b75;
+}
+.pj-post-body {
+  font-size: 16px;
+  line-height: 1.66;
+  color: #26333f;
+}
+.pj-post-body p { margin: 0 0 0.85em; white-space: pre-line; }
+.pj-post-body p:last-child { margin-bottom: 0; }
+/* The sign-off tags, set apart from the prose: part of the record, but not
+   something to read as a sentence. */
+.pj-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 14px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #616b75;
+}
+.pj-post-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #d9dee3;
+}
+.pj-post-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0b1a2b;
+  text-decoration: none;
+  border-bottom: 1px solid #d9dee3;
+  padding-bottom: 2px;
+  transition: border-color 0.3s cubic-bezier(0.22, 0.9, 0.28, 1);
+}
+.pj-post-link:hover { border-color: #0b1a2b; }
+.pj-post-link:focus-visible { outline: 2px solid #0b1a2b; outline-offset: 3px; }
+.pj-post-captured {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #838b92;
+}
+
+/* A captured post is two documents at once — what it said and a picture proving
+   it was said — and stacked they leave each other no room. Given the width they
+   sit side by side, each scrolling on its own, the record taking the larger
+   share because it is the part meant to be read. The figure wraps rather than
+   simply becoming a row, so the viewer's own caption and image count stay on
+   their own line underneath both instead of turning into a third column. */
+@media (min-width: 900px) {
+  .pj-lb-figure:has(.pj-post) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 28px;
+    width: 100%;
+  }
+  .pj-lb-figure:has(.pj-post) .pj-post {
+    max-height: 76vh;
+    width: min(56%, 680px);
+  }
+  .pj-lb-figure .pj-post-capture {
+    width: min(34%, 420px);
+    max-height: 76vh;
+  }
+  .pj-lb-figure:has(.pj-post) > figcaption { flex-basis: 100%; }
+}
+
+/* A captured post in the grid: the site's own card, not a picture of someone
+   else's page. It sits in the same 4:3 cell its neighbours do, so a row of
+   photographs and a post still line up, but it is typeset rather than
+   photographed — a screenshot at thumbnail size is only grey noise.
+   These are palette tokens, unlike the viewer's: the grid is inside `.bp`. */
+.pj-postcard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  /* No fixed ratio: the grid aligns its cells to the top, so the card can be
+     exactly as tall as what it holds instead of padding itself out to 4:3 and
+     leaving a hole between the words and the way in. */
+  padding: 20px 22px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.pj-postcard:hover { border-color: var(--ink); transform: translateY(-3px); }
+.pj-postcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pj-postcard-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pj-postcard-author {
+  font-family: var(--bp-font-subheader);
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pj-postcard-date {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+/* The opening of the post, clamped to whatever the cell has left. The line
+   clamp does the cutting, so the text ends on a full line with an ellipsis
+   rather than at whatever character the cell's height happened to fall on. */
+.pj-postcard-preview {
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--prose);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+}
+.pj-postcard-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 3px;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.pj-postcard:hover .pj-postcard-action { color: var(--accent); border-color: var(--accent); }
+.pj-postcard:hover .pj-postcard-action svg { transform: translateX(3px); }
+.pj-postcard-action svg { transition: transform 0.42s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-postcard, .pj-postcard-action, .pj-postcard-action svg { transition: none; }
+  .pj-postcard:hover { transform: none; }
+}
+
+/* A before/after in the viewer: as large as its frame fits on screen. */
+.pj-lb-compare { width: min(100%, calc(78vh * var(--cmp-ratio, 4 / 3))); }
+.pj-lb-figure .cmp img { max-width: none; max-height: none; object-fit: cover; opacity: 1; transition: none; background: none; }
 .pj-lb-loading {
   font-size: 11px;
   letter-spacing: 0.2em;
@@ -489,6 +961,21 @@
   text-align: center;
 }
 .pj-lb-count { font-size: 11px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.5); }
+.pj-lb-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.pj-lb-download:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.6); }
+.pj-lb-download:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 .pj-lb-close,
 .pj-lb-nav {
@@ -513,6 +1000,278 @@
 .pj-lb-nav--prev { grid-column: 1; }
 .pj-lb-nav--next { grid-column: 3; }
 
+/* ----------------------------------------------------- floated photos --- */
+
+/* A photo placed in Photo Mode (components/projects/PhotoMode.tsx) floats at
+   the start of a paragraph or bullet and the text wraps around it. The body
+   swaps its flex column for ordinary flow, with the same spacing, so a float
+   keeps wrapping the paragraphs after its own. It is also its own formatting
+   context, so no float can escape it into the title, the rules or the dates,
+   and a size container, so a photo's width (cqi) is a share of the body. */
+.pj-body--flow {
+  --pj-flow-gap: clamp(12px, 2vh, 18px);
+  display: flow-root;
+  container-type: inline-size;
+  max-width: 88ch;
+}
+.pj-body--flow > * + * { margin-top: var(--pj-flow-gap); }
+/* The note's own 10px sat on top of the flex gap; in flow the two would collapse into one. */
+.pj-body--flow .pj-status { margin-top: calc(var(--pj-flow-gap) + 10px); }
+.pj-body--flow .pj-summary,
+.pj-body--flow .pj-status,
+.pj-body--flow .pj-bullets { max-width: none; }
+/* A floated photo between two paragraphs would break blueprint.css's p + p spacing. */
+.pj-body .pj-summary ~ .pj-summary { margin-top: 0.85em; }
+
+/* The bullets become a plain list with an inline marker: an outside marker
+   stays at the list's edge while its text wraps beside a left photo, so the
+   dot would sit on the far side of the picture. This one hangs just left of
+   whatever line it starts, photo or not. */
+.pj-body--flow .pj-bullets { display: block; list-style: none; padding-left: 0; }
+.pj-body--flow .pj-bullets > li { position: relative; padding-left: 20px; }
+.pj-body--flow .pj-bullets > li + li { margin-top: clamp(9px, 1.4vh, 14px); }
+.pj-body--flow .pj-bullets > li::before {
+  content: "";
+  display: inline-block;
+  width: 0.36em;
+  height: 0.36em;
+  margin: 0 calc(20px - 0.36em) 0 -20px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 0.16em;
+}
+
+.pj-inline {
+  width: calc(var(--pj-inline-w, 38) * 1cqi);
+  margin-top: 0.3em;
+  margin-bottom: 14px;
+}
+/* The side margin is wider than a bullet's hanging dot, so the dot never lands on the photo. */
+.pj-inline--left { float: left; clear: left; margin-right: clamp(24px, 2.6vw, 34px); }
+.pj-inline--right { float: right; clear: right; margin-left: clamp(24px, 2.6vw, 34px); }
+
+@media (max-width: 640px) {
+  /* Too narrow to wrap text beside a picture: each photo takes the full width, in reading order. */
+  .pj-inline,
+  .pj-inline--left,
+  .pj-inline--right { float: none; width: auto; margin: 4px 0 18px; }
+  .pj-body--flow .pj-bullets > li::before { position: absolute; left: 0; top: 0.66em; margin: 0; }
+  /* In a bullet the words come first, then the photo under them. */
+  .pj-body--flow .pj-bullets > li:has(> .pj-inline) { display: flex; flex-direction: column; }
+  .pj-body--flow .pj-bullets > li > .pj-inline { order: 1; margin: 12px 0 4px; }
+}
+
+/* ---------------------------------------------------------- photo mode --- */
+/* Dev only (npm run site): dragging photos in and out of the text. */
+
+.pj-photo-dock {
+  position: fixed;
+  right: clamp(14px, 2vw, 24px);
+  /* One control above "Edit in Studio", which owns the corner. */
+  bottom: calc(clamp(14px, 2vw, 24px) + 48px);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: min(320px, calc(100vw - 28px));
+}
+.pj-photo-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.38s var(--ease);
+}
+.pj-photo-toggle svg { color: var(--accent); flex: none; }
+.pj-photo-toggle:hover { border-color: var(--accent); transform: translateY(-2px); }
+.pj-photo-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pj-photo-toggle.is-on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--white));
+}
+.pj-photo-status {
+  padding: 9px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--white) 94%, transparent);
+  backdrop-filter: blur(10px);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.pj-photo-status--ok { color: var(--ink); border-color: var(--accent); }
+.pj-photo-status--error { color: var(--ink); border-color: #c2412d; box-shadow: inset 3px 0 0 #c2412d; }
+
+/* Where a photo may go: its own body text, and its own gallery. */
+.pj-entry.is-arranging .pj-body,
+.pj-entry.is-arranging .pj-entry-media {
+  outline: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+  outline-offset: 12px;
+}
+
+.pj-photo-grab {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  padding: 8px;
+  border: 1px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  cursor: grab;
+  touch-action: none;
+  transition: background-color 0.25s var(--ease);
+}
+.pj-photo-grab:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.pj-photo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+button.pj-photo-chip { cursor: pointer; }
+button.pj-photo-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pj-shot.is-lifted { opacity: 0.35; }
+
+.pj-photo-tools {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 2px;
+  max-width: calc(100% - 16px);
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ink) 14%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.pj-inline.is-editing:hover .pj-photo-tools,
+.pj-inline.is-editing:focus-within .pj-photo-tools { opacity: 1; }
+.pj-photo-tools button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.pj-photo-tools button:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.pj-photo-tools button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pj-photo-tools button:disabled { opacity: 0.3; cursor: default; }
+
+/* The handle sits on the corner that faces the text: pull it into the text to grow the photo. */
+.pj-photo-resize {
+  position: absolute;
+  bottom: -8px;
+  z-index: 6;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ink) 25%, transparent);
+  cursor: ew-resize;
+  touch-action: none;
+}
+.pj-inline--right .pj-photo-resize { left: -8px; }
+.pj-inline--left .pj-photo-resize { right: -8px; }
+.pj-photo-resize:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pj-photo-size {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 6;
+  transform: translateX(-50%);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* With every photo in the text, this stands in for the gallery as a drop target. */
+.pj-photo-return {
+  margin-top: 26px;
+  padding: 16px;
+  border: 1px dashed var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* While a photo is carried: the ghost under the pointer, and where it would land. */
+.pj-photo-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.pj-photo-ghost {
+  position: fixed;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  background: var(--white);
+  box-shadow: 0 22px 48px color-mix(in srgb, var(--ink) 30%, transparent);
+  transform: rotate(-1.4deg) scale(1.03);
+  transition: opacity 0.2s var(--ease);
+}
+.pj-photo-ghost img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pj-photo-ghost.is-homeless { opacity: 0.55; }
+.pj-photo-drop {
+  position: fixed;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  border: 2px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  transition: left 0.18s var(--ease), top 0.18s var(--ease), width 0.18s var(--ease), height 0.18s var(--ease);
+}
+.pj-photo-drop span {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+html.pj-photo-dragging,
+html.pj-photo-dragging * { cursor: grabbing !important; user-select: none; }
+
+@media print {
+  .pj-photo-dock, .pj-photo-layer, .pj-photo-grab, .pj-photo-tools, .pj-photo-resize, .pj-photo-return { display: none !important; }
+}
+
 /* ------------------------------------------------------------- narrow --- */
 
 @media (max-width: 860px) {
@@ -530,5 +1289,6 @@
 @media (prefers-reduced-motion: reduce) {
   .pj-lightbox { animation: none; }
   .pj-lb-figure img { transition: none; }
+  .pj-lb-page canvas { transition: none; }
   .pj-toggle-icon { transition: none; }
 }

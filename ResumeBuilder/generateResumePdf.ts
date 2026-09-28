@@ -25,6 +25,8 @@ type ContactItem = {
 
 function normalizeText(value: string): string {
   return value
+    // The site splits body text into paragraphs at empty lines; the resume keeps it one compact block.
+    .replace(/\s*\n\s*/g, " ")
     .replace(/[\u2018\u2019\u201B]/g, "'")
     .replace(/[\u201C\u201D\u201F]/g, '"')
     .replace(/[\u2010\u2011\u2012\u2013\u2014\u2212]/g, "-")

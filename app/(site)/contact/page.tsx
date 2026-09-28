@@ -4,12 +4,14 @@ import resumeData from "@/data/resumeData";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BpActions } from "@/components/blueprint/BpActions";
 import type { ContactData } from "@/types/contact";
+import { splitParagraphs } from "@/components/content/Paragraphs";
+import { ui } from "@/lib/copy";
 
 const data = contactData as ContactData;
 
 export const metadata: Metadata = {
-  title: "Contact | Riley Beenders",
-  description: "Ways to get in touch."
+  title: data.meta.title,
+  description: data.meta.description
 };
 
 export default function ContactPage() {
@@ -31,7 +33,7 @@ export default function ContactPage() {
               <div className="bp-hero-place">
                 <span>{person.location}</span>
                 {visibility.openToRelocation ? (
-                  <span style={{ color: "var(--accent)" }}>Open to relocation</span>
+                  <span style={{ color: "var(--accent)" }}>{ui.openToRelocation}</span>
                 ) : null}
               </div>
             </div>
@@ -47,7 +49,7 @@ export default function ContactPage() {
             <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.details.title}</h2></Reveal>
             <Reveal delay={0.06}>
               <div>
-                {data.details.description.map((paragraph) => (
+                {data.details.description.flatMap(splitParagraphs).map((paragraph) => (
                   <p className="bp-prose" key={paragraph}>{paragraph}</p>
                 ))}
                 {/* The address itself, spelled out once, so it can be read and copied without the button. */}

@@ -8,6 +8,8 @@ import { REPO_URL } from "@/lib/site";
 import { useInViewOnce } from "@/lib/useInViewOnce";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { ThemedShot } from "@/components/projects/feature/ThemedShot";
+import { Paragraphs } from "@/components/content/Paragraphs";
+import { ui } from "@/lib/copy";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -30,7 +32,7 @@ const TOUR_MEDIA = "(min-width: 861px)";
 /** The longest gap one frame may add to the dwell, so a background tab doesn't skip entries on return. */
 const MAX_FRAME_MS = 100;
 
-const ERA_LABEL = { past: "Shipped", present: "In progress", future: "Planned" } as const;
+const ERA_LABEL = { past: ui.timeline.shipped, present: ui.timeline.inProgress, future: ui.timeline.planned } as const;
 
 type Placed = {
   entry: TimelineEntry;
@@ -308,7 +310,7 @@ export function FeatureTimeline({ entries, screenshots, today, note, onOpenScree
         <Reveal delay={0.12} as="fade" className="tl-tour-slot">
           <div className="tl-tour" ref={tourRef}>
             <span className="tl-tour-label">
-              {playing ? "Playing" : "Paused"}
+              {playing ? ui.timeline.playing : ui.timeline.paused}
               <span className="tl-tour-count">{pad(orderOf(current.index) + 1)} / {pad(placed.length)}</span>
             </span>
             <button
@@ -337,9 +339,9 @@ export function FeatureTimeline({ entries, screenshots, today, note, onOpenScree
       {/* ------------------------------------------------ desktop axis --- */}
       <div className="tl-axis" role="group" aria-label="Key commits, earliest to latest" onKeyDown={onKeyDown}>
         <div className="tl-eras" aria-hidden="true">
-          <span className="tl-era" style={{ left: `${PAD}%` }}>Past</span>
-          <span className="tl-era tl-era--now" style={{ left: `${nowX}%` }}>Present</span>
-          <span className="tl-era tl-era--future" style={{ left: `${100 - PAD}%` }}>Future</span>
+          <span className="tl-era" style={{ left: `${PAD}%` }}>{ui.timeline.past}</span>
+          <span className="tl-era tl-era--now" style={{ left: `${nowX}%` }}>{ui.timeline.present}</span>
+          <span className="tl-era tl-era--future" style={{ left: `${100 - PAD}%` }}>{ui.timeline.future}</span>
         </div>
 
         <div className="tl-track" aria-hidden="true">
@@ -465,7 +467,7 @@ function TimelineCard({
           <span><b>{relation.label}</b> after {relation.fromTitle}</span>
         </p>
       )}
-      <p className="tl-card-summary">{entry.summary}</p>
+      <Paragraphs className="tl-card-summary" text={entry.summary} />
       {(entry.tags?.length || hasSize) && (
         <p className="tl-card-foot">
           {entry.tags?.map((tag) => <span className="tl-tag" key={tag}>{tag}</span>)}
@@ -481,7 +483,7 @@ function TimelineCard({
       {screenshot && !compact && (
         <button type="button" className="tl-card-shot" onClick={() => onOpenScreenshot(screenshot.id)} aria-label={`View screenshot: ${screenshot.caption ?? screenshot.alt}`}>
           <ThemedShot shot={screenshot} />
-          <span>{screenshot.caption ?? "View screenshot"}</span>
+          <span>{screenshot.caption ?? ui.timeline.viewScreenshot}</span>
         </button>
       )}
     </>

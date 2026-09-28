@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "Projects | Riley Beenders",
+    "description": "The problem, the approach, and the measurable impact behind each major project listed on my resume."
+  },
+  "title": "Projects",
+  "intro": {
+    "one": "One project so far: the problem it started from, the decisions behind it, and what changed as a result. Open the case study for the full story.",
+    "many": "{count} projects: the problem each one started from, the decisions behind it, and what changed as a result."
+  },
+  "outro": {
+    "lead": "That's everything, for now.",
+    "body": {
+      "one": "This project is linked from a line on the resume, and the case study goes a layer deeper: design decisions, root causes, and measured results.",
+      "many": "Every project above is linked from a line on the resume, and the case study goes a layer deeper: design decisions, root causes, and measured results."
+    }
+  },
+  "comingSoon": {
+    "heading": "Case studies in progress",
+    "body": "Detailed write-ups for each project — the problem, the approach, and the measurable impact — are being finalized. They'll land here soon.",
+    "phases": [
+      "Compiling case studies",
+      "Rendering system diagrams",
+      "Cross-checking impact metrics",
+      "Polishing the write-ups"
+    ],
+    "queueLabel": "Queued for publish"
+  }
+}

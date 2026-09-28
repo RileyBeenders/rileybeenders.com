@@ -5,14 +5,19 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { BpComingSoon } from "@/components/blueprint/BpComingSoon";
 import { ProjectEntry } from "@/components/projects/ProjectEntry";
 import { ProjectListSpine } from "@/components/projects/ProjectListSpine";
+import { PhotoModeProvider } from "@/components/projects/PhotoMode";
 import { BackToTop } from "@/components/blueprint/BackToTop";
+import projectsPageData from "@/data/projects/page.json";
+import { counted } from "@/lib/copy";
+import type { ProjectsPageData } from "@/types/pages";
 import "./projects.css";
 import "./feature.css";
 
+const page = projectsPageData as ProjectsPageData;
+
 export const metadata: Metadata = {
-  title: "Projects | Riley Beenders",
-  description:
-    "Selected projects — the problem, the approach, and the measurable impact behind each line of the resume."
+  title: page.meta.title,
+  description: page.meta.description
 };
 
 export default function ProjectsPage() {
@@ -26,14 +31,14 @@ export default function ProjectsPage() {
         <section className="bp-hero" style={{ paddingBottom: 8 }}>
           <div className="bp-shell">
             <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
-              <Reveal delay={0.14}><span style={{ display: "block" }}>Projects</span></Reveal>
+              <Reveal delay={0.14}><span style={{ display: "block" }}>{page.title}</span></Reveal>
             </h1>
             <Reveal as="rule" delay={0.3}><div className="bp-rule" style={{ marginTop: 32 }} /></Reveal>
           </div>
         </section>
         <section className="bp-section">
           <div className="bp-shell">
-            <Reveal delay={0.1}><BpComingSoon /></Reveal>
+            <Reveal delay={0.1}><BpComingSoon copy={page.comingSoon} /></Reveal>
           </div>
         </section>
       </main>
@@ -45,34 +50,32 @@ export default function ProjectsPage() {
       <section className="bp-hero pj-intro">
         <div className="bp-shell">
           <h1 style={{ fontSize: "clamp(48px, 9vw, 108px)" }}>
-            <Reveal delay={0.14}><span style={{ display: "block" }}>Projects</span></Reveal>
+            <Reveal delay={0.14}><span style={{ display: "block" }}>{page.title}</span></Reveal>
           </h1>
           <Reveal as="rule" delay={0.3}>
             <div className="bp-rule" style={{ marginTop: 32 }} />
           </Reveal>
           <Reveal delay={0.38}>
-            <p className="bp-prose pj-intro-prose">
-              {views.length === 1
-                ? "One project so far: the problem it started from, the decisions behind it, and what changed as a result. Open the case study for the full story."
-                : `${views.length} projects: the problem each one started from, the decisions behind it, and what changed as a result. Open a case study for the full story.`}
+            <p className="bp-prose pj-intro-prose bp-page-intro">
+              {counted(page.intro, views.length)}
             </p>
           </Reveal>
         </div>
       </section>
 
-      <ProjectListSpine>
-        {views.map((view, index) => (
-          <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
-        ))}
-      </ProjectListSpine>
+      {/* Photo Mode's toggle appears only on the dev site (components/projects/PhotoMode.tsx). */}
+      <PhotoModeProvider>
+        <ProjectListSpine>
+          {views.map((view, index) => (
+            <ProjectEntry key={view.project.id} view={view} index={index} total={views.length} />
+          ))}
+        </ProjectListSpine>
+      </PhotoModeProvider>
 
       <footer className="pj-outro">
         <div className="bp-shell">
-          <p className="bp-outro-lead">That's everything, for now.</p>
-          <p className="bp-prose" style={{ marginTop: 18 }}>
-            {views.length === 1 ? "This project is" : "Every project above is"} linked from a line on the resume, and
-            the case study goes a layer deeper: design decisions, root causes, and measured results.
-          </p>
+          <p className="bp-outro-lead">{page.outro.lead}</p>
+          <p className="bp-prose" style={{ marginTop: 18 }}>{counted(page.outro.body, views.length)}</p>
         </div>
       </footer>
 

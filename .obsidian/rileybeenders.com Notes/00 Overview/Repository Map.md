@@ -82,6 +82,8 @@ components/
     CaseStudy.tsx              # expanded case-study markup, shared with the About page
     ProjectGallery.tsx         # 4:3 next/image grid with clip-path wipes; opens the Lightbox
     Lightbox.tsx               # full-screen original-image viewer (portal, keyboard nav)
+    PdfPages.tsx               # every page of a PDF, scrollable, drawn by pdf.js loaded on demand
+    PostCard.tsx               # a captured LinkedIn post: PostButton in the grid, PostCard as the record in the viewer
     ProjectFeature.tsx         # the deep-dive composer (owns the shared Lightbox) — About page only
     feature/
       FeatureStats.tsx         # CountUp tiles with a CSS stagger and cursor spotlight
@@ -142,7 +144,8 @@ studio/                        # the local environment — `npm run site` (site 
   site.mjs                     # the `npm run site` launcher (2026-09-19): hosts gate + Studio in one process, spawns `next dev -H 127.0.0.1 -p 3010` behind the gate, prefixes its output, one Ctrl+C
   gate.mjs                     # the device gate on :3000 — dependency-free reverse proxy (HTTP + websocket upgrade) to next dev; loopback always in, LAN devices only while granted, everything else 403
   access.mjs                   # AccessStore: temporary grants (address/prefix/label/expiry) in git-ignored .studio-access.json, knock list, private/loopback/public address rules, CIDR matching
-  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups, /api/access, /api/thumb (sharp-resized WebP thumbnails cached in git-ignored .studio-cache/thumbs, 2026-09-20); exports startStudio()
+  linkedin.mjs                 # captures a LinkedIn post (picture + words) through a signed-in browser profile kept in git-ignored .studio-cache/linkedin
+  server.mjs                   # plain Node server: JSON API over the FILES allow-list (10 data files), image picker/uploads, backups, /api/access, /api/thumb (sharp-resized WebP thumbnails cached in git-ignored .studio-cache/thumbs, 2026-09-20), /api/linkedin; exports startStudio()
   README.md                    # how to run it, add a field, add a file, letting a phone in, the safety rails
   ui/index.html · studio.css · studio.js · schema.js · fields.js   # the editor shell, form schemas per file, RAIL order, hash deep links (#projects/icarus-lite)
   ui/devices.js                # the Devices panel: LAN URL to type on a phone, "waiting at the door" knocks with one-click Allow, active grants with expiry + Revoke, add by address

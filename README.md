@@ -1,5 +1,4 @@
 # RileyBeenders.com
-#### Version 3.3 released on September 20th, 2026.
 
 ***
 
@@ -110,6 +109,7 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 ```
 
 **Status Key**
+
 - 🟢 = Application Received
 - 🟠 = Currently in the interview process
 - 🔴 = No longer in consideration

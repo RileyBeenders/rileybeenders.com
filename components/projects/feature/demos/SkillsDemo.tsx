@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { BackendSkill } from "@/types/resume";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -82,7 +83,7 @@ export function SkillsDemo({ skills }: { skills: BackendSkill[] }) {
             <p className="dm-eyebrow">Triggers on</p>
             <p className="dm-skills-trigger">{current.trigger}</p>
             <p className="dm-eyebrow">What it does</p>
-            <p className="dm-skills-does">{current.does}</p>
+            <Paragraphs className="dm-skills-does" text={current.does} />
           </motion.div>
         </AnimatePresence>
         {!touched && !reduced && skills.length > 1 && (

@@ -1,6 +1,9 @@
 import type { ProofView } from "@/lib/projects";
 import { FlowDiagram } from "@/components/projects/diagrams/FlowDiagram";
 import { FLOW_DIAGRAMS } from "@/components/projects/diagrams/flows";
+import { THEMED_SVGS } from "@/components/projects/diagrams/themed";
+import { ThemedSvg } from "@/components/projects/diagrams/ThemedSvg";
+import { Paragraphs } from "@/components/content/Paragraphs";
 
 /**
  * The expanded case study: problem, constraints, approach, decisions, impact,
@@ -13,12 +16,12 @@ export function CaseStudy({ proof }: { proof: ProofView }) {
     <div className="pj-case-study">
       <h3 className="pj-proof-title">{proof.title}</h3>
       {proof.subtitle && <p className="pj-proof-subtitle">{proof.subtitle}</p>}
-      {proof.summary && <p className="pj-proof-summary">{proof.summary}</p>}
+      {proof.summary && <Paragraphs className="pj-proof-summary" text={proof.summary} />}
 
       {proof.sections.map((section) => (
         <section className="pj-proof-section" key={section.label}>
           <h4>{section.label}</h4>
-          {section.body && <p>{section.body}</p>}
+          {section.body && <Paragraphs text={section.body} />}
           {section.items && (
             <ul>
               {section.items.map((item) => <li key={item}>{item}</li>)}
@@ -40,10 +43,16 @@ export function CaseStudy({ proof }: { proof: ProofView }) {
             // A diagram the site knows how to draw itself renders inline,
             // in the palette and animated; anything else is the file as-is.
             const flow = FLOW_DIAGRAMS[asset.src];
+            const themed = THEMED_SVGS.has(asset.src);
             return (
-              <figure key={asset.src} className={flow ? "pj-proof-asset--flow" : undefined}>
+              <figure
+                key={asset.src}
+                className={flow ? "pj-proof-asset--flow" : themed ? "pj-proof-asset--wide" : undefined}
+              >
                 {flow ? (
                   <FlowDiagram spec={flow} title={asset.alt || asset.label} />
+                ) : themed ? (
+                  <ThemedSvg src={asset.src} alt={asset.alt} />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={asset.src} alt={asset.alt} loading="lazy" />
