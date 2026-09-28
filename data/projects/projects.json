@@ -165,12 +165,12 @@
     }
   },
   {
-    "name": "ExtrusionLine Studio Software",
-    "id": "ExtrusionLine-Studio",
+    "name": "ExtrusionLine Studio [V1]",
+    "id": "extrusionline-studio-v1",
     "order": 3,
     "type": "LabVIEW Data Acquisition",
     "visible": false,
-    "summary": "An automated measurement program that is capable of collecting three separate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart. At the end of data collection, it creates and formats a PDF report and stores it on a remote server with an ID. The ID is then converted into a QR code and placed on the product and can be read if there are any difficulties with it in the field.",
+    "summary": "An automated measurement program that is capable of collecting three separate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart.",
     "proofId": "ExtrusionLine-Studio",
     "bullets": [
       {
@@ -221,12 +221,79 @@
           "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
         }
       ]
+    },
+    "dates": {
+      "start": "2025-09-19",
+      "end": "2026-09-25"
+    }
+  },
+  {
+    "name": "ExtrusionLine Studio [V2]",
+    "id": "extrusionline-studio-v2",
+    "order": 4,
+    "type": "Python Data Acquisition",
+    "visible": false,
+    "summary": "A continuation of the LabVIEW-focused program. This time it is more focused on oversight and extensive logging of production. \n\nThe program runs in multiple environments. There is one main God panel and then there are four sub panels - Site Settings, Operator, Viewer and Docs. The god panel is used as the general UI. System logging for the other subpanels is recorded and searchable on the God panel and everything is written to a CSV data file.",
+    "proofId": "ExtrusionLine-Studio",
+    "bullets": [
+      {
+        "text": "Automatically negotiates the Modbus communication.",
+        "proofId": "ExtrusionLine-Studio_Modbus"
+      },
+      {
+        "text": "Connected and observed through a private VLAN over the network.",
+        "proofId": "ExtrusionLine-Studio_Modbus"
+      },
+      {
+        "text": "Hands free Startup.",
+        "proofId": "ExtrusionLine-Studio_SimpleStart"
+      }
+    ],
+    "additionalInfo": {
+      "title": "Automated LabVIEW Metrology",
+      "subtitle": "High-frequency sensor collection translated into tolerance insight",
+      "problem": "Multiple laser-sensor readings needed to be collected consistently and transformed into a visual tolerance result that an end customer could use.",
+      "constraints": [
+        "Communicate with multiple sensors over Modbus",
+        "Collect nine data points (three per laser sensor) every 17.5 ms",
+        "Remove manual data-collection steps",
+        "Present results as an understandable tolerance chart"
+      ],
+      "approach": [
+        "Built the acquisition workflow in LabVIEW",
+        "Connected and polled multiple laser sensors through Modbus",
+        "Structured the incoming readings for repeatable analysis",
+        "Generated charts showing the tolerance of the measured data"
+      ],
+      "impact": [
+        "Automated a previously manual measurement workflow",
+        "Delivered consistent high-frequency data collection",
+        "Made measurement tolerance visible to the end customer"
+      ],
+      "tools": [
+        "LabVIEW",
+        "Modbus",
+        "Laser sensors",
+        "Data acquisition",
+        "Tolerance analysis"
+      ],
+      "assets": [
+        {
+          "label": "Measurement System",
+          "src": "/project-artifacts/labview-control.svg",
+          "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
+        }
+      ]
+    },
+    "dates": {
+      "start": "2026-09-26",
+      "ongoing": true
     }
   },
   {
     "name": "PROTEOR Print",
     "id": "proteor-print",
-    "order": 4,
+    "order": 5,
     "type": "Remote Operations Software",
     "visible": false,
     "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
@@ -281,7 +348,7 @@
   {
     "name": "Unified Ubiquiti Network",
     "id": "unifi-network",
-    "order": 5,
+    "order": 6,
     "type": "Network Infrastructure",
     "summary": "A series of cloud gateways that I have been setting up across our company, my personal home and my parents house. The setup shown in the before vs after is the \"Proteor\" network. My first deployment of a Unifi gateway that was recently reworked after adding cables over the past few  years. \n\nThe \"Proteor\" network is planned to get an upgrade into the Fortinet system as our needs internally are growing.",
     "images": [
@@ -364,7 +431,7 @@
   {
     "name": "Linear Motor Platform Standardization",
     "id": "linear-motion-platform",
-    "order": 6,
+    "order": 7,
     "type": "Motion Control / Product Platform",
     "visible": false,
     "summary": "A shared linear-motor architecture for the POSEIDON and ICARUS large-format additive-manufacturing platforms.",
@@ -418,7 +485,7 @@
   {
     "name": "Gen3 POSEIDON",
     "id": "gen3-poseidon",
-    "order": 7,
+    "order": 8,
     "type": "Large-Format Additive Manufacturing System",
     "visible": false,
     "summary": "A production-oriented redesign of Filament Innovations' flagship hybrid extrusion platform.",
@@ -473,7 +540,7 @@
   {
     "name": "THE KRAKEN",
     "id": "kraken",
-    "order": 8,
+    "order": 9,
     "type": "Custom Hybrid Additive Manufacturing System",
     "visible": false,
     "summary": "A 1 x 2 x 1.5 m hybrid pellet-and-filament gantry printer built for a client producing the world's largest 3D-printed statue.",
@@ -542,7 +609,7 @@
   {
     "name": "Engineering Operations Platform",
     "id": "internal-erp",
-    "order": 9,
+    "order": 10,
     "type": "Internal Software / Infrastructure",
     "visible": false,
     "summary": "A redundant Kubernetes-hosted ERP/CRM built to connect engineering designs with day-to-day operating workflows.",
@@ -597,7 +664,7 @@
   {
     "name": "Modular CAN-Bus Controls Architecture",
     "id": "modular-controls",
-    "order": 10,
+    "order": 11,
     "type": "Electrical / Manufacturing System",
     "visible": false,
     "summary": "A modular control architecture designed to simplify machine wiring, testing, installation, and field diagnosis.",
@@ -652,7 +719,7 @@
   {
     "name": "Filament Innovations Projects",
     "id": "filament-innovations",
-    "order": 11,
+    "order": 12,
     "type": "Industrial Design",
     "summary": "Some photos of the various machines I designed during the first few years being at Filament Innovations. Throughout this process, I held the following titles: Engineering Technician, Industrial Engineer and eventually Lead Electro-Mechanical Engineer.\n\nThese are very old designs. I would look into the ICARUS-Lite as it is the most recent design.",
     "status": "Documentation on the POSEIDON is coming soon",
