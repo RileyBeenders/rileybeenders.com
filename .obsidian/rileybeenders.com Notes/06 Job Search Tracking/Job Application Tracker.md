@@ -10,8 +10,8 @@ The repo doubles as the owner's personal job-search system of record. This note 
 
 | Folder | Contents |
 |---|---|
-| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`021`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
-| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, and the 2-page Disney resumes for 017–021. |
+| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`023`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
+| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, the 2-page Disney resumes for 017–021, and the 2-page Disney Program Engineer resume for 023 (built, grilled, and fixed through the resume chain). |
 | `output/pdf/` | Generated resume PDF variants, including the Disney Forward Deployed Engineer and Forward Deployed Product Engineer resumes, the full-length and `_2-Page` variants for applications 017–021, plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
 | `references/` | Dated **snapshot resumes** (`RileyBeenders_Apr2022.pdf`, `_Sept2025.pdf`, `_Jan2026.pdf`) kept as historical evidence of how the resume has evolved, and as reference material the `custom-resume` procedure can draw layout/content cues from. |
 | `output/resumeTemplates/` | Abstract layout mockups from `generateResumeTemplates.mjs` — see [[Resume PDF Pipeline]]. |
@@ -24,7 +24,7 @@ Every tracked application also has its own note under `06 Job Search Tracking/Ap
 
 Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt chart, and a markdown table with columns `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID` (`Status` is just the 🟢/🟠/🔴 circle; `Job ID` is the posting's own number or `N/A`). **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters, and the **Sync Charts** procedure in [[Repository Agent Skills]] for reconciling them.
 
-### Current applications (21, as of README.md)
+### Current applications (22, as of README.md)
 
 | ID                                                                               | Company                             | Role                                                           | Status                                                      |
 | -------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------- |
@@ -49,6 +49,7 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🟢 Application Received |
 | [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🟢 Application Received |
 | [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🟢 Application Received |
+| [[023 Disney - Program Engineer\|023]] | Walt Disney World Resort | Program Engineer | 🟢 Application Received |
 
 ### Before the tracker
 
