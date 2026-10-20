@@ -53,7 +53,7 @@ Constraints future work must preserve:
 - Every rendered `<a>` / `<Link>` carries `suppressHydrationWarning` (a browser extension on Riley's machine stamps anchors; `scripts/check-anchor-hydration.mjs` verifies).
 - `components/GanttChart.tsx`, `app/apple-icon.tsx`, and `app/opengraph-image.tsx` carry hard-coded copies of the active palette because mermaid and Satori cannot read CSS variables. A palette change has to reach them by hand.
 
-Terminology: "projects" are published work with galleries and case studies; "proofs" are supporting evidence entries (hidden today); the "Studio" is the local editor; "skills" or "procedures" are the agent instructions under `.agents/`; the "vault" is the Obsidian documentation.
+Terminology: "projects" are published work with galleries and case studies; "proofs" are supporting evidence entries (hidden today); the "Studio" is the local editor; "skills" or "procedures" are the agent instructions under `.claude/skills/`; the "vault" is the Obsidian documentation.
 
 Undecided: whether proofs ever surface publicly; whether the application tracker returns to `/more-info`.
 

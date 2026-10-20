@@ -260,6 +260,64 @@ export type ProjectFeature = {
   backend?: FeatureBackend;
 };
 
+/** A button under a project's bullets: a repository, a release, or another project on this page (`#project-<id>`). */
+export type ProjectLink = {
+  label: string;
+  href: string;
+  /** A short word beside the label, e.g. "v1.0.0". */
+  note?: string;
+};
+
+/** One numbered callout on a walkthrough capture, placed as percentages of the image. */
+export type WalkthroughHotspot = {
+  x: number;
+  y: number;
+  /** Omitted: a pin. Given: a rectangle, from (x, y), in percentages of the image. */
+  w?: number;
+  h?: number;
+  label: string;
+  text: string;
+};
+
+/** One stop on a project's panel walkthrough. */
+export type WalkthroughStep = {
+  id: string;
+  title: string;
+  /** Who the panel is for, in a few words. */
+  audience: string;
+  /** Paragraphs. */
+  body: string[];
+  shot: FeatureScreenshot;
+  hotspots?: WalkthroughHotspot[];
+  /** More captures of the same panel, opened from thumbnails under the main one. */
+  extras?: FeatureScreenshot[];
+};
+
+/** A file the walkthrough offers: a sample the real program wrote. */
+export type WalkthroughSample = {
+  label: string;
+  src: string;
+  /** Shown as a chip beside the label, e.g. "CSV · 150 KB". */
+  kind: string;
+  note: string;
+  /** A capture of the file, so it can open in the lightbox as well as in a tab. */
+  shot?: FeatureScreenshot;
+};
+
+/**
+ * An interactive tour of a program's screens, under the project's entry:
+ * one capture per step with numbered callouts, prev/next, and the sample
+ * files the program writes.
+ */
+export type ProjectWalkthrough = {
+  title: string;
+  intro?: string;
+  steps: WalkthroughStep[];
+  samplesTitle?: string;
+  samplesIntro?: string;
+  samples?: WalkthroughSample[];
+};
+
 export type Project = {
   id: string;
   name: string;
@@ -271,6 +329,8 @@ export type Project = {
   images?: ProjectImage[];
   additionalInfo?: ProjectAdditionalInfo;
   dates?: ProjectDates;
+  links?: ProjectLink[];
+  walkthrough?: ProjectWalkthrough;
   /** A short note on the state of the write-up ("Project page under development"), shown in small type under the summary. */
   status?: string;
   /** Omit or set true to publish. `false` keeps the history but hides it on the site. */

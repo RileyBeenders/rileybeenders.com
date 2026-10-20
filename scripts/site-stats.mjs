@@ -26,10 +26,10 @@ const firstCommitDate = git("log", "--reverse", "--format=%ad", "--date=short").
 const commits = Number(git("rev-list", "--count", "HEAD"));
 const days = Math.round((Date.parse(today) - Date.parse(firstCommitDate)) / 86_400_000);
 
-// Every skill lives in .agents/skills/<name>/SKILL.md (since 2026-09-19). The
+// Every skill lives in .claude/skills/<name>/SKILL.md (since 2026-10-17). The
 // vendored ones are the keys of skills-lock.json; whatever else is there is a
 // repo-specific procedure.
-const skillsDir = path.join(ROOT, ".agents/skills");
+const skillsDir = path.join(ROOT, ".claude/skills");
 const skills = readdirSync(skillsDir, { withFileTypes: true })
   .filter((d) => d.isDirectory() && existsSync(path.join(skillsDir, d.name, "SKILL.md")))
   .map((d) => d.name);

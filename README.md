@@ -276,7 +276,7 @@ with the change.
 ### Tailored Resume Builder
 
 Each application gets its own resume, written for that one posting. The builder
-is an agent skill, `custom-resume` (`.agents/skills/custom-resume/SKILL.md`),
+is an agent skill, `custom-resume` (`.claude/skills/custom-resume/SKILL.md`),
 not a script: run `/custom-resume` in Claude Code (or `$custom-resume` in Codex)
 from the repo root. The agent lays the resume out as an HTML page and prints it
 to PDF with headless Chrome. It never touches the site's own `/api/resume-pdf`

@@ -56,9 +56,10 @@ Total compensation may include additional components/benefits depending on the r
 - Electromechanical systems, sensors, and motors are deep matches (multi-sensor Modbus data acquisition at high frequency, custom AC heaters and dual-voltage electrical design), and both **Python and MATLAB** are explicit skills — a direct hit on the FEA/simulation/programming bonus qualification.
 - **Minor gap:** no CATIA V6 specifically (general CATIA is listed); no strain-wave/planetary/cycloidal actuator terminology by name, though precision motion-system design experience is closely adjacent.
 
-### Now — Sep 19, 2026
+### Now — Oct 17, 2026
 
-- The Proteor bullets were condensed on Sep 16, 2026, and one detail the snapshot above leans on went with them: the **dual-voltage 120/240 VAC** electrical design is no longer stated anywhere in the record (the ICARUS-Lite bullet now reads "custom AC heaters" only). The multi-sensor **Modbus** data acquisition is still stated, through the ExtrusionLine Studio project entry (a draft on the site, but part of the data), and Python and MATLAB are still explicit skills.
+- **ExtrusionStudio is now published in full (Oct 17, 2026),** replacing the ExtrusionLine Studio draft the note below refers to: the multi-sensor Modbus acquisition is stated as a Python system reading three tri-axial laser gauges at 20 Hz, with a calibration step that times the filament from the laser to the spool, per-spool logging and certificates, and a Raspberry Pi deployment. The integration-and-test evidence is stronger than at application; the dual-voltage detail is still absent.
+- *Earlier (Sep 19, 2026):* The Proteor bullets were condensed on Sep 16, 2026, and one detail the snapshot above leans on went with them: the **dual-voltage 120/240 VAC** electrical design is no longer stated anywhere in the record (the ICARUS-Lite bullet now reads "custom AC heaters" only). The multi-sensor **Modbus** data acquisition is still stated, through the ExtrusionLine Studio project entry (a draft on the site, but part of the data), and Python and MATLAB are still explicit skills.
 - Otherwise no material change — the skills list has only had a typo and a duplicate fixed since Aug 8, 2026, and this remains a strong, likely overqualified match at the stated level.
 
 ---

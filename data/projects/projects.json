@@ -79,9 +79,729 @@
     }
   },
   {
+    "name": "ExtrusionStudio",
+    "id": "extrusionstudio",
+    "order": 2,
+    "type": "Plant Data Acquisition / Python, Modbus TCP, Raspberry Pi",
+    "summary": "A plant-wide measurement and production system for filament extrusion lines. One server reads every line's tri-axial laser gauge over Modbus TCP, charts it live, logs every spool, prints its labels and certificate, and runs the screens around the plant on Raspberry Pis.\n\nIt began as a LabVIEW proof of concept that established the Modbus communication. Once that worked, I rebuilt the whole program from scratch in Python so it could keep up with faster production, add a calibration step that makes each spool's record accurate, and take control of every device on the floor: the lines' screens, the projector and the TVs power on an hour into the workday and off at the end of it.",
+    "images": [
+      {
+        "src": "/project-images/ExtrusionStudio/operator-graphs-dark.webp",
+        "alt": "Operator-Graphs on the projector: three strip charts with X, Y, Z and average readings and an out-of-spec alarm",
+        "caption": "Operator-Graphs, the projector view",
+        "fit": "cover",
+        "aspect": "16:9"
+      },
+      {
+        "src": "/project-images/ExtrusionStudio/packaging-light.webp",
+        "alt": "The Packaging Panel: lines, this week's approved spools, the production schedule and the spool queue",
+        "caption": "Packaging Panel on the packing bench",
+        "fit": "cover",
+        "aspect": "16:9"
+      },
+      {
+        "src": "/project-images/ExtrusionStudio/statistics-dark.webp",
+        "alt": "Production Statistics: live readings for every line and the week's spools, approvals and rejections",
+        "caption": "Production Statistics, plant-wide",
+        "fit": "cover",
+        "aspect": "16:9"
+      },
+      {
+        "src": "/project-images/ExtrusionStudio/packaging-labels-light.webp",
+        "alt": "The spool label with its QR code and the spool box label, as they will print",
+        "caption": "Spool and box labels",
+        "fit": "cover",
+        "aspect": "16:9"
+      }
+    ],
+    "bullets": [
+      {
+        "text": "Replaced three LabVIEW executables polling one line each with one Python service that reads every line concurrently at 20 Hz, so a powered-down line never stalls the others.",
+        "emphasis": [
+          "every line concurrently at 20 Hz"
+        ]
+      },
+      {
+        "text": "Added a calibration phase that times the filament from the laser to the spool, so each reading is logged onto the spool it is actually wound on.",
+        "emphasis": [
+          "calibration phase"
+        ]
+      },
+      {
+        "text": "Every spool gets a CSV, a serial, a QR label and an HTML certificate; the packing bench approves, inspects or rejects it and prints spool, box and master case labels.",
+        "emphasis": [
+          "QR label and an HTML certificate"
+        ]
+      },
+      {
+        "text": "Raspberry Pi kiosks run the projector, a touch screen per line, the packing bench and a statistics TV, and the server switches them on and off with the work hours, pairing with the TV over the network.",
+        "emphasis": [
+          "switches them on and off with the work hours"
+        ]
+      }
+    ],
+    "links": [
+      {
+        "label": "Tested with BulkSSH",
+        "href": "#project-bulkssh"
+      }
+    ],
+    "walkthrough": {
+      "title": "A tour of the panels",
+      "intro": "Everything runs on one server. Each panel is a page it serves, and each screen around the plant is a Raspberry Pi that only displays one of them. Step through them in the order the plant uses them, from the operator at the line to the people looking after the server. Every capture is from the program's own simulator with made-up spools; no plant data is on this site.",
+      "steps": [
+        {
+          "id": "operator-gui",
+          "title": "Operator-GUI",
+          "audience": "The operator, one touch screen per line",
+          "body": [
+            "This is how the operator controls each line on its own. The screen is locked to its line, so there is nothing to choose: the live diameter, whether it is in spec, and the three things an operator does. Start logging opens a spool; Next spool closes it and opens the next; Stop logging ends the run.",
+            "Calibrate offset is the calibration phase. A countdown ends, the operator marks the filament at the laser, and presses stop when the mark reaches the spool. From then on every reading is logged that many seconds late, so it lands on the spool it is physically wound onto rather than the one that was on the winder when the laser saw it."
+          ],
+          "shot": {
+            "id": "operator-gui",
+            "src": "/project-images/ExtrusionStudio/operator-gui-light.webp",
+            "alt": "Operator-GUI for Extrusion Line 1: the live diameter, an out-of-spec alarm, Stop logging and Next spool buttons, and recent spools",
+            "srcDark": "/project-images/ExtrusionStudio/operator-gui-dark.webp",
+            "caption": "The line station"
+          },
+          "extras": [
+            {
+              "id": "operator-gui-calibrate",
+              "src": "/project-images/ExtrusionStudio/operator-gui-calibrate-light.webp",
+              "alt": "The Calibrate offset dialog with its Begin calibration button",
+              "srcDark": "/project-images/ExtrusionStudio/operator-gui-calibrate-dark.webp",
+              "caption": "Calibrate offset"
+            }
+          ],
+          "hotspots": [
+            {
+              "x": 5.5,
+              "y": 17,
+              "w": 42,
+              "h": 54,
+              "label": "Live reading",
+              "text": "The average diameter, judged against the line's nominal and tolerance, with the spool's running time, share in spec and its offset. The border turns red while the line is out of spec."
+            },
+            {
+              "x": 65,
+              "y": 12,
+              "label": "Calibrate offset",
+              "text": "Times the filament from the laser to the spool. Set once per line and kept until it is reset."
+            },
+            {
+              "x": 49.5,
+              "y": 17,
+              "w": 45,
+              "h": 25,
+              "label": "Start or stop logging",
+              "text": "One press opens a spool with a fresh serial and CSV file; one press closes it."
+            },
+            {
+              "x": 49.5,
+              "y": 45,
+              "w": 45,
+              "h": 26,
+              "label": "Next spool",
+              "text": "Closes the spool being wound and opens the next in one motion. It flashes amber here because this spool went out of spec and will be marked for inspection."
+            },
+            {
+              "x": 26.5,
+              "y": 51,
+              "label": "Environment",
+              "text": "Room temperature and humidity, and the line's cold and hot water, from sensors wired to the Pi."
+            },
+            {
+              "x": 5.5,
+              "y": 73,
+              "w": 89,
+              "h": 24,
+              "label": "Recent spools",
+              "text": "The last spools off this line with their Spool SN, run time, share in spec and what the packing bench decided."
+            }
+          ]
+        },
+        {
+          "id": "operator-graphs",
+          "title": "Operator-Graphs",
+          "audience": "The whole plant, on an overhead projector",
+          "body": [
+            "The Operator-GUI's settings drive this read-only view. It shows every line at once on a projector over the floor: a strip chart of the last few minutes with the tolerance band, and the live X, Y, Z and average readings with each one's minimum and maximum for the spool.",
+            "Anyone on the floor can see production and spot an alarm from across the room. A line that goes out of spec turns red with a timer counting how long it has been out, and the chart keeps the excursion visible until the operator resets it."
+          ],
+          "shot": {
+            "id": "operator-graphs",
+            "src": "/project-images/ExtrusionStudio/operator-graphs-light.webp",
+            "alt": "Operator-Graphs: three stacked strip charts, one per line, with X, Y, Z and average readings beside each",
+            "srcDark": "/project-images/ExtrusionStudio/operator-graphs-dark.webp",
+            "caption": "The projector view"
+          },
+          "hotspots": [
+            {
+              "x": 1,
+              "y": 2,
+              "w": 63,
+              "h": 30,
+              "label": "Strip chart",
+              "text": "Average, X, Y and Z over the last two minutes, with the X-Y-Z spread shaded. The dashed lines are the tolerance band."
+            },
+            {
+              "x": 65.5,
+              "y": 2,
+              "w": 33.5,
+              "h": 30,
+              "label": "X, Y, Z and average",
+              "text": "The live reading per axis, and the spool's minimum, maximum and mean. A reading outside the band is red."
+            },
+            {
+              "x": 56,
+              "y": 4,
+              "label": "Alarm timer",
+              "text": "How long the line has been out of spec. The whole row turns red so it reads from across the plant."
+            },
+            {
+              "x": 41,
+              "y": 4,
+              "label": "Spool SN",
+              "text": "Which spool is being wound right now, the same code printed on its label."
+            },
+            {
+              "x": 33,
+              "y": 9.4,
+              "label": "Tolerance band",
+              "text": "Nominal diameter and tolerance come from the line's settings; 2.85 mm ± 0.15 here."
+            }
+          ]
+        },
+        {
+          "id": "packaging",
+          "title": "Packaging Panel",
+          "audience": "The packing bench",
+          "body": [
+            "Once a spool comes off a line, the operators deal with it here. A spool that stayed in spec waits as Pending; one that went out is marked Inspect and counts as rejected until somebody looks at it. The bench opens the spool, reads its figures, and approves or rejects it. Approving a spool that went out of spec asks for a reason, whose letter goes on the end of the serial.",
+            "Approval writes the certificate and unlocks the labels: the spool label with its QR code, the spool box label, and the master case label for a box of up to five spools. The panel also carries the week's approved spools against last week, the posted production schedule, the plant environment, and each line's filament settings, which the bench confirms once a day before the first spool is decided."
+          ],
+          "shot": {
+            "id": "packaging",
+            "src": "/project-images/ExtrusionStudio/packaging-light.webp",
+            "alt": "The Packaging Panel: lines on the left, this week's tiles and chart in the middle, the spool queue on the right",
+            "srcDark": "/project-images/ExtrusionStudio/packaging-dark.webp",
+            "caption": "The packing bench"
+          },
+          "extras": [
+            {
+              "id": "packaging-spool",
+              "src": "/project-images/ExtrusionStudio/packaging-spool-light.webp",
+              "alt": "An approved spool opened in the queue, with its material, batch, readings, diameter and range, and a Print Spool Labels button",
+              "srcDark": "/project-images/ExtrusionStudio/packaging-spool-dark.webp",
+              "caption": "An approved spool"
+            },
+            {
+              "id": "packaging-inspect",
+              "src": "/project-images/ExtrusionStudio/packaging-inspect-light.webp",
+              "alt": "A spool marked Inspect: it went out of spec by 0.043 mm, with Reject and Approve buttons",
+              "srcDark": "/project-images/ExtrusionStudio/packaging-inspect-dark.webp",
+              "caption": "A spool to inspect"
+            },
+            {
+              "id": "packaging-labels",
+              "src": "/project-images/ExtrusionStudio/packaging-labels-light.webp",
+              "alt": "Print Spool Labels: the spool label with its QR code and the spool box label, as they will print",
+              "srcDark": "/project-images/ExtrusionStudio/packaging-labels-dark.webp",
+              "caption": "Spool and box labels"
+            },
+            {
+              "id": "packaging-mastercase",
+              "src": "/project-images/ExtrusionStudio/packaging-mastercase-light.webp",
+              "alt": "Print Mastercase Label: a full case of five spools of one material and color, with the label as it will print",
+              "srcDark": "/project-images/ExtrusionStudio/packaging-mastercase-dark.webp",
+              "caption": "Master case label"
+            }
+          ],
+          "hotspots": [
+            {
+              "x": 1.5,
+              "y": 7,
+              "w": 23,
+              "h": 30,
+              "label": "Lines",
+              "text": "Every line with its material, color, diameter and tolerance. The gear opens its chart, alarm, offset, filament settings and maintenance."
+            },
+            {
+              "x": 25,
+              "y": 6.5,
+              "w": 43,
+              "h": 10,
+              "label": "Today and this week",
+              "text": "Spools today, approved this week against last week by the same day, spools still to decide, and the share of readings in spec."
+            },
+            {
+              "x": 25,
+              "y": 17,
+              "w": 43,
+              "h": 34,
+              "label": "Approved per day",
+              "text": "One color per line, with last week's outline behind each day."
+            },
+            {
+              "x": 25,
+              "y": 52,
+              "w": 43,
+              "h": 34,
+              "label": "This week's schedule",
+              "text": "The posted plan: what each line runs, changeovers, maintenance and notes, by half day."
+            },
+            {
+              "x": 68.5,
+              "y": 7,
+              "w": 30,
+              "h": 65,
+              "label": "Spool queue",
+              "text": "Finished spools, newest first, tagged Pending, Inspect, Approved or Rejected. Tap one to decide it or print its labels."
+            },
+            {
+              "x": 13,
+              "y": 96,
+              "label": "Master case label",
+              "text": "A label for a box of up to five spools, full or mixed, without opening a spool first."
+            },
+            {
+              "x": 83.5,
+              "y": 96,
+              "label": "Spool lookup",
+              "text": "Find any spool by its SN or batch number, the same lookup the QR code on a label resolves to."
+            },
+            {
+              "x": 39,
+              "y": 2.5,
+              "label": "Projector controls",
+              "text": "Graph period, scale and light or dark for the projector and the line stations, plus the label printer's roll and ribbon."
+            }
+          ]
+        },
+        {
+          "id": "statistics",
+          "title": "Production Statistics",
+          "audience": "Management, and the other side of the building",
+          "body": [
+            "A read-only board for people who are not on the floor: upper management, and plant workers on the far side of the building who want to know how the lines are doing without walking over. It runs on a TV from its own Pi, and the server pairs with the TV over the network to switch it on and off with the work hours.",
+            "The top is a rough live view of each line: the reading, a sparkline, the spool number, run time and share in spec. Below it, production for this week or this month, spools per day split into approved, rejected and awaiting decision, each line's totals, the latest spools, and the posted schedule."
+          ],
+          "shot": {
+            "id": "statistics",
+            "src": "/project-images/ExtrusionStudio/statistics-light.webp",
+            "alt": "Production Statistics: three live line cards, then this week's spools made, spools per day, by line and latest spools",
+            "srcDark": "/project-images/ExtrusionStudio/statistics-dark.webp",
+            "caption": "The statistics board"
+          },
+          "extras": [
+            {
+              "id": "statistics-schedule",
+              "src": "/project-images/ExtrusionStudio/statistics-schedule-light.webp",
+              "alt": "Production Statistics showing the posted schedule for the week",
+              "srcDark": "/project-images/ExtrusionStudio/statistics-schedule-dark.webp",
+              "caption": "The week's schedule"
+            }
+          ],
+          "hotspots": [
+            {
+              "x": 1.5,
+              "y": 7,
+              "w": 97,
+              "h": 34,
+              "label": "Live lines",
+              "text": "Each line's reading, target, logging state, a sparkline, its spool, run time and share in spec. Red while out of spec, with an alarm timer."
+            },
+            {
+              "x": 16.5,
+              "y": 44.5,
+              "label": "Week, month, schedule",
+              "text": "Figures for the week or month so far, or the posted production schedule."
+            },
+            {
+              "x": 21,
+              "y": 47,
+              "w": 29.5,
+              "h": 51,
+              "label": "Spools per day",
+              "text": "Approved, rejected and awaiting decision, with the share of decided spools approved."
+            },
+            {
+              "x": 51.5,
+              "y": 47,
+              "w": 19.5,
+              "h": 36,
+              "label": "By line",
+              "text": "Spools and share in spec per line for the period."
+            },
+            {
+              "x": 72.5,
+              "y": 47,
+              "w": 26,
+              "h": 46,
+              "label": "Latest spools",
+              "text": "The most recent spools and what was decided about them, plus a lookup by SN."
+            },
+            {
+              "x": 85,
+              "y": 96,
+              "label": "Shop environment",
+              "text": "Room temperature and humidity, averaged from the sensors on the Pis."
+            },
+            {
+              "x": 96.5,
+              "y": 2.8,
+              "label": "Light or dark",
+              "text": "The board has its own appearance, kept on the TV's Pi."
+            }
+          ]
+        },
+        {
+          "id": "server-settings",
+          "title": "Server Settings",
+          "audience": "Whoever looks after the server",
+          "body": [
+            "The bare-metal side of the server. It is the one process started at power-on, and it starts every other panel as a child process: start, stop and restart them, switch each one's network access, and read its output. The Devices page is every Raspberry Pi around the plant, checking in every 30 seconds: what each one shows, its screen's resolution and rotation, the sensors wired to it, its TV pairing, and a power button per screen.",
+            "It also holds the users and their roles, the Spool Manager for every spool ever logged, the server's files, the audit log of who opened which panel and changed what, and the daily update that pulls the running branch at 04:00."
+          ],
+          "shot": {
+            "id": "server-panels",
+            "src": "/project-images/ExtrusionStudio/server-panels-light.webp",
+            "alt": "Server Settings, Panels: every panel with its state, address, Open Panel, Start, Stop and Restart, and Restart all and Stop all buttons",
+            "caption": "Panels"
+          },
+          "extras": [
+            {
+              "id": "server-devices",
+              "src": "/project-images/ExtrusionStudio/server-devices-light.webp",
+              "alt": "Server Settings, Devices: the plant ambient reading, this server, and one row per Raspberry Pi with Settings, Refresh page and screen power",
+              "caption": "Devices"
+            },
+            {
+              "id": "server-logs",
+              "src": "/project-images/ExtrusionStudio/server-logs-light.webp",
+              "alt": "Server Settings, Logs: the audit of who opened each panel and what they changed",
+              "caption": "Logs"
+            }
+          ],
+          "hotspots": [
+            {
+              "x": 23.5,
+              "y": 1.2,
+              "w": 50,
+              "h": 3.7,
+              "label": "Pages",
+              "text": "Panels, Devices, Lines, Users, Label Printer, Spools, Files, Logs, Live Log and Start-up."
+            },
+            {
+              "x": 40,
+              "y": 18.8,
+              "label": "This process",
+              "text": "Server Settings itself, with the server's name and addresses under the arrow."
+            },
+            {
+              "x": 9,
+              "y": 26,
+              "w": 82,
+              "h": 7,
+              "label": "Admin Settings",
+              "text": "The only panel that talks to the gauges. Stopping it stops the lines being read, so it asks first."
+            },
+            {
+              "x": 78,
+              "y": 45,
+              "label": "Start, stop, restart",
+              "text": "Per panel. A restart reloads its settings from disk; a crashed panel is retried on a back-off."
+            },
+            {
+              "x": 9,
+              "y": 87,
+              "w": 82,
+              "h": 8.5,
+              "label": "Restart all, Stop all",
+              "text": "For an update or a maintenance window."
+            },
+            {
+              "x": 90,
+              "y": 3,
+              "label": "Who is signed in",
+              "text": "Server Settings is for Super-Admins. The Danger Zone under this menu holds the Clean Slate Protocol, Force Update and config export."
+            }
+          ]
+        },
+        {
+          "id": "admin-settings",
+          "title": "Admin Settings",
+          "audience": "Upper management and supervisors",
+          "body": [
+            "Where management looks after the plant rather than the machine. Plant Deployment shows every floor screen live on one page, so a supervisor can see the projector, a line station, the packing bench and the dashboard without walking the floor, and change any of them from here. The other tabs plan the production schedule and post it to the floor, set display, chart and work-hour settings, troubleshoot a gauge by reading its registers, manage logging and materials, and add users.",
+            "The Spool Manager lists every spool with its line, batch, duration, readings and share in spec, filtered by status, with a search by Spool SN or batch number. Every change made anywhere is written to the audit log with who made it."
+          ],
+          "shot": {
+            "id": "admin-settings",
+            "src": "/project-images/ExtrusionStudio/admin-plant-deployment-light.webp",
+            "alt": "Admin Settings, Plant Deployment: Operator-Graphs, Operator-GUI, the Packaging Panel and Advanced-Graphs live on one page",
+            "caption": "Plant Deployment"
+          },
+          "extras": [
+            {
+              "id": "admin-spools",
+              "src": "/project-images/ExtrusionStudio/admin-spools-light.webp",
+              "alt": "Admin Settings, Spool Manager: every spool with its line, batch number, start, duration, readings, share in spec and status",
+              "caption": "Spool Manager"
+            },
+            {
+              "id": "admin-schedule",
+              "src": "/project-images/ExtrusionStudio/admin-production-schedule-light.webp",
+              "alt": "Admin Settings, Production Schedule: the week's plan being edited before it is posted to the floor",
+              "caption": "Production Schedule"
+            },
+            {
+              "id": "admin-users",
+              "src": "/project-images/ExtrusionStudio/admin-users-light.webp",
+              "alt": "Admin Settings, Users: the roles, lock and sign-out times, and the user list",
+              "caption": "Users"
+            },
+            {
+              "id": "advanced-graphs",
+              "src": "/project-images/ExtrusionStudio/advanced-graphs-light.webp",
+              "alt": "Advanced-Graphs: every line's reading, chart and buttons on one dashboard",
+              "caption": "Advanced-Graphs"
+            }
+          ],
+          "hotspots": [
+            {
+              "x": 14.5,
+              "y": 1,
+              "w": 64,
+              "h": 3.8,
+              "label": "Tabs",
+              "text": "Plant Deployment, Production Schedule, Settings, Troubleshoot, Logging, Materials, Spools, Label Printer and Users."
+            },
+            {
+              "x": 2,
+              "y": 7.5,
+              "w": 47.5,
+              "h": 50,
+              "label": "The projector, live",
+              "text": "The real Operator-Graphs page, not a picture of it. Enlarge it, reload it, or open it in its own tab."
+            },
+            {
+              "x": 80.6,
+              "y": 11,
+              "label": "Any line station",
+              "text": "Pick the projector settings or any line's station to see what its operator sees."
+            },
+            {
+              "x": 2,
+              "y": 59,
+              "w": 47.5,
+              "h": 40,
+              "label": "The packing bench, live",
+              "text": "Decide spools and print labels from the office when the bench is busy."
+            },
+            {
+              "x": 50.5,
+              "y": 59,
+              "w": 47.5,
+              "h": 40,
+              "label": "Advanced-Graphs",
+              "text": "Every line's reading, chart and buttons on one dashboard, for an Admin."
+            },
+            {
+              "x": 82.5,
+              "y": 3,
+              "label": "Appearance and docs",
+              "text": "Light or dark for this computer, and the full guide for every panel, served by the server itself."
+            }
+          ]
+        }
+      ],
+      "samplesTitle": "What the program writes",
+      "samplesIntro": "Three files from one short spool in the simulator, exactly as the program wrote them, with made-up readings and a made-up serial. The real plant's data stays on the plant's server.",
+      "samples": [
+        {
+          "label": "Spool certificate",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-SS33-A5NA.html",
+          "kind": "HTML · 75 KB",
+          "note": "The page the label's QR code opens: the spool's serial, material, batch, figures and its average trace with the tolerance band. Self-contained, so it can be kept with the spool or copied anywhere.",
+          "shot": {
+            "id": "certificate",
+            "src": "/project-images/ExtrusionStudio/certificate-SS33-A5NA.webp",
+            "alt": "The certificate for spool SS33-A5NA, with its figures and chart",
+            "caption": "Spool certificate SS33-A5NA"
+          }
+        },
+        {
+          "label": "Certificate with a reason",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-AAD0-YJM1.html",
+          "kind": "HTML · 75 KB",
+          "note": "A spool that went out of spec and was approved anyway. The reason is on the certificate and its letter is on the end of the serial.",
+          "shot": {
+            "id": "certificate-reason",
+            "src": "/project-images/ExtrusionStudio/certificate-AAD0-YJM1.webp",
+            "alt": "The certificate for spool AAD0-YJM1, approved with a reason after going out of spec",
+            "caption": "Spool certificate AAD0-YJM1"
+          }
+        },
+        {
+          "label": "Spool CSV",
+          "src": "/project-artifacts/ExtrusionStudio/sample-spool-SS33-A5NA.csv",
+          "kind": "CSV · 150 KB · 1,800 rows",
+          "note": "Ninety seconds at 20 Hz. A header with the line, spec and spool, one row per reading with X, Y, Z, average and in-spec, then the summary and the decision appended at the end."
+        },
+        {
+          "label": "Filament file",
+          "src": "/project-artifacts/ExtrusionStudio/sample-filament-SS33-A5NA.csv",
+          "kind": "CSV · 1 KB",
+          "note": "The spool's production settings and filament notes as they stood when the run began and when it ended. Formula data, so it goes here and nowhere else."
+        }
+      ]
+    },
+    "additionalInfo": {
+      "title": "ExtrusionStudio",
+      "subtitle": "From a LabVIEW proof of concept to a plant-wide production system",
+      "problem": "Three extrusion lines each had a tri-axial laser gauge, and the only record of a spool's diameter was whatever an operator wrote down. Production was speeding up, and the plant needed every reading captured, every spool judged against its tolerance, and the result visible to the operator, the packing bench and management at once.",
+      "rootCause": "The first version, in LabVIEW, proved the Modbus TCP communication and the register decoding. It was built as one program compiled three times, one per line, each polling on a hard-coded delay with the line's address fixed in the code. That was fine as a proof of concept and wrong as a plant system: a line could not be added without a rebuild, a dead line held up the others, and nothing it measured was tied to a spool.",
+      "constraints": [
+        "Read every line concurrently at 20 Hz, with a dead line never stalling a healthy one",
+        "Tie every reading to the spool it is physically wound on, not the one on the winder when the laser saw it",
+        "Run on a headless Debian server with screens that have no computer of their own",
+        "Work with no internet on the floor: no CDN, no build step, the guides served by the server itself",
+        "Power the screens, projector and TVs with the work hours to let the lines heat up and save power overnight"
+      ],
+      "approach": [
+        "Rewrote the program in Python as one service: one asyncio poller and one Modbus session per line, a hub that keeps the ring buffer and statistics, and Server-Sent Events to every browser",
+        "Split the user interface into panels for each audience, each its own process, with only Admin Settings allowed to talk to the gauges",
+        "Added a calibration phase on the line station that times the filament from the laser to the spool and delays logging by that offset",
+        "Logged every spool to its own CSV and a SQLite run table, issued it a Spool SN and a serial, and wrote an HTML certificate on approval",
+        "Built the packing bench workflow: approve, inspect or reject, reasons on the serial, and spool, box and master case labels on a thermal printer",
+        "Deployed Raspberry Pi kiosks that boot straight to their page, check in with the server, and are updated, configured and power-switched from Server Settings"
+      ],
+      "designDecisions": [
+        "Server-Sent Events rather than WebSockets: data flows one way and SSE reconnects by itself",
+        "The poll rate is per-line configuration with a floor, because the right value depends on the PLC's response time",
+        "Each frame carries min, max and last per channel, so a spike between frames still shows on the chart",
+        "A hand-written Modbus simulator that shares no code with the client, so a test cannot hide the same bug twice",
+        "A Vizio TV cannot be woken over HDMI-CEC, so the Pi pairs with it by PIN and switches it over the network instead",
+        "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server"
+      ],
+      "impact": [
+        "Every spool off every line has a record, a serial, a label and a certificate",
+        "The whole plant sees production and alarms on the projector and the statistics TV",
+        "The packing bench decides spools against the gauge's figures instead of by eye",
+        "Screens come on an hour into the workday and go off at the end of it without anyone touching them",
+        "Testing the Pi fleet drove a tool of its own, BulkSSH, to reach every Pi at once"
+      ],
+      "tools": [
+        "Python",
+        "asyncio",
+        "Modbus TCP",
+        "Starlette",
+        "SQLite",
+        "Server-Sent Events",
+        "Raspberry Pi",
+        "Debian",
+        "LabVIEW",
+        "Thermal label printing"
+      ],
+      "assets": [
+        {
+          "label": "Plant deployment",
+          "src": "/project-artifacts/ExtrusionStudio/deployment.svg",
+          "alt": "Three extrusion lines read over Modbus TCP by one server, which serves every panel to Raspberry Pi kiosks and switches their screens with the work hours"
+        }
+      ]
+    },
+    "dates": {
+      "start": "2025-09-19",
+      "ongoing": true
+    }
+  },
+  {
+    "name": "BulkSSH",
+    "id": "bulkssh",
+    "order": 3,
+    "type": "Windows Desktop App / TypeScript, Electron",
+    "summary": "A Windows app for working with many SSH devices at once: servers, Raspberry Pis, routers and switches. Add a list of addresses, enter the username once, and every device opens in a grid of live terminals.\n\nI built it to speed up testing the ExtrusionStudio deployment, where every change to the Pi image had to be tried on every Pi. Mirrored keystrokes type into every ticked device, and a broadcast runs one command on all of them and shows each one's output and exit code.",
+    "status": "A short GIF of the app in use is on its way.",
+    "images": [
+      {
+        "src": "",
+        "alt": "BulkSSH demo GIF: adding several Pis, mirroring keystrokes and broadcasting a command",
+        "fit": "contain"
+      }
+    ],
+    "bullets": [
+      {
+        "text": "Grid of live terminals, paged when there are more devices than fit, with a full-size focus view for vim and top.",
+        "emphasis": [
+          "Grid of live terminals"
+        ]
+      },
+      {
+        "text": "Risky commands such as reboot or rm -r need confirming before they reach several devices, and host keys are never accepted silently.",
+        "emphasis": [
+          "need confirming"
+        ]
+      },
+      {
+        "text": "Saved passwords are optional and encrypted with the Windows account; dropped connections reconnect by themselves.",
+        "emphasis": [
+          "reconnect by themselves"
+        ]
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub repository",
+        "href": "https://github.com/RileyBeenders/BulkSSH"
+      },
+      {
+        "label": "Release",
+        "href": "https://github.com/RileyBeenders/BulkSSH/releases/tag/v1.0.0",
+        "note": "v1.0.0"
+      },
+      {
+        "label": "ExtrusionStudio deployment",
+        "href": "#project-extrusionstudio"
+      }
+    ],
+    "additionalInfo": {
+      "title": "BulkSSH",
+      "subtitle": "One window for every Pi on the floor",
+      "problem": "Testing ExtrusionStudio's Pi kiosks meant repeating the same commands on every Pi, one SSH window at a time, after every change to the image.",
+      "constraints": [
+        "Add many devices in one go and connect them with one password",
+        "Never send a destructive command to several devices without confirming",
+        "Install for one user with no admin rights, or run as a single portable file"
+      ],
+      "approach": [
+        "Electron and TypeScript, with a grid of live terminals and a focus view",
+        "Mirror keystrokes to every ticked device, or broadcast a command and collect each exit code",
+        "Fake SSH devices for development, so the app can be tried without hardware"
+      ],
+      "impact": [
+        "A change to the Pi image is tried on every Pi in one pass",
+        "Released as an installer and a portable executable",
+        "Telnet, serial and SFTP transfer are next"
+      ],
+      "tools": [
+        "TypeScript",
+        "Electron",
+        "SSH",
+        "Node.js"
+      ]
+    },
+    "dates": {
+      "start": "2026-10-17",
+      "ongoing": true
+    }
+  },
+  {
     "name": "RB's Auto App Updater",
     "id": "auto-app-updater",
-    "order": 2,
+    "order": 4,
     "type": "Windows Utility / PowerShell",
     "summary": "A one-line install that puts an App Auto Updater shortcut on a Windows desktop. It checks every installed application with WinGet, shows what can be updated, and upgrades each package on its own so a single failure never stops the rest.",
     "status": "Install using this powershell command: ``` irm https://www.rileybeenders.com/AutoWinUpdater | iex ```",
@@ -162,132 +882,6 @@
       "start": "2026-09-19",
       "end": "2026-09-21",
       "position": "top-right"
-    }
-  },
-  {
-    "name": "ExtrusionLine Studio [V1]",
-    "id": "extrusionline-studio-v1",
-    "order": 3,
-    "type": "LabVIEW Data Acquisition",
-    "visible": false,
-    "summary": "An automated measurement program that is capable of collecting three separate tri-axial laser sensors over Modbus through a dedicated VLAN and turns the data into a live tolerance chart.",
-    "proofId": "ExtrusionLine-Studio",
-    "bullets": [
-      {
-        "text": "Automatically negotiates the Modbus communication.",
-        "proofId": "ExtrusionLine-Studio_Modbus"
-      },
-      {
-        "text": "Connected and observed through a private VLAN over the network.",
-        "proofId": "ExtrusionLine-Studio_Modbus"
-      },
-      {
-        "text": "Hands free Startup.",
-        "proofId": "ExtrusionLine-Studio_SimpleStart"
-      }
-    ],
-    "additionalInfo": {
-      "title": "Automated LabVIEW Metrology",
-      "subtitle": "High-frequency sensor collection translated into tolerance insight",
-      "problem": "Multiple laser-sensor readings needed to be collected consistently and transformed into a visual tolerance result that an end customer could use.",
-      "constraints": [
-        "Communicate with multiple sensors over Modbus",
-        "Collect nine data points (three per laser sensor) every 17.5 ms",
-        "Remove manual data-collection steps",
-        "Present results as an understandable tolerance chart"
-      ],
-      "approach": [
-        "Built the acquisition workflow in LabVIEW",
-        "Connected and polled multiple laser sensors through Modbus",
-        "Structured the incoming readings for repeatable analysis",
-        "Generated charts showing the tolerance of the measured data"
-      ],
-      "impact": [
-        "Automated a previously manual measurement workflow",
-        "Delivered consistent high-frequency data collection",
-        "Made measurement tolerance visible to the end customer"
-      ],
-      "tools": [
-        "LabVIEW",
-        "Modbus",
-        "Laser sensors",
-        "Data acquisition",
-        "Tolerance analysis"
-      ],
-      "assets": [
-        {
-          "label": "Measurement System",
-          "src": "/project-artifacts/labview-control.svg",
-          "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
-        }
-      ]
-    },
-    "dates": {
-      "start": "2025-09-19",
-      "end": "2026-09-25"
-    }
-  },
-  {
-    "name": "ExtrusionLine Studio [V2]",
-    "id": "extrusionline-studio-v2",
-    "order": 4,
-    "type": "Python Data Acquisition",
-    "visible": false,
-    "summary": "A continuation of the LabVIEW-focused program. This time it is more focused on oversight and extensive logging of production. \n\nThe program runs in multiple environments. There is one main God panel and then there are four sub panels - Site Settings, Operator, Viewer and Docs. The god panel is used as the general UI. System logging for the other subpanels is recorded and searchable on the God panel and everything is written to a CSV data file.",
-    "proofId": "ExtrusionLine-Studio",
-    "bullets": [
-      {
-        "text": "Automatically negotiates the Modbus communication.",
-        "proofId": "ExtrusionLine-Studio_Modbus"
-      },
-      {
-        "text": "Connected and observed through a private VLAN over the network.",
-        "proofId": "ExtrusionLine-Studio_Modbus"
-      },
-      {
-        "text": "Hands free Startup.",
-        "proofId": "ExtrusionLine-Studio_SimpleStart"
-      }
-    ],
-    "additionalInfo": {
-      "title": "Automated LabVIEW Metrology",
-      "subtitle": "High-frequency sensor collection translated into tolerance insight",
-      "problem": "Multiple laser-sensor readings needed to be collected consistently and transformed into a visual tolerance result that an end customer could use.",
-      "constraints": [
-        "Communicate with multiple sensors over Modbus",
-        "Collect nine data points (three per laser sensor) every 17.5 ms",
-        "Remove manual data-collection steps",
-        "Present results as an understandable tolerance chart"
-      ],
-      "approach": [
-        "Built the acquisition workflow in LabVIEW",
-        "Connected and polled multiple laser sensors through Modbus",
-        "Structured the incoming readings for repeatable analysis",
-        "Generated charts showing the tolerance of the measured data"
-      ],
-      "impact": [
-        "Automated a previously manual measurement workflow",
-        "Delivered consistent high-frequency data collection",
-        "Made measurement tolerance visible to the end customer"
-      ],
-      "tools": [
-        "LabVIEW",
-        "Modbus",
-        "Laser sensors",
-        "Data acquisition",
-        "Tolerance analysis"
-      ],
-      "assets": [
-        {
-          "label": "Measurement System",
-          "src": "/project-artifacts/labview-control.svg",
-          "alt": "Abstract diagram of a LabVIEW measurement and tolerance-charting system"
-        }
-      ]
-    },
-    "dates": {
-      "start": "2026-09-26",
-      "ongoing": true
     }
   },
   {

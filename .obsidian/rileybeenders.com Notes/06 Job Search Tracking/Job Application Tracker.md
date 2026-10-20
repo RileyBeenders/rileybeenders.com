@@ -18,11 +18,11 @@ The repo doubles as the owner's personal job-search system of record. This note 
 
 ## Per-application deep-dive pages
 
-Every tracked application also has its own note under `06 Job Search Tracking/Applications/`, walking through the actual job posting (ID, dates, salary, summary, responsibilities, requirements, education, benefits, about-the-company) and a **How I Match Up** section split into a frozen snapshot from application day and a living comparison against the current site data. These are linked from the ID column below. See [[Repository Agent Skills (.agents)]] for how new applications get a page and how the "Now" comparison stays current.
+Every tracked application also has its own note under `06 Job Search Tracking/Applications/`, walking through the actual job posting (ID, dates, salary, summary, responsibilities, requirements, education, benefits, about-the-company) and a **How I Match Up** section split into a frozen snapshot from application day and a living comparison against the current site data. These are linked from the ID column below. See [[Repository Agent Skills]] for how new applications get a page and how the "Now" comparison stays current.
 
 ## The tracker table (duplicated in two places)
 
-Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt chart, and a markdown table with columns `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID` (`Status` is just the 🟢/🟠/🔴 circle; `Job ID` is the posting's own number or `N/A`). **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters, and the **Sync Charts** procedure in [[Repository Agent Skills (.agents)]] for reconciling them.
+Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt chart, and a markdown table with columns `ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID` (`Status` is just the 🟢/🟠/🔴 circle; `Job ID` is the posting's own number or `N/A`). **These are two independently hand-maintained copies of the same information** — see [[More Info and Gantt Data]] for why that matters, and the **Sync Charts** procedure in [[Repository Agent Skills]] for reconciling them.
 
 ### Current applications (21, as of README.md)
 
@@ -56,7 +56,7 @@ The 29 inactive applications in Disney's Workday portal, 26 of them from before 
 
 ## The `custom-resume` generation workflow
 
-Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.agents/skills/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills (.agents)]]):
+Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.claude/skills/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills]]):
 
 1. Collect page count + which `2.JobsApplliedTo/*.pdf` to target.
 2. Extract company/title/location/requirements/ATS keywords from the posting.
@@ -66,6 +66,6 @@ Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent pr
 
 ## Related
 - [[More Info and Gantt Data]]
-- [[Repository Agent Skills (.agents)]]
+- [[Repository Agent Skills]]
 - [[Resume PDF Pipeline]]
 - [[Home]]

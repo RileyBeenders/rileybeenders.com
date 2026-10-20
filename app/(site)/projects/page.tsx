@@ -12,6 +12,7 @@ import { counted } from "@/lib/copy";
 import type { ProjectsPageData } from "@/types/pages";
 import "./projects.css";
 import "./feature.css";
+import "./walkthrough.css";
 
 const page = projectsPageData as ProjectsPageData;
 

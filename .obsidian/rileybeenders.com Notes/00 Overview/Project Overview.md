@@ -34,7 +34,7 @@ See [[Data Layer and Types]].
 
 ## Where this sits in the repo's workflow
 
-The repo also functions as the owner's personal job-search tracker: `2.JobsApplliedTo/` holds original job postings, `1.ApplicationsUsed/` and `output/pdf/` hold tailored resumes/cover letters actually submitted, and `README.md` / `data/more-info/gantt.md` track application status on a Gantt chart. A dedicated agent procedure (`custom-resume`, see [[Repository Agent Skills (.agents)]]) generates those tailored PDFs from live site data plus a job posting.
+The repo also functions as the owner's personal job-search tracker: `2.JobsApplliedTo/` holds original job postings, `1.ApplicationsUsed/` and `output/pdf/` hold tailored resumes/cover letters actually submitted, and `README.md` / `data/more-info/gantt.md` track application status on a Gantt chart. A dedicated agent procedure (`custom-resume`, see [[Repository Agent Skills]]) generates those tailored PDFs from live site data plus a job posting.
 
 ## Related
 - [[Architecture and Data Flow]]

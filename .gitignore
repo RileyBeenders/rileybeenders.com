@@ -26,9 +26,8 @@ tmp/
 # Resized copies of public/ images for the Studio's thumbnails. Safe to delete; rebuilt on demand.
 .studio-cache
 
-# Claude Code: skills are versioned once under .agents/skills/ and this path is a
-# per-machine junction to it (see .agents/README.md). Worktrees are checkouts, not source.
-.claude/skills
+# Claude Code: skills are versioned in .claude/skills/ (see CLAUDE.md).
+# Worktrees are checkouts, not source.
 .claude/worktrees
 
 # impeccable live-mode runtime state (the port/token of a running live server); config.json

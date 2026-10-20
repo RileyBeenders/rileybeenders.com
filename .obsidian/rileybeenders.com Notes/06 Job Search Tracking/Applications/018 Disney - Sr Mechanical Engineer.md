@@ -64,7 +64,7 @@ Disney's rewards package (health and savings benefits, educational opportunities
 
 ### Now — Sep 24, 2026
 
-- No change since application (applied today).
+- No change since application, evaluated the day it was applied.
 
 ---
 

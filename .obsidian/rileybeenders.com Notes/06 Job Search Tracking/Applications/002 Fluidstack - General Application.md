@@ -47,9 +47,10 @@ Not detailed beyond "committed to pay equity and transparency."
 - **Relevant overlap:** the "Automation" department framing lines up with explicit skills — automation equipment development, workflow automation, Allen Bradley PLC / controls experience — plus Docker, Proxmox virtualization, and Kubernetes-hosted infrastructure work, which is directly relevant to a company standing up data center infrastructure at scale.
 - **Open question:** because this is a general application with no defined responsibilities or requirements, there isn't a concrete qualifications list to check against — fit depends entirely on which specific team, if any, picks this up.
 
-### Now — Aug 22, 2026
+### Now — Oct 17, 2026
 
-No material change — the automation and infrastructure skills cited above haven't moved since application, and the posting is still a general intake with nothing more specific to compare against.
+- **Two projects published Oct 17, 2026** add concrete automation and fleet evidence: ExtrusionStudio (a Python plant-wide acquisition system on a headless Debian server with a Raspberry Pi kiosk fleet, daily self-updates and work-hour power scheduling) and BulkSSH (a TypeScript/Electron tool for driving many SSH devices at once). The posting still has no requirements list to compare against.
+- *Earlier (Aug 22, 2026):* No material change — the automation and infrastructure skills cited above haven't moved since application, and the posting is still a general intake with nothing more specific to compare against.
 
 ---
 

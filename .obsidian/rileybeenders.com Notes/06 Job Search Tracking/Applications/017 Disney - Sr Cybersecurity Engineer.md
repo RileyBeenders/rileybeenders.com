@@ -61,9 +61,10 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **Multidisciplinary leadership and attraction-adjacent work:** CTO and Lead R&D roles cover multi-discipline technical projects. Ski lift operation with motor and control safety checks is the closest theme-park-adjacent evidence.
 - **Gaps:** the data does not establish 5 years of dedicated network security work, OT security frameworks (IEC 62443 or similar), security operations tooling, or any of the preferred security or project management certifications. The B.S. in Electro-Mechanical Engineering is an engineering degree but not Cybersecurity or Computer Science.
 
-### Now — Sep 24, 2026
+### Now — Oct 17, 2026
 
-- No change since application (applied today).
+- **ExtrusionStudio (published Oct 17, 2026)** expands the industrial controls evidence: Modbus TCP acquisition from three PLC-backed gauges, a headless Debian server with role-based sign-in and an audit log of every change, and Raspberry Pi kiosks that store nothing of their own. BulkSSH adds host-key verification and confirmation of destructive commands across many devices. Still no OT security framework, security operations tooling or certifications.
+- *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
 
 ---
 

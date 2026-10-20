@@ -12,6 +12,7 @@ import { usePhotoMode, type DropTarget } from "@/components/projects/PhotoMode";
 import { ProjectDateBox } from "@/components/projects/ProjectDateBox";
 import { CaseStudy } from "@/components/projects/CaseStudy";
 import { ProjectStatus } from "@/components/projects/ProjectStatus";
+import { PanelWalkthrough } from "@/components/projects/walkthrough/PanelWalkthrough";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { ui } from "@/lib/copy";
@@ -29,6 +30,15 @@ const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 /** How far the media column drifts against the text column as the entry scrolls past — a classic parallax read of depth, with no pinning involved. */
 const PARALLAX_RANGE = 56;
+
+/** Same arrow as the home page's GitHub button and the About page's repository button, so the links read as one control. */
+function ArrowRight() {
+  return (
+    <svg className="bp-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2.5 8h11m0 0L9 3.5M13.5 8L9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 function ProjectBullet({ text, emphasis }: { text: string; emphasis?: string[] }) {
   return (
@@ -269,6 +279,27 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
               )}
             </div>
 
+            {project.links && project.links.length > 0 && (
+              <Reveal delay={0.3}>
+                <div className="pj-links">
+                  {project.links.map((link) => (
+                    // suppressHydrationWarning: like every other anchor on the site — a browser extension can stamp attributes onto <a> before hydration.
+                    <a
+                      key={link.href}
+                      className="bp-btn"
+                      href={link.href}
+                      target={link.href.startsWith("#") || link.href.startsWith("/") ? undefined : "_blank"}
+                      rel={link.href.startsWith("#") || link.href.startsWith("/") ? undefined : "noreferrer"}
+                      suppressHydrationWarning
+                    >
+                      <span>{link.label}{link.note && <span className="pj-link-note">{link.note}</span>}</span>
+                      <ArrowRight />
+                    </a>
+                  ))}
+                </div>
+              </Reveal>
+            )}
+
             {/* With every photo in the text there is no gallery to drop one back on; this stands in for it. */}
             {editing && galleryItems.length === 0 && (
               <div ref={returnRef} className="pj-photo-return">Drop a photo here to put it back in the gallery</div>
@@ -313,6 +344,10 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
             </div>
           )}
         </div>
+
+        {project.walkthrough && (
+          <PanelWalkthrough walkthrough={project.walkthrough} projectName={project.name} />
+        )}
 
         {proof && (
           reduced ? (

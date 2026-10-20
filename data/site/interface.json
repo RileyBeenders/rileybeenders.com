@@ -63,5 +63,16 @@
   "pillars": {
     "readMore": "Read more",
     "less": "Less"
+  },
+  "walkthrough": {
+    "previous": "Previous",
+    "next": "Next",
+    "stepOf": "{step} of {total}",
+    "callouts": "On this screen",
+    "alsoOn": "Also on this panel",
+    "enlarge": "Enlarge",
+    "openFile": "Open",
+    "download": "Download",
+    "viewCapture": "View capture"
   }
 }

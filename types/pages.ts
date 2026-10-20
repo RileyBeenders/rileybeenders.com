@@ -177,4 +177,17 @@ export type InterfaceData = {
     readMore: string;
     less: string;
   };
+  /** The panel walkthrough under a project (components/projects/walkthrough/PanelWalkthrough.tsx). */
+  walkthrough: {
+    previous: string;
+    next: string;
+    /** "{step} of {total}" */
+    stepOf: string;
+    callouts: string;
+    alsoOn: string;
+    enlarge: string;
+    openFile: string;
+    download: string;
+    viewCapture: string;
+  };
 };

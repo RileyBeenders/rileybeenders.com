@@ -6,7 +6,7 @@ tags: [data, content]
 
 The professional content that flows through [[Data Layer and Types|resumeData.ts]] into the pages. Source files: `data/home/experience.json`, `data/home/education.json`, `data/home/skills.json`, `data/home/summary.json`, `data/projects/projects.json`, `data/projects/proofs.json`.
 
-**Rendering note:** on `main` the home page (`app/(site)/page.tsx`) renders `experience`, `skills`, `education`, and `summary` directly as an editorial layout. Bullets are `EmphasizedText` (their `emphasis` phrases take the accent on hover) and a bullet whose `projectId` names a *published* project ends with an inline "see ICARUS-Lite ↗" evidence link — no chips. `projects` feeds `/projects` in full (`ProjectEntry` renders summary, bullets, `images`, the `status` note, an optional date box, and the case study from `additionalInfo`), but only entries without `visible: false` get there — one of nine today. `proofs` would enrich a case study through `buildProofView()`, but every proof is `visible: false`, so `resumeData.proofs` is `[]` and the file is dormant data. All of it is edited in the Studio (`npm run studio`), never by hand.
+**Rendering note:** on `main` the home page (`app/(site)/page.tsx`) renders `experience`, `skills`, `education`, and `summary` directly as an editorial layout. Bullets are `EmphasizedText` (their `emphasis` phrases take the accent on hover) and a bullet whose `projectId` names a *published* project ends with an inline "see ICARUS-Lite ↗" evidence link — no chips. `projects` feeds `/projects` in full (`ProjectEntry` renders summary, bullets, `images`, the `status` note, an optional date box, `links`, a `walkthrough`, and the case study from `additionalInfo`), but only entries without `visible: false` get there — six of twelve today. `proofs` would enrich a case study through `buildProofView()`, but every proof is `visible: false`, so `resumeData.proofs` is `[]` and the file is dormant data. All of it is edited in the Studio (`npm run studio`), never by hand.
 
 ## Experience (`data/home/experience.json`)
 
@@ -23,25 +23,30 @@ The professional content that flows through [[Data Layer and Types|resumeData.ts
 | Blue Mountain Ski Resort | Ski Lift Operator | Palmerton, PA | Nov 2019 – Jan 2021 |
 | Northampton Area School District | Computer / Network Technician | Northampton, PA | Jun 2016 – Aug 2019 |
 
-Filament Innovations was acquired by Proteor in January 2025 (the current role's `context` is now one sentence: "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer."). The Proteor entry was reworked between 2026-09-15 and 2026-09-16: the company name lost its "/ Proteor Printing Solutions" suffix, a new bullet states that Riley acts as **Hiring Manager** for engineering roles (technical interviews, final hiring decisions), and the remaining ten bullets were condensed to one clause each — the ICARUS-Lite design and commercialization, the LabVIEW QC system, the Business Central ERP rollout across Proteor's global locations, ProteorPrint OS with SimplyPrint, EU/U.S. risk analysis, the co-developed hotend, cross-functional support, the POSEIDON/ICARUS re-engineering (4 m/s, 1-micron), and the division's IT infrastructure. Details that lived only in the long versions (dual-voltage 120/240 VAC operation, the nine-point / 15 ms Modbus acquisition figures, "approximately five new roles", the East Coast team oversight wording) are no longer stated anywhere in the record — the Modbus and laser-sensor specifics survive in the ExtrusionLine Studio project entry. Thirty bullets across the eight roles carry `emphasis` phrases (2026-09-16 for Proteor, 2026-09-19 for the rest). Four Proteor bullets carry a `projectId` (`icarus-lite`, `ExtrusionLine-Studio`, `proteor-print`, `unifi-network`) and pass through the merge; `proofId`s are still present on the Filament-era bullets but stripped before any page sees them.
+Filament Innovations was acquired by Proteor in January 2025 (the current role's `context` is now one sentence: "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer."). The Proteor entry was reworked between 2026-09-15 and 2026-09-16: the company name lost its "/ Proteor Printing Solutions" suffix, a new bullet states that Riley acts as **Hiring Manager** for engineering roles (technical interviews, final hiring decisions), and the remaining ten bullets were condensed to one clause each — the ICARUS-Lite design and commercialization, the LabVIEW QC system, the Business Central ERP rollout across Proteor's global locations, ProteorPrint OS with SimplyPrint, EU/U.S. risk analysis, the co-developed hotend, cross-functional support, the POSEIDON/ICARUS re-engineering (4 m/s, 1-micron), and the division's IT infrastructure. Details that lived only in the long versions (dual-voltage 120/240 VAC operation, the nine-point / 15 ms Modbus acquisition figures, "approximately five new roles", the East Coast team oversight wording) are no longer stated anywhere in the record — the Modbus and laser-sensor specifics survive in the ExtrusionStudio project entry. Thirty bullets across the eight roles carry `emphasis` phrases (2026-09-16 for Proteor, 2026-09-19 for the rest). Four Proteor bullets carry a `projectId` (`icarus-lite`, `extrusionstudio` — re-pointed from the old `ExtrusionLine-Studio` on 2026-10-17, so the LabVIEW QC bullet now links to the published project — `proteor-print`, `unifi-network`) and pass through the merge; `proofId`s are still present on the Filament-era bullets but stripped before any page sees them.
 
 ## Projects (`data/projects/projects.json`)
 
-9 entries, each with an `order` and a full `additionalInfo` payload:
+12 entries since 2026-10-17, each with an `order` and a full `additionalInfo` payload:
 
-| Order | id | Name | Type |
-|---|---|---|---|
-| 1 | `linear-motion-platform` | Linear Motor Platform Standardization | Motion Control / Product Platform |
-| 2 | `icarus-lite` | ICARUS-Lite | Industrial Design |
-| 3 | `ExtrusionLine-Studio` | ExtrusionLine Studio Software | LabVIEW Data Acquisition |
-| 4 | `proteor-print` | PROTEOR Print | Remote Operations Software |
-| 5 | `gen3-poseidon` | Gen3 POSEIDON | Large-Format Additive Manufacturing System |
-| 6 | `kraken` | THE KRAKEN | Custom Hybrid Additive Manufacturing System |
-| 7 | `internal-erp` | Engineering Operations Platform | Internal Software / Infrastructure |
-| 8 | `modular-controls` | Modular CAN-Bus Controls Architecture | Electrical / Manufacturing System |
-| 9 | `unifi-network` | Unified Ubiquiti Network | Network Infrastructure |
+| Order | id | Name | Type | Published |
+|---|---|---|---|---|
+| 1 | `icarus-lite` | ICARUS-Lite | Industrial Design | yes |
+| 2 | `extrusionstudio` | ExtrusionStudio | Plant Data Acquisition / Python, Modbus TCP, Raspberry Pi | yes |
+| 3 | `bulkssh` | BulkSSH | Windows Desktop App / TypeScript, Electron | yes |
+| 4 | `auto-app-updater` | RB's Auto App Updater | Windows Utility / PowerShell | yes |
+| 5 | `proteor-print` | PROTEOR Print | Remote Operations Software | draft |
+| 6 | `unifi-network` | Unified Ubiquiti Network | Network Infrastructure | yes |
+| 7 | `linear-motion-platform` | Linear Motor Platform Standardization | Motion Control / Product Platform | draft |
+| 8 | `gen3-poseidon` | Gen3 POSEIDON | Large-Format Additive Manufacturing System | draft |
+| 9 | `kraken` | THE KRAKEN | Custom Hybrid Additive Manufacturing System | draft |
+| 10 | `internal-erp` | Engineering Operations Platform | Internal Software / Infrastructure | draft |
+| 11 | `modular-controls` | Modular CAN-Bus Controls Architecture | Electrical / Manufacturing System | draft |
+| 12 | `filament-innovations` | Filament Innovations Projects | — | yes |
 
-Only **`icarus-lite` is published** (no `visible` key); the other eight carry `visible: false` since 2026-09-16 and show in the Studio as drafts. `/projects` renders it in full: six photographs from `public/project-images/ICARUS-Lite/` in `images[]` (the two placeholder render entries are gone), a `status` note ("Project page under development. More details to come soon."), and a case study from its `additionalInfo` — whose `assets` were removed, so the gallery is photos only. The drafts keep their single `additionalInfo.assets` diagram from `public/project-artifacts/*.svg` (the gallery fallback they will use until they have photos).
+The first four are the order the page was asked to open with on 2026-10-17: ICARUS-Lite, ExtrusionStudio, BulkSSH, then the Auto App Updater. Drafts carry `visible: false` and show in the Studio as drafts; they keep their single `additionalInfo.assets` diagram from `public/project-artifacts/*.svg` (the gallery fallback they will use until they have photos).
+
+**`extrusionstudio` (2026-10-17)** replaced the two hidden `extrusionline-studio-v1` (LabVIEW) and `-v2` (Python) entries with one published project whose story runs from the LabVIEW proof of concept to the Python rewrite. It carries four panel captures in `images[]` (16:9), four bullets, one `links` button (`#project-bulkssh`), the first `walkthrough` (six steps with hotspots and extras, four `samples` — see [[Panel Walkthrough]]), a case study with `rootCause` and `designDecisions`, one themed asset (`/project-artifacts/ExtrusionStudio/deployment.svg`, in `THEMED_SVGS`), and `dates` from `2025-09-19`, `ongoing`. Every capture, serial and user name in it comes from the program's simulator and the user **RileyBeenders** — no plant data, addresses or hostnames are on the site. **`bulkssh` (2026-10-17)** is the Windows SSH tool built to test that deployment: summary, a `status` note that a demo GIF is on its way, one image card with an empty `src` (filtered out until the GIF is added), three bullets, three `links` (GitHub repository, the v1.0.0 release with `note: "v1.0.0"`, and `#project-extrusionstudio`), a short case study, and `dates` from `2026-10-17`, `ongoing`.
 
 **GIFs in a gallery (2026-09-20).** A gallery image whose `src` ends in `.gif` gets a **Playback speed** slider in the Studio (¼× up to the fastest the recording allows — a frame can't show for under 2 hundredths of a second, so a 12.5 fps recording tops out at 4×), a readout of the resulting length and frame rate, and a preview retimed on the fly by `/api/thumb?src=&speed=` (`/api/gif?src=&speed=` returns the numbers). The choice is saved as `speed` beside `src` (dropped at 1×; `ProjectImage.speed` in [[Data Layer and Types]]). On every save `studio/gif.mjs` makes each GIF the file refers to match: it rewrites the per-frame delays and sets the loop flag to forever without decoding the pixels (a 15 MB recording takes milliseconds), keeps the recording's original delays in a comment inside the GIF so later speeds are computed from those (2× → 3× → 1× lands on the original bytes), and leaves a file alone when it already reads as the JSON says. Every referenced GIF is set to loop, slider or not. The first such image is `public/project-artifacts/RBs-Auto-Win-Updater.gif` (1376×768, 369 frames at 8 cs) on the draft `auto-app-updater` entry, whose `additionalInfo.assets` also names two diagrams — `/project-artifacts/auto-app-updater/install-flow.svg` ("Install flow") and `run-flow.svg` ("Everyday run flow") — that the case study draws inline and animated rather than as images (see [[Projects Route (BpComingSoon)]]).
 
@@ -92,9 +97,10 @@ The single professional-summary paragraph rendered under `01 Summary` on the hom
 - Whether to merge `proofs` into `projects` is an open question.
 - "Alter Line 136" — link the network project to VLAN/Wifi routing detail (refers to an older `experience.json`; the `unifi-network`-tagged bullet is the current target).
 - The two ExtrusionLine proofs it lists as "to create" already exist — that item is done.
-- The resume-PDF data rules that used to be drafted here moved into `.agents/skills/custom-resume/SKILL.md` step 3 on 2026-09-19; the file now just points there.
+- The resume-PDF data rules that used to be drafted here moved into `.claude/skills/custom-resume/SKILL.md` step 3 on 2026-09-19; the file now just points there.
 
 ## Related
 - [[Data Layer and Types]]
 - [[Projects Route (BpComingSoon)]]
+- [[Panel Walkthrough]]
 - [[Home]]

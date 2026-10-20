@@ -38,7 +38,7 @@ Real, scoped-down versions of the tools they stand for, in paper and hairlines (
 
 ### Themed captures — `feature/ThemedShot.tsx`
 
-Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `ThemedShot` renders both `<img>`s and `.ft-themed` in `feature.css` shows the one for the theme the visitor is *not* in (`html[data-theme]`, stamped before hydration, so the swap is hydration-safe and flips instantly with the nav toggle). Used by the timeline card thumbnail and the pillar thumbnails; the lightbox makes the same choice in JS. The two hero images in the page's own gallery are exempt — they are the light/dark comparison.
+Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `ThemedShot` renders both `<img>`s and `.ft-themed` in `feature.css` shows the one for the theme the visitor is *not* in (`html[data-theme]`, stamped before hydration, so the swap is hydration-safe and flips instantly with the nav toggle). A shot with no `srcDark` (2026-10-17) renders its one image with no `data-shows` attribute, so neither theme's rule hides it — before that fix the lone image was tagged as the dark capture and vanished in dark mode. Used by the timeline card thumbnail and the pillar thumbnails, and since 2026-10-17 by the projects page's [[Panel Walkthrough]]; the lightbox makes the same choice in JS. The two hero images in the page's own gallery are exempt — they are the light/dark comparison.
 
 ### The timeline
 
@@ -65,14 +65,14 @@ Under 860px the axis and card are hidden and `.tl-list` — a vertical list of e
 | `lib/useSpotlight.ts` | `onPointerMove` handler writing `--sx/--sy` on the element for `.bp-spot` (see [[Design System (Blueprint Press)]]). No React state per move. |
 | `lib/site.ts` | `REPO_URL` for commit links. |
 | `scripts/capture-site-screenshots.mjs` | Recaptures the page's screenshots with `playwright-core` driving the machine's Chrome/Edge (no download) at 1440×900 @2x, each in **both** themes via the real toggles (the nav switch; `#theme-toggle` in the Studio): home hero, full-page home, projects, this page's own timeline, and the Studio with this page open — ten files, `<name>-light.png` / `<name>-dark.png`. Hides the Next dev badge, waits for fonts and non-lazy images (bounded at 4s), removes the earlier single-theme files. Needs `npm run site` (both servers; the Studio shots are skipped if :3001 is down). Hides the Next dev badge and the Edit in Studio control. |
-| `scripts/site-stats.mjs` | Computes the six stats from git and the repo, lists commits since the last hashed timeline entry with key-commit candidates and JSON skeletons; `--write` refreshes the stats in the data file by label; `--json` for machines. Counts skills under `.agents/skills/` (fixed 2026-09-19 after the move). |
+| `scripts/site-stats.mjs` | Computes the six stats from git and the repo, lists commits since the last hashed timeline entry with key-commit candidates and JSON skeletons; `--write` refreshes the stats in the data file by label; `--json` for machines. Counts skills under `.claude/skills/` (it followed the 2026-09-19 move to `.agents/skills/` and the 2026-10-17 move back). |
 | `scripts/check-about-site.mjs` | Validates the data file — dates in order, known eras, at most one `present`, every `hash` a real commit, connectors and `screenshotId`s that resolve, the six stats present — and exits 1 with a list otherwise. Run before committing, and by the workflow before it commits. |
 
 ## Data — `data/site/about-site.json`
 
 Shape (`types/about-site.ts` → `AboutSiteData`): `meta { title, description }`, `hero { title, tagline }`, `storyHeading`, `outro { lead, body }`, `dates` (`ProjectDates` — `2026-06-28`, `ongoing`), `summary`, `bullets` (`ResumeBullet[]`), `images` (`ProjectImage[]`), optional `caseStudy` (`ProjectAdditionalInfo`), `feature` (`ProjectFeature`: `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`, `backend { eyebrow, intro, items[] }` — `backend.eyebrow` is the block's heading text, "Behind the site", not a label above one). The feature types live in `types/resume.ts` next to `Project` (`ProjectStat`, `TimelineEntry` with `era: "past" | "present" | "future"` plus the optional `id`, `mark: "dot" | "star"`, `linkFrom`, `linkLabel` for connectors, `FeaturePillar`, `FeatureScreenshot` with `src` + `srcDark`, `FeatureBackend` / `BackendItem` with `demo: "resume" | "studio" | "skills"`, `BackendMatch`, `BackendSkill`). Screenshots are served from `public/project-images/rileybeenders-com/` as `<name>-light.png` / `<name>-dark.png`. As of 2026-09-19 the timeline holds 26 entries (21 past, 1 present — "A design critic joins the repository" — and 4 planned), and the six stats read Commits 123 · Days in motion 83 · Agent skills 23 · Vault notes 35 · Applications tracked 16 · Projects queued 8.
 
-Edited in the Studio under **About this site** (rail group after More Info; `aboutSite` in `server.mjs` `FILES` and `schema.js`), which round-trips the file byte-for-byte. Refreshed by the `site-timeline-sync` procedure — locally on request, and unattended after every push to `main` by `.github/workflows/site-timeline-sync.yml`, whose bot commits ("Update the site timeline after …" / "Refresh the site stats after …") are the only writes to this file that don't come from the Studio or a session — see [[Repository Agent Skills (.agents)]].
+Edited in the Studio under **About this site** (rail group after More Info; `aboutSite` in `server.mjs` `FILES` and `schema.js`), which round-trips the file byte-for-byte. Refreshed by the `site-timeline-sync` procedure — locally on request, and unattended after every push to `main` by `.github/workflows/site-timeline-sync.yml`, whose bot commits ("Update the site timeline after …" / "Refresh the site stats after …") are the only writes to this file that don't come from the Studio or a session — see [[Repository Agent Skills]].
 
 ## Nav
 
@@ -83,6 +83,6 @@ Edited in the Studio under **About this site** (rail group after More Info; `abo
 - [[Blueprint UI Components]]
 - [[Data Layer and Types]]
 - [[Design System (Blueprint Press)]]
-- [[Repository Agent Skills (.agents)]]
+- [[Repository Agent Skills]]
 - [[Routes Overview]]
 - [[Home]]

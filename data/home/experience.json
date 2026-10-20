@@ -33,7 +33,7 @@
           "QC system",
           "real-time tolerance monitoring"
         ],
-        "projectId": "ExtrusionLine-Studio"
+        "projectId": "extrusionstudio"
       },
       {
         "text": "Managed the Coplay location's Microsoft Business Central ERP implementation, syncing SKUs with Proteor's global locations.",
