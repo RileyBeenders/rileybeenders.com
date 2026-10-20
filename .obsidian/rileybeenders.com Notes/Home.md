@@ -43,6 +43,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Data Layer and Types]] — types, the `resumeData.ts` merge pipeline, `header.json`, the dead "coming soon" schema
 - [[Career Content]] — experience, projects, proofs, education, skills
 - [[More Info and Gantt Data]] — the More Info page's content source and the hand-authored Gantt file
+- [[Career Q&A Log]] — Riley's answers to resume-review questions, read by the resume procedures, not the site
 
 ### Resume PDF Pipeline
 - [[Resume PDF Pipeline]] — the live `/api/resume-pdf` generator and the static template-mockup script

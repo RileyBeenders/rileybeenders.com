@@ -70,8 +70,9 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **Gaps:** the data does not establish Ansible, Terraform, or CI/CD platforms beyond GitHub, budget ownership with forecasting and accruals, Agile delivery, offshore vendor management, managing Technical Project Managers, cruise or ship build experience, or IACS E26/E27.
 - **Resume note:** the resume on file for this application is the Senior Manager, Solutions Architecture variant (`021_..._Senior_Manager_Solutions_Architecture_2-Page.pdf`), not one generated for this posting.
 
-### Now — Oct 17, 2026
+### Now — Oct 20, 2026
 
+- **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** The financials gap narrows: Riley estimates and tracks the budget of every engineering project, maintains product unit costs in Business Central, and presents status, constraints, and budgets at Proteor's monthly USA review with leadership from its global locations. Forecasting, accruals, managing Technical Project Managers, and shipbuilding / new-build work are still not in the record.
 - **ExtrusionStudio (published Oct 17, 2026)** adds a commissioned multi-device deployment to the record: a plant server plus Raspberry Pi kiosks that check in every 30 seconds and are updated and power-scheduled from the server, with TVs paired over the network. BulkSSH was built to roll changes out to that fleet. Ansible/Terraform, CI/CD, budget and cruise-build gaps are unchanged.
 - *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
 

@@ -58,8 +58,9 @@ Disney's standard rewards package: health and savings benefits, educational oppo
 - **Gap:** no direct evidence of C++ in my background; PLC work (Ladder Logic-adjacent) is the closer match to "Structured Text."
 - **Gap:** no ride control or theme park industry experience (this is only a preferred qualification, not required).
 
-### Now — Oct 17, 2026
+### Now — Oct 20, 2026
 
+- **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** Riley now presents project status, constraints, and budgets at Proteor's monthly USA review with leadership from its global locations, and as CTO gave the CEO and company regular updates. That is direct evidence for this posting's ask to present to executive leadership. The C++ / Structured Text and ride-control gaps are unchanged.
 - **ExtrusionStudio is now a published project (Oct 17, 2026):** a Python service that reads three PLC-backed laser gauges over Modbus TCP at 20 Hz with one asyncio session per line, logs every spool to CSV and SQLite, and drives Raspberry Pi kiosks around the plant, tested against a hand-written Modbus simulator. It is the first control-adjacent software system stated in full in the record, replacing the hidden LabVIEW draft; the C++ / Structured Text and ride-control gaps are unchanged.
 - *Earlier (Sep 19, 2026):* No material change since application. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing added touches this posting's gaps (no C++ or Structured Text, no ride-control or theme-park work, no dedicated software-engineering tenure), and the risk-analysis and PLC evidence cited above is still in the record. The years-of-experience gap narrows naturally over time regardless of site edits.
 

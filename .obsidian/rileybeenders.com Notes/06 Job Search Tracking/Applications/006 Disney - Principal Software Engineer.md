@@ -56,8 +56,9 @@ Disney's standard rewards package: health/savings benefits, educational opportun
 - **Gap:** 10 years "related work experience" required vs. roughly 5 years of professional engineering experience at the time of application, and that experience isn't specifically in software engineering.
 - This looks like a reach application driven by title similarity ("Principal Software Engineer" closely mirrors resume framing used elsewhere) rather than a close skills match, and the tracker shows it moved to "No longer in consideration" on Aug 4, 2026 — consistent with the qualifications gap above.
 
-### Now — Oct 17, 2026
+### Now — Oct 20, 2026
 
+- **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** The Business Central ERP implementation is now scoped (more than 2,000 items and 150+ products migrated in five weeks), which speaks to the preferred legacy-to-modern migration leadership, and Riley estimates and tracks the budget of every engineering project, which supports the estimation and planning duty. The core-stack gap (Flutter, Java, Angular, microservices) and the 10-year experience gap stand.
 - **BulkSSH (published Oct 17, 2026)** is a TypeScript app on Electron and Node.js — the first Node.js evidence in the record — and ExtrusionStudio is a shipped Python service. Flutter, Java, Angular and microservices are still absent, and the application is closed.
 - *Earlier (Aug 22, 2026):* No material change — none of Flutter, Java, Angular, Node.js, or microservices experience has been added to the record since application, and this application is already closed.
 

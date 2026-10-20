@@ -23,7 +23,9 @@ If the review is missing, run `grill-my-resume` first rather than guessing at pr
 Sort each item from the review into one of four bins and tell the user the sort in the final summary:
 
 - **Apply:** the fix is supported by `data/**/*.json` or the live site. Make it.
-- **Placeholder:** the fix needs a fact only Riley has (a team size, a baseline for a percentage, which PLC software, a standard's number). Do not invent it. Leave the line as it was, list the question, and never write a bracketed placeholder into the delivered PDF.
+- **Placeholder:** the fix needs a fact only Riley has (a team size, a baseline for a percentage, which PLC software, a standard's number). Do not invent it. Leave the line as it was, list the question, and never write a bracketed placeholder into the delivered PDF. Check `data/career-qa/qa-log.json` first: if Riley already answered it, the fact is evidence and the finding is **Apply**. Otherwise append the question there as an `open` entry, unless an open entry already asks it.
+
+When Riley answers questions, record each answer in `data/career-qa/qa-log.json`: the date asked and answered, the question, and the answer rewritten in correct, professional first-person prose (spelling and grammar fixed, never copied verbatim, never extended beyond what Riley said). Set status to `answered`, or `partial` with the gap in `notes` and the follow-up added as a new `open` entry. List every resume the answer was used in under `usedIn`.
 - **Decline:** the finding conflicts with a standing rule below or with the evidence. Say why in one line.
 - **Already true:** the reviewer misread the PDF (an automated roast often works from extracted text and misses bold labels or layout). Note it and move on.
 

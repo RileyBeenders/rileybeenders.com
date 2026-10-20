@@ -35,6 +35,7 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
 3. Build a fact-only evidence matrix from:
    - `https://www.rileybeenders.com`
    - `data/**/*.json` — the resume's own sections are `data/header.json` and `data/home/{summary,experience,skills,education}.json`. From each `experience.json` entry use `company`, `role`, `location`, `start`, `end`, `context`, and each bullet's `text` (a bullet's `projectId` tells you which project backs it); a bullet's `proofId` is a site-only cross-link and never resume content.
+   - `data/career-qa/qa-log.json` — Riley's answers to earlier review questions (budgets, proposals, ERP scope, unit goals, and so on). An entry with status `answered` or `partial` is evidence like any other data file; an `open` entry is a known gap, so do not ask it again, list it in the report instead.
    - Relevant current project source files when they directly prove a technical claim.
 4. Never invent experience to match the posting. You can modify the wording to more closely match the posting, but only if the claim is supported by evidence. If a claim is unsupported, judge if it should be used in the resume.
    - Separate supported evidence from gaps.
