@@ -12,6 +12,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+## Start here: the skill router
+
+Before any non-trivial task, run the load balancer on the user's request to find which skills apply and in what order:
+
+```bash
+node .claude/skills/skill-router/scripts/route.mjs "<the request, verbatim>"
+```
+
+It scores the request against `.claude/skills/skill-router/registry.json`, applies the repo rules (code change → `vault-sync`, UI work → `impeccable`, motion → `motion-design` first), and prints an ordered plan with guardrails. Skills that would replace the Blueprint Press look (greenfield design, image generation, GSAP-heavy) are marked explicit-only. Its output is a recommendation; override it when it is wrong. See the [`skill-router`](.claude/skills/skill-router/SKILL.md) row below.
+
 ## Layout
 
 Every skill, whether written for this repo or vendored from GitHub, lives in exactly one place, tracked by git:
@@ -40,6 +50,7 @@ Claude Code discovers `.claude/skills/` directly, so every skill below is regist
 | [`motion-fluidity`](.claude/skills/motion-fluidity/SKILL.md) | Writing or editing framer-motion, CSS transitions/keyframes, `useScroll`/`useSpring`, `whileInView`, `AnimatePresence`, springs, staggers, easing; translating a svelte-bits / GSAP / Motion One component into React | The *how*: svelte-bits' five motion grammars mapped onto the site's `--ease` / `EASE` / `Reveal` / `useReducedMotion` system, with translation tables (`references/grammar-map.md`) and copy-ready TSX/CSS recipes (`references/recipes.md`). |
 | [`motion-layout`](.claude/skills/motion-layout/SKILL.md) | Adding or restructuring a section, hero, nav, card grid, list, marquee, tabs/stepper, or any layout that animates as a unit; deciding where layout CSS goes in `blueprint.css` | The *structure*: how svelte-bits' landing site composes a condensing nav, layered hero, 12-col grid, marquee, cards, popovers, and expandables, each translated to the Blueprint Press shell (`.bp-shell`, `.bp-section-grid`, `PageSpine`, `BpNav`), with the original CSS in `references/svelte-bits-layouts.md`. |
 | [`site-timeline-sync`](.claude/skills/site-timeline-sync/SKILL.md) | After a meaningful commit or merge; "update the site timeline / about page", "refresh the site stats"; when `/about-this-site` looks stale — and **automatically after every push to `main`** (`.github/workflows/site-timeline-sync.yml` runs it through Claude Code and commits the result) | Keeps `data/site/about-site.json` current: runs `scripts/site-stats.mjs` to refresh the six stats from git and list commits since the timeline's last entry, adds only KEY commits as brief timeline entries, moves the present marker, promotes/prunes planned items, validates the file (`scripts/check-about-site.mjs`), recaptures screenshots (`scripts/capture-site-screenshots.mjs`) when the UI changed (local runs only), then hands off to `vault-sync`. |
+| [`skill-router`](.claude/skills/skill-router/SKILL.md) | Start of any non-trivial task; "which skill should I use", "route this", "load balancer" | The front door. `scripts/route.mjs` ranks every skill against the request using `registry.json` (keywords, phase, gates, rules, chains) and returns an ordered ground → decide → build → verify → ship plan. `--check` verifies the registry against the skill folders and this file; run it whenever a skill is added or removed. |
 
 The three resume procedures are one chain: `custom-resume` builds, `grill-my-resume` reviews, `fix-my-resume` applies the review and re-verifies, each handing to the next in the same session when the user asks for the whole route. `vault-sync` and `sync-charts` overlap: `sync-charts` is the chart-only fast path, `vault-sync` covers everything else and picks up after a chart sync when the vault also needs updating.
 
@@ -70,6 +81,35 @@ Generic, non-repo-specific skills installed from GitHub and tracked in the repo-
 Thirteen come from `Leonxlnx/taste-skill` (single-file taste guides), `impeccable` from `pbakaus/impeccable`, `web-design-guidelines` from `vercel-labs/agent-skills`. `impeccable` is a full skill folder (`SKILL.md`, `reference/*.md` per command, `scripts/impeccable` launcher with a bundled detector, `agents/*.toml` subagent definitions) and is the one to reach for first on a design task, because it is the only one that reads this repo's own product and design context. Its reference files still spell paths as `.agents/skills/impeccable/...` (its upstream default install location); in this repo that always means `.claude/skills/impeccable/...`.
 
 `grill-my-resume` (listed with the repository procedures above because it is one step of the resume chain) came from MCP Market as `grill-my-cv` (`mcpmarket-version: 1.0.0`) rather than GitHub, so it has no `skills-lock.json` entry and `scripts/site-stats.mjs` counts it as a repo procedure. Repo-local edits: the folder and `name` were renamed to `grill-my-resume` on 2026-10-20 and an `argument-hint` was added to its frontmatter; the body is upstream's. When grilling Riley's own resume, the candidate dossier is the live site plus `data/**/*.json`, postings live in `2.JobsApplliedTo/`, and rewrites follow Riley's resume copy rules: one to three sentences per bullet, no mid-sentence em dashes, and no "3D printing" or "additive manufacturing". Its findings go to `fix-my-resume`, never straight back into a rebuild.
+
+## Added skill library (planning, motion, polish, git)
+
+Generic skills added 2026-10-25, tracked in git but not in `skills-lock.json` (no upstream hash). Routing for all of them lives in `skill-router/registry.json`. Where a repo skill covers the same ground, the repo skill wins: `motion-design` decides what moves before any generic motion skill, `impeccable` is the design entry point, and the planning chain never overrides `PRODUCT.md`.
+
+| Folder | What it's for | Repo note |
+| --- | --- | --- |
+| [`animate`](.claude/skills/animate/SKILL.md) | Build one animation decision-first (purpose, tool, properties, curve, interruption, exit) | Defers to `motion-design` for limits and `motion-fluidity` for `--ease` / `EASE` / `Reveal` |
+| [`animation-vocabulary`](.claude/skills/animation-vocabulary/SKILL.md) | Turn "the bouncy thing when a popover opens" into the exact term | Naming only |
+| [`apple-design`](.claude/skills/apple-design/SKILL.md) | Apple-style fluid, physical, interruptible interaction and typography | Advisory; stay subtle |
+| [`emil-design-eng`](.claude/skills/emil-design-eng/SKILL.md) | Emil Kowalski's UI polish and animation philosophy | Advisory |
+| [`find-animation-opportunities`](.claude/skills/find-animation-opportunities/SKILL.md) | Read-only: where motion is missing and worth adding | Filter results through `motion-design` |
+| [`improve-animations`](.claude/skills/improve-animations/SKILL.md) | Read-only codebase motion audit with executable plans | Compare against the `motion-design` inventory |
+| [`review-animations`](.claude/skills/review-animations/SKILL.md) | Review motion code against a high craft bar | Review only |
+| [`mobile-native`](.claude/skills/mobile-native/SKILL.md) | Make the web app feel native on a phone (100vh, tap flash, safe areas) | Fixes only; no redesign |
+| [`grill-me`](.claude/skills/grill-me/SKILL.md) | Relentless interview to stress-test a plan | Step 1 of the planning chain |
+| [`design-brief`](.claude/skills/design-brief/SKILL.md) | Interview and codebase read into a saved design brief | Planning chain step 2 |
+| [`information-architecture`](.claude/skills/information-architecture/SKILL.md) | Navigation, hierarchy, URL patterns, flows before visuals | Planning chain step 3 |
+| [`brief-to-tasks`](.claude/skills/brief-to-tasks/SKILL.md) | Brief into an ordered checklist of vertical slices | Planning chain step 4 |
+| [`design-review`](.claude/skills/design-review/SKILL.md) | Structured critique against a brief | Without a brief use `impeccable critique` |
+| [`design-flow`](.claude/skills/design-flow/SKILL.md) | Runs the whole planning-to-build sequence | Explicit-only; its tokens and frontend phases can drift from Blueprint Press |
+| [`design-tokens`](.claude/skills/design-tokens/SKILL.md) | Generate a tokens file from an aesthetic | Explicit-only; root `DESIGN.md` and `blueprint.css` own tokens |
+| [`frontend-design`](.claude/skills/frontend-design/SKILL.md) | Build distinctive frontends from named aesthetic philosophies | Explicit-only; refinement inside Blueprint Press instead |
+| [`prototype`](.claude/skills/prototype/SKILL.md) | Several genuinely different UI variants behind a live picker | Keep throwaways out of `app/` unless Riley promotes one |
+| [`pick-ui-library`](.claude/skills/pick-ui-library/SKILL.md) | Choose a library for a frontend task | Check `package.json` first; avoid new dependencies |
+| [`write-commit`](.claude/skills/write-commit/SKILL.md) | GitHub Desktop-ready commit summary and description, in chat | Run `vault-sync` first if code or data changed |
+| [`write-merge`](.claude/skills/write-merge/SKILL.md) | PR title/body and merge commit text, in chat | After `vault-sync` |
+
+The vendored skills listed above (`design-taste-frontend`, `gpt-taste`, `redesign-existing-projects`, `brandkit`, `image-to-code`, `imagegen-*`, `minimalist-ui`, `industrial-brutalist-ui`, `high-end-visual-design`, `stitch-design-taste`) are all explicit-only in the router: they push toward a new visual world, which `PRODUCT.md` rules out without a direction round with Riley.
 
 ## Design context files
 

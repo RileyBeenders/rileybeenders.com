@@ -175,6 +175,163 @@
       "answer": null,
       "notes": null,
       "usedIn": []
+    },
+    {
+      "id": "2026-10-20-11",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "PLC programming",
+        "controls"
+      ],
+      "question": "Have you written or commissioned PLC programs yourself (ladder logic, structured text, Studio 5000 or similar) on the Allen-Bradley PLCs listed in your skills, or has your PLC work been limited to integration and Modbus TCP communication? If you programmed them, on which machine or line?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-12",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "hazard analysis",
+        "standards"
+      ],
+      "question": "Which method did your risk analysis to EU and U.S. standards use (for example FMEA, fault tree, or an ISO 12100 risk assessment), and which U.S. standard(s) did you assess ProteorPrint hardware and cloud products against?",
+      "answer": null,
+      "notes": "Disney's Sr Controls Engineer posting lists FMEA and fault tree analysis by name; the resume currently says only \"risk and hazard analysis to EU and U.S. standards\" and names the 2006/42/EC Machinery Directive.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-13",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "motor controls",
+        "VFD"
+      ],
+      "question": "Have you selected, wired, or commissioned variable frequency drives, soft starts, or relay logic on any machine? If so, which one?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-14",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "work authorization"
+      ],
+      "question": "Do you want a work-authorization line on the resume (for example \"Authorized to work in the U.S.\")? Disney's application system asks for it separately, so it is optional on paper.",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-15",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "schematics",
+        "electrical design",
+        "tools"
+      ],
+      "question": "Which tool do you use to draw the IEEE-convention electrical schematics?",
+      "answer": "I have used several tools over time: Visio, KiCad, Altium, and AutoCAD Electrical.",
+      "notes": null,
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-16",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "partial",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "ICARUS-Lite",
+        "CE marking",
+        "compliance"
+      ],
+      "question": "Was ICARUS-Lite CE marked, and who signed the declaration of conformity?",
+      "answer": "ICARUS-Lite and ICARUS-Pro are currently going through the CE testing process.",
+      "notes": "Not yet CE marked; testing is in progress. Who will sign the declaration is not recorded.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-17",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "education",
+        "degree"
+      ],
+      "question": "Does \"B.S., Electro-Mechanical Engineering\" match the diploma wording exactly?",
+      "answer": "My diploma reads \"Bachelor of Science in Electromechanical Engineering\".",
+      "notes": "data/home/education.json still spells it \"Electro-Mechanical Engineering\"; resumes should use the diploma wording.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-18",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, posting-free pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "firmware",
+        "control software"
+      ],
+      "question": "Have you written machine firmware or control code yourself, rather than tuning it? On which machine, and in what language or environment?",
+      "answer": null,
+      "notes": "Decides whether the headline's \"Control Software\" and the summary's firmware ownership get a proof bullet.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-19",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, posting-free pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "ICARUS-Lite",
+        "assembly time"
+      ],
+      "question": "Is there a before-and-after figure behind the 80% assembly-time reduction on ICARUS-Lite, for example hours per unit before and after?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-20",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, posting-free pass 2, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "Blue Mountain Ski Resort",
+        "chronology"
+      ],
+      "question": "The Ski Lift Operator role (November 2019 to January 2021) overlaps the Engineering Technician role at Filament Innovations by nine months. Was it seasonal or part-time?",
+      "answer": "Yes, the ski lift operator role was seasonal.",
+      "notes": "Riley asked that the resume not be labeled seasonal or part-time; the overlap stays unexplained on the page by choice.",
+      "usedIn": []
     }
   ]
 }

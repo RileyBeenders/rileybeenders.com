@@ -87,31 +87,31 @@
     "images": [
       {
         "src": "/project-images/ExtrusionStudio/operator-graphs-dark.webp",
+        "aspect": "16:9",
         "alt": "Operator-Graphs on the projector: three strip charts with X, Y, Z and average readings and an out-of-spec alarm",
         "caption": "Operator-Graphs, the projector view",
-        "fit": "cover",
-        "aspect": "16:9"
+        "fit": "cover"
       },
       {
         "src": "/project-images/ExtrusionStudio/packaging-light.webp",
+        "aspect": "16:9",
         "alt": "The Packaging Panel: lines, this week's approved spools, the production schedule and the spool queue",
         "caption": "Packaging Panel on the packing bench",
-        "fit": "cover",
-        "aspect": "16:9"
+        "fit": "cover"
       },
       {
         "src": "/project-images/ExtrusionStudio/statistics-dark.webp",
+        "aspect": "16:9",
         "alt": "Production Statistics: live readings for every line and the week's spools, approvals and rejections",
         "caption": "Production Statistics, plant-wide",
-        "fit": "cover",
-        "aspect": "16:9"
+        "fit": "cover"
       },
       {
         "src": "/project-images/ExtrusionStudio/packaging-labels-light.webp",
+        "aspect": "16:9",
         "alt": "The spool label with its QR code and the spool box label, as they will print",
         "caption": "Spool and box labels",
-        "fit": "cover",
-        "aspect": "16:9"
+        "fit": "cover"
       }
     ],
     "bullets": [
@@ -140,6 +140,65 @@
         ]
       }
     ],
+    "additionalInfo": {
+      "title": "ExtrusionStudio",
+      "subtitle": "From a LabVIEW proof of concept to a plant-wide production system",
+      "problem": "Three extrusion lines each had a tri-axial laser gauge, and the only record of a spool's diameter was whatever an operator wrote down. Production was speeding up, and the plant needed every reading captured, every spool judged against its tolerance, and the result visible to the operator, the packing bench and management at once.",
+      "rootCause": "The first version, in LabVIEW, proved the Modbus TCP communication and the register decoding. It was built as one program compiled three times, one per line, each polling on a hard-coded delay with the line's address fixed in the code. That was fine as a proof of concept and wrong as a plant system: a line could not be added without a rebuild, a dead line held up the others, and nothing it measured was tied to a spool.",
+      "constraints": [
+        "Read every line concurrently at 20 Hz, with a dead line never stalling a healthy one",
+        "Tie every reading to the spool it is physically wound on, not the one on the winder when the laser saw it",
+        "Run on a headless Debian server with screens that have no computer of their own",
+        "Work with no internet on the floor: no CDN, no build step, the guides served by the server itself",
+        "Power the screens, projector and TVs with the work hours to let the lines heat up and save power overnight"
+      ],
+      "approach": [
+        "Rewrote the program in Python as one service: one asyncio poller and one Modbus session per line, a hub that keeps the ring buffer and statistics, and Server-Sent Events to every browser",
+        "Split the user interface into panels for each audience, each its own process, with only Admin Settings allowed to talk to the gauges",
+        "Added a calibration phase on the line station that times the filament from the laser to the spool and delays logging by that offset",
+        "Logged every spool to its own CSV and a SQLite run table, issued it a Spool SN and a serial, and wrote an HTML certificate on approval",
+        "Built the packing bench workflow: approve, inspect or reject, reasons on the serial, and spool, box and master case labels on a thermal printer",
+        "Deployed Raspberry Pi kiosks that boot straight to their page, check in with the server, and are updated, configured and power-switched from Server Settings"
+      ],
+      "designDecisions": [
+        "Server-Sent Events rather than WebSockets: data flows one way and SSE reconnects by itself",
+        "The poll rate is per-line configuration with a floor, because the right value depends on the PLC's response time",
+        "Each frame carries min, max and last per channel, so a spike between frames still shows on the chart",
+        "A hand-written Modbus simulator that shares no code with the client, so a test cannot hide the same bug twice",
+        "A Vizio TV cannot be woken over HDMI-CEC, so the Pi pairs with it by PIN and switches it over the network instead",
+        "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server"
+      ],
+      "impact": [
+        "Every spool off every line has a record, a serial, a label and a certificate",
+        "The whole plant sees production and alarms on the projector and the statistics TV",
+        "The packing bench decides spools against the gauge's figures instead of by eye",
+        "Screens come on an hour into the workday and go off at the end of it without anyone touching them",
+        "Testing the Pi fleet drove a tool of its own, BulkSSH, to reach every Pi at once"
+      ],
+      "tools": [
+        "Python",
+        "asyncio",
+        "Modbus TCP",
+        "Starlette",
+        "SQLite",
+        "Server-Sent Events",
+        "Raspberry Pi",
+        "Debian",
+        "LabVIEW",
+        "Thermal label printing"
+      ],
+      "assets": [
+        {
+          "label": "Plant deployment",
+          "src": "/project-artifacts/ExtrusionStudio/deployment.svg",
+          "alt": "Three extrusion lines read over Modbus TCP by one server, which serves every panel to Raspberry Pi kiosks and switches their screens with the work hours"
+        }
+      ]
+    },
+    "dates": {
+      "start": "2025-09-19",
+      "ongoing": true
+    },
     "links": [
       {
         "label": "Tested with BulkSSH",
@@ -657,65 +716,6 @@
           "note": "The spool's production settings and filament notes as they stood when the run began and when it ended. Formula data, so it goes here and nowhere else."
         }
       ]
-    },
-    "additionalInfo": {
-      "title": "ExtrusionStudio",
-      "subtitle": "From a LabVIEW proof of concept to a plant-wide production system",
-      "problem": "Three extrusion lines each had a tri-axial laser gauge, and the only record of a spool's diameter was whatever an operator wrote down. Production was speeding up, and the plant needed every reading captured, every spool judged against its tolerance, and the result visible to the operator, the packing bench and management at once.",
-      "rootCause": "The first version, in LabVIEW, proved the Modbus TCP communication and the register decoding. It was built as one program compiled three times, one per line, each polling on a hard-coded delay with the line's address fixed in the code. That was fine as a proof of concept and wrong as a plant system: a line could not be added without a rebuild, a dead line held up the others, and nothing it measured was tied to a spool.",
-      "constraints": [
-        "Read every line concurrently at 20 Hz, with a dead line never stalling a healthy one",
-        "Tie every reading to the spool it is physically wound on, not the one on the winder when the laser saw it",
-        "Run on a headless Debian server with screens that have no computer of their own",
-        "Work with no internet on the floor: no CDN, no build step, the guides served by the server itself",
-        "Power the screens, projector and TVs with the work hours to let the lines heat up and save power overnight"
-      ],
-      "approach": [
-        "Rewrote the program in Python as one service: one asyncio poller and one Modbus session per line, a hub that keeps the ring buffer and statistics, and Server-Sent Events to every browser",
-        "Split the user interface into panels for each audience, each its own process, with only Admin Settings allowed to talk to the gauges",
-        "Added a calibration phase on the line station that times the filament from the laser to the spool and delays logging by that offset",
-        "Logged every spool to its own CSV and a SQLite run table, issued it a Spool SN and a serial, and wrote an HTML certificate on approval",
-        "Built the packing bench workflow: approve, inspect or reject, reasons on the serial, and spool, box and master case labels on a thermal printer",
-        "Deployed Raspberry Pi kiosks that boot straight to their page, check in with the server, and are updated, configured and power-switched from Server Settings"
-      ],
-      "designDecisions": [
-        "Server-Sent Events rather than WebSockets: data flows one way and SSE reconnects by itself",
-        "The poll rate is per-line configuration with a floor, because the right value depends on the PLC's response time",
-        "Each frame carries min, max and last per channel, so a spike between frames still shows on the chart",
-        "A hand-written Modbus simulator that shares no code with the client, so a test cannot hide the same bug twice",
-        "A Vizio TV cannot be woken over HDMI-CEC, so the Pi pairs with it by PIN and switches it over the network instead",
-        "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server"
-      ],
-      "impact": [
-        "Every spool off every line has a record, a serial, a label and a certificate",
-        "The whole plant sees production and alarms on the projector and the statistics TV",
-        "The packing bench decides spools against the gauge's figures instead of by eye",
-        "Screens come on an hour into the workday and go off at the end of it without anyone touching them",
-        "Testing the Pi fleet drove a tool of its own, BulkSSH, to reach every Pi at once"
-      ],
-      "tools": [
-        "Python",
-        "asyncio",
-        "Modbus TCP",
-        "Starlette",
-        "SQLite",
-        "Server-Sent Events",
-        "Raspberry Pi",
-        "Debian",
-        "LabVIEW",
-        "Thermal label printing"
-      ],
-      "assets": [
-        {
-          "label": "Plant deployment",
-          "src": "/project-artifacts/ExtrusionStudio/deployment.svg",
-          "alt": "Three extrusion lines read over Modbus TCP by one server, which serves every panel to Raspberry Pi kiosks and switches their screens with the work hours"
-        }
-      ]
-    },
-    "dates": {
-      "start": "2025-09-19",
-      "ongoing": true
     }
   },
   {
@@ -752,21 +752,6 @@
         ]
       }
     ],
-    "links": [
-      {
-        "label": "GitHub repository",
-        "href": "https://github.com/RileyBeenders/BulkSSH"
-      },
-      {
-        "label": "Release",
-        "href": "https://github.com/RileyBeenders/BulkSSH/releases/tag/v1.0.0",
-        "note": "v1.0.0"
-      },
-      {
-        "label": "ExtrusionStudio deployment",
-        "href": "#project-extrusionstudio"
-      }
-    ],
     "additionalInfo": {
       "title": "BulkSSH",
       "subtitle": "One window for every Pi on the floor",
@@ -796,7 +781,22 @@
     "dates": {
       "start": "2026-10-17",
       "ongoing": true
-    }
+    },
+    "links": [
+      {
+        "label": "GitHub repository",
+        "href": "https://github.com/RileyBeenders/BulkSSH"
+      },
+      {
+        "label": "Release",
+        "href": "https://github.com/RileyBeenders/BulkSSH/releases/tag/v1.0.0",
+        "note": "v1.0.0"
+      },
+      {
+        "label": "ExtrusionStudio deployment",
+        "href": "#project-extrusionstudio"
+      }
+    ]
   },
   {
     "name": "RB's Auto App Updater",
@@ -890,7 +890,7 @@
     "order": 5,
     "type": "Remote Operations Software",
     "visible": false,
-    "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics.",
+    "summary": "A next-generation network-accessible interface for remote printer operation, diagnostics, monitoring, and manufacturing analytics. - Rework this",
     "proofId": "proteor-print",
     "bullets": [
       {
