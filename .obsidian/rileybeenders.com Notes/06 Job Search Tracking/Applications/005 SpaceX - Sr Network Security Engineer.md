@@ -55,9 +55,10 @@ Long-term incentives (stock or cash awards), discretionary bonuses, discounted s
 - **Significant gap, worth being direct about:** this posting specifically wants a *network security* specialist with hands-on Tailscale/WireGuard/zero-trust/SIEM/BGP-OSPF/Python-CI/CD/Go-review experience. None of that appears in the current record — my background is general network/systems infrastructure, not dedicated security engineering. This was a reach application built on adjacent-but-different skills, and the tracker status (no advancement beyond "Application Received" as of this writing) is consistent with that gap.
 - No formal STEM-field years-of-security-experience claim exists to check against the 5-year (or 8-year no-degree) bar.
 
-### Now — Sep 19, 2026
+### Now — Oct 17, 2026
 
-No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing security-specific (Tailscale, WireGuard, SIEM, BGP/OSPF, Go) has been added to the record, and the network-infrastructure evidence above still stands.
+- **BulkSSH (published Oct 17, 2026)** adds some security-adjacent practice to the record: host keys are never accepted silently, destructive commands need confirming before they reach several devices, and saved passwords are encrypted with the Windows account. ExtrusionStudio adds a headless Debian deployment with roles, sign-in and an audit log of every change. Neither is dedicated network security work, so the Tailscale / WireGuard / SIEM / BGP-OSPF / Go gaps stand; Python now has a shipped system behind it.
+- *Earlier (Sep 19, 2026):* No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing security-specific (Tailscale, WireGuard, SIEM, BGP/OSPF, Go) has been added to the record, and the network-infrastructure evidence above still stands.
 
 ---
 

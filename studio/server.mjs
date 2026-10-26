@@ -20,11 +20,15 @@
 
 import { createServer } from "node:http";
 import { createHash } from "node:crypto";
+import { createWriteStream } from "node:fs";
+import { pipeline } from "node:stream/promises";
+import os from "node:os";
 import { readFile, writeFile, rename, mkdir, readdir, stat, unlink, rmdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { AccessStore, parseTarget } from "./access.mjs";
 import { inspectGif, retimeGif, timingAt } from "./gif.mjs";
+import { compressVideo, posterFrame } from "./video.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
@@ -81,11 +85,14 @@ const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".
  * pdf.js and saves beside it as `<name>.pdf.png` (see /api/pdf-preview). The
  * preview belongs to its PDF, so the picker lists the PDF, not the PNG.
  */
-const MEDIA_EXTS = new Set([...IMAGE_EXTS, ".pdf"]);
+const MEDIA_EXTS = new Set([...IMAGE_EXTS, ".pdf", ".mp4"]);
 const isPdfName = (name) => path.extname(name).toLowerCase() === ".pdf";
-const isPdfPreviewName = (name) => /\.pdf\.png$/i.test(name);
+const isPdfPreviewName = (name) => /\.(pdf\.png|mp4\.jpg)$/i.test(name);
 const MAX_JSON_BYTES = 4 * 1024 * 1024;
 const MAX_IMAGE_BYTES = 16 * 1024 * 1024;
+/** A video is compressed on upload (see video.mjs), so the file coming in may be far larger than what is kept. */
+const MAX_VIDEO_BYTES = 4 * 1024 * 1024 * 1024;
+const isVideoName = (name) => path.extname(name).toLowerCase() === ".mp4";
 const MAX_PREVIEW_BYTES = 12 * 1024 * 1024;
 
 /**
@@ -136,7 +143,8 @@ const MIME = {
   ".woff2": "font/woff2",
   ".mjs": "text/javascript; charset=utf-8",
   ".wasm": "application/wasm",
-  ".pdf": "application/pdf"
+  ".pdf": "application/pdf",
+  ".mp4": "video/mp4"
 };
 
 /* ------------------------------------------------------------- helpers --- */
@@ -315,7 +323,7 @@ async function scanImageDir(dir, folderPath, images, folders) {
       name: entry.name,
       bytes: info.size,
       modified: info.mtimeMs,
-      ...(isPdfName(entry.name) ? { kind: "pdf" } : {})
+      ...(isPdfName(entry.name) ? { kind: "pdf" } : isVideoName(entry.name) ? { kind: "video" } : {})
     });
   }
 }
@@ -478,6 +486,7 @@ async function moveImagePath(fromRaw, toRaw) {
   await rename(from.absolute, to.absolute);
   // A PDF's preview travels with it.
   if (!isFolder && isPdfName(from.absolute)) await rename(`${from.absolute}.png`, `${to.absolute}.png`).catch(() => {});
+  if (!isFolder && isVideoName(from.absolute)) await rename(`${from.absolute}.jpg`, `${to.absolute}.jpg`).catch(() => {});
   console.log(`  moved ${from.src} → ${to.src}`);
 
   const rewrote = [];
@@ -1072,6 +1081,36 @@ async function handleApi(req, res, url, { store, siteUrl }) {
       return sendError(res, 400, `Give the file a name ending in ${[...MEDIA_EXTS].join(", ")}.`);
     }
 
+    if (isVideoName(filename)) {
+      // Streamed to a temporary file rather than held in memory, then compressed
+      // into the folder with a poster frame beside it.
+      await mkdir(target.dir, { recursive: true });
+      const name = await uniquePath(target.dir, filename);
+      const incoming = path.join(os.tmpdir(), `studio-upload-${process.pid}-${Date.now()}.mp4`);
+      const kept = path.join(target.dir, name);
+      try {
+        let size = 0;
+        req.on("data", (chunk) => {
+          size += chunk.length;
+          if (size > MAX_VIDEO_BYTES) req.destroy(new Error("Payload too large"));
+        });
+        await pipeline(req, createWriteStream(incoming));
+        if (size === 0) return sendError(res, 400, "The uploaded file was empty.");
+        console.log(`  compressing ${target.folderPath}/${name} (${(size / 1048576).toFixed(0)} MB)…`);
+        await compressVideo(incoming, kept);
+        await posterFrame(kept, `${kept}.jpg`);
+        const bytes = (await stat(kept)).size;
+        console.log(`  uploaded ${target.folderPath}/${name} (${(bytes / 1048576).toFixed(1)} MB after compressing)`);
+        return sendJson(res, 201, { src: `/${target.folderPath}/${name}`, folder: target.folderPath, name, bytes, originalBytes: size });
+      } catch (error) {
+        await unlink(kept).catch(() => {});
+        await unlink(`${kept}.jpg`).catch(() => {});
+        throw error;
+      } finally {
+        await unlink(incoming).catch(() => {});
+      }
+    }
+
     const body = await readBody(req, MAX_IMAGE_BYTES);
     if (body.length === 0) return sendError(res, 400, "The uploaded file was empty.");
 
@@ -1097,6 +1136,8 @@ async function handleApi(req, res, url, { store, siteUrl }) {
     }
     // A PDF's preview goes with it.
     if (isPdfName(filename)) await unlink(path.join(target.dir, `${filename}.png`)).catch(() => {});
+    // So does a video's poster frame.
+    if (isVideoName(filename)) await unlink(path.join(target.dir, `${filename}.jpg`)).catch(() => {});
     console.log(`  deleted ${target.folderPath}/${filename}`);
     return sendJson(res, 200, { ok: true });
   }

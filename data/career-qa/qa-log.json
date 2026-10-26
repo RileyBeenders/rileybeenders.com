@@ -1,0 +1,337 @@
+{
+  "about": "Running history of career questions put to Riley (by resume reviews, recruiters, or agents) and Riley's answers. Answers are edited for spelling, grammar, and tone, never copied verbatim, and never extended beyond what Riley said. Unanswered questions stay with status \"open\" and answer null. The site does not import this file; the resume skills read it as evidence alongside the rest of data/**/*.json.",
+  "statusValues": {
+    "open": "Asked, not yet answered.",
+    "partial": "Answered in part; the follow-up is listed in notes or as its own open entry.",
+    "answered": "Answered in full."
+  },
+  "entries": [
+    {
+      "id": "2026-10-20-01",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, application 023 (Disney Program Engineer)",
+      "topics": [
+        "budgets",
+        "cost tracking",
+        "ERP"
+      ],
+      "question": "Have you ever owned or tracked a project budget, for example the KRAKEN contract, the ICARUS-Lite cost target, or purchasing in your ERP/CRM?",
+      "answer": "Yes. I began tracking project budgets at Filament Innovations, and at Proteor I track every engineering project: I estimate its budget, track it through the project, build its bills of materials, and maintain the unit cost of each product. This work runs in Microsoft Dynamics 365 Business Central, an ERP comparable to SAP.",
+      "notes": "Riley's ERP experience is Business Central, not SAP. Do not list SAP as a skill on that basis.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Program_Engineer.html",
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-10-20-02",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, application 023 (Disney Program Engineer)",
+      "topics": [
+        "proposals",
+        "customers",
+        "leadership reporting"
+      ],
+      "question": "Have you written customer quotes or proposals, or scoped and estimated work?",
+      "answer": "Yes. At Filament Innovations I wrote customer proposals, scopes of work, and estimates. At Proteor I no longer work with customers directly, except when a serious issue goes beyond what customer support can resolve. I present at Proteor's monthly USA review, where I cover project status, constraints, and budgets with Proteor leadership from its locations around the world; the meeting focuses on the U.S. departments.",
+      "notes": "Which Filament Innovations role(s) the proposal work belongs to is not yet recorded (see 2026-10-20-08).",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Program_Engineer.html",
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-10-20-03",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, application 023 (Disney Program Engineer)",
+      "topics": [
+        "ERP",
+        "system implementation",
+        "migration",
+        "inventory"
+      ],
+      "question": "How large was the Business Central implementation (item count, timeline), and did you run the data migration and go-live?",
+      "answer": "The implementation covered more than 2,000 items and over 150 products and took five weeks. We spent the first two weeks evaluating the software, then three weeks migrating everything into the live system and reconciling inventory counts on the production floor.",
+      "notes": null,
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Program_Engineer.html",
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-10-20-04",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "partial",
+      "source": "grill-my-resume, application 023 (Disney Program Engineer)",
+      "topics": [
+        "ICARUS-Lite",
+        "revenue",
+        "sales goals"
+      ],
+      "question": "Is there a revenue figure or share you can give for ICARUS-Lite?",
+      "clarification": "Resumes currently say ICARUS-Lite was carried through commercialization \"contributing to increased revenue\", and reviewers want a number behind that phrase. Any one of these would do: revenue from ICARUS-Lite in a year, its share of the division's revenue, units sold against goal, or growth over the previous year.",
+      "answer": "The ICARUS-Lite unit goals were 60 units for 2025 and 100 units for 2026.",
+      "notes": "These are goals, not results. Units actually delivered are asked in 2026-10-20-06 and 2026-10-20-07.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Program_Engineer.html",
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-10-20-05",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, application 023 (Disney Program Engineer)",
+      "topics": [
+        "leadership reporting",
+        "communication"
+      ],
+      "question": "As CTO, did you give regular status updates to leadership?",
+      "answer": "Yes. As CTO of Filament Innovations I gave regular updates to the CEO and to the rest of the company, since I was the one developing and rapidly iterating on the designs and software.",
+      "notes": null,
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Program_Engineer.html",
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-10-20-06",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "follow-up to 2026-10-20-04",
+      "topics": [
+        "ICARUS-Lite",
+        "sales goals"
+      ],
+      "question": "Did ICARUS-Lite meet its 2025 goal of 60 units? How many units were delivered in 2025?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-07",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "follow-up to 2026-10-20-04",
+      "topics": [
+        "ICARUS-Lite",
+        "sales goals"
+      ],
+      "question": "How many ICARUS-Lite units have been delivered so far in 2026, against the goal of 100?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-08",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "follow-up to 2026-10-20-02",
+      "topics": [
+        "proposals",
+        "Filament Innovations"
+      ],
+      "question": "In which Filament Innovations role(s) did you write customer proposals, scopes of work, and estimates (for example, THE KRAKEN as Industrial Engineer, or as CTO)? Roughly how many?",
+      "answer": null,
+      "notes": "Until answered, resumes attribute this work to Filament Innovations as a whole rather than to one role.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-09",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "follow-up to 2026-10-20-01",
+      "topics": [
+        "budgets"
+      ],
+      "question": "What is the typical size of the project budgets you estimate and track at Proteor (a range is fine), and how many projects are you tracking at a time?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-10",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "follow-up to 2026-10-20-03",
+      "topics": [
+        "ERP",
+        "system implementation"
+      ],
+      "question": "When did the Business Central go-live happen (month and year), and did you lead a team for it? If so, how many people?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-11",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "PLC programming",
+        "controls"
+      ],
+      "question": "Have you written or commissioned PLC programs yourself (ladder logic, structured text, Studio 5000 or similar) on the Allen-Bradley PLCs listed in your skills, or has your PLC work been limited to integration and Modbus TCP communication? If you programmed them, on which machine or line?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-12",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "hazard analysis",
+        "standards"
+      ],
+      "question": "Which method did your risk analysis to EU and U.S. standards use (for example FMEA, fault tree, or an ISO 12100 risk assessment), and which U.S. standard(s) did you assess ProteorPrint hardware and cloud products against?",
+      "answer": null,
+      "notes": "Disney's Sr Controls Engineer posting lists FMEA and fault tree analysis by name; the resume currently says only \"risk and hazard analysis to EU and U.S. standards\" and names the 2006/42/EC Machinery Directive.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-13",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "motor controls",
+        "VFD"
+      ],
+      "question": "Have you selected, wired, or commissioned variable frequency drives, soft starts, or relay logic on any machine? If so, which one?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-14",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "work authorization"
+      ],
+      "question": "Do you want a work-authorization line on the resume (for example \"Authorized to work in the U.S.\")? Disney's application system asks for it separately, so it is optional on paper.",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-15",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "schematics",
+        "electrical design",
+        "tools"
+      ],
+      "question": "Which tool do you use to draw the IEEE-convention electrical schematics?",
+      "answer": "I have used several tools over time: Visio, KiCad, Altium, and AutoCAD Electrical.",
+      "notes": null,
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-16",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "partial",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "ICARUS-Lite",
+        "CE marking",
+        "compliance"
+      ],
+      "question": "Was ICARUS-Lite CE marked, and who signed the declaration of conformity?",
+      "answer": "ICARUS-Lite and ICARUS-Pro are currently going through the CE testing process.",
+      "notes": "Not yet CE marked; testing is in progress. Who will sign the declaration is not recorded.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-17",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume second pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "education",
+        "degree"
+      ],
+      "question": "Does \"B.S., Electro-Mechanical Engineering\" match the diploma wording exactly?",
+      "answer": "My diploma reads \"Bachelor of Science in Electromechanical Engineering\".",
+      "notes": "data/home/education.json still spells it \"Electro-Mechanical Engineering\"; resumes should use the diploma wording.",
+      "usedIn": [
+        "output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html"
+      ]
+    },
+    {
+      "id": "2026-10-20-18",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, posting-free pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "firmware",
+        "control software"
+      ],
+      "question": "Have you written machine firmware or control code yourself, rather than tuning it? On which machine, and in what language or environment?",
+      "answer": null,
+      "notes": "Decides whether the headline's \"Control Software\" and the summary's firmware ownership get a proof bullet.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-19",
+      "asked": "2026-10-20",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, posting-free pass, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "ICARUS-Lite",
+        "assembly time"
+      ],
+      "question": "Is there a before-and-after figure behind the 80% assembly-time reduction on ICARUS-Lite, for example hours per unit before and after?",
+      "answer": null,
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-10-20-20",
+      "asked": "2026-10-20",
+      "answered": "2026-10-20",
+      "status": "answered",
+      "source": "grill-my-resume, posting-free pass 2, Disney Imagineering and Ride Controls baseline resume (RileyBeenders_Disney_Imagineering_Ride_Controls.pdf)",
+      "topics": [
+        "Blue Mountain Ski Resort",
+        "chronology"
+      ],
+      "question": "The Ski Lift Operator role (November 2019 to January 2021) overlaps the Engineering Technician role at Filament Innovations by nine months. Was it seasonal or part-time?",
+      "answer": "Yes, the ski lift operator role was seasonal.",
+      "notes": "Riley asked that the resume not be labeled seasonal or part-time; the overlap stays unexplained on the page by choice.",
+      "usedIn": []
+    }
+  ]
+}

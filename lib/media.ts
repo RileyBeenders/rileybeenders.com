@@ -3,6 +3,20 @@ export function isPdf(src: string): boolean {
   return /\.pdf$/i.test(src);
 }
 
+/** A gallery file that is a video (MP4) rather than an image. */
+export function isVideo(src: string): boolean {
+  return /\.mp4$/i.test(src);
+}
+
+/**
+ * A video's poster frame: a JPEG saved beside the file as `<name>.mp4.jpg`.
+ * The gallery grid shows this and nothing else, so a page of thumbnails never
+ * fetches a video; the full-screen viewer plays the file itself.
+ */
+export function videoPosterSrc(src: string): string {
+  return `${src}.jpg`;
+}
+
 /**
  * A PDF's first-page preview: rendered by the Studio (pdf.js) and saved
  * beside the file as `<name>.pdf.png`. The gallery grid shows this and nothing

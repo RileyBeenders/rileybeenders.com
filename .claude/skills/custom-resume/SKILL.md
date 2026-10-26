@@ -1,0 +1,112 @@
+---
+name: custom-resume
+description: Generate and verify a job-targeted resume for Riley Beenders using a requested page count, a job-posting PDF, current RileyBeenders.com facts, and the established Disney reference resume. Use when asked to create, tailor, revise, or regenerate a resume for a job PDF in 2.JobsApplliedTo.
+---
+
+# Custom Resume
+
+One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
+
+First step of the resume chain: `custom-resume` **builds**, `grill-my-resume` **reviews**, `fix-my-resume` **applies the review**. When a build is delivered, offer the next two steps; when the user asks for the whole chain, run them in that order in the same session. The standing rules in `fix-my-resume` (no repeated claims, no filler, ignore "recent graduate" advice, never invent a number) apply to the build as well, so a first draft should already pass them.
+
+## Collect required inputs
+
+Before starting resume work, determine whether the user's invocation supplies both required inputs:
+
+1. Final resume page count.
+2. Job-posting PDF to use for tailoring.
+
+Ask for every missing input in one concise message, then wait for the user's answer. Use these exact questions:
+
+1. `How many pages should the final resume be? (Recommended: 1)`
+2. `Which job-posting PDF should I use to tailor the resume?`
+
+Do not ask again for a value already supplied in the invocation. Do not begin research or resume generation until both values are known. After collecting them, confirm the page count and PDF path in one sentence and proceed.
+
+## Task: Generate one tailored resume to a specific job posting.
+
+1. Use the selected page count and job-posting PDF.
+   - The job-posting directory is spelled `2.JobsApplliedTo`. Resolve near-miss
+     spellings (`JobsAppliedTo`, `JobsAplliedTo`, `2.JobsAppliedTo`) to that directory.
+   - Ask for clarification if the PDF path matches no file or multiple files.
+2. Extract the company, job title, location, responsibilities, qualifications, and important ATS terms from the job PDF.
+   - Look for the most important requirements and responsibilities, and any specific keywords that are repeated or emphasized.
+   - Keywords are the most important. The wording between `data/home/skills.json` and the job posting may slightly difer in spelling, punctuation, or capitalization. Use the job posting's wording when possible.
+3. Build a fact-only evidence matrix from:
+   - `https://www.rileybeenders.com`
+   - `data/**/*.json` — the resume's own sections are `data/header.json` and `data/home/{summary,experience,skills,education}.json`. From each `experience.json` entry use `company`, `role`, `location`, `start`, `end`, `context`, and each bullet's `text` (a bullet's `projectId` tells you which project backs it); a bullet's `proofId` is a site-only cross-link and never resume content.
+   - `data/career-qa/qa-log.json` — Riley's answers to earlier review questions (budgets, proposals, ERP scope, unit goals, and so on). An entry with status `answered` or `partial` is evidence like any other data file; an `open` entry is a known gap, so do not ask it again, list it in the report instead.
+   - Relevant current project source files when they directly prove a technical claim.
+4. Never invent experience to match the posting. You can modify the wording to more closely match the posting, but only if the claim is supported by evidence. If a claim is unsupported, judge if it should be used in the resume.
+   - Separate supported evidence from gaps.
+   - Exclude unsupported tools, platforms, credentials, industries, dates, and performance metrics.
+   - Prefer the current live-site wording when older resumes conflict with current data.
+5. Draft a resume that prioritizes the strongest supported evidence for the target role and fills the selected page count only with content that is not already on the page.
+   - **Never repeat a claim.** Each fact, metric, machine, or project appears once. A Selected Projects entry may only carry a project that no experience bullet already describes; a summary never restates a bullet's number; a skill name appears once in Core Expertise. Removing a repeat beats filling a page, always. (Riley, 2026-10-20.)
+   - The summary is a one- or two-sentence value statement: what Riley delivers and to what standard. No "leads X's R&D", no list of hats or titles, no buzzword chain, no metrics (they live in the bullets).
+   - Core Expertise groups skills under four bold labels. A tool or platform leads a line only when a bullet shows it in use; otherwise it sits later in the line. Order the Controls line by evidence, not by what the posting lists first.
+   - Lead each bullet with the outcome or the problem, then the method; keep every number the data holds together with its baseline when the data records one, and never add a number the data lacks.
+   - State an acquisition or title change once, in one plain sentence, where the reader first meets it (the Proteor context line and the Filament Innovations header), so the Filament-to-Proteor timeline reads as one record.
+   - When the job is on-site away from Bethlehem, PA and `data/header.json` has `openToRelocation: true`, put "Open to relocation (<city>)" in the contact row.
+   - Education stays last with its real date. Never add "recent graduate", a GPA, or coursework, and never move Education up on a reviewer's advice; Riley worked through college and the Filament Innovations and Proteor record is the point. Certifications go one per line with the year on the right, never in a paragraph.
+   - Fill every requested page with content that passes the rules above. The text on the last page should end near the bottom margin, not partway down the page. A 2-page resume whose second page stops halfway reads as unfinished.
+   - Fill with supported content first, strongest evidence first:
+     1. More `experience.json` bullets that fit the role.
+     2. A multi-role employer (Filament Innovations) split into per-role entries, each with its own dates.
+     3. A **Selected Projects** section drawn from `data/projects/projects.json` (including each project's `additionalInfo` problem, approach, and impact), only for projects no experience bullet already carries.
+     4. More additional relevant experience.
+     5. The full certification list from `education.json`.
+     6. An extra Core Expertise line.
+   - Then tune vertical spacing (gaps between sections, entries, and bullets) until the content reaches the bottom margin. Scale every gap together rather than one at a time. Stay between roughly 0.8x and 1.7x the reference gaps. Never shrink body text below the reference size to make content fit; cut the weakest evidence instead. A binary search on a single spacing multiplier works: print, count pages, and keep the largest value that still yields exactly the requested page count.
+   - Never pad with filler, repeated claims, or unsupported evidence. If supported evidence runs out before the pages are full, stop and report the remaining gap instead of padding; a last page that ends short is the correct result, and the multiplier stays at 1.0 rather than stretching to hide it.
+   - For more than one page, move the page margins into `@page` so later pages get the same top margin. Let sections break across pages, but keep a heading or role heading with its first bullet, and never split a bullet across pages.
+6. Match the layout and theme of `output/pdf/Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf`.
+   - Use US Letter portrait format.
+   - Preserve the navy headings, Arial typography, spacing, rules, and single-column structure.
+   - Make every contact hyperlink blue, visibly underlined, and clickable.
+   - Keep heading letter-spacing at or below 0.5pt so ATS text extraction reads "EDUCATION", not "E D U C A T I O N".
+   - Write the HTML with `:root { --m: 1; }` and every vertical gap as `calc(<pt> * var(--m))`, so `scripts/print-resume.mjs` can scale all gaps with one number.
+7. Save the final PDF to `output/pdf/` using:
+
+   `RileyBeenders_<Company>_<Job_Title>.pdf`
+
+   Replace spaces and invalid filename characters with underscores. Save the HTML source beside it as `output/resume-html/<same name>.html`; `fix-my-resume` edits that file rather than rebuilding.
+
+   Print with `node .claude/skills/custom-resume/scripts/print-resume.mjs <html> <pdf> [multiplier]` (repo `playwright-core` plus any Chromium in the Playwright cache, Chrome, or Edge).
+8. Validate before delivery with `python .claude/skills/custom-resume/scripts/validate-resume.py <pdf> <pages> --png <dir>` (needs `pymupdf`), then look at every rendered page. It fails on a wrong page count or size, an unstyled link, blue text that is not a link, a letter-spaced heading, or any eight-word fragment that appears twice (a repeated claim).
+   - Require exactly the selected number of pages, each at 612 x 792 points.
+   - Measure page fill. With the reference 0.42in bottom margin the content area ends at about y = 762pt. The lowest text line on the last page should end within about 36pt of that (y >= 726pt), and every earlier page should run to its bottom margin. Report the measured value; if it falls short, return to step 5.
+   - Render the page and inspect it for clipping, overlap, malformed glyphs, and inconsistent spacing.
+   - Apply the design craft floor to that render (`.claude/skills/impeccable/reference/craft-floor.md`, its **Verify** list, read as a printed document rather than a web page). The PDF keeps its own ATS-safe identity (navy headings, Arial, single column) and does not follow the site's `DESIGN.md`, but the same floor holds: one consistent scale of heading, body, and label sizes; more space above a heading than below it; a body measure that does not run edge to edge in a single column of 12pt Arial; dates and numerals aligned so a scanner and a human read the same column; hyperlinks visibly styled (blue, underlined) and nothing else styled like a link; no orphaned heading at a page bottom; no widowed single line of a bullet on the next page. Do not run impeccable's HTML detector on the PDF; it only reads markup.
+   - Confirm the phone, email, website, and LinkedIn URI annotations work.
+   - Confirm all linked text is blue and underlined.
+   - Confirm the final text contains the supported target keywords and none of the unsupported claims identified during the evidence audit.
+9. Return a clickable link to the final PDF and a short verification summary, including the measured page fill and the list of unsupported posting requirements kept out. Then offer `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
+
+When subagents are available, parallelize job analysis, evidence auditing, and content strategy. Keep final writing, PDF generation, and quality approval with the primary agent.
+
+## Example task
+
+User request:
+
+`$custom-resume`
+
+Assistant intake request:
+
+1. `How many pages should the final resume be? (Recommended: 1)`
+2. `Which job-posting PDF should I use to tailor the resume?`
+
+User response:
+
+`Use 1 page and 2.JobsApplliedTo/006_Principal Software Engineer at Disney.pdf.`
+
+Expected result:
+
+- Read the Disney job posting and current RileyBeenders.com evidence.
+- Emphasize only supported software, infrastructure, automation, and leadership experience.
+- Record important Disney requirements that are not supported and keep them out of the resume.
+- Generate and verify `output/pdf/RileyBeenders_Disney_Principal_Software_Engineer.pdf`.
+
+## Where the output is tracked
+
+The delivered file for a real application is copied into `1.ApplicationsUsed/` and the row in the `README.md` / `data/more-info/gantt.md` tracker table plus the matching vault page in `.obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/` are updated — that bookkeeping is the `vault-sync` procedure's job (`.claude/skills/vault-sync/SKILL.md`).

@@ -1,0 +1,22 @@
+ExtrusionLineStudio filament,
+software_version,2.0.0
+spool_sn,SS33-A5NA
+spool_id,007
+line_id,line1
+line_name,Extrusion Line #1
+material,PP
+color,Natural
+batch_number,PP2610A
+start_time,2026-10-16T15:42:00-04:00
+end_time,2026-10-16T15:43:30-04:00
+csv_file,line1_20261016_154200.csv
+
+settings_at_start,
+production_settings,none recorded,
+
+notes_at_start,none recorded
+
+settings_at_end,
+production_settings,none recorded,
+
+notes_at_end,none recorded

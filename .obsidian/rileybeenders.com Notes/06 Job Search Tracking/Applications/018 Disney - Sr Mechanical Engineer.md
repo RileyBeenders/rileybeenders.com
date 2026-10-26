@@ -62,9 +62,10 @@ Disney's rewards package (health and savings benefits, educational opportunities
 - **Leadership overlap:** acting as Hiring Manager for engineering roles and leading R&D covers the "motivate and oversee others" requirement.
 - **Education:** the B.S. in Electro-Mechanical Engineering (Penn State) is a related field. ABET accreditation isn't recorded in the site data.
 
-### Now — Sep 24, 2026
+### Now — Oct 20, 2026
 
-- No change since application (applied today).
+- **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** The record now shows budget and scope ownership: Riley estimates and tracks the budget of every engineering project, builds its BOMs, and reports status and constraints at a monthly leadership review. That supports the scope, schedule, and budget duty; the PE license (the deciding requirement) and building-systems code gaps stand.
+- *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
 
 ---
 

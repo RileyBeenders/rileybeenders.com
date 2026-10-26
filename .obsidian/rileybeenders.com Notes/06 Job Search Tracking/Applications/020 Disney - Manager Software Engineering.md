@@ -65,9 +65,11 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **Vendor and cost management:** vendor communication and cost negotiation, the Microsoft Business Central ERP implementation, and worldwide collaboration support the multi-vendor requirement.
 - **Gaps:** the data does not establish managing a dedicated software engineering team, 8 years in software roles, Java/J2EE, public cloud platforms, mobile development, formal OOAD, Agile delivery, enterprise architecture frameworks, or budget ownership with forecasting and accruals (MyPPM).
 
-### Now — Sep 24, 2026
+### Now — Oct 20, 2026
 
-- No change since application (applied today).
+- **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** The finance gap narrows: Riley estimates and tracks the budget of every engineering project, maintains product unit costs in Business Central, and presents status, constraints, and budgets at Proteor's monthly USA review with global leadership. MyPPM itself, billing, forecasting, and accruals are still not in the record, nor is dedicated software-team management.
+- **ExtrusionStudio (published Oct 17, 2026)** is end-to-end software delivery evidence: a Python service (asyncio, Starlette, Server-Sent Events, SQLite) with six audience-specific panels, tests against a Modbus simulator that shares no code with the client, documentation served by the product, and a Raspberry Pi deployment. BulkSSH (TypeScript, Electron, Node.js) shipped as v1.0.0 with an installer and a portable build. Both strengthen the backend and front-end evidence; the dedicated software-team management, Java/J2EE, cloud and Agile gaps stand.
+- *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
 
 ---
 

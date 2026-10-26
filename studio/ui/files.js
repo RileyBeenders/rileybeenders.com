@@ -24,6 +24,9 @@ import { el, thumbImage } from "./fields.js";
 /** The level above the image folders (public/): it only holds them. */
 const TOP = "";
 const MAX_UPLOAD_BYTES = 16 * 1024 * 1024;
+/** A video is compressed on the way in, so what may be sent is far larger than what is kept. */
+const MAX_VIDEO_UPLOAD_BYTES = 4 * 1024 * 1024 * 1024;
+const isMp4 = (file) => file.type === "video/mp4" || /\.mp4$/i.test(file.name);
 const NEW_FOLDER = "\u0000new";
 
 const byName = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
@@ -99,7 +102,7 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
 
       /* ------------------------------------------------------ items --- */
 
-      const shows = (image) => pdf || image.kind !== "pdf";
+      const shows = (image) => pdf || (image.kind !== "pdf" && image.kind !== "video");
 
       /** What the open folder holds: folders first, then files, each in name order the way Explorer sorts. */
       function items() {
@@ -123,11 +126,11 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
 
       /* -------------------------------------------------------- dom --- */
 
-      const title = el("h2", {}, manage ? "Files" : pdf ? "Choose an image or PDF" : "Choose an image");
+      const title = el("h2", {}, manage ? "Files" : pdf ? "Choose an image, PDF or video" : "Choose an image");
       const upButton = el("button", { type: "button", class: "files-icon-btn", title: "Up one folder (Backspace)", "aria-label": "Up one folder", onClick: () => go(parentOf(view.cwd)) }, svgIcon(ICONS.up));
       const crumbs = el("nav", { class: "files-path", "aria-label": "Folder" });
       const newFolderButton = el("button", { type: "button", class: "f-btn f-btn--quiet", title: "New folder (Ctrl+Shift+N)", onClick: startNewFolder }, svgIcon(ICONS.newFolder), "New folder");
-      const fileInput = el("input", { type: "file", multiple: true, accept: pdf ? "image/*,application/pdf,.pdf" : "image/*", hidden: true });
+      const fileInput = el("input", { type: "file", multiple: true, accept: pdf ? "image/*,application/pdf,.pdf,video/mp4,.mp4" : "image/*", hidden: true });
       const uploadButton = el("button", { type: "button", class: "f-btn f-btn--quiet", onClick: () => fileInput.click() }, svgIcon(ICONS.upload), "Upload");
       const grid = el("div", { class: "files-grid", role: "listbox", "aria-multiselectable": "true", tabIndex: -1 });
       const statusText = el("span", {});
@@ -205,7 +208,7 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
           : el("span", { class: "files-visual" }, thumb);
         const meta = isFolder
           ? (item.count === 0 ? "Empty" : plural(item.count, "item"))
-          : `${item.kind === "pdf" ? "PDF · " : ""}${sizeOf(item.bytes)}`;
+          : `${item.kind === "pdf" ? "PDF · " : item.kind === "video" ? "Video · " : ""}${sizeOf(item.bytes)}`;
         const tile = el("div", {
           class: `files-tile${isFolder ? " files-tile--folder" : ""}${item.path === view.current ? " is-current" : ""}`,
           role: "option",
@@ -277,7 +280,7 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
         deleteButton.disabled = chosen.length === 0 || chosen.some((item) => item.fixed);
         if (view.busy) return;
         statusText.textContent = one
-          ? (one.type === "file" ? `${one.name} · ${one.kind === "pdf" ? "PDF · " : ""}${sizeOf(one.bytes)}` : `${one.name} · ${one.count === 0 ? "empty" : plural(one.count, "item")}`)
+          ? (one.type === "file" ? `${one.name} · ${one.kind === "pdf" ? "PDF · " : one.kind === "video" ? "Video · " : ""}${sizeOf(one.bytes)}` : `${one.name} · ${one.count === 0 ? "empty" : plural(one.count, "item")}`)
           : chosen.length > 1 ? `${chosen.length} selected` : plural(list.length, "item");
         showUsage(one && !one.fixed ? one : null);
       }
@@ -586,13 +589,14 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
 
       async function upload(files, folder) {
         if (folder === TOP || files.length === 0) return;
-        const allowed = (file) => file.type.startsWith("image/") || (pdf && (file.type === "application/pdf" || /\.pdf$/i.test(file.name)));
+        const allowed = (file) => file.type.startsWith("image/") || (pdf && (file.type === "application/pdf" || /\.pdf$/i.test(file.name) || isMp4(file)));
+        const limit = (file) => (isMp4(file) ? MAX_VIDEO_UPLOAD_BYTES : MAX_UPLOAD_BYTES);
         const skipped = files.filter((file) => !allowed(file)).map((file) => file.name);
-        const tooBig = files.filter((file) => allowed(file) && file.size > MAX_UPLOAD_BYTES).map((file) => file.name);
-        const queue = files.filter((file) => allowed(file) && file.size <= MAX_UPLOAD_BYTES);
+        const tooBig = files.filter((file) => allowed(file) && file.size > limit(file)).map((file) => file.name);
+        const queue = files.filter((file) => allowed(file) && file.size <= limit(file));
         const uploaded = [];
         for (const [i, file] of queue.entries()) {
-          setStatus(`Uploading ${i + 1} of ${queue.length}: ${file.name}…`);
+          setStatus(`${isMp4(file) ? "Uploading and compressing" : "Uploading"} ${i + 1} of ${queue.length}: ${file.name}…${isMp4(file) ? " this can take a few minutes" : ""}`);
           try {
             const result = await api(`/api/images/${encodePath(folder)}?name=${encodeURIComponent(file.name)}`, {
               method: "POST",
@@ -614,8 +618,8 @@ export function createFilePicker({ api, dialog, toast, confirmDialog, onMoved })
         focusTile();
         const notes = [
           uploaded.length > 0 ? `Uploaded ${uploaded.length === 1 ? baseName(uploaded[0]) : plural(uploaded.length, "file")} to ${baseName(folder)}.` : "",
-          skipped.length > 0 ? `Skipped ${skipped.join(", ")}: ${pdf ? "images and PDFs" : "images"} only.` : "",
-          tooBig.length > 0 ? `Skipped ${tooBig.join(", ")}: over 16 MB.` : ""
+          skipped.length > 0 ? `Skipped ${skipped.join(", ")}: ${pdf ? "images, PDFs and MP4s" : "images"} only.` : "",
+          tooBig.length > 0 ? `Skipped ${tooBig.join(", ")}: over ${tooBig.every((name) => /\.mp4$/i.test(name)) ? "4 GB" : "16 MB"}.` : ""
         ].filter(Boolean);
         if (notes.length > 0) toast(notes.join("\n"), skipped.length + tooBig.length > 0 ? "error" : "ok");
       }

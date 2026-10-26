@@ -4,7 +4,7 @@ tags: [agents, design, styling, meta]
 
 # Impeccable Design Workflow
 
-`impeccable` is the design skill that entered the repo on 2026-09-18 (`.agents/skills/impeccable/`, junctioned to `.claude/skills/impeccable`, tracked in `skills-lock.json` from `pbakaus/impeccable`, v0.1.5). Unlike the thirteen single-file taste guides beside it, it is a command set with a launcher and a bundled anti-pattern detector, and it is the only design skill that reads this repository's own context. It is now the entry point for any design, review, or polish request on the site or the Studio; see [[Repository Agent Skills (.agents)]] for where it sits among the other procedures.
+`impeccable` is the design skill that entered the repo on 2026-09-18 (`.claude/skills/impeccable/`, tracked in `skills-lock.json` from `pbakaus/impeccable`, v0.1.5). Unlike the thirteen single-file taste guides beside it, it is a command set with a launcher and a bundled anti-pattern detector, and it is the only design skill that reads this repository's own context. It is now the entry point for any design, review, or polish request on the site or the Studio; see [[Repository Agent Skills]] for where it sits among the other procedures.
 
 ## The three context files
 
@@ -16,7 +16,7 @@ tags: [agents, design, styling, meta]
 
 Until this pass the root `DESIGN.md` was a stray analysis of *claude.com* (cream canvas, coral CTAs, Copernicus) committed with the "Reworked AGENT skills" change. `impeccable` resolved it as the site's design authority, so its detector reported 100+ "off-system" values that were in fact Blueprint Press's own tokens. The file was replaced with the real system; the claude.com analysis exists only in git history. The narrative language in the new file (north star "The Blueprint Press", the color and philosophy descriptions) was taken from Riley's own words in `data/site/about-site.json` and [[Design System (Blueprint Press)]] rather than from a fresh interview.
 
-The `.agents/skills/design-guidelines/DESIGN.md` router is a different file: it picks between the Tesla and Bugatti reference token sets the Electric preset was seeded from. It now carries a note pointing at the root file.
+The `.claude/skills/design-guidelines/DESIGN.md` router is a different file: it picks between the Tesla and Bugatti reference token sets the Electric preset was seeded from. It now carries a note pointing at the root file.
 
 ## Standing decisions from the 2026-09-18 interview
 
@@ -31,7 +31,7 @@ These are recorded so no agent re-asks them:
 
 ## How the commands map onto this repo
 
-- Run the launcher from the repo root: `sh .agents/skills/impeccable/scripts/impeccable <verb>` (Git Bash) or `.agents\skills\impeccable\scripts\impeccable.cmd <verb>` (PowerShell). `impeccable context` loads the three files above and prints directives; run it once per session.
+- Run the launcher from the repo root: `sh .claude/skills/impeccable/scripts/impeccable <verb>` (Git Bash) or `.claude\skills\impeccable\scripts\impeccable.cmd <verb>` (PowerShell). `impeccable context` loads the three files above and prints directives; run it once per session.
 - `impeccable detect --json <files>` is the mechanical scan. Pass the `.tsx` pages and the `.css` files explicitly (Next.js CSS imports are not followed). Expected advisories: the grid background (`codex-grid-background`) on `blueprint.css`, `feature.css`, and `studio.css`, because the blueprint grid is the committed surface; treat those as false positives, everything else as a finding.
 - `$impeccable critique <route or file>` runs two isolated subagents (a design review and the detector/browser evidence), synthesizes a report with Nielsen scores and P0–P3 issues, and writes a snapshot under `.impeccable/critique/`. `$impeccable polish` reads that snapshot as its backlog and closes it when cleared.
 - `$impeccable audit` (a11y, performance, responsive), `typeset`, `layout`, `quieter`, `delight`, `clarify`, `harden`, `adapt` are the scoped refinement commands. All of them preserve the incumbent world by contract.
@@ -63,7 +63,7 @@ Both critiques ran dual-agent (a design review and a detector/browser-evidence a
 **What shipped** is recorded in [[Design System (Blueprint Press)]] ("The impeccable polish pass") and [[Build Tooling and Config]] ("The Studio's own design"). One decision did not reach `main`: the About tab's gradient text is still live (`gradient: true` in `BpNav.tsx`, `.bp-nav-link--gradient` in `blueprint.css`), so the detector's `gradient-text` warning stands until it is flattened. Otherwise the detector reports no warnings on the site beyond the arrowhead false positive, no color drift (the insertion green and lightbox scrim are now documented tokens), and only fluid-scale advisories; the Studio scan is down to its grid advisory. Both snapshots stay open until `$impeccable polish` re-runs and closes them; a second `$impeccable critique` is the way to see the score move.
 
 ## Related
-- [[Repository Agent Skills (.agents)]]
+- [[Repository Agent Skills]]
 - [[Design System (Blueprint Press)]]
 - [[Blueprint UI Components]]
 - [[About This Site Page]]

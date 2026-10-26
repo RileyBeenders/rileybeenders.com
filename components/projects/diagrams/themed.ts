@@ -10,5 +10,6 @@
  */
 export const THEMED_SVGS = new Set([
   "/project-artifacts/unifi-network/proteor-printing.svg",
-  "/project-artifacts/unifi-network/rb-cgf.svg"
+  "/project-artifacts/unifi-network/rb-cgf.svg",
+  "/project-artifacts/ExtrusionStudio/deployment.svg"
 ]);

@@ -66,9 +66,10 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **Gaps:** the data does not establish 5 years in an SRE, DevOps, or systems engineering title, public cloud (AWS, Azure, GCP), CI platforms beyond GitHub, Ansible/Terraform or similar configuration management, observability stacks, Active Directory at enterprise scale, or IAM products and protocols (Okta, Keycloak, SSO, SAML, OIDC, PAM, secrets management). No Security Operations collaboration or maritime certifications are recorded.
 - **Education:** the B.S. in Electro-Mechanical Engineering is a comparable engineering field, and the posting also accepts equivalent experience.
 
-### Now — Sep 24, 2026
+### Now — Oct 17, 2026
 
-- No change since application (applied today).
+- **ExtrusionStudio (published Oct 17, 2026)** adds direct operations evidence: a headless Debian server running one supervising service that starts, watches and restarts every panel, updates itself daily from its git branch, serves its own guides, and manages a Raspberry Pi kiosk fleet (check-in every 30 seconds, remote screen power and updates, TVs paired over the network), with a hand-written simulator for tests. BulkSSH is a released tool for running commands across many Linux hosts at once — mirrored keystrokes, broadcast with exit codes, auto-reconnect. Public cloud, Ansible/Terraform, observability and IAM gaps are unchanged.
+- *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
 
 ---
 

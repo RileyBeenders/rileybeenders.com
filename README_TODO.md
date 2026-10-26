@@ -24,4 +24,4 @@ Alter Line 136 - To link to the network project + VLANs/Wifi routing
 
 The resume-PDF data rules that used to be drafted here (which JSON files and
 fields feed a tailored resume) now live in the procedure that uses them:
-`.agents/skills/custom-resume/SKILL.md`, step 3.
+`.claude/skills/custom-resume/SKILL.md`, step 3.

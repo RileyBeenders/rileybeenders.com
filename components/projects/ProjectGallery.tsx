@@ -10,7 +10,7 @@ import { PostButton } from "@/components/projects/PostCard";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
-import { isPdf, pdfPreviewSrc } from "@/lib/media";
+import { isPdf, isVideo, pdfPreviewSrc, videoPosterSrc } from "@/lib/media";
 import { canFloat, type ShownImage } from "@/lib/photo-place";
 
 /** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
@@ -82,7 +82,8 @@ export function ShotButton({ image, index, onOpen, sizes = SHOT_SIZES }: ShotBut
   }
   // A PDF is shown by its first page (the preview the Studio saved), whole
   // unless the Studio picks a shape for it; the rest of the file never loads here.
-  const shown = pdf ? pdfPreviewSrc(image.src) : image.src;
+  const video = isVideo(image.src);
+  const shown = pdf ? pdfPreviewSrc(image.src) : video ? videoPosterSrc(image.src) : image.src;
   const ratio = pdf && !image.aspect ? null : aspectRatio(image.aspect);
   const frame = (
     <button
@@ -127,6 +128,11 @@ export function ShotButton({ image, index, onOpen, sizes = SHOT_SIZES }: ShotBut
         />
       )}
       {pdf && <span className="pj-shot-tag">{pdfTag(image)}</span>}
+      {video && (
+        <span className="pj-shot-play" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
+        </span>
+      )}
       <span className="pj-shot-zoom" aria-hidden="true">
         <ZoomIcon />
       </span>

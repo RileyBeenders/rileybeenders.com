@@ -1,7 +1,7 @@
 # Keeps /about-this-site honest after every push to main.
 #
 # Claude Code runs the repo's own `site-timeline-sync` procedure
-# (.agents/skills/site-timeline-sync/SKILL.md) against the commits that just
+# (.claude/skills/site-timeline-sync/SKILL.md) against the commits that just
 # landed: it refreshes the six stats, decides whether any of the new commits is
 # a KEY moment worth a timeline entry (most pushes are not), moves the "present"
 # marker when its work has shipped, and keeps the vault note in step. The
@@ -89,12 +89,6 @@ jobs:
         with:
           node-version: 22
 
-      # Claude Code discovers skills only under .claude/skills; in this repo
-      # that path is a git-ignored per-machine link to .agents/skills
-      # (see .agents/README.md → Layout). Recreate it for this runner.
-      - name: Link the repo's skills for Claude Code
-        run: ln -s ../.agents/skills .claude/skills
-
       - name: Report what the sync will see
         run: node scripts/site-stats.mjs
 
@@ -108,7 +102,7 @@ jobs:
             You are running unattended in GitHub Actions on the main branch of this repository.
             ${{ inputs.after && format('A push just landed: head {0}, covering {1}..{0}.', inputs.after, inputs.before) || 'This run was started by hand from the Actions tab.' }}
 
-            Follow the repository procedure in .agents/skills/site-timeline-sync/SKILL.md,
+            Follow the repository procedure in .claude/skills/site-timeline-sync/SKILL.md,
             including its "Unattended runs" section, to bring data/site/about-site.json up to
             date for every commit that has landed since the timeline's last hashed entry:
 

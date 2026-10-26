@@ -45,7 +45,8 @@ export function thumbImage(src, cssSize, props = {}) {
   const local = typeof src === "string" && src.startsWith("/") && !src.startsWith("//");
   // A PDF is shown by its first page, the preview saved beside it.
   const pdf = isPdfSrc(src);
-  const shown = pdf ? pdfPreviewSrc(src) : src;
+  // A video is shown by its poster frame, saved beside it as `<name>.mp4.jpg`.
+  const shown = pdf ? pdfPreviewSrc(src) : /\.mp4$/i.test(src || "") ? `${src}.jpg` : src;
   const img = el("img", {
     alt: "",
     loading: "lazy",

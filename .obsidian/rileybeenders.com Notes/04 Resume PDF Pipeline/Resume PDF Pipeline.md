@@ -42,7 +42,7 @@ A **standalone Node script**, not part of the Next.js app or any route — run m
 
 ## Where per-job tailored resumes come from
 
-Neither of the above produces the files in `1.ApplicationsUsed/`. Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills (.agents)]] and [[Job Application Tracker]].
+Neither of the above produces the files in `1.ApplicationsUsed/`. Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
 
 ## Related
 - [[Blueprint UI Components]]
