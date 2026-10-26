@@ -24,6 +24,7 @@ export type ResumeBullet = {
 };
 
 export type ProjectImage = {
+  /** An image, GIF, PDF or MP4. An MP4 shows as the poster frame saved beside it as `<src>.jpg` and plays in the full-screen viewer. */
   src: string;
   alt: string;
   caption?: string;
@@ -327,6 +328,8 @@ export type Project = {
   order?: number;
   proofId?: string;
   images?: ProjectImage[];
+  /** A small square mark shown beside the project's title; omitted = none. */
+  logo?: { src: string; alt?: string };
   additionalInfo?: ProjectAdditionalInfo;
   dates?: ProjectDates;
   links?: ProjectLink[];

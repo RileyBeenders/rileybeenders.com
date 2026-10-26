@@ -73,6 +73,20 @@
   margin-top: 10px;
 }
 
+/* A project's own mark, set beside its name; the title keeps its line height. */
+.pj-title:has(.pj-logo) {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 18px);
+}
+.pj-logo {
+  flex: none;
+  width: clamp(40px, 4.4vw, 56px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
 .pj-subtitle {
   font-family: var(--bp-font-subheader), Georgia, serif;
   font-style: italic;
@@ -337,6 +351,32 @@
 /* A PDF in the gallery: its first page, tagged, with the file behind a download
    link when the Studio allows it. The page is drawn on white whatever the theme,
    as paper is. */
+/* An MP4 in the gallery: its poster frame, with a play mark over it. */
+.pj-shot-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  pointer-events: none;
+}
+.pj-shot-play svg {
+  box-sizing: content-box;
+  padding: 14px 14px 14px 18px;
+  border-radius: 50%;
+  background: rgba(8, 16, 26, 0.72);
+  transition: transform 0.4s var(--ease);
+}
+.pj-shot-btn:hover .pj-shot-play svg,
+.pj-shot-btn:focus-visible .pj-shot-play svg { transform: scale(1.08); }
+
+.pj-lb-video {
+  display: block;
+  max-width: min(94vw, 1600px);
+  max-height: 82vh;
+  background: #000;
+}
+
 .pj-shot-tag {
   position: absolute;
   top: 10px;

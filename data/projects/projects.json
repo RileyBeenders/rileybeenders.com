@@ -723,12 +723,16 @@
     "id": "bulkssh",
     "order": 3,
     "type": "Windows Desktop App / TypeScript, Electron",
+    "logo": {
+      "src": "/project-images/BulkSSH/BulkSSH_Logo.png",
+      "alt": "BulkSSH logo"
+    },
     "summary": "A Windows app for working with many SSH devices at once: servers, Raspberry Pis, routers and switches. Add a list of addresses, enter the username once, and every device opens in a grid of live terminals.\n\nI built it to speed up testing the ExtrusionStudio deployment, where every change to the Pi image had to be tried on every Pi. Mirrored keystrokes type into every ticked device, and a broadcast runs one command on all of them and shows each one's output and exit code.",
-    "status": "A short GIF of the app in use is on its way.",
     "images": [
       {
-        "src": "",
-        "alt": "BulkSSH demo GIF: adding several Pis, mirroring keystrokes and broadcasting a command",
+        "src": "/project-images/BulkSSH/BulkSSH.mp4",
+        "alt": "BulkSSH demo video: adding several Pis, mirroring keystrokes and broadcasting a command",
+        "caption": "BulkSSH in use: adding several Pis, mirroring keystrokes and broadcasting a command",
         "fit": "contain"
       }
     ],

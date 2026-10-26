@@ -23,7 +23,7 @@ tags: [build, tooling, config]
 
 **Dependencies**: `@vercel/analytics` `^2.0.1`, `@vercel/speed-insights` `^2.0.0`, `framer-motion` `^12.42.2`, `jspdf` `^4.2.1`, `lucide-react` `^1.23.0`, `mermaid` `^11.16.1`, `next` `^16.2.12`, `react` / `react-dom` `^19.2.7`.
 
-**Dev dependencies**: `@types/node` `^26.1.0`, `@types/react` `^19.2.17`, `@types/react-dom` `^19.2.3`, `playwright-core` `^1.63.0`, `typescript` `^6.0.3`. `pdfjs-dist` `^6.3.289` moved from here to the runtime dependencies on 2026-09-27, when the site itself started reading PDFs (`PdfPages`, see [[Projects Route (BpComingSoon)]]); the Studio still serves the same package at `/vendor/pdfjs/` for its previews.
+**Dev dependencies**: `@types/node` `^26.1.0`, `@types/react` `^19.2.17`, `@types/react-dom` `^19.2.3`, `playwright-core` `^1.63.0`, `typescript` `^6.0.3`. `pdfjs-dist` `^6.3.289` moved from here to the runtime dependencies on 2026-09-27, when the site itself started reading PDFs (`PdfPages`, see [[Projects Route (BpComingSoon)]]); the Studio still serves the same package at `/vendor/pdfjs/` for its previews. `ffmpeg-static` `^5.3.0` (2026-10-25) is the ffmpeg binary the Studio uses to compress uploaded MP4s and cut their poster frames (`studio/video.mjs`); it is imported only when a video is uploaded.
 
 Every range was pinned to a caret on the installed version in the Version 3.1.1 cleanup (2026-09-19, when the package was also renamed from `interactive-resume-starter` 0.1.0 and marked `private`); until then `react`, `react-dom`, `framer-motion`, `lucide-react`, `typescript` and the `@types/*` were `"latest"`, so a fresh install could pick up new majors. Next 16 dev uses **Turbopack** by default.
 

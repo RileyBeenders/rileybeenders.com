@@ -228,7 +228,15 @@ export function ProjectEntry({ view, index, total }: ProjectEntryProps) {
                 {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(total).padStart(2, "0")}
               </p>
             </Reveal>
-            <Reveal delay={0.08}><h2 className="pj-title">{project.name}</h2></Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="pj-title">
+                {project.logo?.src && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="pj-logo" src={project.logo.src} alt={project.logo.alt ?? `${project.name} logo`} width={56} height={56} />
+                )}
+                {project.name}
+              </h2>
+            </Reveal>
             {project.type && (
               <Reveal delay={0.14}><p className="pj-subtitle">{project.type}</p></Reveal>
             )}

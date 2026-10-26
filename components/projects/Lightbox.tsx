@@ -6,7 +6,7 @@ import type { ProjectImage } from "@/types/resume";
 import { CompareImage } from "@/components/projects/CompareImage";
 import { PdfPages } from "@/components/projects/PdfPages";
 import { PostCard } from "@/components/projects/PostCard";
-import { isPdf } from "@/lib/media";
+import { isPdf, isVideo, videoPosterSrc } from "@/lib/media";
 import { aspectRatio, DEFAULT_ASPECT } from "@/lib/aspect";
 import { fill, ui } from "@/lib/copy";
 
@@ -78,6 +78,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
   // A PDF opens as every page, scrollable, drawn from the file itself; the
   // whole file sits behind a download when the Studio allows it.
   const pdf = image ? isPdf(image.src) : false;
+  const video = image ? isVideo(image.src) : false;
   // What pdf.js reports once the file is parsed, falling back to the count the
   // Studio stored beside the file so the caption isn't blank while it loads.
   const pdfTotal = pdfAt.total || image?.pages || 0;
@@ -159,6 +160,18 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
             sizes="90vw"
             ratio={aspectRatio(image.aspect) ?? DEFAULT_ASPECT}
             loading="eager"
+          />
+        ) : video ? (
+          // Plays from the file itself, so nothing downloads until the viewer opens.
+          <video
+            key={image.src}
+            className="pj-lb-video"
+            src={image.src}
+            poster={videoPosterSrc(image.src)}
+            aria-label={image.alt}
+            controls
+            playsInline
+            preload="metadata"
           />
         ) : pdf ? (
           <PdfPages key={image.src} src={image.src} alt={image.alt} onPageChange={onPdfPage} />
