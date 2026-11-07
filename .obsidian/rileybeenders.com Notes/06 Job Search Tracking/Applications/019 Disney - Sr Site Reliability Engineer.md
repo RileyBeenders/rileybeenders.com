@@ -4,7 +4,7 @@ Company: "Disney Signature Experiences"
 Role: "Sr Site Reliability Engineer"
 JobID: "019"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Sep 29, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/019_Disney_Sr%20Site%20Reliability%20Engineer.pdf"
 ---
 

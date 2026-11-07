@@ -4,7 +4,7 @@ Company: "Boston Dynamics"
 Role: "Senior Staff Manufacturing Engineer (Atlas)"
 JobID: "007"
 Date Applied: 2026-08-08
-Status: "Application Received"
+Status: "No longer in consideration (Aug 27, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf"
 ---
 

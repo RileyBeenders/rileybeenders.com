@@ -11,7 +11,7 @@ The repo doubles as the owner's personal job-search system of record. This note 
 | Folder | Contents |
 |---|---|
 | `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`024`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `custom-resume` procedure resolves near-misses to it.) |
-| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, the 2-page Disney resumes for 017–021, and the 2-page Disney Program Engineer resume for 023 (built, grilled, and fixed through the resume chain). |
+| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `custom-resume` agent procedure. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, the 2-page Disney resumes for 017–021, the Disney Sr Controls Engineer resume for 022, and the 2-page Disney Program Engineer resume for 023 (built, grilled, and fixed through the resume chain). |
 | `output/pdf/` | Generated resume PDF variants, including the Disney Forward Deployed Engineer and Forward Deployed Product Engineer resumes, the full-length and `_2-Page` variants for applications 017–021, plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
 | `references/` | Dated **snapshot resumes** (`RileyBeenders_Apr2022.pdf`, `_Sept2025.pdf`, `_Jan2026.pdf`) kept as historical evidence of how the resume has evolved, and as reference material the `custom-resume` procedure can draw layout/content cues from. |
 | `output/resumeTemplates/` | Abstract layout mockups from `generateResumeTemplates.mjs` — see [[Resume PDF Pipeline]]. |
@@ -31,10 +31,10 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[001 Disney - Principal Ride Control Software Engineer\|001]]                   | Walt Disney Imagineering            | Principal Ride Control Software Engineer (Controls Automation) | 🟢 Application Received                                     |
 | [[002 Fluidstack - General Application\|002]]                                    | Fluidstack.io                       | General Application                                            | 🟢 Application Received                                     |
 | [[003 K2 Space - Principal Electro-Mechanical Manufacturing Engineer\|003]]      | K2 Space                            | Principal Electro-Mechanical Manufacturing Engineer            | 🔴 No longer in consideration                               |
-| [[004 Relativity Space - Lead Manufacturing Engineer Integration and Test\|004]] | Relativity Space                    | Lead, Manufacturing Engineer, Integration & Test               | 🟢 Application Received                                     |
+| [[004 Relativity Space - Lead Manufacturing Engineer Integration and Test\|004]] | Relativity Space                    | Lead, Manufacturing Engineer, Integration & Test               | 🔴 No longer in consideration                                     |
 | [[005 SpaceX - Sr Network Security Engineer\|005]]                               | SpaceX                              | Sr. Network Security Engineer                                  | 🟢 Application Received                                     |
 | [[006 Disney - Principal Software Engineer\|006]]                                | Walt Disney Imagineering            | Principal Software Engineer                                    | 🔴 No longer in consideration                               |
-| [[007 Boston Dynamics - Senior Staff Manufacturing Engineer\|007]]               | Boston Dynamics                     | Senior Staff Manufacturing Engineer                            | 🟢 Application Received                                     |
+| [[007 Boston Dynamics - Senior Staff Manufacturing Engineer\|007]]               | Boston Dynamics                     | Senior Staff Manufacturing Engineer                            | 🔴 No longer in consideration                                     |
 | [[008 Boston Dynamics - Staff Manufacturing Engineering Atlas\|008]]             | Boston Dynamics                     | Staff Manufacturing Engineering - Atlas                        | 🔴 No longer in consideration                               |
 | [[009 Figure - Manufacturing Engineer\|009]]                                     | Figure Robotics                     | Manufacturing Engineer                                         | 🟢 Application Received                                     |
 | [[010 Figure - NPI Engineer\|010]]                                               | Figure Robotics                     | NPI Engineer                                                   | 🟢 Application Received                                     |
@@ -42,14 +42,15 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[012 Google - Product Engineer Global Manufacturing Engineering\|012]]          | Google                              | Product Engineer, Global Manufacturing Engineering             | 🟢 Application Received                                     |
 | [[013 Disney - Product Software Engineer I\|013]]                                | Walt Disney Entertainment           | Product Software Engineer I                                    | 🔴 No longer in consideration                               |
 | [[014 Disney - WDI Figure Programming Intern\|014]]                              | Walt Disney Imagineering            | WDI Figure Programming Intern, Spring 2027                     | 🔴 Not in consideration (not currently enrolled in college) |
-| [[015 Disney - Forward Deployed Engineer\|015]]                                  | The Walt Disney Company (Corporate) | Forward Deployed Engineer                                      | 🟢 Application Received                                     |
-| [[016 Disney - Forward Deployed Product Engineer\|016]]                          | The Walt Disney Company (Corporate) | Forward Deployed Product Engineer                              | 🟢 Application Received                                     |
-| [[017 Disney - Sr Cybersecurity Engineer\|017]] | Disneyland Resort | Sr Cybersecurity Engineer | 🟢 Application Received |
-| [[018 Disney - Sr Mechanical Engineer\|018]] | Disneyland Resort | Sr Mechanical Engineer | 🟢 Application Received |
-| [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🟢 Application Received |
-| [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🟢 Application Received |
-| [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🟢 Application Received |
-| [[023 Disney - Program Engineer\|023]] | Walt Disney World Resort | Program Engineer | 🟢 Application Received |
+| [[015 Disney - Forward Deployed Engineer\|015]]                                  | The Walt Disney Company (Corporate) | Forward Deployed Engineer                                      | 🔴 No longer in consideration                                     |
+| [[016 Disney - Forward Deployed Product Engineer\|016]]                          | The Walt Disney Company (Corporate) | Forward Deployed Product Engineer                              | 🔴 No longer in consideration                                     |
+| [[017 Disney - Sr Cybersecurity Engineer\|017]] | Disneyland Resort | Sr Cybersecurity Engineer | 🔴 No longer in consideration |
+| [[018 Disney - Sr Mechanical Engineer\|018]] | Disneyland Resort | Sr Mechanical Engineer | 🔴 No longer in consideration |
+| [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🔴 No longer in consideration |
+| [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🔴 No longer in consideration |
+| [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🔴 No longer in consideration |
+| [[022 Disney - Sr Controls Engineer\|022]] | Disney Experiences (Disneyland Resort) | Sr Controls Engineer | — Not confirmed submitted (tracker shows TBD) |
+| [[023 Disney - Program Engineer\|023]] | Walt Disney World Resort | Program Engineer | 🔴 No longer in consideration |
 | [[024 Disney - Senior Systems Engineer\|024]] | Disney Experiences | Senior Systems Engineer | 🟢 Application Received |
 
 ### Before the tracker

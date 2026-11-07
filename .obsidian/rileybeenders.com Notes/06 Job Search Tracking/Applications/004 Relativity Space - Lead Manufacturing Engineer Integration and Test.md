@@ -4,7 +4,7 @@ Company: "Relativity Space"
 Role: "Lead, Manufacturing Engineer, Integration & Test"
 JobID: "004"
 Date Applied: 2026-08-01
-Status: "Application Received"
+Status: "No longer in consideration (Aug 24, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf"
 ---
 

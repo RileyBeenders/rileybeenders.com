@@ -4,7 +4,7 @@ Company: "Disneyland Resort"
 Role: "Sr Mechanical Engineer"
 JobID: "018"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Sep 25, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/018_Disney_Sr%20Mechanical%20Engineer.pdf"
 ---
 

@@ -4,7 +4,7 @@ Company: "The Walt Disney Company (Corporate)"
 Role: "Forward Deployed Engineer"
 JobID: "015"
 Date Applied: 2026-09-15
-Status: "Application Received"
+Status: "No longer in consideration (Oct 2, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/015_Forward%20Deployed%20Engineer%20at%20DISNEY.pdf"
 ---
 

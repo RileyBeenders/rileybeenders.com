@@ -4,7 +4,7 @@ Company: "Disneyland Resort"
 Role: "Sr Cybersecurity Engineer"
 JobID: "017"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Oct 16, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/017_Disney_Sr%20Cybersecurity%20Engineer.pdf"
 ---
 

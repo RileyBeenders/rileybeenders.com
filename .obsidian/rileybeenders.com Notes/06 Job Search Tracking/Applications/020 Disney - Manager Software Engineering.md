@@ -4,7 +4,7 @@ Company: "Disney Experiences"
 Role: "Manager, Software Engineering"
 JobID: "020"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Sep 25, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf"
 ---
 

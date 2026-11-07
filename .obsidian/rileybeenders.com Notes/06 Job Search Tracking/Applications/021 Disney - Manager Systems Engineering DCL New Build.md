@@ -4,7 +4,7 @@ Company: "Disney Signature Experiences (Disney Cruise Line)"
 Role: "Manager, Systems Engineering (DCL New Build)"
 JobID: "021"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Sep 30, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/021_Disney_Manager%2C%20Systems%20Engineering%20%28DCL%20New%20Build%29.pdf"
 ---
 

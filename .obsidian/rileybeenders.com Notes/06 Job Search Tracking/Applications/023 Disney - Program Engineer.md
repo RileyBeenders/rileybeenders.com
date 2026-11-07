@@ -4,7 +4,7 @@ Company: "Walt Disney World Resort"
 Role: "Program Engineer"
 JobID: "023"
 Date Applied: 2026-10-20
-Status: "Application Received"
+Status: "No longer in consideration (Declined in Workday, seen Nov 7, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/ProgramDevelopmentDocs-BulkSSH_%26_ExtrusionStudio/2.JobsApplliedTo/023_Program%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf"
 ---
 

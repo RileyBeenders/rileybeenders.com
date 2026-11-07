@@ -18,7 +18,7 @@ Typed by `MoreInfoData` (see [[Data Layer and Types]]). Rendered by `app/(site)/
 
 ## `data/more-info/past-applications.json` — applications from before the site
 
-`{ _source, applications: PastApplication[] }`, each `{ jobTitle, company, location, dateSubmitted (YYYY-MM-DD), resumeUsed, status, jobId }`. Holds the 26 Disney Careers applications made before this site and its tailored resumes (copied from the Workday portal's Inactive list on 2026-09-24; see [[Past Disney Applications]]). Workday doesn't record company or location, so every entry reads `The Walt Disney Company`, a blank location (shown as `—`), `Handmade Resume`, and 🔴. Only the live `/more-info` table reads it, merged with the `gantt.md` rows by `lib/applications.ts` (see [[GanttChart JobsTable and gantt.ts]]); `README.md` and `gantt.md` are unaffected. It is not in the Studio, so edit it by hand.
+`{ _source, applications: PastApplication[] }`, each `{ jobTitle, company, location, dateSubmitted (YYYY-MM-DD), resumeUsed, status, jobId }`. Holds the 30 Disney applications made before this site and its tailored resumes: 26 copied from the Workday portal's Inactive list on 2026-09-24, and 4 internship applications from 2021–2022 (Brassring requisitions ending in `BR`) added on 2026-11-07 from Gmail (see [[Past Disney Applications]]). Workday doesn't record company or location, so those 26 read `The Walt Disney Company` with a blank location (shown as `—`); the 4 internships carry their real business unit and city. Every entry is `Handmade Resume` and 🔴. Only the live `/more-info` table reads it, merged with the `gantt.md` rows by `lib/applications.ts` (see [[GanttChart JobsTable and gantt.ts]]); `README.md` and `gantt.md` are unaffected. It is not in the Studio, so edit it by hand.
 
 ## `data/more-info/gantt.md` — hand-authored, not JSON
 
@@ -32,11 +32,11 @@ Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (n
 
 ### Duplicated in `README.md`
 
-`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Sep 24, 2026 the two copies (key, chart, and table) are identical, with active bars refreshed through Sep 24 when 017–021 were added. The **Sync Charts** procedure in [[Repository Agent Skills]] reconciles them when they drift. The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
+`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Nov 7, 2026 the two copies (key, chart, and table) are identical. That day 004, 007, and 015–021 were closed from rejection emails, 023 from its Workday "Declined" status, and 022 was added with `TBD` as its date and `—` as its status until Riley confirms whether it was submitted. The **Sync Charts** procedure in [[Repository Agent Skills]] reconciles them when they drift. The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
 
 ### Current tracked applications (as of `gantt.md`)
 
-16 applications, IDs 001–016, spanning Disney (×6), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. Statuses range from "Waiting for Reply" to "Interview Process" to "No Longer in Consideration." Full per-application file references live in [[Job Application Tracker]].
+24 applications, IDs 001–024, spanning Disney (×14), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. As of Nov 7, 2026, 8 are waiting for a reply (001, 002, 005, 009–012, 024), 15 are no longer in consideration (003, 004, 006–008, 013–021, 023), and 022 is not yet confirmed submitted. Full per-application file references live in [[Job Application Tracker]].
 
 ## Related
 - [[Job Application Tracker]]
