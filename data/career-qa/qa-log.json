@@ -598,7 +598,8 @@
       "notes": "Riley plans to retest 1440p at 100% scaling on Monday, 2026-11-09, to see whether the lag was a connectivity issue all along; update this answer and the ExtrusionStudio design decision with the result. It is a go-live troubleshooting story, not an incident: never call it an outage. Added to the ExtrusionStudio project (designDecisions) on 2026-11-07.",
       "usedIn": [
         ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
-        "data/projects/projects.json"
+        "data/projects/projects.json",
+        "output/resume-html/RileyBeenders_Disney_Sr_Controls_Engineer.html"
       ]
     },
     {
@@ -615,7 +616,8 @@
       "answer": "I have written incident reports for leadership. I have not written any for customers yet; I plan to once the local control interface and over-the-air updates ship.",
       "notes": "Supports written incident communication to leadership. Do not claim postmortems for customers.",
       "usedIn": [
-        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "output/resume-html/RileyBeenders_Disney_Sr_Controls_Engineer.html"
       ]
     },
     {
@@ -634,7 +636,8 @@
       "answer": "GitHub, and Kanban boards integrated into our Microsoft Teams channels. With customers, communication is mostly by email and sometimes by phone.",
       "notes": "Kanban is supported; JIRA, Scrum, and ServiceNow are not. Riley wrote \"Teams channels\"; read as Microsoft Teams.",
       "usedIn": [
-        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "output/resume-html/RileyBeenders_Disney_Sr_Controls_Engineer.html"
       ]
     },
     {
@@ -688,7 +691,8 @@
       "notes": "\"No unplanned outage during production since go-live (October 2026)\" is supported; keep \"so far\" framing implicit with the date.",
       "usedIn": [
         ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
-        "data/projects/projects.json"
+        "data/projects/projects.json",
+        "output/resume-html/RileyBeenders_Disney_Sr_Controls_Engineer.html"
       ]
     },
     {
@@ -708,6 +712,51 @@
       "usedIn": [
         ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
       ]
+    },
+    {
+      "id": "2026-11-07-10",
+      "asked": "2026-11-07",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, application 022 (Disney Sr Controls Engineer, RileyBeenders_Disney_Sr_Controls_Engineer.pdf)",
+      "topics": [
+        "reliability",
+        "metrics"
+      ],
+      "question": "Is there a before-and-after reliability figure for any machine or line you improved, for example hotend failures per month before and after the custom hotend, or line stoppages caught early by ExtrusionStudio alarms?",
+      "answer": null,
+      "notes": "Asked because the posting centers on downtime trends and reliability improvement, and the resume has no reliability number. Never estimate one.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-07-11",
+      "asked": "2026-11-07",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, application 022 (Disney Sr Controls Engineer, RileyBeenders_Disney_Sr_Controls_Engineer.pdf)",
+      "topics": [
+        "mentoring",
+        "leadership"
+      ],
+      "question": "Do you train or mentor the engineer you hired, or technicians on the floor? If so, what does that look like day to day?",
+      "answer": null,
+      "notes": "The posting asks the hire to mentor early-career staff. Any answer must stay free of headcount (see private/career-evidence.md).",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-07-12",
+      "asked": "2026-11-07",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, application 022 (Disney Sr Controls Engineer, RileyBeenders_Disney_Sr_Controls_Engineer.pdf)",
+      "topics": [
+        "education",
+        "accreditation"
+      ],
+      "question": "Is your Penn State B.S. in Electromechanical Engineering accredited by ABET's Engineering Accreditation Commission (EAC) or its Engineering Technology Accreditation Commission (ETAC)?",
+      "answer": null,
+      "notes": "Disney postings ask for a B.S. from an ABET-accredited engineering program in Electrical Engineering or equivalent. Resumes do not mention ABET until this is answered.",
+      "usedIn": []
     }
   ]
 }
