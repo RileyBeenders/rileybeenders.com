@@ -17,17 +17,21 @@ The site does not import it, and it is not in the Studio's `FILES` map, so edit 
 - `status`: `open` (asked, no answer yet), `partial` (answered in part; the gap is in `notes` and the follow-up is its own `open` entry), or `answered`.
 - `source`: what asked it, e.g. `grill-my-resume, application 023 (Disney Program Engineer)` or `follow-up to 2026-10-20-04`.
 - `topics[]`: short tags (budgets, ERP, proposals, ...).
-- `question`, optional `clarification` (added when Riley asked what a question meant), `answer` (`null` while open), `notes`, and `usedIn[]` (the resume HTML sources the answer was used in).
+- `question`, optional `clarification` (added when Riley asked what a question meant), `answer` (`null` while open), `notes`, and `usedIn[]` (the resume HTML sources and site data files the answer was used in).
 
 ## Writing rules
 
 Answers are Riley's facts, rewritten in correct, professional first-person prose: spelling and grammar fixed, never copied verbatim, and never extended beyond what Riley said. Unanswered questions stay in the log so they are not asked twice and show up as known gaps.
 
-## Current state (2026-10-20)
+## Public repo
 
-Five answered or partial entries: project budgets and unit-cost tracking in Business Central; customer proposals, scopes, and estimates at Filament Innovations plus the monthly USA review at Proteor; the Business Central implementation (2,000+ items, 150+ products, five weeks); ICARUS-Lite unit goals (60 for 2025, 100 for 2026, so `partial`, since they are goals rather than results); CTO updates to the CEO and company. Five open follow-ups: units delivered against each year's goal, which Filament role the proposal work belongs to, typical budget size and project count, and the Business Central go-live date and team.
+The site does not import this file, but the repository is public, so everything in it can be read on GitHub. Facts Riley holds back (specific production figures, unreleased plans, anything marked private) go in the git-ignored `private/` folder, never here, in `output/`, or in this vault.
 
-The answered facts reached the 023 resume and, on 2026-10-20, `data/home/experience.json` (see [[Career Content]]); the Filament-era proposal work waits on open question 2026-10-20-08 before it goes on the site.
+## Current state (2026-11-06)
+
+32 entries: 12 answered, 8 partial, 12 open. The first set, from 2026-10-20, covers project budgets and unit-cost tracking in Business Central; customer proposals, scopes, and estimates at Filament Innovations plus the monthly USA review at Proteor; the Business Central implementation (2,000+ items, 150+ products, five weeks); ICARUS-Lite unit goals (60 for 2025, 100 for 2026, so `partial`, since they are goals rather than results); CTO updates to the CEO and company. Units delivered against each year's goal stay open with a note that Riley chose not to include them, so they are not asked again. Other open follow-ups include which Filament role the proposal work belongs to, typical budget size and project count, and the Business Central go-live date and team. The 2026-11-06 entries cover ExtrusionStudio (label waste and how it was estimated, the laser-to-spool offset, go-live, the server move, what the data supports), the subject-matter-expert role, the HOA treasurer role, the 2026 inventory count, the offline control screen, and an open question asking for examples of off-hours work.
+
+The answered facts reached the 023 resume and, on 2026-10-20, `data/home/experience.json` (see [[Career Content]]); the 2026-11-06 answers reached `data/home/experience.json` and `data/projects/projects.json` the same day. The Filament-era proposal work waits on open question 2026-10-20-08 before it goes on the site.
 
 ## Related
 

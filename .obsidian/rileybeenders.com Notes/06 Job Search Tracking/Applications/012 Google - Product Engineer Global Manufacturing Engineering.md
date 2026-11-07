@@ -54,9 +54,10 @@ Bachelor's degree in Electrical Engineering, Computer Engineering, Mechatronics,
 - **Read carefully, this one's a partial keyword match:** the Infrastructure & Systems skill category (VLAN configuration, reverse proxy/firewall routing, Docker, Proxmox) is IT/network infrastructure, not the data-center *facilities* power/cooling/networking infrastructure this posting means (server racks, cooling systems, power delivery at the hardware-integration level) — worth not overstating that overlap even though the keywords look similar on paper.
 - **Gap:** no direct data-center hardware (server/storage/switch/rack/accelerator) manufacturing experience.
 
-### Now — Aug 22, 2026
+### Now — Nov 6, 2026
 
 No material change — nothing data-center-hardware-specific has been added to the record since application.
+- **Production and inventory facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item, traced discrepancies to production orders processed without verification, and helped implement a more warehouse-focused workflow. ExtrusionStudio has been live on all three extrusion lines since October 2026, with an offset that ties readings and alarms to the filament reaching the spool. This is new evidence of production-floor and process work; the gaps noted above are unchanged.
 
 ---
 

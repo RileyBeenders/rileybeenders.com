@@ -547,7 +547,7 @@
           "matches": [
             {
               "keyword": "LabVIEW",
-              "line": "Built an automated LabVIEW QC system for real-time tolerance monitoring"
+              "line": "Built ExtrusionStudio, taking it from a LabVIEW proof of concept to a Python service"
             },
             {
               "keyword": "CAN bus",
