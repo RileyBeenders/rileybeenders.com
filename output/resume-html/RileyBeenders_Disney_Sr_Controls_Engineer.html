@@ -7,7 +7,7 @@
     /* Source for output/pdf/RileyBeenders_Disney_Sr_Controls_Engineer.pdf (3 pages: 2 core + 1 Selected Projects).
        Print with .claude/skills/custom-resume/scripts/print-resume.mjs; --m scales every gap on pages 1-2,
        --p scales the gaps on the Selected Projects page (tuned by hand). */
-    :root { --m: 1.46; --p: 1.5; }
+    :root { --m: 1.1; --p: 1; }
     @page { size: Letter portrait; margin: 0.46in 0.50in 0.42in; }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: #ffffff; }
@@ -117,7 +117,7 @@
   <main>
     <section>
       <h2>Professional Summary</h2>
-      <p class="summary">Electromechanical engineer who keeps industrial machines and their control systems running: designing the electrical and motion systems, troubleshooting them on the plant floor and in the field, and making each revision more reliable and easier to service. Works with minimal oversight across mechanical, electrical, and software disciplines and leaves every system documented for the people who support it next.</p>
+      <p class="summary">Electromechanical engineer who has designed, wired, and troubleshot industrial machines and their controls in a manufacturing plant since 2020, and designs each revision to be more reliable and easier to service. Works independently across mechanical, electrical, and software disciplines and documents every system for the people who support it next.</p>
     </section>
 
     <section>
@@ -139,16 +139,18 @@
         <p class="context">Proteor acquired Filament Innovations in January 2025, and the CTO role below carried forward as Lead R&amp;D Engineer for the same product line, now sold as Proteor Print.</p>
         <ul>
           <li>Serve as the technical subject-matter expert across the plant, from industrial electronics and Siemens PLCs on the three filament extrusion lines to low-voltage sensors, and as the escalation contact for customer troubleshooting across mechanical faults, electrical faults, and user error.</li>
+          <li>Built ExtrusionStudio, the plant's measurement and QC system, live on all three filament extrusion lines since October 2026 with no unplanned outage during production. A LabVIEW proof of concept established Modbus TCP communication with each line's tri-axial laser gauge; a Python rewrite then replaced three single-line executables with one service that polls every line concurrently at 20&nbsp;Hz, so a powered-down line never stalls the others.</li>
+          <li>Monitor every line against its tolerance band: an offset for the 1-2 minute lag between the laser and the spool ties each reading and out-of-spec alarm to the filament being wound, and a line that goes out of spec turns red on the floor projector with a timer showing how long it has been out.</li>
+          <li>Gave every spool a serial, CSV record, QR label, and certificate, so the packing bench approves or rejects spools against gauge data instead of by eye; print-on-demand thermal labels reduced label waste by up to 30% per run.</li>
+          <li>Resolved packing-bench panel lag and dropped connections at go-live by ruling out causes one at a time (frame rate, Raspberry Pi thermals, a fresh Pi and SD card, the network, display scaling): a hard-wired Ethernet run fixed the connection and the label-printer delay, and a display-scaling change removed the lag.</li>
           <li>Cut assembly time by 80% compared to previous designs on ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production; led its design and development and owned the mechanical, electrical, and software design, including custom AC heaters and an IEEE-style electrical design adaptable to 120 or 240 VAC input.</li>
           <li>Completed product changes supporting conformity with the 2006/42/EC Machinery Directive and performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products; ICARUS-Lite and ICARUS-Pro are now in CE testing.</li>
-          <li>Owned ICARUS-Lite through commercialization against unit goals of 60 in 2025 and 100 in 2026.</li>
           <li>Re-engineered POSEIDON and ICARUS around one linear-motor motion platform with universal mounts, replacing servo-driven ballscrews to reduce product-to-product complexity and simplify service; validated 4-micron precision at 4 m/s on a 30 kg moving mass.</li>
           <li>Co-developed a custom hotend with an outside manufacturing partner, improving reliability and reducing cost for the company's materials.</li>
-          <li>Assisted in implementing ProteorPrintOS with SimplyPrint, enabling remote operation and AI-assisted failure detection with live video and material, waste, and outcome metrics.</li>
+          <li>Contributed machine requirements and integration to ProteorPrintOS, built with external partner SimplyPrint, enabling remote operation and AI-assisted failure detection with live video and material, waste, and outcome metrics.</li>
           <li>Developing an offline version of the ICARUS-Lite and ICARUS-Pro control screen, together with over-the-air automated updates, so customers can run without a Wi-Fi or Ethernet connection.</li>
-          <li>Managed the Coplay location's Microsoft Business Central ERP implementation in five weeks, migrating more than 2,000 items and 150+ products, reconciling inventory counts on the floor, and syncing SKUs with Proteor's global locations.</li>
-          <li>Led the 2026 inventory count, tracing discrepancies to production orders that were processed without verification and never took items out of inventory, then helped implement a more warehouse-focused workflow.</li>
-          <li>Estimate and track the budget of every engineering project, build its BOMs, and maintain each product's unit cost; present project status, constraints, and budgets at Proteor's monthly USA review with leadership from its global locations.</li>
+          <li>Ran the Coplay site's five-week Microsoft Business Central ERP implementation (2,000+ items, 150+ products) and the 2026 inventory count, tracing discrepancies to unverified production orders and helping move to a warehouse-focused workflow.</li>
+          <li>Estimate and track the budget of every engineering project, build its BOMs, and maintain each product's unit cost; present status, constraints, and budgets at Proteor's monthly USA review, write incident reports for leadership, and track work on GitHub and Kanban boards in Microsoft Teams.</li>
           <li>Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.</li>
         </ul>
       </article>
@@ -201,10 +203,7 @@
         <p class="dates">December 2024</p>
       </div>
       <ul class="cert-list">
-        <li><span>Machine Learning Onramp, MathWorks</span><span class="dates">2026</span></li>
-        <li><span>Simscape Onramp, MathWorks</span><span class="dates">2026</span></li>
-        <li><span>Simulink Onramp, MathWorks</span><span class="dates">2026</span></li>
-        <li><span>MATLAB Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>MATLAB, Simulink, Simscape, and Machine Learning Onramps, MathWorks</span><span class="dates">2026</span></li>
         <li><span>Lean Six Sigma Yellow Belt, Educate 360</span><span class="dates">2025</span></li>
         <li><span>Lean Six Sigma White Belt, Educate 360</span><span class="dates">2025</span></li>
         <li><span>Certificate in Engineering Design and Tools, Penn State University</span><span class="dates">2023</span></li>
@@ -214,28 +213,6 @@
 
     <section class="projects">
       <h2>Selected Projects</h2>
-      <p class="intro">Systems not covered in the experience above. Screens, diagrams, and code at <a href="https://rileybeenders.com">rileybeenders.com</a>.</p>
-
-      <article class="project">
-        <div class="job-head">
-          <div><span class="company">ExtrusionStudio</span> <span class="location">| Plant data acquisition and QC system, Proteor</span></div>
-          <div class="dates">September 2025 - Present</div>
-        </div>
-        <p class="stack">Python, asyncio, Modbus TCP, Starlette, Server-Sent Events, SQLite, Raspberry Pi, Debian, LabVIEW</p>
-        <p class="problem"><strong>Problem:</strong> Three filament extrusion lines each had a tri-axial laser gauge, and the only record of a spool's diameter was what an operator wrote down. Production was speeding up, and the plant needed every reading captured, every spool judged against its tolerance, and the result visible to operators, the packing bench, and management at once.</p>
-        <ul>
-          <li>Proved Modbus TCP communication and register decoding with each gauge in a LabVIEW proof of concept, then rewrote the system from scratch in Python: three single-line executables became one service that polls every line concurrently at 20&nbsp;Hz, so a powered-down line never stalls the others.</li>
-          <li>Made the poll rate a per-line setting with a floor, because the right value depends on the PLC's response time, and sends the minimum, maximum, and last value per channel in every frame so a spike between frames still shows on the chart.</li>
-          <li>Added a calibration phase that times the filament from the laser to the spool, a delay of one to two minutes through the accumulator, so each reading and out-of-spec alarm lands on the spool it is actually wound on.</li>
-          <li>Built live strip charts with the tolerance band for the projector over the floor; a line that goes out of spec turns red with a timer counting how long it has been out, and the chart holds the excursion until the operator resets it.</li>
-          <li>Gave every spool a serial, CSV record, QR label, and HTML certificate; the packing bench approves, inspects, or rejects each one against the gauge's figures instead of by eye and prints spool, box, and master case labels.</li>
-          <li>Deployed Raspberry Pi kiosks (projector, a touch screen per line, packing bench, statistics TV) that boot to their page, check in with the server, and power on and off with the work hours; a TV that cannot be woken over HDMI-CEC is paired by PIN and switched over the network.</li>
-          <li>Split the interface into a panel for each audience, each its own process, with only Admin Settings allowed to talk to the gauges, and kept the floor running with no internet: no CDN, no build step, and the guides served by the server itself.</li>
-          <li>Wrote a Modbus simulator that shares no code with the client, so a test cannot hide the same bug twice.</li>
-        </ul>
-        <p class="result"><strong>Result:</strong> Live on all three lines since October 2026. Print-on-demand thermal labels removed up to about 30% of label waste per run, and the run history now estimates spools per material per week and shows the lines run slower on humid days.</p>
-      </article>
-
       <article class="project">
         <div class="job-head">
           <div><span class="company">BulkSSH</span> <span class="location">| Windows desktop app, open source at <a href="https://github.com/RileyBeenders/BulkSSH">github.com/RileyBeenders/BulkSSH</a></span></div>
