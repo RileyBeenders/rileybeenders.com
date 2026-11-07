@@ -12,11 +12,11 @@
 
     section 001
     Applied Jul 31                  :milestone, 2026-07-31, 0d
-    Waiting for Reply               :active, 2026-07-31, 81d
+    Waiting for Reply               :active, 2026-07-31, 99d
 
     section 002
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 80d
+    Waiting for Reply               :active, 2026-08-01, 98d
 
     section 003
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -30,11 +30,11 @@
 
     section 004
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 80d
+    Waiting for Reply               :active, 2026-08-01, 98d
 
     section 005
     Applied Aug 01                  :milestone, 2026-08-01, 0d
-    Waiting for Reply               :active, 2026-08-01, 80d
+    Waiting for Reply               :active, 2026-08-01, 98d
 
     section 006
     Applied Aug 01                  :milestone, 2026-08-01, 0d
@@ -42,7 +42,7 @@
 
     section 007
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 73d
+    Waiting for Reply               :active, 2026-08-08, 91d
 
     section 008
     Applied Aug 08                  :milestone, 2026-08-08, 0d
@@ -51,19 +51,19 @@
 
     section 009
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 73d
+    Waiting for Reply               :active, 2026-08-08, 91d
 
     section 010
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 73d
+    Waiting for Reply               :active, 2026-08-08, 91d
 
     section 011
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 73d
+    Waiting for Reply               :active, 2026-08-08, 91d
 
     section 012
     Applied Aug 08                  :milestone, 2026-08-08, 0d
-    Waiting for Reply               :active, 2026-08-08, 73d
+    Waiting for Reply               :active, 2026-08-08, 91d
 
     section 013
     Applied Aug 14                  :milestone, 2026-08-14, 0d
@@ -77,35 +77,39 @@
 
     section 015
     Applied Sep 15                  :milestone, 2026-09-15, 0d
-    Waiting for Reply               :active, 2026-09-15, 35d
+    Waiting for Reply               :active, 2026-09-15, 53d
 
     section 016
     Applied Sep 15                  :milestone, 2026-09-15, 0d
-    Waiting for Reply               :active, 2026-09-15, 35d
+    Waiting for Reply               :active, 2026-09-15, 53d
 
     section 017
     Applied Sep 24                  :milestone, 2026-09-24, 0d
-    Waiting for Reply               :active, 2026-09-24, 26d
+    Waiting for Reply               :active, 2026-09-24, 44d
 
     section 018
     Applied Sep 24                  :milestone, 2026-09-24, 0d
-    Waiting for Reply               :active, 2026-09-24, 26d
+    Waiting for Reply               :active, 2026-09-24, 44d
 
     section 019
     Applied Sep 24                  :milestone, 2026-09-24, 0d
-    Waiting for Reply               :active, 2026-09-24, 26d
+    Waiting for Reply               :active, 2026-09-24, 44d
 
     section 020
     Applied Sep 24                  :milestone, 2026-09-24, 0d
-    Waiting for Reply               :active, 2026-09-24, 26d
+    Waiting for Reply               :active, 2026-09-24, 44d
 
     section 021
     Applied Sep 24                  :milestone, 2026-09-24, 0d
-    Waiting for Reply               :active, 2026-09-24, 26d
+    Waiting for Reply               :active, 2026-09-24, 44d
 
     section 023
     Applied Oct 20                  :milestone, 2026-10-20, 0d
-    Waiting for Reply               :active, 2026-10-20, 1d
+    Waiting for Reply               :active, 2026-10-20, 18d
+
+    section 024
+    Applied Nov 07                  :milestone, 2026-11-07, 0d
+    Waiting for Reply               :active, 2026-11-07, 1d
 ```
 
 | ID | Job Title | Company | Location (Goal) | Date Submitted | Resume Used | Status | Job ID |
@@ -132,3 +136,4 @@
 | 020 | [Manager, Software Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf) | Disney Experiences | Orlando, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/020_RileyBeenders_Disney_Manager_Software_Engineering_2-Page.pdf) | 🟢 | 10158386 |
 | 021 | [Manager, Systems Engineering (DCL New Build)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/021_Disney_Manager%2C%20Systems%20Engineering%20%28DCL%20New%20Build%29.pdf) | Disney Signature Experiences (Disney Cruise Line) | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/021_RileyBeenders_Disney_Senior_Manager_Solutions_Architecture_2-Page.pdf) | 🟢 | 10160198 |
 | 023 | [Program Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/023_Program%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Walt Disney World Resort | Lake Buena Vista, FL | October 20, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/023_RileyBeenders_Disney_Program_Engineer.pdf) | 🟢 | 10161727 |
+| 024 | [Senior Systems Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/024_Senior%20Systems%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Disney Experiences | Lake Buena Vista, FL | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/024_RileyBeenders_Disney_Senior_Systems_Engineer.pdf) | 🟢 | 10161502 |

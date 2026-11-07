@@ -494,16 +494,16 @@
     {
       "id": "2026-11-06-12",
       "asked": "2026-11-06",
-      "answered": null,
-      "status": "open",
+      "answered": "2026-11-07",
+      "status": "partial",
       "source": "grill-me, Proteor experience review",
       "topics": [
         "availability",
         "dedication"
       ],
       "question": "Riley is salaried and increasingly works outside shop hours whenever the work needs it. What is a specific recent example, such as a plant or customer issue handled off hours or a deployment done outside production?",
-      "answer": null,
-      "notes": "Not on the site. Show this through examples rather than stating 24/7 availability.",
+      "answer": "Working with vendors regularly extends into nights and very early mornings.",
+      "notes": "Not on the site. A specific dated example (an incident, vendor escalation, or off-hours deployment) is still not recorded. Show this through examples rather than stating 24/7 availability; it is not a formal on-call rotation.",
       "usedIn": []
     },
     {
@@ -540,6 +540,45 @@
       "notes": "Not shipped, so the site says \"Developing\". Whether Riley is writing it personally, and in what language, is not yet recorded.",
       "usedIn": [
         "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-07-01",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "Application 024 (Disney Senior Systems Engineer) COTS review",
+      "topics": [
+        "Business Central",
+        "cloud",
+        "SaaS",
+        "Azure"
+      ],
+      "question": "Is Proteor's Business Central the online version hosted by Microsoft on Azure, or installed on-premises?",
+      "answer": "It is the online version, hosted by Microsoft on Azure. I can reach it from any device, including when I am off the company network.",
+      "notes": "Supports \"supported a cloud-hosted SaaS ERP in production\". It is not Azure administration; do not list Azure, AWS, or GCP as a skill on this basis.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-02",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "Application 024 (Disney Senior Systems Engineer) COTS review",
+      "topics": [
+        "COTS",
+        "vendor platforms",
+        "PLCs",
+        "controls"
+      ],
+      "question": "Which vendor-provided (COTS) platforms do you support besides SimplyPrint (ProteorPrintOS), Ubiquiti UniFi, and Allen Bradley PLCs?",
+      "answer": "I also support Mean Well power supplies, Duet3D controllers, and the Siemens PLCs on the filament extrusion lines. Supporting vendor platforms and working with their vendors is part of my day-to-day work.",
+      "notes": "Added to data/home/skills.json (Controls & Automation) on 2026-11-07. Brand spelled \"Mean Well\" (Riley wrote \"Meanwell\").",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "data/home/skills.json"
       ]
     }
   ]

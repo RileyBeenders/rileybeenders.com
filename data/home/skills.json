@@ -50,6 +50,9 @@
     "category": "Controls & Automation",
     "items": [
       "Allen Bradley PLCs",
+      "Siemens PLCs",
+      "Duet3D Controllers",
+      "Mean Well Power Supplies",
       "Data Logging and Process Analysis",
       "Git Version Control",
       "Workflow Automation",
