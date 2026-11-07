@@ -71,6 +71,36 @@ async function open(opts) {
   }));
   console.log(`     ${info.pills} clickable skill pills, ${info.plain} plain, ${info.metrics} figures, ${info.details} bullet details`);
   await page.screenshot({ path: path.join(shots, "desktop-light.png") });
+
+  // The website is a button (top and bottom), and the plain contact link it replaces is hidden on screen.
+  const cta = await page.evaluate(() => {
+    const buttons = [...document.querySelectorAll("a.btn--cta")];
+    const plain = document.querySelector('.contact a[href*="rileybeenders.com"]');
+    return { n: buttons.length, ok: buttons.every((b) => /rileybeenders\.com/.test(b.href)),
+      plainHidden: plain ? getComputedStyle(plain.closest("span") || plain).display === "none" : null };
+  });
+  check(cta.n >= 1 && cta.ok && cta.plainHidden !== false, `rileybeenders.com is a button (${cta.n} on the page)`);
+
+  // Section jumps: every link lands its section just under the bar and marks itself current.
+  const links = await page.locator(".bar-nav a").allTextContents();
+  console.log(`     section links: ${links.join(", ") || "none"}`);
+  check(links.length >= 2, "the top bar has section jump links");
+  for (const name of [...links].reverse()) {
+    await page.locator(".bar-nav a", { hasText: name }).click();
+    await page.waitForTimeout(1300);
+    const r = await page.evaluate((n) => {
+      const a = [...document.querySelectorAll(".bar-nav a")].find((x) => x.textContent === n);
+      const sec = document.querySelector(a.getAttribute("href"));
+      const barH = document.querySelector(".bar").getBoundingClientRect().bottom;
+      const top = sec.getBoundingClientRect().top;
+      const atBottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+      return { landed: (top >= barH - 2 && top <= barH + 40) || (atBottom && top >= barH - 2), current: a.getAttribute("aria-current") === "true" };
+    }, name);
+    check(r.landed && r.current, `"${name}" jumps to its section and is marked current`);
+  }
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.waitForTimeout(800);
+
   if (info.pills) {
     const pill = page.locator("button.pill").first();
     await pill.scrollIntoViewIfNeeded();

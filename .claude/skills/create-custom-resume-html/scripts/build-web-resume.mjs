@@ -1,6 +1,6 @@
 // Build the interactive, site-styled HTML resume from a verified print source.
 //
-//   node .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs <source.html> [--pages N] [--out output.html]
+//   node .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs <source.html> [--pages N] [--role "Job title"] [--out output.html]
 //
 // <source.html> is a resume source in output/resume-html/, the same file
 // create-custom-resume-pdf's print-resume.mjs prints at the page count the user chose.
@@ -21,9 +21,10 @@ const args = process.argv.slice(2);
 const flag = (name) => { const i = args.indexOf(name); if (i < 0) return undefined; const v = args[i + 1]; args.splice(i, 2); return v; };
 const pages = flag("--pages");
 const outArg = flag("--out");
+const roleArg = flag("--role");
 const [input] = args;
 if (!input || (pages !== undefined && !/^[1-9]\d*$/.test(pages))) {
-  console.error("usage: build-web-resume.mjs <source.html> [--pages N] [--out output.html]");
+  console.error('usage: build-web-resume.mjs <source.html> [--pages N] [--role "Job title"] [--out output.html]');
   process.exit(2);
 }
 
@@ -41,12 +42,13 @@ if (/<script/i.test(body)) throw new Error(`${input}: source body already contai
 if (/class="[^"]*\bweb-only\b/.test(body) && !/\.web-only\s*\{[^}]*display:\s*none/.test(printCss))
   throw new Error(`${input}: uses .web-only but its stylesheet lacks ".web-only { display: none; }", so the PDF would print them`);
 
-// "Riley Beenders - Disney Senior Systems Engineer Resume" -> "Resume · Disney Senior Systems Engineer"
-const role = title.replace(/^Riley Beenders\s*[-–|]\s*/i, "").replace(/\s*Resume$/i, "").trim();
+// "Riley Beenders - Disney Senior Systems Engineer Resume" -> "Disney Senior Systems Engineer" (shown beside the RB mark).
+// --role overrides it when the title names no job (a baseline resume titled just "Riley Beenders - Resume").
+const role = roleArg ? roleArg.trim() : title.replace(/^Riley Beenders\s*[-–|]\s*/i, "").replace(/\s*Resume$/i, "").trim();
 const fill = {
   TITLE: title,
   SOURCE: path.relative(repoRoot, path.resolve(input)).split(path.sep).join("/"),
-  ROLE_LABEL: role ? `Resume · ${role}` : "Resume",
+  ROLE_LABEL: role || "Resume",
   PAGES_LABEL: pages ? ` · ${pages} page${pages === "1" ? "" : "s"}` : "",
   PRINT_CSS: printCss.replace(/^/gm, "  "),
   BODY: body.trim(),

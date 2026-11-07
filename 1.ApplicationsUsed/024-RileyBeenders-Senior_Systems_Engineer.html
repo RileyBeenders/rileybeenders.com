@@ -154,10 +154,10 @@
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   p { margin: 0; }
 
-  /* ---- top bar (web only) ---- */
+  /* ---- top bar (web only): initials + the job, section jumps, tools ---- */
   .bar {
     position: sticky; top: 0; z-index: 10;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px 24px;
     padding: 12px var(--pad);
     border-bottom: 1px solid var(--rule);
     background: color-mix(in srgb, var(--paper) 82%, transparent);
@@ -170,8 +170,29 @@
     background: var(--ink); color: var(--paper);
     font: 400 19px/1 var(--serif); letter-spacing: 0; text-transform: none;
   }
-  .bar-brand span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-actions { display: flex; gap: 10px; flex: none; }
+  .bar-brand span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font: 400 19px/1.15 var(--serif); letter-spacing: -0.005em; text-transform: none; color: var(--ink); }
+  .bar-actions { display: flex; gap: 10px; flex: none; justify-self: end; }
+  .bar-nav { display: flex; gap: 22px; justify-self: center; }
+  .bar-nav a { position: relative; padding: 6px 0; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.28s var(--ease); }
+  .bar-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.42s var(--ease); }
+  .bar-nav a:hover, .bar-nav a[aria-current="true"] { color: var(--ink); }
+  .bar-nav a:hover::after, .bar-nav a[aria-current="true"]::after { transform: scaleX(1); }
+  main > section { scroll-margin-top: calc(var(--bar-h, 64px) + 8px); }
+
+  /* ---- the website as a call to action (the plain contact link stays for print) ---- */
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 28px; }
+  .cta-row p { font-style: italic; color: var(--muted); font-size: 15px; }
+  a.btn--cta { padding: 14px 22px; border-color: var(--accent); background: var(--accent); color: var(--on-accent); font-size: 13px; text-decoration: none; }
+  a.btn--cta:hover { color: var(--paper); border-color: var(--ink); }
+  .btn--cta .arrow { display: inline-block; transition: transform 0.42s var(--ease); }
+  .btn--cta:hover .arrow { transform: translateX(4px); }
+  .contact + .contact { margin-top: 6px; }
+  .contact .screen-hide { display: none; }
+  .contact .no-sep::after { content: none !important; }
+  .closing { max-width: 1120px; margin: 0 auto; padding: 8px var(--pad) 96px; }
+  .closing h2 { margin: 0 0 6px; font: 400 clamp(28px, 3.2vw, 38px)/1.12 var(--serif); letter-spacing: -0.012em; }
   .btn {
     position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 8px;
     padding: 8px 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink);
@@ -271,6 +292,8 @@
   .role-line .dates { font: 400 13px/1.4 var(--body); font-style: normal; color: var(--ink-soft); }
   .role-line.sub { margin-top: 26px; }
   .context, .stack { margin-top: 8px; font-style: italic; font-size: 16px; line-height: 1.6; color: var(--muted); }
+  /* A long URL in a stack line would set the flex item's min-content width and push the page sideways on a phone. */
+  .role-line > .stack, .role-line > .context { min-width: 0; overflow-wrap: anywhere; }
   .project .role-line { color: var(--muted); font: 400 13px/1.6 var(--body); letter-spacing: 0.1em; text-transform: uppercase; }
   .problem { margin-top: 12px; color: var(--prose); }
   .problem strong { font-weight: 500; color: var(--ink); }
@@ -314,18 +337,27 @@
   .js body > header::after { transform: scaleX(0); transition: transform 0.9s var(--ease) 0.35s; }
   .js body.ready > header::after { transform: scaleX(1); }
 
+  @media (max-width: 1080px) {
+    .bar { grid-template-columns: minmax(0, 1fr) auto; padding-bottom: 0; }
+    .bar-nav { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; overflow-x: auto; scrollbar-width: none;
+      margin: 0 calc(var(--pad) * -1); padding: 2px var(--pad) 10px; }
+    .bar-nav::-webkit-scrollbar { display: none; }
+  }
   @media (max-width: 760px) {
     main > section { grid-template-columns: minmax(0, 1fr); padding: 34px 0; }
     main > section > h2 { grid-row: auto; margin-bottom: 18px; }
     main > section > h2::before { display: inline; margin: 0 12px 0 0; font-size: 26px; }
     main > section > :not(h2) { grid-column: 1; }
-    .bar-brand span:last-child { display: none; }
+    .bar-brand span:last-child { font-size: 16px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    a.btn--cta { font-size: 12px; letter-spacing: 0.08em; }
+    .bar-actions .btn { padding: 8px 10px; letter-spacing: 0.1em; }
+    .bar-actions [data-theme-toggle] { display: none; }
     .job, .project { padding-left: 20px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
     .js .rv { opacity: 1; transform: none; }
-    .job:hover, .project:hover, main ul li:hover, button.pill:hover, .btn:hover { transform: none; }
+    .job:hover, .project:hover, main ul li:hover, button.pill:hover, .btn:hover, .btn--cta:hover .arrow { transform: none; }
   }
 }
   </style>
@@ -342,7 +374,8 @@
 </head>
 <body>
   <div class="bar web-only" role="toolbar" aria-label="Resume tools">
-    <a class="bar-brand" href="https://rileybeenders.com" style="text-decoration:none"><span class="bar-mark" aria-hidden="true">RB</span><span>Resume · Disney Senior Systems Engineer</span></a>
+    <a class="bar-brand" href="#top" style="text-decoration:none" aria-label="Riley Beenders, Disney Senior Systems Engineer: back to top"><span class="bar-mark" aria-hidden="true">RB</span><span>Disney Senior Systems Engineer</span></a>
+    <nav class="bar-nav" aria-label="Sections" hidden></nav>
     <div class="bar-actions">
       <button class="btn btn--quiet" type="button" data-theme-toggle aria-label="Switch light or dark">Theme</button>
       <button class="btn" type="button" data-print>Print / PDF · 3 pages</button>
@@ -686,6 +719,82 @@
     note.querySelector("[data-filter-clear]").addEventListener("click", off);
     addEventListener("keydown", function (e) { if (e.key === "Escape") off(); });
 
+    // ---- the website as a button: under the contact row, and again at the end of the page ----
+    var site = document.querySelector('.contact a[href*="rileybeenders.com"]');
+    // A source may split contact details over several rows; the button goes under the last one,
+    // and the row that holds the site link is the one that loses it.
+    var contacts = document.querySelectorAll("body > header .contact");
+    var contact = contacts.length ? contacts[contacts.length - 1] : null;
+    var siteRow = site ? site.closest(".contact") : null;
+    function siteButton(label) {
+      var a = document.createElement("a");
+      a.className = "btn btn--cta"; a.href = site.href; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = label + ' <span class="arrow" aria-hidden="true">&rarr;</span>';
+      return a;
+    }
+    if (site && contact) {
+      var row = document.createElement("div"); row.className = "cta-row web-only";
+      row.appendChild(siteButton("See my work at rileybeenders.com"));
+      var cap = document.createElement("p"); cap.textContent = "Projects, photos, and the longer write-ups.";
+      row.appendChild(cap);
+      contact.insertAdjacentElement("afterend", row);
+      // The plain link would repeat the button on screen; it stays in the contact row on paper.
+      var holder = site.closest("span");
+      if (holder && holder.parentNode === siteRow) {
+        holder.classList.add("screen-hide");
+        if (!holder.nextElementSibling && holder.previousElementSibling) holder.previousElementSibling.classList.add("no-sep");
+      }
+      var main = document.querySelector("main");
+      if (main) {
+        var end = document.createElement("footer"); end.className = "closing web-only";
+        var h = document.createElement("h2"); h.textContent = "Want the longer version?";
+        var p = document.createElement("p"); p.className = "pill-hint"; p.textContent = "The projects, photos, and write-ups behind this resume are on the site.";
+        end.appendChild(h); end.appendChild(p); end.appendChild(siteButton("Visit rileybeenders.com"));
+        main.insertAdjacentElement("afterend", end);
+      }
+    }
+
+    // ---- section jumps in the top bar, with the section in view underlined ----
+    var bar = document.querySelector(".bar"), nav = document.querySelector(".bar-nav");
+    function barHeight() { root.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
+    var WANT = [["Summary", /summary|profile/i], ["Skills", /expertise|skills|competenc/i],
+      ["Experience", /^(professional |work )?experience/i], ["Education", /education/i], ["Projects", /project/i]];
+    var found = [];
+    document.querySelectorAll("main > section").forEach(function (sec) {
+      var h2 = sec.querySelector(":scope > h2"); if (!h2) return;
+      var label = h2.textContent.trim();
+      for (var i = 0; i < WANT.length; i++) {
+        if (WANT[i][1].test(label) && !found.some(function (f) { return f.name === WANT[i][0]; })) {
+          var id = WANT[i][0].toLowerCase();
+          if (!sec.id) sec.id = id;
+          found.push({ name: WANT[i][0], sec: sec });
+          break;
+        }
+      }
+    });
+    if (found.length >= 2) {
+      found.forEach(function (f) {
+        var a = document.createElement("a"); a.href = "#" + f.sec.id; a.textContent = f.name; f.link = a; nav.appendChild(a);
+      });
+      nav.hidden = false;
+      function setActive(f) {
+        found.forEach(function (g) { if (g === f) g.link.setAttribute("aria-current", "true"); else g.link.removeAttribute("aria-current"); });
+        if (f && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: f.link.offsetLeft - 24, behavior: reduce ? "auto" : "smooth" });
+      }
+      var current = null;
+      function spy() {
+        var line = (parseFloat(getComputedStyle(root).getPropertyValue("--bar-h")) || 64) + innerHeight * 0.25, pick = null;
+        found.forEach(function (f) { if (f.sec.getBoundingClientRect().top <= line) pick = f; });
+        if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) pick = found[found.length - 1];
+        if (pick !== current) { current = pick; setActive(pick); }
+      }
+      addEventListener("scroll", function () { requestAnimationFrame(spy); }, { passive: true });
+      addEventListener("resize", function () { barHeight(); spy(); });
+      barHeight(); spy();
+    } else {
+      barHeight();
+    }
+
     // ---- entrances ----
     var h1 = document.querySelector("h1");
     if (h1 && !reduce) {
@@ -694,7 +803,7 @@
       }).join(" ");
     }
     var header = document.querySelector("body > header");
-    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact"), function (el, i) {
+    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact, .cta-row"), function (el, i) {
       el.classList.add("rv"); el.style.setProperty("--d", (0.3 + i * 0.09).toFixed(2) + "s");
     });
     var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .pill-hint, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, main ul:not(.cert-list) > li");
