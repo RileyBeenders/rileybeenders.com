@@ -83,6 +83,17 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
    - Confirm the final text contains the supported target keywords and none of the unsupported claims identified during the evidence audit.
 9. Return a clickable link to the final PDF and a short verification summary, including the measured page fill and the list of unsupported posting requirements kept out. Then offer `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
 
+## Optional: interactive HTML version
+
+When an employer accepts an HTML file, build a site-styled interactive copy from the verified source:
+
+`node .claude/skills/custom-resume/scripts/build-web-resume.mjs output/resume-html/<name>.html` → `output/resume-web/<name>.html`
+
+- The source's `<body>` is copied unchanged, so the HTML carries exactly the PDF's claims. Edit the source and rebuild; never hand-edit the output.
+- On screen it uses `assets/web-resume-template.html`: Blueprint Press (paper and blueprint grid, Instrument Serif and Spectral, Electric palette, light and dark), the site's role and bullet hovers, a once-only rise on scroll, a reading-progress spine, figures that pick up the accent on hover, and Core Expertise pills that highlight the bullets using that exact term (only terms that appear literally become clickable). Motion follows `motion-design`'s thresholds and stops under reduced motion. Without JavaScript the page is still complete and readable.
+- In print the source's own stylesheet applies, so printing reproduces the PDF layout. Verify by printing the HTML to PDF and comparing each page's extracted text with the delivered PDF; they must be identical.
+- Submit the PDF as the resume and the HTML as an additional attachment; ATS parsing and most recruiter previews use the PDF.
+
 When subagents are available, parallelize job analysis, evidence auditing, and content strategy. Keep final writing, PDF generation, and quality approval with the primary agent.
 
 ## Example task

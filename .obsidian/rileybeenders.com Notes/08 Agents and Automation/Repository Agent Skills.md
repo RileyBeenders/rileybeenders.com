@@ -17,6 +17,8 @@ CLAUDE.md                      # routing index + Next.js agent-rules block (repo
       SKILL.md
       scripts/print-resume.mjs   # HTML → PDF (repo playwright-core + local Chromium), one spacing multiplier
       scripts/validate-resume.py # page count/size, fill, link styling, letter-spaced headings, repeated claims
+      scripts/build-web-resume.mjs     # verified HTML source → interactive site-styled HTML in output/resume-web/
+      assets/web-resume-template.html  # screen styles, motion, and skill-highlight layer; print uses the source's CSS
     grill-my-resume/SKILL.md   # name: grill-my-resume — step 2, the review (from MCP Market as grill-my-cv; not in skills-lock.json)
     fix-my-resume/SKILL.md     # name: fix-my-resume — step 3, applies a review to output/resume-html/*.html and reprints
     update-main-resume/        # name: update-main-resume — the untailored Download PDF resume
@@ -64,6 +66,7 @@ Generates a job-targeted resume PDF for a specific posting in `2.JobsApplliedTo/
 5. Saves to `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf`, with the HTML source beside it in `output/resume-html/`, printed by the skill's own `scripts/print-resume.mjs`.
 6. Validates before delivery with `scripts/validate-resume.py`: exact page count at `612×792pt`, measured page fill (reported in the summary), visual inspection of rendered pages for clipping/overlap, working phone/email/website/LinkedIn link annotations, all links blue+underlined and no blue text that is not a link, headings that extract as plain words, no eight-word fragment appearing twice, supported keywords present and unsupported claims absent.
 7. Hands off: offers `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
+8. Optionally, for employers that accept HTML, `scripts/build-web-resume.mjs` wraps the verified source in `assets/web-resume-template.html` and writes `output/resume-web/<same name>.html` (added 2026-11-07 for the Disney 022 and 024 applications). The body is copied unchanged, so the claims match the PDF. On screen it reads like rileybeenders.com: Blueprint Press grid and type, Electric palette with dark mode, the site's role and bullet hovers, a once-only scroll rise, a progress spine, accent figures on hover, and Core Expertise pills that highlight the bullets containing that exact term. In print the source's own stylesheet applies, and the check is that the printed HTML's per-page text is identical to the delivered PDF's. The PDF stays the primary upload; the HTML goes alongside it.
 
 Can parallelize job analysis, evidence auditing, and content strategy across subagents, but keeps final writing/PDF generation/approval with the primary agent.
 
