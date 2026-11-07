@@ -44,6 +44,19 @@ export function BpActions({ data }: BpActionsProps) {
 
   return (
     <div className="bp-actions">
+      {data.resumeHtmlPath ? (
+        <a
+          className="bp-btn bp-btn--solid"
+          href={data.resumeHtmlPath}
+          target="_blank"
+          rel="noopener"
+          suppressHydrationWarning
+        >
+          <span className="bp-sheen" aria-hidden="true" />
+          <span>{ui.actions.downloadPdf}</span>
+          <ArrowDown />
+        </a>
+      ) : (
       <button
         type="button"
         className="bp-btn bp-btn--solid"
@@ -55,6 +68,7 @@ export function BpActions({ data }: BpActionsProps) {
         <span>{busy ? ui.actions.preparingPdf : ui.actions.downloadPdf}</span>
         {!busy && <ArrowDown />}
       </button>
+      )}
 
       <a className="bp-btn" href={`mailto:${data.person.email}`} suppressHydrationWarning>
         <span>{ui.actions.email}</span>

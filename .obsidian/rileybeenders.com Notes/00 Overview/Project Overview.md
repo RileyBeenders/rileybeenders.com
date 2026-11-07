@@ -21,7 +21,7 @@ Riley Beenders — R&D and electromechanical engineer focused on product develop
 3. **Contact** (`/contact`) — hero and copy from `data/contact/contact.json`, the shared `BpActions` button row, and the email address spelled out once in prose (the three link cards went on 2026-09-18).
 4. **More Info** (`/more-info`) — About Me / About the Site copy, a "Read the full story" link to `/about-this-site`, and the **job-application Gantt chart + tracker table** (client-side `mermaid`) — each switched separately (`ganttSection.chartVisible` / `tableVisible`). Right now the table is on and the chart is off, so section 03 shows only the table. See [[More Info and Gantt Data]].
 5. **About this site** (`/about-this-site`) — the site as its own case study: a running date bar, the story with a light/dark gallery, then stats, a time-scaled commit timeline with a self-playing tour, pillars, and live "Behind the site" demos of the resume builder, the Studio, and the skill router. Fed by `data/site/about-site.json` and kept current by the `site-timeline-sync` procedure. See [[About This Site Page]].
-6. **On-demand resume PDF** (`/api/resume-pdf`) — a Node-runtime API route that builds a real, paginated, ATS-style PDF from the same `resumeData` that powers the website, so the downloadable resume is never stale. See [[Resume PDF Pipeline]].
+6. **Main resume** — the Download PDF button opens a curated interactive HTML resume from `public/resume/` (`header.json`'s `resumeHtmlPath`) in a new tab, where its Print / PDF button saves the matching PDF. The pair (`RileyBeenders_Resume_<YY><DDD>`, also kept in `.DefaultResume/`) is built from `ResumeBuilder/main-resume/main-resume.html` and kept current by the `update-main-resume` skill; `/api/resume-pdf` redirects to the PDF. See [[Resume PDF Pipeline]].
 
 ## Dead / dormant code
 
@@ -34,7 +34,7 @@ See [[Data Layer and Types]].
 
 ## Where this sits in the repo's workflow
 
-The repo also functions as the owner's personal job-search tracker: `2.JobsApplliedTo/` holds original job postings, `1.ApplicationsUsed/` and `output/pdf/` hold tailored resumes/cover letters actually submitted, and `README.md` / `data/more-info/gantt.md` track application status on a Gantt chart. A dedicated agent procedure (`custom-resume`, see [[Repository Agent Skills]]) generates those tailored PDFs from live site data plus a job posting.
+The repo also functions as the owner's personal job-search tracker: `2.JobsApplliedTo/` holds original job postings, `1.ApplicationsUsed/` and `output/pdf/` hold tailored resumes/cover letters actually submitted, and `README.md` / `data/more-info/gantt.md` track application status on a Gantt chart. A dedicated agent procedure (`create-custom-resume-pdf`, see [[Repository Agent Skills]]) generates those tailored PDFs from live site data plus a job posting.
 
 ## Related
 - [[Architecture and Data Flow]]

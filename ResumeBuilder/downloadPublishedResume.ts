@@ -1,4 +1,11 @@
-const DEFAULT_FILENAME = "Riley-Beenders-Resume.pdf";
+const DEFAULT_FILENAME = "Riley_Beenders_Resume.pdf";
+
+// The saved file takes the PDF's own name (public/resume/<name>.pdf), so renaming
+// the main resume renames every visitor's download with no code change.
+function filenameFor(url: URL): string {
+  const last = decodeURIComponent(url.pathname.split("/").pop() ?? "");
+  return /\.pdf$/i.test(last) ? last : DEFAULT_FILENAME;
+}
 
 export async function downloadPublishedResumePdf(endpoint: string): Promise<void> {
   const requestUrl = new URL(endpoint, window.location.origin);
@@ -38,7 +45,7 @@ export async function downloadPublishedResumePdf(endpoint: string): Promise<void
     const objectUrl = URL.createObjectURL(pdf);
     const downloadLink = document.createElement("a");
     downloadLink.href = objectUrl;
-    downloadLink.download = DEFAULT_FILENAME;
+    downloadLink.download = filenameFor(new URL(response.url || requestUrl.href));
     downloadLink.hidden = true;
     document.body.appendChild(downloadLink);
     downloadLink.click();

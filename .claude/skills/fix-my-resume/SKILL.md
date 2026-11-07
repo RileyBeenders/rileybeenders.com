@@ -1,6 +1,6 @@
 ---
 name: fix-my-resume
-description: Apply a resume review to an existing generated resume for Riley Beenders and re-deliver the verified PDF. Use after grill-my-resume, or when the user supplies review results (grill output, roast-my-resume reports, recruiter feedback) and asks to fix, apply, revise, or clean up a resume already in output/pdf/. Third step of the chain custom-resume -> grill-my-resume -> fix-my-resume.
+description: Apply a resume review to an existing generated resume for Riley Beenders and re-deliver the verified PDF. Use after grill-my-resume, or when the user supplies review results (grill output, roast-my-resume reports, recruiter feedback) and asks to fix, apply, revise, or clean up a resume already in 1.ApplicationsUsed/ or output/pdf/. Third step of the chain create-custom-resume-pdf -> grill-my-resume -> fix-my-resume.
 argument-hint: "[resume PDF] [review: grill output, roast report PDFs, or notes]"
 ---
 
@@ -8,13 +8,13 @@ argument-hint: "[resume PDF] [review: grill output, roast report PDFs, or notes]
 
 One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
 
-The resume chain is: `custom-resume` builds, `grill-my-resume` reviews, `fix-my-resume` applies the review and re-verifies. This procedure never rebuilds from scratch and never redoes the review; it edits the HTML source the build left behind, prints it again, and runs the same validation the build did.
+The resume chain is: `create-custom-resume-pdf` builds, `grill-my-resume` reviews, `fix-my-resume` applies the review and re-verifies. This procedure never rebuilds from scratch and never redoes the review; it edits the HTML source the build left behind, prints it again, and runs the same validation the build did.
 
 ## Inputs
 
-1. The resume to fix: a PDF in `output/pdf/` and its HTML source in `output/resume-html/<same name>.html`. If the HTML is missing, reconstruct it from the PDF text in the reference layout before editing, and say so.
+1. The resume to fix: a PDF in `1.ApplicationsUsed/` (named `<ID>-RileyBeenders-<Job_Title>.pdf`; resumes built before that naming may be in `output/pdf/`) and its HTML source in `output/resume-html/<same name>.html`. If the HTML is missing, reconstruct it from the PDF text in the reference layout before editing, and say so.
 2. The review: the `grill-my-resume` output from this conversation, external reports the user attached (roast-my-resume result PDFs, recruiter notes, a hiring manager's email), or both. Read every report in full; extract the text of a PDF report before judging it.
-3. The job posting the resume targets, from `2.JobsApplliedTo/`, and the evidence sources `custom-resume` uses (`data/**/*.json` and the live site).
+3. The job posting the resume targets, from `2.JobsApplliedTo/`, and the evidence sources `create-custom-resume-pdf` uses (`data/**/*.json` and the live site).
 
 If the review is missing, run `grill-my-resume` first rather than guessing at problems.
 
@@ -42,16 +42,17 @@ These override any reviewer, including this file's own chain:
 - **Skills follow the bullets.** A tool or platform leads a Core Expertise line only when a bullet shows it in use; otherwise it moves later in the line or out. Group skills under the four bold labels and keep each tool name once in that section.
 - **Titles reflect the primary function and the timeline is explicit.** An acquisition or title change is explained once, where the reader first meets it, in one plain sentence.
 - **Lead each bullet with the outcome or the problem,** then the method, and keep the numbers that already exist (with their baseline when the data has one).
-- **Copy rules** from `custom-resume` still hold: one to three sentences per bullet, no mid-sentence em dashes, no "3D printing" or "additive manufacturing" unless the point depends on it, the posting's wording for keywords.
+- **Copy rules** from `create-custom-resume-pdf` still hold: one to three sentences per bullet, no mid-sentence em dashes, no "3D printing" or "additive manufacturing" unless the point depends on it, the posting's wording for keywords.
 - **Relocation:** when the job is on-site somewhere other than Bethlehem, PA and `data/header.json` has `openToRelocation: true`, the contact row carries "Open to relocation (<city>)".
 
 ## Edit, print, verify
 
 1. Edit `output/resume-html/<name>.html` only. Keep the reference layout (navy headings, Arial, single column, blue underlined links, `@page` margins) and the `--m` spacing variable.
-2. Print with `node .claude/skills/custom-resume/scripts/print-resume.mjs <html> <pdf> [multiplier]`. Start from the multiplier the build used; after cuts, do not raise it above 1.3 to chase the old page count, and prefer the reference 1.0 when the content no longer fills the pages.
-3. Validate with `python .claude/skills/custom-resume/scripts/validate-resume.py <pdf> <pages> --png <dir>` and look at every rendered page. It fails on a wrong page count, unstyled links, blue text that is not a link, letter-spaced headings, and any eight-word fragment that appears twice. A repeat is a bug in the content, never a reason to tune spacing.
-4. Re-run the keyword presence and unsupported-claim scans from `custom-resume` step 8 so a fix did not drop a supported keyword or let an unsupported one in.
-5. Overwrite the PDF in `output/pdf/` under the same name, so the tracker and vault links stay valid, and keep the HTML beside it in `output/resume-html/`.
+2. Print with `node .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs <html> <pdf> [multiplier]`. Start from the multiplier the build used; after cuts, do not raise it above 1.3 to chase the old page count, and prefer the reference 1.0 when the content no longer fills the pages.
+3. Validate with `python .claude/skills/create-custom-resume-pdf/scripts/validate-resume.py <pdf> <pages> --png <dir>` and look at every rendered page. It fails on a wrong page count, unstyled links, blue text that is not a link, letter-spaced headings, and any eight-word fragment that appears twice. A repeat is a bug in the content, never a reason to tune spacing.
+4. Re-run the keyword presence and unsupported-claim scans from `create-custom-resume-pdf` step 8 so a fix did not drop a supported keyword or let an unsupported one in.
+5. Overwrite the PDF where it lives (`1.ApplicationsUsed/`, or `output/pdf/` for an older build) under the same name, so the tracker and vault links stay valid, and keep the HTML beside it in `output/resume-html/`.
+6. If an interactive version exists (`1.ApplicationsUsed/<name>.html`, or `output/resume-web/<name>.html` for an older build), rebuild and re-verify it with `create-custom-resume-html` steps 3 and 4 so it never drifts from the PDF. Apply the same findings to any `web-only` bullet details.
 
 ## Report
 
@@ -59,4 +60,4 @@ Deliver a clickable link to the PDF and, in this order: what was applied, what n
 
 ## Where the output is tracked
 
-Same as `custom-resume`: when the fixed file is the one submitted, `vault-sync` copies it into `1.ApplicationsUsed/`, updates both tracker tables, and writes or refreshes the application note.
+Same as `create-custom-resume-pdf`: the fixed file already sits in `1.ApplicationsUsed/`; `vault-sync` updates both tracker tables and writes or refreshes the application note.

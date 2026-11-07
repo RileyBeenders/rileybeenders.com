@@ -1,13 +1,13 @@
 ---
-name: custom-resume
+name: create-custom-resume-pdf
 description: Generate and verify a job-targeted resume for Riley Beenders using a requested page count, a job-posting PDF, current RileyBeenders.com facts, and the established Disney reference resume. Use when asked to create, tailor, revise, or regenerate a resume for a job PDF in 2.JobsApplliedTo.
 ---
 
-# Custom Resume
+# Create Custom Resume (PDF)
 
 One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
 
-First step of the resume chain: `custom-resume` **builds**, `grill-my-resume` **reviews**, `fix-my-resume` **applies the review**. When a build is delivered, offer the next two steps; when the user asks for the whole chain, run them in that order in the same session. The standing rules in `fix-my-resume` (no repeated claims, no filler, ignore "recent graduate" advice, never invent a number) apply to the build as well, so a first draft should already pass them.
+First step of the resume chain: `create-custom-resume-pdf` **builds**, `grill-my-resume` **reviews**, `fix-my-resume` **applies the review**. When a build is delivered, offer the next two steps; when the user asks for the whole chain, run them in that order in the same session. The standing rules in `fix-my-resume` (no repeated claims, no filler, ignore "recent graduate" advice, never invent a number) apply to the build as well, so a first draft should already pass them.
 
 ## Collect required inputs
 
@@ -66,14 +66,18 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
    - Make every contact hyperlink blue, visibly underlined, and clickable.
    - Keep heading letter-spacing at or below 0.5pt so ATS text extraction reads "EDUCATION", not "E D U C A T I O N".
    - Write the HTML with `:root { --m: 1; }` and every vertical gap as `calc(<pt> * var(--m))`, so `scripts/print-resume.mjs` can scale all gaps with one number.
-7. Save the final PDF to `output/pdf/` using:
+7. Save the final PDF straight to `1.ApplicationsUsed/` using:
 
-   `RileyBeenders_<Company>_<Job_Title>.pdf`
+   `<ID>-RileyBeenders-<Job_Title>.pdf`
 
-   Replace spaces and invalid filename characters with underscores. Save the HTML source beside it as `output/resume-html/<same name>.html`; `fix-my-resume` edits that file rather than rebuilding.
+   - `<ID>` is the three-digit application number that prefixes the posting PDF in `2.JobsApplliedTo/` (`022_Sr Controls Engineer at DISNEY.pdf` → `022`). If the posting has no prefix, ask Riley for the ID (suggest the next unused number in the `README.md` tracker table); never guess one.
+   - `<Job_Title>` is the job title exactly as the posting states it, with spaces replaced by underscores and characters invalid in a filename (`\ / : * ? " < > |`, commas, ampersands) removed. No company name: the ID already ties the file to its posting.
+   - Examples: `022-RileyBeenders-Sr_Controls_Engineer.pdf`, `024-RileyBeenders-Senior_Systems_Engineer.pdf`.
 
-   Print with `node .claude/skills/custom-resume/scripts/print-resume.mjs <html> <pdf> [multiplier]` (repo `playwright-core` plus any Chromium in the Playwright cache, Chrome, or Edge).
-8. Validate before delivery with `python .claude/skills/custom-resume/scripts/validate-resume.py <pdf> <pages> --png <dir>` (needs `pymupdf`), then look at every rendered page. It fails on a wrong page count or size, an unstyled link, blue text that is not a link, a letter-spaced heading, or any eight-word fragment that appears twice (a repeated claim).
+   Save the HTML source as `output/resume-html/<same name>.html` (it stays out of `1.ApplicationsUsed/`, which holds only what goes to the employer); `fix-my-resume` edits that file rather than rebuilding. If a file with this name already exists in `1.ApplicationsUsed/`, it is the earlier version of this application's resume: confirm with Riley before overwriting it.
+
+   Print with `node .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs <html> <pdf> [multiplier]` (repo `playwright-core` plus any Chromium in the Playwright cache, Chrome, or Edge).
+8. Validate before delivery with `python .claude/skills/create-custom-resume-pdf/scripts/validate-resume.py <pdf> <pages> --png <dir>` (needs `pymupdf`), then look at every rendered page. It fails on a wrong page count or size, an unstyled link, blue text that is not a link, a letter-spaced heading, or any eight-word fragment that appears twice (a repeated claim).
    - Require exactly the selected number of pages, each at 612 x 792 points.
    - Measure page fill. With the reference 0.42in bottom margin the content area ends at about y = 762pt. The lowest text line on the last page should end within about 36pt of that (y >= 726pt), and every earlier page should run to its bottom margin. Report the measured value; if it falls short, return to step 5.
    - Render the page and inspect it for clipping, overlap, malformed glyphs, and inconsistent spacing.
@@ -81,7 +85,11 @@ Do not ask again for a value already supplied in the invocation. Do not begin re
    - Confirm the phone, email, website, and LinkedIn URI annotations work.
    - Confirm all linked text is blue and underlined.
    - Confirm the final text contains the supported target keywords and none of the unsupported claims identified during the evidence audit.
-9. Return a clickable link to the final PDF and a short verification summary, including the measured page fill and the list of unsupported posting requirements kept out. Then offer `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
+9. Return a clickable link to the final PDF in `1.ApplicationsUsed/` and a short verification summary, including the measured page fill and the list of unsupported posting requirements kept out. Then offer `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
+
+## HTML version
+
+When an employer accepts HTML, run [`create-custom-resume-html`](../create-custom-resume-html/SKILL.md) instead of, or after, this skill. It runs this same process to the same validated PDF, then wraps the source in a site-styled interactive page whose Print / PDF button prints at the page count chosen here.
 
 When subagents are available, parallelize job analysis, evidence auditing, and content strategy. Keep final writing, PDF generation, and quality approval with the primary agent.
 
@@ -89,7 +97,7 @@ When subagents are available, parallelize job analysis, evidence auditing, and c
 
 User request:
 
-`$custom-resume`
+`$create-custom-resume-pdf`
 
 Assistant intake request:
 
@@ -105,8 +113,8 @@ Expected result:
 - Read the Disney job posting and current RileyBeenders.com evidence.
 - Emphasize only supported software, infrastructure, automation, and leadership experience.
 - Record important Disney requirements that are not supported and keep them out of the resume.
-- Generate and verify `output/pdf/RileyBeenders_Disney_Principal_Software_Engineer.pdf`.
+- Generate and verify `1.ApplicationsUsed/006-RileyBeenders-Principal_Software_Engineer.pdf`, with its source at `output/resume-html/006-RileyBeenders-Principal_Software_Engineer.html`.
 
 ## Where the output is tracked
 
-The delivered file for a real application is copied into `1.ApplicationsUsed/` and the row in the `README.md` / `data/more-info/gantt.md` tracker table plus the matching vault page in `.obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/` are updated — that bookkeeping is the `vault-sync` procedure's job (`.claude/skills/vault-sync/SKILL.md`).
+The delivered file is written straight into `1.ApplicationsUsed/` (step 7), so there is nothing to copy. The row in the `README.md` / `data/more-info/gantt.md` tracker table plus the matching vault page in `.obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/` are updated — that bookkeeping is the `vault-sync` procedure's job (`.claude/skills/vault-sync/SKILL.md`).

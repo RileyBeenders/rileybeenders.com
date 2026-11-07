@@ -1151,7 +1151,8 @@ export const SCHEMAS = {
           }
         ]
       },
-      { name: "resumePdfPath", type: "text", label: "Resume PDF path", span: "half", placeholder: "/api/resume-pdf", help: "What the “Download PDF” button fetches." }
+      { name: "resumePdfPath", type: "text", label: "Resume PDF path", span: "half", placeholder: "/api/resume-pdf", help: "The PDF /api/resume-pdf serves, and what the “Download PDF” button downloads when no HTML resume path is set." },
+      { name: "resumeHtmlPath", type: "text", label: "Resume HTML path", span: "half", placeholder: "/resume/RileyBeenders_Resume_26311.html", help: "When set, “Download PDF” opens this interactive resume in a new tab; its Print / PDF button saves the file." }
     ]
   }
 };

@@ -31,7 +31,7 @@ node .claude/skills/skill-router/scripts/route.mjs "make the hero animate in smo
 - Any change to code, data, or config ends with `vault-sync`.
 - Any UI work goes through `impeccable` (reads `PRODUCT.md` / `DESIGN.md`).
 - Any motion work starts at `motion-design` (what and how much), then `motion-fluidity` (how), `motion-layout` (structure). The generic motion skills (`animate`, `emil-design-eng`, `apple-design`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`) are advisory and yield to `motion-design`.
-- Resume work is the chain `custom-resume` → `grill-my-resume` → `fix-my-resume`.
+- Resume work is the chain `create-custom-resume-pdf` → `grill-my-resume` → `fix-my-resume`.
 - `write-commit` / `write-merge` come last, after `vault-sync`. Prefer the project `write-commit` over `anthropic-skills:write-commit`.
 
 ## Maintaining it

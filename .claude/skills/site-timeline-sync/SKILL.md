@@ -108,4 +108,4 @@ The timeline reads as a story someone scrolls in a minute. Every entry earns its
 - `vault-sync` (`.claude/skills/vault-sync/SKILL.md`) — required afterwards.
 - `motion-design` / `motion-fluidity` / `motion-layout` — if the sync involves changing how the page moves rather than what it says.
 - `impeccable` (`.claude/skills/impeccable/SKILL.md`) — the detector in step 8, and `$impeccable critique /about-this-site` when the page's own design is what changed; its `PRODUCT.md` records that this page is the site's self-documentation and must stay curated.
-- `custom-resume` — unrelated, but the applications count on this page comes from the same tracker it reads.
+- `create-custom-resume-pdf` — unrelated, but the applications count on this page comes from the same tracker it reads.

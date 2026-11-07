@@ -1,6 +1,6 @@
-"""Validate a generated resume PDF the way the custom-resume procedure requires.
+"""Validate a generated resume PDF the way the create-custom-resume-pdf procedure requires.
 
-    python .claude/skills/custom-resume/scripts/validate-resume.py <resume.pdf> <pages> [--png <dir>]
+    python .claude/skills/create-custom-resume-pdf/scripts/validate-resume.py <resume.pdf> <pages> [--png <dir>]
 
 Checks: exact page count at 612 x 792 pt; lowest text line per page (the last page
 should end at y >= 726 pt when the page is meant to be full); every link annotation

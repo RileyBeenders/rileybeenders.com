@@ -87,4 +87,5 @@ The role sits in Sustaining Engineering at the Disneyland Resort in Anaheim, pro
 ## Related
 - [[Job Application Tracker]]
 - Source posting: `2.JobsApplliedTo/022_Sr Controls Engineer at DISNEY.pdf`
-- Resume used: `1.ApplicationsUsed/022_RileyBeenders_Disney_Sr_Controls_Engineer.pdf`
+- Resume used: `1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf` (rebuilt Nov 7, 2026 through create-custom-resume-pdf, grill-my-resume, and fix-my-resume: 3 pages, two core pages plus Selected Projects; source `output/resume-html/022-RileyBeenders-Sr_Controls_Engineer.html`)
+- Interactive HTML resume: `1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.html` (built with create-custom-resume-html; prints to the same 3-page layout as the PDF)

@@ -1,0 +1,9 @@
+{
+  "_doc": "State of the main (default) resume behind the home page's Download PDF button. Written by the update-main-resume skill's publish-main-resume.mjs; do not hand-edit except to repair it. source: the HTML the PDF is printed from and the interactive HTML is built from. name: the published pair's base name, RileyBeenders_Resume_<YY><DDD> (year, day of year), present as <name>.pdf and <name>.html in both .DefaultResume/ and public/resume/; data/header.json resumeHtmlPath and resumePdfPath point at the public pair. pages: the page count the validator expects. spacingMultiplier: the --m value it was printed with. reviewedThrough: the commit whose data/ the resume was last reconciled against; the next run diffs data/ from here. updated: date of the last build.",
+  "source": "ResumeBuilder/main-resume/main-resume.html",
+  "name": "RileyBeenders_Resume_26311",
+  "pages": 3,
+  "spacingMultiplier": 1,
+  "reviewedThrough": "06eea09",
+  "updated": "2026-11-07"
+}

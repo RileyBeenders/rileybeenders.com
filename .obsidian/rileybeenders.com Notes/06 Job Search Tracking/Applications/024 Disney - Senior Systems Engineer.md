@@ -77,6 +77,7 @@ A bonus and/or long-term incentive units may be provided as part of the compensa
 ### Now — Nov 7, 2026
 
 - **Vendor platforms now on the site (Nov 7, 2026):** Siemens PLCs, Duet3D controllers, and Mean Well power supplies were added to `skills.json` under Controls & Automation, closing the "in the Q&A log but not yet on the site" gap noted above. The cloud, on-call, and ITSM gaps are unchanged.
+- **Production-readiness evidence (Nov 7, 2026):** the ExtrusionStudio project now records no unplanned outage during production since go-live and the packing-bench fix found during rollout, isolated layer by layer (frame rate, thermal throttling, a swapped Pi and SD card, a direct Ethernet run, display resolution). That partly answers "hands-on technical analysis" and root cause analysis across application, integration, and infrastructure layers. Per the [[Career Q&A Log]], Riley writes incident reports for leadership (not yet customers) and tracks work in GitHub and Kanban boards in Microsoft Teams, which touches the preferred Kanban item; Business Central serves the 10 to 15 people at the facility and 10 to 30 more at other Proteor locations. Still missing: an on-call rotation, an incident Riley led, SLA-managed vendors (the Business Central contact is Proteor headquarters, not a Microsoft partner), storage work, ServiceNow, JIRA, ITIL, and Blue Yonder.
 
 ---
 
@@ -89,4 +90,5 @@ The position is with Walt Disney Attractions Technology LLC, part of Disney Expe
 ## Related
 - [[Job Application Tracker]]
 - Source posting: `2.JobsApplliedTo/024_Senior Systems Engineer at DISNEY - Disney Careers.pdf`
-- Resume used: `1.ApplicationsUsed/024_RileyBeenders_Disney_Senior_Systems_Engineer.pdf` (not yet generated on Nov 7, 2026)
+- Resume used: `1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.pdf` (3 pages, built, grilled, and fixed Nov 7, 2026; source `output/resume-html/024-RileyBeenders-Senior_Systems_Engineer.html`)
+- Interactive HTML resume: `1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.html` (built with create-custom-resume-html; prints to the same 3-page layout as the PDF)

@@ -47,5 +47,6 @@
   "motion": {
     "syncAnimations": true
   },
-  "resumePdfPath": "/api/resume-pdf"
+  "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
+  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"
 }

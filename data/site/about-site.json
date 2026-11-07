@@ -454,7 +454,7 @@
         "date": "2026-11-01",
         "era": "future",
         "title": "Resume PDFs from the site itself",
-        "summary": "The custom-resume skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
+        "summary": "The create-custom-resume-pdf skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
         "tags": [
           "agents",
           "data"
@@ -537,7 +537,7 @@
           "title": "One posting in, one page out",
           "body": [
             "The PDF is still the document that gets submitted. When I apply somewhere, an agent reads the posting, pulls the matching evidence out of the same data this site renders, and writes a one-page PDF in the site's format. Anything the data can't back up is left out, not softened.",
-            "The live Download PDF button on the home page is the same generator running on demand, so the resume on the site is never a stale file."
+            "The Download PDF button on the home page serves my main resume, printed in the same format. A second agent keeps it current: it reads what changed in the data since the last build, asks me which findings belong on the page, and reprints it."
           ],
           "notes": [
             "Reads the posting PDF and data/**/*.json",
@@ -594,7 +594,7 @@
           ],
           "skills": [
             {
-              "name": "custom-resume",
+              "name": "create-custom-resume-pdf",
               "trigger": "\"Tailor a resume for this posting\"",
               "does": "Reads the job PDF and the site's data, keeps only the claims the data supports, and writes a one-page PDF in the site's format."
             },

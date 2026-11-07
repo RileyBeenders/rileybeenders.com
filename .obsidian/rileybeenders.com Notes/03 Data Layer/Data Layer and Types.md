@@ -26,7 +26,7 @@ tags: [data, types]
 | `FontRole` / `FontSettings` | `"header" \| "subheader" \| "body"` → a font id from `lib/fonts.ts`. |
 | `IntroAlign` / `LayoutSettings` | `{ introAlign: "left" \| "center" \| "right" \| "full" }` (2026-09-26): how the intro under a page headline sits on Projects, More Info and About this site. The site layout stamps it on `.bp` as `data-intro-align`, and `blueprint.css` positions every `.bp-page-intro` from it. Studio: Site Settings → Layout, a Left / Centered / Right / Full width button row (the `choice` field type). Currently `"center"`. |
 | `MotionSettings` | `{ syncAnimations?: boolean }` on `ResumeData.motion` (2026-09-26), optional and absent from `header.json` while off. On, the site layout stamps `data-motion-sync` on `.bp` and mounts `components/blueprint/AnimationSync.tsx`, which moves every infinite CSS animation's `startTime` back to the last whole cycle of the document timeline (phase only, re-run on each `animationstart`, batched per frame), so every copy of one animation is at the same point in its loop. `bullet-link.css` / `skill-pills.css` zero the per-item stagger (`--i` × −1.3s glints, `--k` × −0.7…−0.85s pill borders) under that attribute and keep them running while hovered (only hidden) so a hover can't knock one out of step. Verified in Chrome: 11 Read more glints and 9 pill borders at 0 ms spread, before and after hovers (off: 5.2 s / 4.3 s spread, as before). Studio: Site Settings → Motion → Sync animations (`omitWhenDefault`). |
-| `ResumeData` | The top-level object. `siteMode?: "resume" \| "coming-soon"`, `person`, `summary`, `visibility`, `theme`, `fonts`, `layout`, `resumePdfPath`, `comingSoon?`, `skills[]`, `experience[]`, `projects[]`, `education`, `proofs[]`. `siteMode` and `comingSoon` are declared but read nowhere. |
+| `ResumeData` | The top-level object. `siteMode?: "resume" \| "coming-soon"`, `person`, `summary`, `visibility`, `theme`, `fonts`, `layout`, `resumePdfPath`, `resumeHtmlPath?` (when set, Download PDF opens this HTML resume in a new tab instead of downloading `resumePdfPath`), `comingSoon?`, `skills[]`, `experience[]`, `projects[]`, `education`, `proofs[]`. `siteMode` and `comingSoon` are declared but read nowhere. |
 | `SkillGroup` / `SkillLink` | `{ category, items: string[], links?: SkillLink[] }`; a link is `{ skill, projectId? , proofId? }` (exactly one id), naming an item word for word (2026-09-26). `lib/skill-links.ts` → `skillTargets(group, data)` resolves a group's links to `SkillTarget { kind, name, detail?, href }`, keyed by item: only while `visibility.projectsSection` is on and the target is published. A project goes to `/projects#project-<id>` (detail = its `type`); a proof goes to the project that shows it (the one whose `proofId` names it, else its own `projectId`) at `#project-<id>-case-study`, which opens that case study (detail = the project's name). |
 
 ### The dead "coming soon" schema
@@ -72,7 +72,8 @@ The existing page files gained `meta` (Contact, More Info, About this site) and 
   },
   "theme": { "paletteId": "electric", "custom": { "light": { …5 seeds }, "dark": { …5 seeds } } },
   "fonts": { "header": "instrument-serif", "subheader": "instrument-serif", "body": "spectral" },
-  "resumePdfPath": "/api/resume-pdf"
+  "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
+  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"
 }
 ```
 
@@ -102,7 +103,7 @@ Logic:
 5. `includeProjectData = visibility.projectsSection || visibility.experienceProjectButtons || includeProofData` → currently `true`.
 6. Final `resumeData` spreads `header` (`person`, `visibility`, `theme`, `fonts`, `resumePdfPath`, `siteMode`), then overrides `education`, `experience` (rebuilt), `proofs` (`publishedProofs` — empty today), `projects` (`publishedProjects` — ICARUS-Lite only today), `skills`, and `summary` (unwrapped from `summary.summary`).
 
-A **module-level constant**, evaluated once at import time (build time for static pages, per-request for the `force-dynamic` `/api/resume-pdf` route) — not a hook, not re-derived per request in page components.
+A **module-level constant**, evaluated once at import time (build time for static pages) — not a hook, not re-derived per request in page components.
 
 ## Project dates, the About page, and its feature types (2026-09-17)
 

@@ -6,9 +6,25 @@ tags: [pdf, pipeline]
 
 Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 
-## 1. Live, data-driven PDF — what the "Download PDF" button produces
+## 1. The main resume — what the "Download PDF" button produces
 
-**Chain:** `BpActions`'s Download button (see [[Blueprint UI Components]]) → `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET /api/resume-pdf` (`app/api/resume-pdf/route.ts`) → `ResumeBuilder/generateResumePdf.ts` → binary PDF response.
+Since 2026-11-07 the button serves a **static, curated PDF** rather than one generated per request. It started as a copy of the tailored Disney Imagineering Ride Controls resume (`output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html`) with the posting's relocation cities removed: three Letter pages, navy headings, Arial, Selected Projects on page 3.
+
+**Chain (today):** `BpActions`'s Download PDF (see [[Blueprint UI Components]]) is a link to `data/header.json` `resumeHtmlPath` (`/resume/RileyBeenders_Resume_26311.html`) that opens in a new tab. That page is the interactive HTML resume built by `create-custom-resume-html`; the visitor saves the PDF with its own **Print / PDF · 3 pages** button. The files in `public/resume/` are copies of Riley's working pair in `.DefaultResume/` (renamed from `.DisneyDefaultResume/` on 2026-11-07); the `_26311` suffix is the last-updated date Riley tracks, so a newer copy means new files in both folders and both `header.json` paths updated.
+
+**Chain (fallback, no `resumeHtmlPath`):** the button runs `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET <resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) → the browser saves the static PDF.
+
+| Piece | Path |
+| --- | --- |
+| Working copies | `.DefaultResume/RileyBeenders_Resume_<date>.html` and `.pdf` |
+| Published files | `public/resume/RileyBeenders_Resume_<date>.html` and `.pdf` |
+| Pointers | `data/header.json` `resumeHtmlPath` (what the button opens) and `resumePdfPath` (what `/api/resume-pdf` serves) |
+| `update-main-resume` source | `ResumeBuilder/main-resume/main-resume.html` (same `:root { --m }` spacing contract as the tailored resumes) |
+| Build record | `ResumeBuilder/main-resume/manifest.json`: `name` (the pair's base name), `pages` (3), `spacingMultiplier`, `reviewedThrough` (the commit whose `data/` the page was last reconciled against), `updated` |
+
+It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the source is reprinted and validated with the `create-custom-resume-pdf` scripts, the interactive HTML is rebuilt and verified with the `create-custom-resume-html` scripts, and `publish-main-resume.mjs` names the pair `RileyBeenders_Resume_<YY><DDD>` for the build date, writes it to `.DefaultResume/` and `public/resume/`, deletes the older pair, and updates both `header.json` paths and the manifest. Because it is static, the pair only changes when that skill runs; editing `data/` alone no longer changes the download.
+
+The pair published on 2026-11-07 (`_26311`) was swapped in by hand from the Disney Imagineering Ride Controls build, not printed from `main-resume.html`; it still reads "Open to relocation (Glendale, Anaheim, or Orlando)". The next `update-main-resume` run reports that difference.
 
 ### `ResumeBuilder/downloadPublishedResume.ts`
 
@@ -16,16 +32,16 @@ Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 1. Builds the request URL with a cache-busting `?published=<timestamp>` query param.
 2. Fetches with `cache: "no-store"` and a 30s `AbortController` timeout.
 3. Validates the response: status ok, `content-type` includes `application/pdf`, blob size `>= 5` bytes, and the **first 5 bytes literally spell `%PDF-`** (a real magic-number check, not just content-type trust).
-4. On success, creates an object URL, synthesizes a hidden `<a download>` click to trigger the browser's save dialog, removes the anchor, and revokes the object URL after 60s.
+4. On success, creates an object URL, synthesizes a hidden `<a download>` click to trigger the browser's save dialog, removes the anchor, and revokes the object URL after 60s. The saved name is the basename of the final response URL when it ends in `.pdf` (so renaming the file renames every download), else `Riley_Beenders_Resume.pdf`.
 5. Throws descriptive errors for timeout, bad status, wrong content-type, empty body, or invalid signature — all surfaced by `BpActions` as the inline `.bp-error` message.
 
 ### `app/api/resume-pdf/route.ts`
 
-See full detail in [[Routes Overview]]. Key point: `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`, and explicit no-cache headers on both success and error paths — this route is intentionally never cached anywhere, so the PDF always reflects the current `resumeData`.
+Kept only so older links keep working: `GET` answers `307` with a **relative** `Location: <resumePdfPath>` and `Cache-Control: no-store` (relative so the local gate, which proxies `next dev` on another port, doesn't redirect visitors to the internal port). See [[Routes Overview]].
 
-### `ResumeBuilder/generateResumePdf.ts` — the layout engine
+### `ResumeBuilder/generateResumePdf.ts` — the former layout engine (unused)
 
-Pure function `generateResumePdf(data: ResumeData): ArrayBuffer` built on **jsPDF**, no HTML/CSS — every line, rule, and bullet is drawn with explicit `doc.text()` / `doc.line()` calls at computed coordinates. US Letter, points (`612 × 792`), margins `44pt` left/right, `40pt` top, content bottom cutoff `742pt`. Uses only the built-in Helvetica; the site's Blueprint Press fonts and colors are **not** involved (PDF body text is near-black `[20,20,20]`, links blue `[0,0,238]`).
+No route imports it since the switch to the static main resume; the file is kept in place. It was the per-request generator. Pure function `generateResumePdf(data: ResumeData): ArrayBuffer` built on **jsPDF**, no HTML/CSS — every line, rule, and bullet is drawn with explicit `doc.text()` / `doc.line()` calls at computed coordinates. US Letter, points (`612 × 792`), margins `44pt` left/right, `40pt` top, content bottom cutoff `742pt`. Uses only the built-in Helvetica; the site's Blueprint Press fonts and colors are **not** involved (PDF body text is near-black `[20,20,20]`, links blue `[0,0,238]`).
 
 Key internal mechanics:
 - **`normalizeText()`** — first folds every line break (and the whitespace around it) into one space, so a summary or job context the site shows as several paragraphs (an empty line in the Studio) stays one compact block in the PDF; then strips/replaces smart quotes, en/em dashes, ellipsis, superscript ³ (→ `^3`), non-breaking spaces, and any remaining non-ASCII, because built-in Helvetica can't render arbitrary Unicode. This is why `data.summary`'s curly apostrophes come out clean.
@@ -38,11 +54,11 @@ Key internal mechanics:
 
 ## 2. Static template mockups — `ResumeBuilder/generateResumeTemplates.mjs`
 
-A **standalone Node script**, not part of the Next.js app or any route — run manually (`node ResumeBuilder/generateResumeTemplates.mjs`). Also jsPDF, but draws **abstract greeked-out placeholder content** (solid color boxes of specific widths standing in for text) to produce visual layout references in `output/resumeTemplates/`. Uses a distinct navy/slate palette purely for the mockup — unrelated to the site or to `generateResumePdf.ts`. It exists so a human (or the `custom-resume` procedure) can see target page geometry before laying out a real tailored resume. **Not** in the website's request path. (This note has not been re-verified against the current `.mjs` line-by-line since the reskin; the script wasn't touched by it.)
+A **standalone Node script**, not part of the Next.js app or any route — run manually (`node ResumeBuilder/generateResumeTemplates.mjs`). Also jsPDF, but draws **abstract greeked-out placeholder content** (solid color boxes of specific widths standing in for text) to produce visual layout references in `output/resumeTemplates/`. Uses a distinct navy/slate palette purely for the mockup — unrelated to the site or to `generateResumePdf.ts`. It exists so a human (or the `create-custom-resume-pdf` procedure) can see target page geometry before laying out a real tailored resume. **Not** in the website's request path. (This note has not been re-verified against the current `.mjs` line-by-line since the reskin; the script wasn't touched by it.)
 
 ## Where per-job tailored resumes come from
 
-Neither of the above produces the files in `1.ApplicationsUsed/`. Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
+Neither of the above produces the files in `1.ApplicationsUsed/` (the main resume shares their layout and print/validate scripts, but is general, not tailored). Those come from manually invoking the `create-custom-resume-pdf` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
 
 ## Related
 - [[Blueprint UI Components]]

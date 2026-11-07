@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import type { BackendMatch } from "@/types/resume";
 
-/** What the custom-resume procedure verifies before a PDF is delivered — stated the way the skill states it. */
+/** What the create-custom-resume-pdf procedure verifies before a PDF is delivered — stated the way the skill states it. */
 const CHECKS = ["One page at 612 × 792 pt", "Every keyword backed by the data", "Links verified, nothing invented"];
 
 /** Milliseconds between one resume line lighting and the next while the demo "reads" the posting. */
@@ -92,7 +92,7 @@ export function ResumeDemo({ matches }: { matches: BackendMatch[] }) {
 
         <div className="dm-resume-flow" aria-hidden="true">
           <span className="dm-resume-flow-line" />
-          <span className="dm-resume-flow-label">custom-resume</span>
+          <span className="dm-resume-flow-label">create-custom-resume-pdf</span>
         </div>
 
         <div className="dm-card dm-page" aria-label="A one-page resume; each posting keyword lights the line that supports it">

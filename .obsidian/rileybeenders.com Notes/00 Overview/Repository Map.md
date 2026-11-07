@@ -14,7 +14,8 @@ CLAUDE.md                      # routing index for the agent skills + the Next.j
   settings.local.json          # per-machine Claude Code settings
   worktrees/                   # Claude Code checkouts, git-ignored
   skills/                      # every agent skill, one place — 23 folders: 8 repo-specific procedures + 15 vendored (see CLAUDE.md and the Repository Agent Skills note)
-    custom-resume/SKILL.md     # name: custom-resume — tailored resume generation
+    create-custom-resume-pdf/SKILL.md     # name: create-custom-resume-pdf — tailored resume generation
+    create-custom-resume-html/SKILL.md    # name: create-custom-resume-html — same process, interactive HTML that prints to the PDF
     vault-sync/SKILL.md        # name: vault-sync — keep this Obsidian vault current
     sync-charts/SKILL.md       # name: sync-charts — README ↔ gantt.md tracker sync
     design-guidelines/         # name: design-guidelines — light/dark reference design-token systems
@@ -28,6 +29,7 @@ CLAUDE.md                      # routing index for the agent skills + the Next.j
     site-timeline-sync/SKILL.md# name: site-timeline-sync — keeps /about-this-site current from git
     impeccable/ + 14 more      # vendored: the design entry point, the taste-skill set, web-design-guidelines
 
+.DefaultResume/                # Riley's working copy of the main resume pair, RileyBeenders_Resume_<YY><DDD>.html|.pdf (copied to public/resume/)
 .github/
   workflows/site-timeline-sync.yml   # after every push to main: Claude Code runs site-timeline-sync, the workflow validates + commits the result
 
@@ -51,7 +53,7 @@ app/
     about-this-site/about-site.css  # .as-* page layout + the large date-bar variant
     contact/page.tsx           # /contact — hero + <BpActions> + Details prose, copy from data/contact/contact.json, email spelled out once
     more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable> (each gated by ganttSection.chartVisible / tableVisible — table only today)
-  api/resume-pdf/route.ts      # Node-runtime API route: generates the live resume PDF on demand
+  api/resume-pdf/route.ts      # 307 redirect to header.json resumePdfPath, for older links
   api/geo/route.ts             # returns the visitor's country/region/city from Vercel's IP headers, for the analytics Visit event
 
 components/
@@ -63,7 +65,7 @@ components/
     BpThemeToggle.tsx          # light/dark switch in the nav (uses ThemeProvider's useTheme)
     ThemeProvider.tsx          # data-theme on <html> + localStorage; useTheme() for components that need the mode
     BpMark.tsx                 # the RB monogram SVG — one continuous stroke, gradient along travel
-    BpActions.tsx              # Download PDF (3-state) / Email / LinkedIn / GitHub button row (client)
+    BpActions.tsx              # Download PDF (opens resumeHtmlPath in a new tab, else 3-state PDF download) / Email / LinkedIn / GitHub button row (client)
     BpRelocationBadge.tsx      # "Open to relocation": BpHeroRelocationBadge (home hero → docks on scroll) + BpFixedRelocationBadge (other pages); typewriter label
     HeroRibbon.tsx             # the faint B-bowl flourish behind the hero h1; replays its CSS stroke-draw when the hero scrolls back into view
     PageSpine.tsx              # scroll-spring hairline spine down the home page's sections (moved-in sibling of ProjectListSpine)
@@ -99,7 +101,7 @@ components/
         SkillsDemo.tsx         # the repo's skill router: rail of procedures, trigger + what-it-does, auto-advances until touched
 
 data/
-  header.json                  # site-wide metadata: person, 5 visibility switches, theme (paletteId + custom seeds), fonts (header/subheader/body), siteMode ("resume"), resumePdfPath
+  header.json                  # site-wide metadata: person, 5 visibility switches, theme (paletteId + custom seeds), fonts (header/subheader/body), siteMode ("resume"), resumePdfPath, resumeHtmlPath
   resumeData.ts                # merges all JSON below into one typed ResumeData object (visible:false filter, order sort, visibility pruning)
   contact/contact.json         # /contact hero + Details copy (Studio: Contact)
   home/
@@ -153,8 +155,10 @@ studio/                        # the local environment — `npm run site` (site 
   ui/devices.js                # the Devices panel: LAN URL to type on a phone, "waiting at the door" knocks with one-click Allow, active grants with expiry + Revoke, add by address
 
 ResumeBuilder/
-  downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + trigger-download the live PDF
-  generateResumePdf.ts         # jsPDF layout engine that builds the live resume PDF from ResumeData
+  downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + download the main resume under its own file name
+  main-resume/main-resume.html # print source of the main resume pair (HTML + PDF behind Download PDF), edited by update-main-resume
+  main-resume/manifest.json    # build record: name, pages, spacingMultiplier, reviewedThrough commit, updated date
+  generateResumePdf.ts         # former jsPDF per-request generator; no longer imported by any route
   generateResumeTemplates.mjs  # standalone Node script: draws abstract 1-page/2-page layout mockups
 
 assets/
@@ -168,7 +172,8 @@ public/
   project-images/ICARUS-Lite/  # the published project's photos (7 files, 6 in its gallery), picked via the Studio's image picker; ICARUS-Pro/ is an empty upload target
   project-images/rileybeenders-com/           # the About page's captures of the site itself, <name>-light.png + <name>-dark.png (written by scripts/capture-site-screenshots.mjs)
   project-images/IcarusLiteRender.png
-  README.md                    # one-line note: no static resume.pdf needed, /api/resume-pdf covers it
+  resume/<name>.html|.pdf      # the main resume: Download PDF opens the .html (resumeHtmlPath); /api/resume-pdf serves the .pdf (resumePdfPath)
+  README.md                    # how the Download PDF file is published and named
 
 2.JobsApplliedTo/              # original job-posting PDFs, one per application (001–016). Note the double-l spelling.
 1.ApplicationsUsed/            # tailored resumes / cover letters actually submitted per application (+ a 000_ baseline)
@@ -178,7 +183,7 @@ output/
 references/                    # dated snapshot resumes (Apr 2022, Sept 2025, Jan 2026) used as evidence
 
 README.md                      # project description (Version 3.1, folder tree refreshed 2026-09-19; opening prose still pre-reskin) + duplicate Gantt/tracker table + local-dev instructions
-README_TODO.md                 # open content tasks (the resume-PDF data rules moved to custom-resume step 3)
+README_TODO.md                 # open content tasks (the resume-PDF data rules moved to create-custom-resume-pdf step 3)
 PRODUCT.md                     # product truth for the impeccable skill (interviewed 2026-09-18)
 DESIGN.md                      # the Blueprint Press token spec in Stitch DESIGN.md format, generated by `impeccable document`
 .impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); live/ holds live-mode annotations; critique/ is git-ignored run output
