@@ -49,7 +49,7 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🔴 No longer in consideration |
 | [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🔴 No longer in consideration |
 | [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🔴 No longer in consideration |
-| [[022 Disney - Sr Controls Engineer\|022]] | Disney Experiences (Disneyland Resort) | Sr Controls Engineer | — Not confirmed submitted (tracker shows TBD) |
+| [[022 Disney - Sr Controls Engineer\|022]] | Disney Experiences (Disneyland Resort) | Sr Controls Engineer | Not confirmed submitted (blank status, date TBD) |
 | [[023 Disney - Program Engineer\|023]] | Walt Disney World Resort | Program Engineer | 🔴 No longer in consideration |
 | [[024 Disney - Senior Systems Engineer\|024]] | Disney Experiences | Senior Systems Engineer | 🟢 Application Received |
 
