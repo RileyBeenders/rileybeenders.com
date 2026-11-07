@@ -160,6 +160,7 @@
     display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px 24px;
     padding: 12px var(--pad);
     border-bottom: 1px solid var(--rule);
+    background: var(--paper); /* solid fallback where color-mix() is unsupported (pre-2023 browsers) */
     background: color-mix(in srgb, var(--paper) 82%, transparent);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -205,6 +206,50 @@
   .btn:hover::before { transform: scaleY(1); }
   .btn { isolation: isolate; }
   .btn--quiet { border-color: var(--rule); }
+  /* ---- theme toggle: the inverse of the page (a dark button on light, a white one on dark),
+     labeled with the mode it switches to; hover wipes in the accent ---- */
+  .btn--theme { background: var(--ink); border-color: var(--ink); color: var(--paper);
+    transition: color 0.42s var(--ease), background-color 0.42s var(--ease), border-color 0.42s var(--ease), transform 0.42s var(--ease); }
+  .btn--theme::before { background: var(--accent); }
+  .btn--theme:hover { color: var(--on-accent); border-color: var(--accent); }
+  .btn--theme .to-light, :root[data-theme="dark"] .btn--theme .to-dark { display: none; }
+  :root[data-theme="dark"] .btn--theme .to-light { display: inline; }
+  /* ---- Print / PDF: the page's one call to action. Accent fill with a slow sheen, two soft
+     accent rings shortly after load that then stop for good, and on hover one fast bright
+     sheen pass, then the top-right corner folds down like a sheet of paper.
+     Kept to long-supported CSS (transforms, linear-gradient, rgba, filter; no color-mix or
+     inset shorthand) so it behaves the same in Chrome, Edge, Firefox, and Safari 12+. ---- */
+  .btn--print { background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+    transition: transform 0.42s var(--ease), -webkit-filter 0.32s var(--ease), filter 0.32s var(--ease); }
+  .btn--print:hover { color: var(--on-accent); border-color: var(--accent); }
+  .btn--print > span:not(.sheen) { position: relative; z-index: 1; }
+  .btn--print .sheen { position: absolute; top: 0; bottom: 0; left: 0; width: 34%; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    -webkit-animation: rb-sheen 3.6s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+    animation: rb-sheen 3.6s cubic-bezier(0.5, 0, 0.4, 1) infinite; transition: opacity 0.2s ease; }
+  @-webkit-keyframes rb-sheen { from { -webkit-transform: translateX(-260%); } to { -webkit-transform: translateX(340%); } }
+  @keyframes rb-sheen { from { transform: translateX(-260%); } to { transform: translateX(340%); } }
+  .js .btn--print { -webkit-animation: rb-call 1.1s var(--ease) 1.2s 2 both; animation: rb-call 1.1s var(--ease) 1.2s 2 both; }
+  @-webkit-keyframes rb-call { from { box-shadow: 0 0 0 0 rgba(62, 106, 225, 0.55); } to { box-shadow: 0 0 0 12px rgba(62, 106, 225, 0); } }
+  @keyframes rb-call { from { box-shadow: 0 0 0 0 rgba(62, 106, 225, 0.55); } to { box-shadow: 0 0 0 12px rgba(62, 106, 225, 0); } }
+  /* the burst: replaces the ink wipe every other .btn uses */
+  .btn--print::before { top: 0; bottom: 0; left: 0; right: auto; width: 45%; z-index: 0; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+    -webkit-transform: translateX(-160%); transform: translateX(-160%); transition: none; }
+  /* the fold: a paper-coloured triangle over a darkened flap, grown from the corner */
+  .btn--print::after { content: ""; position: absolute; top: -1px; right: -1px; z-index: 2; width: 0; height: 0; pointer-events: none;
+    background: linear-gradient(225deg, var(--paper) 50%, rgba(0, 0, 0, 0.38) 50%), linear-gradient(var(--accent), var(--accent));
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.25); transition: width 0.2s var(--ease), height 0.2s var(--ease); }
+  /* a tap on a touch screen leaves :hover stuck, so the hover effects only run where a pointer can hover */
+  .btn--print:hover::before { -webkit-transform: translateX(-160%); transform: translateX(-160%); }
+  @media (hover: hover) {
+    .btn--print:hover { -webkit-filter: brightness(1.12) saturate(1.08); filter: brightness(1.12) saturate(1.08); }
+    .btn--print:hover .sheen { opacity: 0; }
+    .btn--print:hover::before { -webkit-transform: translateX(330%); transform: translateX(330%); transition: transform 0.6s cubic-bezier(0.5, 0, 0.3, 1); }
+    .btn--print:hover::after { width: 14px; height: 14px; transition: width 0.4s var(--ease) 0.45s, height 0.4s var(--ease) 0.45s; }
+  }
+  .btn--print:focus-visible .sheen { opacity: 0; }
+  .btn--print:focus-visible::after { width: 14px; height: 14px; }
 
   /* ---- scroll spine: a hairline down the left edge that fills with reading progress ---- */
   .spine { position: fixed; left: 0; top: 0; bottom: 0; width: 2px; background: var(--rule); z-index: 5; }
@@ -358,6 +403,9 @@
     *, *::before, *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
     .js .rv { opacity: 1; transform: none; }
     .job:hover, .project:hover, main ul li:hover, button.pill:hover, .btn:hover, .btn--cta:hover .arrow { transform: none; }
+    .btn--print .sheen { display: none; }
+    .js .btn--print { -webkit-animation: none; animation: none; }
+    .btn--print::before { display: none; }
   }
 }
   </style>
@@ -377,8 +425,8 @@
     <a class="bar-brand" href="#top" style="text-decoration:none" aria-label="Riley Beenders, Disney Senior Systems Engineer: back to top"><span class="bar-mark" aria-hidden="true">RB</span><span>Disney Senior Systems Engineer</span></a>
     <nav class="bar-nav" aria-label="Sections" hidden></nav>
     <div class="bar-actions">
-      <button class="btn btn--quiet" type="button" data-theme-toggle aria-label="Switch light or dark">Theme</button>
-      <button class="btn" type="button" data-print>Print / PDF · 3 pages</button>
+      <button class="btn btn--theme" type="button" data-theme-toggle><span class="to-dark">Dark</span><span class="to-light">Light</span></button>
+      <button class="btn btn--print" type="button" data-print><span class="sheen" aria-hidden="true"></span><span>Print / PDF · 3 pages</span></button>
     </div>
   </div>
   <div class="spine web-only" aria-hidden="true"></div>
