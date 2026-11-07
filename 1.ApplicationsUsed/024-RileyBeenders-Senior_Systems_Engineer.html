@@ -250,6 +250,40 @@
   }
   .btn--print:focus-visible .sheen { opacity: 0; }
   .btn--print:focus-visible::after { width: 14px; height: 14px; }
+  /* The website buttons share the Print / PDF button's slow sheen and corner fold. On hover a glint
+     sweeps left to right with the page colour wiping in behind it (accent border and text), and the
+     label crossfades to the address. Same long-supported CSS as the print button (no color-mix). */
+  .btn--site { transition: transform 0.42s var(--ease), color 0.3s var(--ease) 0.1s; }
+  a.btn--site:hover { color: var(--on-accent); border-color: var(--accent); }
+  .closing .btn--site { margin-top: 16px; }
+  .btn--site .sheen { position: absolute; top: 0; bottom: 0; left: 0; width: 34%; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    -webkit-animation: rb-sheen 3.6s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+    animation: rb-sheen 3.6s cubic-bezier(0.5, 0, 0.4, 1) infinite; transition: opacity 0.2s ease; }
+  .btn--site .wipe { position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 0; background: var(--paper);
+    -webkit-transform: scaleX(0); transform: scaleX(0); -webkit-transform-origin: left; transform-origin: left;
+    transition: transform 0.3s var(--ease); }
+  .btn--site .labels { position: relative; z-index: 2; display: grid; }
+  .btn--site .labels > span { grid-area: 1 / 1; text-align: center; transition: opacity 0.25s ease, transform 0.4s var(--ease); }
+  .btn--site .l-hover { opacity: 0; -webkit-transform: translateX(-10px); transform: translateX(-10px); }
+  .btn--site::before { top: 0; bottom: 0; left: 0; right: auto; width: 45%; z-index: 1; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+    -webkit-transform: translateX(-128%); transform: translateX(-128%); transition: none; }
+  .btn--site:hover::before { -webkit-transform: translateX(-128%); transform: translateX(-128%); }
+  .btn--site::after { content: ""; position: absolute; top: -1px; right: -1px; z-index: 3; width: 0; height: 0; pointer-events: none;
+    background: linear-gradient(225deg, var(--paper) 50%, var(--accent) 50%);
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.25); transition: width 0.2s var(--ease), height 0.2s var(--ease); }
+  @media (hover: hover) {
+    a.btn--site:hover { color: var(--accent); }
+    .btn--site:hover .sheen { opacity: 0; }
+    .btn--site:hover .wipe { -webkit-transform: scaleX(1); transform: scaleX(1); transition: transform 0.6s cubic-bezier(0.5, 0, 0.3, 1); }
+    .btn--site:hover::before { -webkit-transform: translateX(282%); transform: translateX(282%); transition: transform 0.6s cubic-bezier(0.5, 0, 0.3, 1); }
+    .btn--site:hover .l-rest { opacity: 0; -webkit-transform: translateX(10px); transform: translateX(10px); }
+    .btn--site:hover .l-hover { opacity: 1; -webkit-transform: none; transform: none; transition-delay: 0.18s; }
+    .btn--site:hover::after { width: 14px; height: 14px; transition: width 0.4s var(--ease) 0.55s, height 0.4s var(--ease) 0.55s; }
+  }
+  .btn--site:focus-visible .l-rest { opacity: 0; }
+  .btn--site:focus-visible .l-hover { opacity: 1; -webkit-transform: none; transform: none; }
 
   /* ---- scroll spine: a hairline down the left edge that fills with reading progress ---- */
   .spine { position: fixed; left: 0; top: 0; bottom: 0; width: 2px; background: var(--rule); z-index: 5; }
@@ -405,7 +439,7 @@
     .job:hover, .project:hover, main ul li:hover, button.pill:hover, .btn:hover, .btn--cta:hover .arrow { transform: none; }
     .btn--print .sheen { display: none; }
     .js .btn--print { -webkit-animation: none; animation: none; }
-    .btn--print::before { display: none; }
+    .btn--print::before, .btn--site::before, .btn--site .sheen { display: none; }
   }
 }
   </style>
@@ -774,15 +808,21 @@
     var contacts = document.querySelectorAll("body > header .contact");
     var contact = contacts.length ? contacts[contacts.length - 1] : null;
     var siteRow = site ? site.closest(".contact") : null;
-    function siteButton(label) {
+    // Each button reads `label` at rest; on hover (pointer devices) a glint sweeps left to right,
+    // the button turns the page's own colour with an accent border and text, and the label
+    // changes to `hoverLabel`, the address it opens.
+    function siteButton(label, hoverLabel, href) {
       var a = document.createElement("a");
-      a.className = "btn btn--cta"; a.href = site.href; a.target = "_blank"; a.rel = "noopener";
-      a.innerHTML = label + ' <span class="arrow" aria-hidden="true">&rarr;</span>';
+      a.className = "btn btn--cta btn--site"; a.href = href; a.target = "_blank"; a.rel = "noopener";
+      a.setAttribute("aria-label", label + " (" + hoverLabel.replace(/^Visit\s+/i, "") + ")");
+      a.innerHTML = '<span class="sheen" aria-hidden="true"></span><span class="wipe" aria-hidden="true"></span>' +
+        '<span class="labels" aria-hidden="true"><span class="l-rest">' + label + ' <span class="arrow">&rarr;</span></span>' +
+        '<span class="l-hover">' + hoverLabel + ' <span class="arrow">&rarr;</span></span></span>';
       return a;
     }
     if (site && contact) {
       var row = document.createElement("div"); row.className = "cta-row web-only";
-      row.appendChild(siteButton("See my work at rileybeenders.com"));
+      row.appendChild(siteButton("Explore more of my projects on my website", "Visit rileybeenders.com", site.href));
       var cap = document.createElement("p"); cap.textContent = "Projects, photos, and the longer write-ups.";
       row.appendChild(cap);
       contact.insertAdjacentElement("afterend", row);
@@ -795,9 +835,9 @@
       var main = document.querySelector("main");
       if (main) {
         var end = document.createElement("footer"); end.className = "closing web-only";
-        var h = document.createElement("h2"); h.textContent = "Want the longer version?";
-        var p = document.createElement("p"); p.className = "pill-hint"; p.textContent = "The projects, photos, and write-ups behind this resume are on the site.";
-        end.appendChild(h); end.appendChild(p); end.appendChild(siteButton("Visit rileybeenders.com"));
+        var h = document.createElement("h2"); h.textContent = "Want to read more into my projects?";
+        var projects = new URL("/projects", site.href).href;
+        end.appendChild(h); end.appendChild(siteButton("Explore my projects", "Visit rileybeenders.com/projects", projects));
         main.insertAdjacentElement("afterend", end);
       }
     }
