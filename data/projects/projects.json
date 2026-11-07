@@ -166,10 +166,13 @@
         "Each frame carries min, max and last per channel, so a spike between frames still shows on the chart",
         "A hand-written Modbus simulator that shares no code with the client, so a test cannot hide the same bug twice",
         "A Vizio TV cannot be woken over HDMI-CEC, so the Pi pairs with it by PIN and switches it over the network instead",
-        "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server"
+        "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server",
+        "The packing bench Pi is wired to the network: at rollout its screen kept losing connection and its labels printed late, and a direct Ethernet run fixed both",
+        "The packing bench touch screen runs at 1080p rather than 1440p at 120% scaling: halving the animation frame rate, checking for thermal throttling and swapping in a fresh Pi on a new SD card changed nothing, while the lower resolution removed the lag"
       ],
       "impact": [
         "Live on all three lines since October 2026",
+        "No unplanned outage during production since go-live; the one disconnect, at the packing bench, came before the morning's production started",
         "Every spool off every line has a record, a serial, a label and a certificate",
         "Print-on-demand thermal labels replaced full-sheet printing, removing up to about 30% label waste per run",
         "The whole plant sees production and alarms on the projector and the statistics TV",

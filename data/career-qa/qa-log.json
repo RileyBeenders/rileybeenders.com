@@ -502,8 +502,8 @@
         "dedication"
       ],
       "question": "Riley is salaried and increasingly works outside shop hours whenever the work needs it. What is a specific recent example, such as a plant or customer issue handled off hours or a deployment done outside production?",
-      "answer": "Working with vendors regularly extends into nights and very early mornings.",
-      "notes": "Not on the site. A specific dated example (an incident, vendor escalation, or off-hours deployment) is still not recorded. Show this through examples rather than stating 24/7 availability; it is not a formal on-call rotation.",
+      "answer": "Working with vendors regularly extends into nights and very early mornings. I also regularly work past the standard 7 a.m. to 4 p.m. day, remotely from home or at the shop after everyone else has gone home, where the quiet helps me finish the work I want done before the end of the day.",
+      "notes": "Not on the site. A specific dated example (an incident, vendor escalation, or off-hours deployment) is still not recorded. Show this through examples rather than stating 24/7 availability; it is not a formal on-call rotation. Expanded 2026-11-07 (application 024 grill). Still no single dated example, so it stays partial; it supports the posting's 24x7 availability as a working pattern, not as an on-call rotation.",
       "usedIn": []
     },
     {
@@ -579,6 +579,134 @@
       "usedIn": [
         ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
         "data/home/skills.json"
+      ]
+    },
+    {
+      "id": "2026-11-07-03",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "partial",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "ExtrusionStudio",
+        "troubleshooting",
+        "root cause",
+        "production readiness"
+      ],
+      "question": "Describe a specific production incident: what failed, how you found out, how long until service was restored, and what you changed afterward.",
+      "answer": "Nothing has failed in production. While moving ExtrusionStudio into production, I found and fixed two problems on the packing bench panel, the main panel where technicians approve or reject spools, add maintenance and production notes, and print labels: the screen lagged, and its connection was unreliable. I reduced the panel's animations from 60 to 30 frames per second, with no change in performance; checked whether the Raspberry Pi 5 (8 GB) was thermally throttling; and swapped in a temporary Pi with a new SD card and a fresh setup, with no difference. Running an Ethernet cable directly to the Pi fixed the screen's connectivity and the delay to the label printer, but not the lag. Moving the 1440p touch screen from 120% scaling to 1080p at 100% scaling removed the lag. I had tried 1440p at 100% scaling with no change, but that was before the Ethernet fix.",
+      "notes": "Riley plans to retest 1440p at 100% scaling on Monday, 2026-11-09, to see whether the lag was a connectivity issue all along; update this answer and the ExtrusionStudio design decision with the result. It is a go-live troubleshooting story, not an incident: never call it an outage. Added to the ExtrusionStudio project (designDecisions) on 2026-11-07.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-07-04",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "incident reports",
+        "written communication"
+      ],
+      "question": "Have you written incident updates or root-cause reports for customers or leadership?",
+      "answer": "I have written incident reports for leadership. I have not written any for customers yet; I plan to once the local control interface and over-the-air updates ship.",
+      "notes": "Supports written incident communication to leadership. Do not claim postmortems for customers.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-05",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "tools",
+        "Kanban",
+        "GitHub",
+        "communication"
+      ],
+      "question": "Which tracking or ticketing tools do you use?",
+      "answer": "GitHub, and Kanban boards integrated into our Microsoft Teams channels. With customers, communication is mostly by email and sometimes by phone.",
+      "notes": "Kanban is supported; JIRA, Scrum, and ServiceNow are not. Riley wrote \"Teams channels\"; read as Microsoft Teams.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-06",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "Business Central",
+        "vendors"
+      ],
+      "question": "Was there a Microsoft partner or vendor support contract for Business Central that you escalated against?",
+      "answer": "No Microsoft partner was involved. Our main Business Central point of contact is at Proteor's headquarters in France.",
+      "notes": "Not evidence of a managed-services vendor relationship or SLA.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-07",
+      "asked": "2026-11-07",
+      "answered": null,
+      "status": "open",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "storage",
+        "backups",
+        "infrastructure"
+      ],
+      "question": "Have you set up or maintained storage or backups yourself (for example RAID arrays, a NAS, Proxmox or VM storage, database or file backups, or restoring data after a failure), and can that work appear on the site and resumes?",
+      "answer": null,
+      "notes": "Asked because the posting wants diagnosis across compute, networking, and storage, and no public record shows storage work. The planned ExtrusionStudio rack server (RAID 5) is in entry 2026-11-06-04 and its model is held in private/career-evidence.md. Until answered, resumes leave \"storage\" out.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-08",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "ExtrusionStudio",
+        "reliability",
+        "uptime"
+      ],
+      "question": "How reliable has ExtrusionStudio been since go-live?",
+      "answer": "There have been no unplanned outages during production. The packing bench panel once disconnected for a few minutes in the morning, before production started, and we hard-wired it.",
+      "notes": "\"No unplanned outage during production since go-live (October 2026)\" is supported; keep \"so far\" framing implicit with the date.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-07-09",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "grill-my-resume, application 024 (Disney Senior Systems Engineer)",
+      "topics": [
+        "Business Central",
+        "users",
+        "scale"
+      ],
+      "question": "How many people depend on Business Central?",
+      "answer": "Everyone at our facility, 10 to 15 people. Another 10 to 30 people at Proteor locations around the world reference our Business Central.",
+      "notes": "Riley's sentence ended \"reference our BC to make\" and was cut off; the purpose of the global reference is not recorded.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
       ]
     }
   ]
