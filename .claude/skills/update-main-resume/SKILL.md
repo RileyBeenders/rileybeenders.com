@@ -1,6 +1,6 @@
 ---
 name: update-main-resume
-description: Refresh Riley Beenders' main resume, the PDF the home page's Download PDF button serves. Finds what changed in data/**/*.json (and in reviewed tailored resumes) since the main resume was last built, picks the resume-worthy findings, asks Riley which to apply, rebuilds and validates the PDF, then asks what the downloaded file should be named before publishing it. Use on /update-main-resume, "update / refresh / rebuild the main resume", "update the default PDF", "update the Download PDF resume", or after new experience, projects, certifications, or career Q&A answers land in data/.
+description: Refresh Riley Beenders' main resume, the HTML + PDF pair in .DefaultResume/ that the home page's Download PDF button opens. Finds what changed in data/**/*.json (and in reviewed tailored resumes) since the main resume was last built, picks the resume-worthy findings, asks Riley which to apply, rebuilds the PDF with create-custom-resume-pdf's scripts and the interactive HTML with create-custom-resume-html's, verifies both, and publishes them as RileyBeenders_Resume_<YY><DDD> (year + day of year) to .DefaultResume/ and public/resume/. Use on /update-main-resume, "update / refresh / rebuild the main resume", "update the default PDF", "update the Download PDF resume", or after new experience, projects, certifications, or career Q&A answers land in data/.
 argument-hint: "[--since <commit>]"
 ---
 
@@ -8,15 +8,18 @@ argument-hint: "[--since <commit>]"
 
 One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
 
-The main resume is the general, untailored resume anyone downloads from the home page. It is **not** part of the job-targeted chain (`create-custom-resume-pdf` → `grill-my-resume` → `fix-my-resume`), but it follows the same layout and copy rules and the same scripts.
+The main resume is the general, untailored resume anyone gets from the home page. Download PDF opens its interactive HTML in a new tab, and the visitor saves the PDF with that page's **Print / PDF** button. It is **not** part of the job-targeted chain (`create-custom-resume-pdf` → `grill-my-resume` → `fix-my-resume`), but it runs the same two builders (`create-custom-resume-pdf` for the PDF, `create-custom-resume-html` for the interactive page) with the same layout, copy rules, and scripts.
 
 | Piece | Where |
 | --- | --- |
-| HTML source (edit this) | `ResumeBuilder/main-resume/main-resume.html` |
-| Build record | `ResumeBuilder/main-resume/manifest.json` (`publicPath`, `pages`, `spacingMultiplier`, `reviewedThrough` commit, `updated` date) |
-| Published PDF | `public/<manifest.publicPath>`, e.g. `public/resume/Riley_Beenders_Resume.pdf` |
-| What the button downloads | `data/header.json` → `resumePdfPath`; the browser saves it under that file's basename |
-| Old link | `/api/resume-pdf` redirects to `resumePdfPath` |
+| Print source (edit this) | `ResumeBuilder/main-resume/main-resume.html` |
+| Build record | `ResumeBuilder/main-resume/manifest.json` (`name`, `pages`, `spacingMultiplier`, `reviewedThrough` commit, `updated` date) |
+| Riley's working pair | `.DefaultResume/<name>.pdf` and `.DefaultResume/<name>.html`, the only files there |
+| Published pair | `public/resume/<name>.pdf` and `.html`, identical copies |
+| What the button opens | `data/header.json` → `resumeHtmlPath`, in a new tab |
+| Old link | `/api/resume-pdf` redirects to `resumePdfPath` (the PDF) |
+
+**The name is never asked for.** It is always `RileyBeenders_Resume_<YY><DDD>`: the last two digits of the year, then the day of the year zero-padded to three digits, from the build date. 2026-11-07 is day 311, so `RileyBeenders_Resume_26311`; 2027-01-05 is `RileyBeenders_Resume_27005`. Riley reads the suffix as "last updated". Get it with `node .claude/skills/update-main-resume/scripts/publish-main-resume.mjs --name-only`; a rebuild on the same day overwrites that day's pair.
 
 The layout came from `output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html` on 2026-11-07. Never edit `output/pdf/` or `output/resume-html/` from this skill; they are tailored application records.
 
@@ -31,6 +34,8 @@ node .claude/skills/update-main-resume/scripts/collect-changes.mjs
 It diffs the resume-relevant data files (`data/header.json`, `data/home/{summary,experience,skills,education}.json`, `data/projects/projects.json`, `data/career-qa/qa-log.json`) from `manifest.reviewedThrough` to HEAD, adds uncommitted and untracked changes, lists tailored resumes in `output/resume-html/` changed since the last build, and lists career Q&A entries answered since the baseline. Pass `--since <commit>` to look further back.
 
 Then read `main-resume.html` in full, and also check for drift the diff cannot show:
+
+- The published pair against the source: the text of `.DefaultResume/<manifest.name>.pdf` should match a fresh print of `main-resume.html`. If Riley replaced the pair by hand (for example with a tailored resume's files), list every line that differs as an Update or Remove finding, and flag posting-specific text such as a relocation city list first.
 
 - Counts quoted on the page against the repo today (`node scripts/site-stats.mjs` for skills, notes, commits).
 - "Present" roles and projects that have since ended, and `openToRelocation` in `data/header.json` (the contact row says "Open to relocation" only while it is `true`, with no city list).
@@ -57,7 +62,7 @@ Rules every proposal must already satisfy (from `create-custom-resume-pdf` and `
 
 ## 3. Ask Riley what to apply
 
-If there are no findings, say so in one line and ask whether to rebuild anyway (for example only to rename the file); stop if not.
+If there are no findings, say so in one line and ask whether to rebuild anyway (for example only to refresh the date in the name); stop if not.
 
 Otherwise present every finding as a numbered list, each with: the kind (Add / Replace / Update / Remove), the section it lands in, the exact proposed text (or old → new), its source (file and commit, or Q&A id), and what it displaces. Then ask which to apply:
 
@@ -68,43 +73,41 @@ Apply only what Riley picks; reword on request. Do not start editing before the 
 
 ## 4. Build
 
-1. Edit `ResumeBuilder/main-resume/main-resume.html`. Change content only; leave the stylesheet alone unless Riley asks.
-2. Print to a scratch file, not to `public/`:
+Work in a scratch folder; nothing reaches `.DefaultResume/` or `public/` until step 5.
+
+1. Edit `ResumeBuilder/main-resume/main-resume.html`. Change content only; leave the stylesheet alone unless Riley asks. Screen-only extras (`<details class="web-only more">` bullet details, case-study links) follow the `create-custom-resume-html` rules for them and must trace to data like any bullet.
+2. **PDF** (the `create-custom-resume-pdf` scripts). Print and validate with the manifest's page count, then look at every render:
 
    ```bash
    node .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs ResumeBuilder/main-resume/main-resume.html <scratch>/main-resume.pdf <manifest.spacingMultiplier>
-   ```
-
-3. Validate with the manifest's page count and look at every render:
-
-   ```bash
    python .claude/skills/create-custom-resume-pdf/scripts/validate-resume.py <scratch>/main-resume.pdf <manifest.pages> --png <scratch>
    ```
 
    It must print `RESULT: OK` (page count and size, styled links, no blue non-links, no letter-spaced headings, no repeated 8-word fragment). Inspect the PNGs for clipping, overlap, an orphaned heading, or a bullet split across pages; apply the craft floor the `create-custom-resume-pdf` skill describes in its step 8.
-4. If the content no longer fits `manifest.pages`, first tune the spacing multiplier (0.8x to 1.7x, every gap together, never a smaller body font). If that fails, ask Riley whether to cut the weakest line or change the page count; never pad a page with filler. Page 3 (Selected Projects) is a forced break and may end short.
+3. If the content no longer fits `manifest.pages`, first tune the spacing multiplier (0.8x to 1.7x, every gap together, never a smaller body font). If that fails, ask Riley whether to cut the weakest line or change the page count; never pad a page with filler. Page 3 (Selected Projects) is a forced break and may end short.
+4. **HTML** (the `create-custom-resume-html` scripts). Build the interactive page from the same source and verify that its print matches the PDF page for page:
 
-## 5. Ask for the file name
+   ```bash
+   node .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs ResumeBuilder/main-resume/main-resume.html --pages <N> --out <scratch>/main-resume.html
+   node .claude/skills/create-custom-resume-html/scripts/verify-web-resume.mjs <scratch>/main-resume.html <scratch>/main-resume.pdf --shots <scratch>/shots
+   ```
 
-The file lands on other people's computers under this name, so ask before publishing. Use `AskUserQuestion` with:
+   The source's `<title>` is "Riley Beenders - Resume", so the sticky bar reads "Resume"; no `--role`. Verification must pass (no script errors, website button present, section links land, no sideways scroll at 390px, highlight works, lines visible with JavaScript off, same page count and per-page text as the PDF). Look at the screenshots.
 
-- The current name (from `manifest.publicPath`) first, labeled as keeping it.
-- Two or three suggestions, e.g. `Riley_Beenders_Resume.pdf`, `Riley_Beenders_Resume_<Month>_<YYYY>.pdf`, `Riley_Beenders_RnD_Engineer_Resume.pdf`.
-
-Rules for any name, including one Riley types: starts with `Riley_Beenders`, ASCII letters, digits, `_` or `-` only, no spaces, ends in `.pdf`, and no internal words like `main`, `default`, `final`, `v2`, or `copy`. If Riley's name breaks a rule, propose the nearest valid one and confirm it.
-
-## 6. Publish
+## 5. Publish
 
 ```bash
-node .claude/skills/update-main-resume/scripts/publish-main-resume.mjs <scratch>/main-resume.pdf <Chosen_Name.pdf> --pages <N> --m <multiplier>
+node .claude/skills/update-main-resume/scripts/publish-main-resume.mjs <scratch>/main-resume.pdf <scratch>/main-resume.html --pages <N> --m <multiplier>
 ```
 
-It copies the PDF to `public/resume/<name>`, deletes the previous public file if the name changed, sets `data/header.json` `resumePdfPath`, and updates `manifest.json` (`reviewedThrough` = HEAD, `updated` = today). A running Studio caches data files until it restarts, so tell Riley to restart it if it is open.
+It names the pair `RileyBeenders_Resume_<YY><DDD>` for today, copies it into `.DefaultResume/` and `public/resume/`, deletes every older `RileyBeenders_Resume_*` pair from both folders (git keeps the history), points `data/header.json` `resumeHtmlPath` and `resumePdfPath` at the new public files, and updates `manifest.json` (`name`, `reviewedThrough` = HEAD, `updated` = today). Pass `--date YYYY-MM-DD` only to reproduce a past build's name. A running Studio caches data files until it restarts, so tell Riley to restart it if it is open.
 
-Verify in the browser preview (`preview_start` with name `site`): fetch `resumePdfPath` and `/api/resume-pdf` and confirm both return `application/pdf` with a `%PDF-` body, and that the home page's Download PDF button still downloads without an error.
+## 6. Verify on the site
+
+In the browser preview (`preview_start` with name `site`, or the already-running server on :3000): confirm the home page's Download PDF is a link to `resumeHtmlPath` with `target="_blank"`, that `resumeHtmlPath` loads with its **Print / PDF · N pages** button and no console errors, and that `/api/resume-pdf` ends at `resumePdfPath` with `application/pdf` and a `%PDF-` body.
 
 ## 7. Hand off
 
 - Run `vault-sync` (the main resume maps to `04 Resume PDF Pipeline/Resume PDF Pipeline.md`).
-- Report: the findings applied and skipped, the validator result, the page count and multiplier, and the published file name and path.
+- Report: the findings applied and skipped, the validator and web-verify results, the page count and multiplier, and the published name with both folders.
 - Offer `write-commit`; never commit or push on your own.

@@ -40,7 +40,7 @@ const FILES = [
 const git = (...args) => execFileSync("git", args, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).trimEnd();
 const section = (title) => console.log(`\n=== ${title} ===`);
 
-console.log(`main resume: ${manifest.publicPath} (${manifest.pages} pages, built ${manifest.updated})`);
+console.log(`main resume: .DefaultResume/${manifest.name ?? manifest.publicPath}.{pdf,html} (${manifest.pages} pages, built ${manifest.updated})`);
 console.log(`baseline:    ${since} -> HEAD ${git("rev-parse", "--short", "HEAD")}`);
 
 section("1. Commits touching resume data since the baseline");

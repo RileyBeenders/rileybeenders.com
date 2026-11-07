@@ -72,8 +72,8 @@ Because it uses `fs`, this page can't be statically exported without the file pr
 ## `/api/resume-pdf` — `app/api/resume-pdf/route.ts`
 
 - `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`.
-- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/Riley_Beenders_Resume.pdf`) and `Cache-Control: no-store`. Relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
-- The Download PDF button no longer calls this route; it fetches `resumePdfPath` directly. The route only keeps older `/api/resume-pdf` links working.
+- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) and `Cache-Control: no-store`. Relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
+- The Download PDF button no longer calls this route; it opens `resumeHtmlPath` in a new tab (or fetches `resumePdfPath` directly when that is unset). The route only keeps older `/api/resume-pdf` links working.
 
 The main resume itself is described in [[Resume PDF Pipeline]].
 

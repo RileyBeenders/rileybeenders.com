@@ -1,9 +1,9 @@
 import header from "@/data/header.json";
 
-// The Download PDF button now serves the main resume, a static PDF printed from
-// ResumeBuilder/main-resume/main-resume.html into public/resume/ by the
-// update-main-resume skill. This route stays so links to /api/resume-pdf keep
-// working: it redirects to whatever file data/header.json currently points at.
+// The main resume is a static HTML + PDF pair in public/resume/, built from
+// ResumeBuilder/main-resume/main-resume.html by the update-main-resume skill.
+// Download PDF opens the HTML (header.json resumeHtmlPath); this route stays so
+// links to /api/resume-pdf keep working: it redirects to resumePdfPath.
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

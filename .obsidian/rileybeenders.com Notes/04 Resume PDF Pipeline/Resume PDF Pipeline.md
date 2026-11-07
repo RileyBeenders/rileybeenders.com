@@ -10,16 +10,21 @@ Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 
 Since 2026-11-07 the button serves a **static, curated PDF** rather than one generated per request. It started as a copy of the tailored Disney Imagineering Ride Controls resume (`output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html`) with the posting's relocation cities removed: three Letter pages, navy headings, Arial, Selected Projects on page 3.
 
-**Chain:** `BpActions`'s Download button (see [[Blueprint UI Components]]) → `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET <resumePdfPath>` (from `data/header.json`, today `/resume/Riley_Beenders_Resume.pdf`) → the static file in `public/resume/`.
+**Chain (today):** `BpActions`'s Download PDF (see [[Blueprint UI Components]]) is a link to `data/header.json` `resumeHtmlPath` (`/resume/RileyBeenders_Resume_26311.html`) that opens in a new tab. That page is the interactive HTML resume built by `create-custom-resume-html`; the visitor saves the PDF with its own **Print / PDF · 3 pages** button. The files in `public/resume/` are copies of Riley's working pair in `.DefaultResume/` (renamed from `.DisneyDefaultResume/` on 2026-11-07); the `_26311` suffix is the last-updated date Riley tracks, so a newer copy means new files in both folders and both `header.json` paths updated.
+
+**Chain (fallback, no `resumeHtmlPath`):** the button runs `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET <resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) → the browser saves the static PDF.
 
 | Piece | Path |
 | --- | --- |
-| HTML source | `ResumeBuilder/main-resume/main-resume.html` (same `:root { --m }` spacing contract as the tailored resumes) |
-| Build record | `ResumeBuilder/main-resume/manifest.json`: `publicPath`, `pages` (3), `spacingMultiplier`, `reviewedThrough` (the commit whose `data/` the page was last reconciled against), `updated` |
-| Published PDF | `public/resume/<name>.pdf`, the only file in that folder |
-| Pointer | `data/header.json` `resumePdfPath` |
+| Working copies | `.DefaultResume/RileyBeenders_Resume_<date>.html` and `.pdf` |
+| Published files | `public/resume/RileyBeenders_Resume_<date>.html` and `.pdf` |
+| Pointers | `data/header.json` `resumeHtmlPath` (what the button opens) and `resumePdfPath` (what `/api/resume-pdf` serves) |
+| `update-main-resume` source | `ResumeBuilder/main-resume/main-resume.html` (same `:root { --m }` spacing contract as the tailored resumes) |
+| Build record | `ResumeBuilder/main-resume/manifest.json`: `name` (the pair's base name), `pages` (3), `spacingMultiplier`, `reviewedThrough` (the commit whose `data/` the page was last reconciled against), `updated` |
 
-It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the HTML is reprinted and validated with the `create-custom-resume-pdf` scripts, Riley names the file, and `publish-main-resume.mjs` writes the PDF, deletes the old one if renamed, and updates `header.json` and the manifest. Because it is static, the PDF only changes when that skill runs; editing `data/` alone no longer changes the download.
+It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the source is reprinted and validated with the `create-custom-resume-pdf` scripts, the interactive HTML is rebuilt and verified with the `create-custom-resume-html` scripts, and `publish-main-resume.mjs` names the pair `RileyBeenders_Resume_<YY><DDD>` for the build date, writes it to `.DefaultResume/` and `public/resume/`, deletes the older pair, and updates both `header.json` paths and the manifest. Because it is static, the pair only changes when that skill runs; editing `data/` alone no longer changes the download.
+
+The pair published on 2026-11-07 (`_26311`) was swapped in by hand from the Disney Imagineering Ride Controls build, not printed from `main-resume.html`; it still reads "Open to relocation (Glendale, Anaheim, or Orlando)". The next `update-main-resume` run reports that difference.
 
 ### `ResumeBuilder/downloadPublishedResume.ts`
 

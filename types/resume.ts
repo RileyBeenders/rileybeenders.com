@@ -488,6 +488,9 @@ export type ResumeData = {
   layout: LayoutSettings;
   motion?: MotionSettings;
   resumePdfPath: string;
+  /** Interactive HTML resume. When set, Download PDF opens it in a new tab
+   * (its own Print / PDF button saves the file) instead of downloading resumePdfPath. */
+  resumeHtmlPath?: string;
   comingSoon?: ComingSoonContent;
   skills: SkillGroup[];
   experience: Experience[];

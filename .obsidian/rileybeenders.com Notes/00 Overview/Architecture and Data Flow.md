@@ -45,7 +45,7 @@ flowchart LR
   HOME --> HOMEUI["Reveal / PageSpine / HeroRibbon / BpHeroRelocationBadge\nEmphasizedText / BpActions / BpMark"]
   PROJ --> PV["lib/projects.ts buildProjectViews()"]
   PV --> ENTRY["ProjectEntry / ProjectGallery / CaseStudy (client)\nBpComingSoon when nothing is published"]
-  HOMEUI -->|"Download PDF → header.json resumePdfPath"| PDF["public/resume/*.pdf\n(static main resume)"]
+  HOMEUI -->|"Download PDF → header.json resumeHtmlPath (new tab)"| PDF["public/resume/RileyBeenders_Resume_*.html|.pdf\n(static main resume pair)"]
   API["app/api/resume-pdf/route.ts\n(307 to resumePdfPath)"] --> PDF
 
   MI[data/more-info/more-info.json] --> MIPAGE["app/(site)/more-info/page.tsx (server)"]
@@ -86,7 +86,7 @@ These are **build-time content toggles**, flipped in the Studio's Site Settings,
 
 Two unrelated PDF-generation systems — don't conflate them:
 
-1. **The main resume**: a static, curated PDF in `public/resume/` that `header.json`'s `resumePdfPath` points at, printed from `ResumeBuilder/main-resume/main-resume.html` by the `update-main-resume` skill. This is what the "Download PDF" button produces; `/api/resume-pdf` redirects to it. It changes only when that skill runs.
+1. **The main resume**: a static HTML + PDF pair in `public/resume/` (copied from `.DefaultResume/`), built from `ResumeBuilder/main-resume/main-resume.html` by the `update-main-resume` skill. The "Download PDF" button opens the HTML (`header.json` `resumeHtmlPath`) in a new tab, whose Print / PDF button saves it; `/api/resume-pdf` redirects to the PDF (`resumePdfPath`). It changes only when that skill runs.
 2. **Static, hand-tuned, per-application**: the PDFs in `1.ApplicationsUsed/` and `output/pdf/`, produced by manually invoking the `create-custom-resume-pdf` agent procedure against a specific posting in `2.JobsApplliedTo/`. Same HTML layout and print scripts as the main resume, tailored per job.
 
 Full detail in [[Resume PDF Pipeline]] and [[Job Application Tracker]].

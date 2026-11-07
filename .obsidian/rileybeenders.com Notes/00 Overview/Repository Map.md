@@ -29,6 +29,7 @@ CLAUDE.md                      # routing index for the agent skills + the Next.j
     site-timeline-sync/SKILL.md# name: site-timeline-sync — keeps /about-this-site current from git
     impeccable/ + 14 more      # vendored: the design entry point, the taste-skill set, web-design-guidelines
 
+.DefaultResume/                # Riley's working copy of the main resume pair, RileyBeenders_Resume_<YY><DDD>.html|.pdf (copied to public/resume/)
 .github/
   workflows/site-timeline-sync.yml   # after every push to main: Claude Code runs site-timeline-sync, the workflow validates + commits the result
 
@@ -64,7 +65,7 @@ components/
     BpThemeToggle.tsx          # light/dark switch in the nav (uses ThemeProvider's useTheme)
     ThemeProvider.tsx          # data-theme on <html> + localStorage; useTheme() for components that need the mode
     BpMark.tsx                 # the RB monogram SVG — one continuous stroke, gradient along travel
-    BpActions.tsx              # Download PDF (3-state) / Email / LinkedIn / GitHub button row (client)
+    BpActions.tsx              # Download PDF (opens resumeHtmlPath in a new tab, else 3-state PDF download) / Email / LinkedIn / GitHub button row (client)
     BpRelocationBadge.tsx      # "Open to relocation": BpHeroRelocationBadge (home hero → docks on scroll) + BpFixedRelocationBadge (other pages); typewriter label
     HeroRibbon.tsx             # the faint B-bowl flourish behind the hero h1; replays its CSS stroke-draw when the hero scrolls back into view
     PageSpine.tsx              # scroll-spring hairline spine down the home page's sections (moved-in sibling of ProjectListSpine)
@@ -100,7 +101,7 @@ components/
         SkillsDemo.tsx         # the repo's skill router: rail of procedures, trigger + what-it-does, auto-advances until touched
 
 data/
-  header.json                  # site-wide metadata: person, 5 visibility switches, theme (paletteId + custom seeds), fonts (header/subheader/body), siteMode ("resume"), resumePdfPath
+  header.json                  # site-wide metadata: person, 5 visibility switches, theme (paletteId + custom seeds), fonts (header/subheader/body), siteMode ("resume"), resumePdfPath, resumeHtmlPath
   resumeData.ts                # merges all JSON below into one typed ResumeData object (visible:false filter, order sort, visibility pruning)
   contact/contact.json         # /contact hero + Details copy (Studio: Contact)
   home/
@@ -155,8 +156,8 @@ studio/                        # the local environment — `npm run site` (site 
 
 ResumeBuilder/
   downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + download the main resume under its own file name
-  main-resume/main-resume.html # HTML source of the main resume (the Download PDF file), edited by update-main-resume
-  main-resume/manifest.json    # build record: publicPath, pages, spacingMultiplier, reviewedThrough commit, updated date
+  main-resume/main-resume.html # print source of the main resume pair (HTML + PDF behind Download PDF), edited by update-main-resume
+  main-resume/manifest.json    # build record: name, pages, spacingMultiplier, reviewedThrough commit, updated date
   generateResumePdf.ts         # former jsPDF per-request generator; no longer imported by any route
   generateResumeTemplates.mjs  # standalone Node script: draws abstract 1-page/2-page layout mockups
 
@@ -171,7 +172,7 @@ public/
   project-images/ICARUS-Lite/  # the published project's photos (7 files, 6 in its gallery), picked via the Studio's image picker; ICARUS-Pro/ is an empty upload target
   project-images/rileybeenders-com/           # the About page's captures of the site itself, <name>-light.png + <name>-dark.png (written by scripts/capture-site-screenshots.mjs)
   project-images/IcarusLiteRender.png
-  resume/<name>.pdf            # the main resume the Download PDF button serves (named by header.json resumePdfPath)
+  resume/<name>.html|.pdf      # the main resume: Download PDF opens the .html (resumeHtmlPath); /api/resume-pdf serves the .pdf (resumePdfPath)
   README.md                    # how the Download PDF file is published and named
 
 2.JobsApplliedTo/              # original job-posting PDFs, one per application (001–016). Note the double-l spelling.
