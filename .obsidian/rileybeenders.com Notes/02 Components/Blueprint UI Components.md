@@ -12,7 +12,7 @@ The `components/blueprint/*` pieces that aren't the nav/mark, plus `components/c
 
 - **Download PDF** — a 3-state machine (`idle | loading | error`):
   1. Click → `state = "loading"`, button `disabled` + `aria-busy`, label "Preparing PDF…".
-  2. Dynamically `import("@/ResumeBuilder/downloadPublishedResume")` (kept out of the main bundle) and calls `downloadPublishedResumePdf(data.resumePdfPath)` (`resumePdfPath` = `"/api/resume-pdf"` from `header.json`).
+  2. Dynamically `import("@/ResumeBuilder/downloadPublishedResume")` (kept out of the main bundle) and calls `downloadPublishedResumePdf(data.resumePdfPath)` (`resumePdfPath` = `"/resume/Riley_Beenders_Resume.pdf"` from `header.json`, the static main resume; the browser saves it under that file name).
   3. Success → back to `idle`. Failure → `error`, logs, and renders an inline `.bp-error` `role="alert"` ("The PDF could not be created. Please try again.").
   - Styled `.bp-btn.bp-btn--solid` (red), with a looping `.bp-sheen` highlight while idle and a downward `ArrowDown` SVG.
 - **Email / LinkedIn / GitHub** — plain `.bp-btn` anchors (`mailto:` / `data.person.linkedin` / `data.person.github`, the latter two `target="_blank" rel="noreferrer"`), each with a right-pointing `ArrowRight` SVG that nudges on hover.

@@ -51,7 +51,7 @@ app/
     about-this-site/about-site.css  # .as-* page layout + the large date-bar variant
     contact/page.tsx           # /contact — hero + <BpActions> + Details prose, copy from data/contact/contact.json, email spelled out once
     more-info/page.tsx         # /more-info — About copy + "Read the full story" link (→ /about-this-site) + <GanttChart> + <JobsTable> (each gated by ganttSection.chartVisible / tableVisible — table only today)
-  api/resume-pdf/route.ts      # Node-runtime API route: generates the live resume PDF on demand
+  api/resume-pdf/route.ts      # 307 redirect to header.json resumePdfPath, for older links
   api/geo/route.ts             # returns the visitor's country/region/city from Vercel's IP headers, for the analytics Visit event
 
 components/
@@ -153,8 +153,10 @@ studio/                        # the local environment — `npm run site` (site 
   ui/devices.js                # the Devices panel: LAN URL to type on a phone, "waiting at the door" knocks with one-click Allow, active grants with expiry + Revoke, add by address
 
 ResumeBuilder/
-  downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + trigger-download the live PDF
-  generateResumePdf.ts         # jsPDF layout engine that builds the live resume PDF from ResumeData
+  downloadPublishedResume.ts   # client helper: fetch + validate (%PDF- magic bytes) + download the main resume under its own file name
+  main-resume/main-resume.html # HTML source of the main resume (the Download PDF file), edited by update-main-resume
+  main-resume/manifest.json    # build record: publicPath, pages, spacingMultiplier, reviewedThrough commit, updated date
+  generateResumePdf.ts         # former jsPDF per-request generator; no longer imported by any route
   generateResumeTemplates.mjs  # standalone Node script: draws abstract 1-page/2-page layout mockups
 
 assets/
@@ -168,7 +170,8 @@ public/
   project-images/ICARUS-Lite/  # the published project's photos (7 files, 6 in its gallery), picked via the Studio's image picker; ICARUS-Pro/ is an empty upload target
   project-images/rileybeenders-com/           # the About page's captures of the site itself, <name>-light.png + <name>-dark.png (written by scripts/capture-site-screenshots.mjs)
   project-images/IcarusLiteRender.png
-  README.md                    # one-line note: no static resume.pdf needed, /api/resume-pdf covers it
+  resume/<name>.pdf            # the main resume the Download PDF button serves (named by header.json resumePdfPath)
+  README.md                    # how the Download PDF file is published and named
 
 2.JobsApplliedTo/              # original job-posting PDFs, one per application (001–016). Note the double-l spelling.
 1.ApplicationsUsed/            # tailored resumes / cover letters actually submitted per application (+ a 000_ baseline)

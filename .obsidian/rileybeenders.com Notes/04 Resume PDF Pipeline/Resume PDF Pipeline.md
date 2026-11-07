@@ -6,9 +6,20 @@ tags: [pdf, pipeline]
 
 Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 
-## 1. Live, data-driven PDF — what the "Download PDF" button produces
+## 1. The main resume — what the "Download PDF" button produces
 
-**Chain:** `BpActions`'s Download button (see [[Blueprint UI Components]]) → `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET /api/resume-pdf` (`app/api/resume-pdf/route.ts`) → `ResumeBuilder/generateResumePdf.ts` → binary PDF response.
+Since 2026-11-07 the button serves a **static, curated PDF** rather than one generated per request. It started as a copy of the tailored Disney Imagineering Ride Controls resume (`output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html`) with the posting's relocation cities removed: three Letter pages, navy headings, Arial, Selected Projects on page 3.
+
+**Chain:** `BpActions`'s Download button (see [[Blueprint UI Components]]) → `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET <resumePdfPath>` (from `data/header.json`, today `/resume/Riley_Beenders_Resume.pdf`) → the static file in `public/resume/`.
+
+| Piece | Path |
+| --- | --- |
+| HTML source | `ResumeBuilder/main-resume/main-resume.html` (same `:root { --m }` spacing contract as the tailored resumes) |
+| Build record | `ResumeBuilder/main-resume/manifest.json`: `publicPath`, `pages` (3), `spacingMultiplier`, `reviewedThrough` (the commit whose `data/` the page was last reconciled against), `updated` |
+| Published PDF | `public/resume/<name>.pdf`, the only file in that folder |
+| Pointer | `data/header.json` `resumePdfPath` |
+
+It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the HTML is reprinted and validated with the `custom-resume` scripts, Riley names the file, and `publish-main-resume.mjs` writes the PDF, deletes the old one if renamed, and updates `header.json` and the manifest. Because it is static, the PDF only changes when that skill runs; editing `data/` alone no longer changes the download.
 
 ### `ResumeBuilder/downloadPublishedResume.ts`
 
@@ -16,16 +27,16 @@ Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 1. Builds the request URL with a cache-busting `?published=<timestamp>` query param.
 2. Fetches with `cache: "no-store"` and a 30s `AbortController` timeout.
 3. Validates the response: status ok, `content-type` includes `application/pdf`, blob size `>= 5` bytes, and the **first 5 bytes literally spell `%PDF-`** (a real magic-number check, not just content-type trust).
-4. On success, creates an object URL, synthesizes a hidden `<a download>` click to trigger the browser's save dialog, removes the anchor, and revokes the object URL after 60s.
+4. On success, creates an object URL, synthesizes a hidden `<a download>` click to trigger the browser's save dialog, removes the anchor, and revokes the object URL after 60s. The saved name is the basename of the final response URL when it ends in `.pdf` (so renaming the file renames every download), else `Riley_Beenders_Resume.pdf`.
 5. Throws descriptive errors for timeout, bad status, wrong content-type, empty body, or invalid signature — all surfaced by `BpActions` as the inline `.bp-error` message.
 
 ### `app/api/resume-pdf/route.ts`
 
-See full detail in [[Routes Overview]]. Key point: `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`, and explicit no-cache headers on both success and error paths — this route is intentionally never cached anywhere, so the PDF always reflects the current `resumeData`.
+Kept only so older links keep working: `GET` answers `307` with a **relative** `Location: <resumePdfPath>` and `Cache-Control: no-store` (relative so the local gate, which proxies `next dev` on another port, doesn't redirect visitors to the internal port). See [[Routes Overview]].
 
-### `ResumeBuilder/generateResumePdf.ts` — the layout engine
+### `ResumeBuilder/generateResumePdf.ts` — the former layout engine (unused)
 
-Pure function `generateResumePdf(data: ResumeData): ArrayBuffer` built on **jsPDF**, no HTML/CSS — every line, rule, and bullet is drawn with explicit `doc.text()` / `doc.line()` calls at computed coordinates. US Letter, points (`612 × 792`), margins `44pt` left/right, `40pt` top, content bottom cutoff `742pt`. Uses only the built-in Helvetica; the site's Blueprint Press fonts and colors are **not** involved (PDF body text is near-black `[20,20,20]`, links blue `[0,0,238]`).
+No route imports it since the switch to the static main resume; the file is kept in place. It was the per-request generator. Pure function `generateResumePdf(data: ResumeData): ArrayBuffer` built on **jsPDF**, no HTML/CSS — every line, rule, and bullet is drawn with explicit `doc.text()` / `doc.line()` calls at computed coordinates. US Letter, points (`612 × 792`), margins `44pt` left/right, `40pt` top, content bottom cutoff `742pt`. Uses only the built-in Helvetica; the site's Blueprint Press fonts and colors are **not** involved (PDF body text is near-black `[20,20,20]`, links blue `[0,0,238]`).
 
 Key internal mechanics:
 - **`normalizeText()`** — first folds every line break (and the whitespace around it) into one space, so a summary or job context the site shows as several paragraphs (an empty line in the Studio) stays one compact block in the PDF; then strips/replaces smart quotes, en/em dashes, ellipsis, superscript ³ (→ `^3`), non-breaking spaces, and any remaining non-ASCII, because built-in Helvetica can't render arbitrary Unicode. This is why `data.summary`'s curly apostrophes come out clean.
@@ -42,7 +53,7 @@ A **standalone Node script**, not part of the Next.js app or any route — run m
 
 ## Where per-job tailored resumes come from
 
-Neither of the above produces the files in `1.ApplicationsUsed/`. Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
+Neither of the above produces the files in `1.ApplicationsUsed/` (the main resume shares their layout and print/validate scripts, but is general, not tailored). Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
 
 ## Related
 - [[Blueprint UI Components]]

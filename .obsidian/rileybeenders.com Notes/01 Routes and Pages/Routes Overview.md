@@ -13,7 +13,7 @@ All routes are Next.js App Router server components. None use dynamic segments �
 | `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + a Details paragraph with the email address spelled out — copy from `data/contact/contact.json` | "Contact \| Riley Beenders" |
 | `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] (the tracker section shows when `ganttSection.chartVisible` or `tableVisible` is on — currently table only) | "More Info \| Riley Beenders" |
 | `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
-| `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → PDF binary, no HTML | n/a |
+| `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → `307` to `header.json`'s `resumePdfPath` (the static main resume), kept for older links | n/a |
 | `/api/geo` | `app/api/geo/route.ts` | `GET` → JSON `{ country, region, city }` from Vercel's IP headers, for the analytics Visit event — see [[Site Analytics]] | n/a |
 
 Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes Next wires up automatically). See [[Design System (Blueprint Press)]].
@@ -71,12 +71,11 @@ Because it uses `fs`, this page can't be statically exported without the file pr
 
 ## `/api/resume-pdf` — `app/api/resume-pdf/route.ts`
 
-- `export const runtime = "nodejs"` (jsPDF needs Node), `dynamic = "force-dynamic"`, `revalidate = 0`.
-- Aggressive no-cache headers (`Cache-Control`, `CDN-Cache-Control`, `Vercel-CDN-Cache-Control`, `Expires`, `Pragma`) on both success and error, so Vercel's CDN never serves a stale resume. Also sets `X-Content-Type-Options: nosniff` and an explicit `Content-Length`.
-- `GET()` calls `generateResumePdf(resumeData)`, returns it as `application/pdf` with `Content-Disposition: attachment; filename="Riley-Beenders-Resume.pdf"`.
-- On error, logs and returns JSON `{ error }` with status 500 (still no-cache).
+- `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`.
+- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/Riley_Beenders_Resume.pdf`) and `Cache-Control: no-store`. Relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
+- The Download PDF button no longer calls this route; it fetches `resumePdfPath` directly. The route only keeps older `/api/resume-pdf` links working.
 
-Full generator detail in [[Resume PDF Pipeline]].
+The main resume itself is described in [[Resume PDF Pipeline]].
 
 ## `/api/geo` — `app/api/geo/route.ts`
 

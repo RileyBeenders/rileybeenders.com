@@ -72,7 +72,7 @@ The existing page files gained `meta` (Contact, More Info, About this site) and 
   },
   "theme": { "paletteId": "electric", "custom": { "light": { …5 seeds }, "dark": { …5 seeds } } },
   "fonts": { "header": "instrument-serif", "subheader": "instrument-serif", "body": "spectral" },
-  "resumePdfPath": "/api/resume-pdf"
+  "resumePdfPath": "/resume/Riley_Beenders_Resume.pdf"
 }
 ```
 
@@ -102,7 +102,7 @@ Logic:
 5. `includeProjectData = visibility.projectsSection || visibility.experienceProjectButtons || includeProofData` → currently `true`.
 6. Final `resumeData` spreads `header` (`person`, `visibility`, `theme`, `fonts`, `resumePdfPath`, `siteMode`), then overrides `education`, `experience` (rebuilt), `proofs` (`publishedProofs` — empty today), `projects` (`publishedProjects` — ICARUS-Lite only today), `skills`, and `summary` (unwrapped from `summary.summary`).
 
-A **module-level constant**, evaluated once at import time (build time for static pages, per-request for the `force-dynamic` `/api/resume-pdf` route) — not a hook, not re-derived per request in page components.
+A **module-level constant**, evaluated once at import time (build time for static pages) — not a hook, not re-derived per request in page components.
 
 ## Project dates, the About page, and its feature types (2026-09-17)
 

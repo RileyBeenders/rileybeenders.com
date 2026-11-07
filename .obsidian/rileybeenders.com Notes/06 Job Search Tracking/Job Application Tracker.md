@@ -59,7 +59,7 @@ The 29 inactive applications in Disney's Workday portal, 26 of them from before 
 
 ## The `custom-resume` generation workflow
 
-Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.claude/skills/custom-resume/SKILL.md`), not by the site's own `/api/resume-pdf` route. Workflow summary (full detail in [[Repository Agent Skills]]):
+Each entry in `1.ApplicationsUsed/` was produced by the `custom-resume` agent procedure (`.claude/skills/custom-resume/SKILL.md`), not by the site's main resume (the Download PDF file). Workflow summary (full detail in [[Repository Agent Skills]]):
 
 1. Collect page count + which `2.JobsApplliedTo/*.pdf` to target.
 2. Extract company/title/location/requirements/ATS keywords from the posting.

@@ -46,7 +46,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Career Q&A Log]] — Riley's answers to resume-review questions, read by the resume procedures, not the site
 
 ### Resume PDF Pipeline
-- [[Resume PDF Pipeline]] — the live `/api/resume-pdf` generator and the static template-mockup script
+- [[Resume PDF Pipeline]] — the static main resume behind Download PDF and the template-mockup script
 
 ### Styling
 - [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers; the machine-readable spec is the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]])
