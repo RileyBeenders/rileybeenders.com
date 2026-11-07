@@ -19,7 +19,7 @@ Since 2026-11-07 the button serves a **static, curated PDF** rather than one gen
 | Published PDF | `public/resume/<name>.pdf`, the only file in that folder |
 | Pointer | `data/header.json` `resumePdfPath` |
 
-It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the HTML is reprinted and validated with the `custom-resume` scripts, Riley names the file, and `publish-main-resume.mjs` writes the PDF, deletes the old one if renamed, and updates `header.json` and the manifest. Because it is static, the PDF only changes when that skill runs; editing `data/` alone no longer changes the download.
+It is maintained by the `update-main-resume` skill (see [[Repository Agent Skills]]): its `collect-changes.mjs` diffs resume data since `reviewedThrough`, Riley picks which findings to apply, the HTML is reprinted and validated with the `create-custom-resume-pdf` scripts, Riley names the file, and `publish-main-resume.mjs` writes the PDF, deletes the old one if renamed, and updates `header.json` and the manifest. Because it is static, the PDF only changes when that skill runs; editing `data/` alone no longer changes the download.
 
 ### `ResumeBuilder/downloadPublishedResume.ts`
 
@@ -49,11 +49,11 @@ Key internal mechanics:
 
 ## 2. Static template mockups — `ResumeBuilder/generateResumeTemplates.mjs`
 
-A **standalone Node script**, not part of the Next.js app or any route — run manually (`node ResumeBuilder/generateResumeTemplates.mjs`). Also jsPDF, but draws **abstract greeked-out placeholder content** (solid color boxes of specific widths standing in for text) to produce visual layout references in `output/resumeTemplates/`. Uses a distinct navy/slate palette purely for the mockup — unrelated to the site or to `generateResumePdf.ts`. It exists so a human (or the `custom-resume` procedure) can see target page geometry before laying out a real tailored resume. **Not** in the website's request path. (This note has not been re-verified against the current `.mjs` line-by-line since the reskin; the script wasn't touched by it.)
+A **standalone Node script**, not part of the Next.js app or any route — run manually (`node ResumeBuilder/generateResumeTemplates.mjs`). Also jsPDF, but draws **abstract greeked-out placeholder content** (solid color boxes of specific widths standing in for text) to produce visual layout references in `output/resumeTemplates/`. Uses a distinct navy/slate palette purely for the mockup — unrelated to the site or to `generateResumePdf.ts`. It exists so a human (or the `create-custom-resume-pdf` procedure) can see target page geometry before laying out a real tailored resume. **Not** in the website's request path. (This note has not been re-verified against the current `.mjs` line-by-line since the reskin; the script wasn't touched by it.)
 
 ## Where per-job tailored resumes come from
 
-Neither of the above produces the files in `1.ApplicationsUsed/` (the main resume shares their layout and print/validate scripts, but is general, not tailored). Those come from manually invoking the `custom-resume` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
+Neither of the above produces the files in `1.ApplicationsUsed/` (the main resume shares their layout and print/validate scripts, but is general, not tailored). Those come from manually invoking the `create-custom-resume-pdf` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
 
 ## Related
 - [[Blueprint UI Components]]

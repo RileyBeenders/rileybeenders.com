@@ -158,9 +158,9 @@ The site stays readable as a conventional resume at rest, then reveals additiona
 | 019 | [Sr Site Reliability Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/019_Disney_Sr%20Site%20Reliability%20Engineer.pdf) | Disney Signature Experiences | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/019_RileyBeenders_Disney_Sr_Site_Reliability_Engineer_2-Page.pdf) | 🔴 | 10160567 |
 | 020 | [Manager, Software Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf) | Disney Experiences | Orlando, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/020_RileyBeenders_Disney_Manager_Software_Engineering_2-Page.pdf) | 🔴 | 10158386 |
 | 021 | [Manager, Systems Engineering (DCL New Build)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/021_Disney_Manager%2C%20Systems%20Engineering%20%28DCL%20New%20Build%29.pdf) | Disney Signature Experiences (Disney Cruise Line) | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/021_RileyBeenders_Disney_Senior_Manager_Solutions_Architecture_2-Page.pdf) | 🔴 | 10160198 |
-| 022 | [Sr Controls Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf) | Disney Experiences (Disneyland Resort) | Anaheim, CA | TBD | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/022_RileyBeenders_Disney_Sr_Controls_Engineer.pdf) |  | 10162313 |
+| 022 | [Sr Controls Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf) | Disney Experiences (Disneyland Resort) | Anaheim, CA | TBD | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf) |  | 10162313 |
 | 023 | [Program Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/023_Program%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Walt Disney World Resort | Lake Buena Vista, FL | October 20, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/023_RileyBeenders_Disney_Program_Engineer.pdf) | 🔴 | 10161727 |
-| 024 | [Senior Systems Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/024_Senior%20Systems%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Disney Experiences | Lake Buena Vista, FL | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/024_RileyBeenders_Disney_Senior_Systems_Engineer.pdf) | 🟢 | 10161502 |
+| 024 | [Senior Systems Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/024_Senior%20Systems%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Disney Experiences | Lake Buena Vista, FL | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.pdf) | 🟢 | 10161502 |
 
 ***
 
@@ -306,8 +306,8 @@ with the change.
 ### Tailored Resume Builder
 
 Each application gets its own resume, written for that one posting. The builder
-is an agent skill, `custom-resume` (`.claude/skills/custom-resume/SKILL.md`),
-not a script: run `/custom-resume` in Claude Code (or `$custom-resume` in Codex)
+is an agent skill, `create-custom-resume-pdf` (`.claude/skills/create-custom-resume-pdf/SKILL.md`),
+not a script: run `/create-custom-resume-pdf` in Claude Code (or `$create-custom-resume-pdf` in Codex)
 from the repo root. The agent lays the resume out as an HTML page and prints it
 to PDF with headless Chrome. It never touches the site's own `/api/resume-pdf`
 generator.

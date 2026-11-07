@@ -3,7 +3,8 @@
   "skills": {
     "skill-router": { "group": "meta", "phase": 1, "keywords": ["which skill", "what skill", "route this", "skill router", "load balancer"], "summary": "Picks skills for a request." },
 
-    "custom-resume": { "group": "resume", "phase": 3, "keywords": ["resume", "tailor", "job posting", "job pdf", "JobsApplliedTo", "application for"], "next": ["grill-my-resume"], "summary": "Build a job-targeted resume PDF." },
+    "create-custom-resume-pdf": { "group": "resume", "phase": 3, "keywords": ["resume", "tailor", "job posting", "job pdf", "JobsApplliedTo", "application for"], "next": ["grill-my-resume"], "summary": "Build a job-targeted resume PDF." },
+    "create-custom-resume-html": { "group": "resume", "phase": 3, "keywords": ["html resume", "interactive resume", "web resume", "resume html", "accepts html", "html application", "resume website"], "next": ["grill-my-resume"], "note": "Same process as create-custom-resume-pdf, then build-web-resume.mjs; print must match the PDF at the chosen page count.", "summary": "Build a site-styled interactive HTML resume that prints to the chosen length." },
     "grill-my-resume": { "group": "resume", "phase": 4, "keywords": ["grill my resume", "roast", "audit my resume", "ats", "review my resume", "critique my resume", "resume feedback"], "next": ["fix-my-resume"], "note": "Review only. Never edits. Findings go to fix-my-resume.", "summary": "Blunt resume review." },
     "fix-my-resume": { "group": "resume", "phase": 3, "keywords": ["fix my resume", "apply the review", "apply the grill", "clean up resume", "recruiter notes", "roast report"], "note": "No repeated claims, no invented numbers, ignore 'recent graduate' advice.", "summary": "Apply a resume review and reprint." },
     "update-main-resume": { "group": "resume", "phase": 3, "keywords": ["main resume", "default resume", "default pdf", "download pdf", "update-main-resume", "refresh the resume", "general resume"], "note": "Untailored resume behind the home page's Download PDF. Ask before applying findings and before naming the file; edits ResumeBuilder/main-resume/, never output/.", "summary": "Refresh and republish the home page resume PDF." },
@@ -68,7 +69,7 @@
     { "id": "tracker-edit", "when": "gantt|job application tracker|jobsapplliedto", "add": ["sync-charts"], "why": "Tracker edits must stay identical in README.md and data/more-info/gantt.md." }
   ],
   "chains": [
-    { "name": "resume", "steps": ["custom-resume", "grill-my-resume", "fix-my-resume"], "note": "Hand off step to step only when the user asks for the whole route." },
+    { "name": "resume", "steps": ["create-custom-resume-pdf", "grill-my-resume", "fix-my-resume"], "note": "Hand off step to step only when the user asks for the whole route." },
     { "name": "motion", "steps": ["motion-design", "motion-fluidity", "motion-layout"], "note": "decide, implement, compose." },
     { "name": "design-from-zero", "steps": ["grill-me", "design-brief", "information-architecture", "brief-to-tasks", "design-review"], "note": "design-flow minus the tokens/frontend phases that drift from Blueprint Press." },
     { "name": "ship", "steps": ["vault-sync", "write-commit", "write-merge"], "note": "Sync documentation, then draft commit and PR text." }

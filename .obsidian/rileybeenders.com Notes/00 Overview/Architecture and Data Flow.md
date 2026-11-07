@@ -87,7 +87,7 @@ These are **build-time content toggles**, flipped in the Studio's Site Settings,
 Two unrelated PDF-generation systems — don't conflate them:
 
 1. **The main resume**: a static, curated PDF in `public/resume/` that `header.json`'s `resumePdfPath` points at, printed from `ResumeBuilder/main-resume/main-resume.html` by the `update-main-resume` skill. This is what the "Download PDF" button produces; `/api/resume-pdf` redirects to it. It changes only when that skill runs.
-2. **Static, hand-tuned, per-application**: the PDFs in `1.ApplicationsUsed/` and `output/pdf/`, produced by manually invoking the `custom-resume` agent procedure against a specific posting in `2.JobsApplliedTo/`. Same HTML layout and print scripts as the main resume, tailored per job.
+2. **Static, hand-tuned, per-application**: the PDFs in `1.ApplicationsUsed/` and `output/pdf/`, produced by manually invoking the `create-custom-resume-pdf` agent procedure against a specific posting in `2.JobsApplliedTo/`. Same HTML layout and print scripts as the main resume, tailored per job.
 
 Full detail in [[Resume PDF Pipeline]] and [[Job Application Tracker]].
 

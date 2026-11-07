@@ -59,7 +59,7 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - [[Build Tooling and Config]] — package.json, tsconfig, next.config, `.gitignore`, running the site and the Studio locally, the `scripts/` folder
 
 ### Agents & Automation
-- [[Repository Agent Skills]] — the eight repo agent procedures: `custom-resume`, Vault Sync (this vault's self-updating skill), Sync Charts, Design Guidelines, the three `motion-*` skills, and `site-timeline-sync` (which also runs by itself after every push to `main`, via the repo's one GitHub Actions workflow)
+- [[Repository Agent Skills]] — the eight repo agent procedures: `create-custom-resume-pdf`, Vault Sync (this vault's self-updating skill), Sync Charts, Design Guidelines, the three `motion-*` skills, and `site-timeline-sync` (which also runs by itself after every push to `main`, via the repo's one GitHub Actions workflow)
 - [[Impeccable Design Workflow]] — the `impeccable` design skill: `PRODUCT.md`, the repo-root `DESIGN.md` + `.impeccable/design.json`, the detector, the standing interview decisions (refinement inside Blueprint Press, not a redesign), and the critique history
 
 ## Known gaps / WIP notes worth remembering
@@ -70,4 +70,4 @@ Documentation reflects the codebase as of the **`main`** branch after the **Blue
 - The tracker on `/more-info` has separate switches for the chart and the table (`ganttSection.chartVisible` / `tableVisible`); right now only the **table** is on. The Gantt chart + table exist in **two** hand-maintained places that can drift, `README.md` and `data/more-info/gantt.md`; they currently match. See [[More Info and Gantt Data]] and the Sync Charts procedure in [[Repository Agent Skills]].
 - The About-this-site nav tab still carries the gradient-text sweep (`gradient: true` in `BpNav`, `.bp-nav-link--gradient` in `blueprint.css`). The 2026-09-18 impeccable critique flagged it and the decision was to flatten it, but that change never reached `main`. See [[Blueprint Nav and Mark]].
 - `README.md`'s version line and folder tree were refreshed on 2026-09-19 (Version 3.1), but its opening prose still describes the old "mouse-driven 3D motion / expandable information drawers" design.
-- `README_TODO.md` lists open content tasks (possible proofs/projects merge, "Alter Line 136" link fix); the resume-PDF data rules it used to draft moved into `custom-resume` step 3 on 2026-09-19. The two ExtrusionLine proofs it lists as "to create" already exist in `proofs.json`.
+- `README_TODO.md` lists open content tasks (possible proofs/projects merge, "Alter Line 136" link fix); the resume-PDF data rules it used to draft moved into `create-custom-resume-pdf` step 3 on 2026-09-19. The two ExtrusionLine proofs it lists as "to create" already exist in `proofs.json`.

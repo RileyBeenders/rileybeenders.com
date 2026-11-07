@@ -1,10 +1,10 @@
 // Print a resume HTML source to PDF with the repo's playwright-core and a local Chromium.
 //
-//   node .claude/skills/custom-resume/scripts/print-resume.mjs <input.html> <output.pdf> [spacingMultiplier]
+//   node .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs <input.html> <output.pdf> [spacingMultiplier]
 //
 // The HTML declares `:root { --m: 1; }`; every vertical gap in the stylesheet is
 // `calc(<reference>pt * var(--m))`, so the third argument scales all gaps together
-// (the "one spacing multiplier" step of the custom-resume procedure). Letter size,
+// (the "one spacing multiplier" step of the create-custom-resume-pdf procedure). Letter size,
 // margins, and page breaks come from the HTML's own @page rule (preferCSSPageSize).
 import { createRequire } from "node:module";
 import { readFileSync, existsSync, readdirSync } from "node:fs";

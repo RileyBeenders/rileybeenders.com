@@ -8,7 +8,7 @@ argument-hint: "[--since <commit>]"
 
 One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
 
-The main resume is the general, untailored resume anyone downloads from the home page. It is **not** part of the job-targeted chain (`custom-resume` → `grill-my-resume` → `fix-my-resume`), but it follows the same layout and copy rules and the same scripts.
+The main resume is the general, untailored resume anyone downloads from the home page. It is **not** part of the job-targeted chain (`create-custom-resume-pdf` → `grill-my-resume` → `fix-my-resume`), but it follows the same layout and copy rules and the same scripts.
 
 | Piece | Where |
 | --- | --- |
@@ -47,7 +47,7 @@ Keep only what changes what a reader learns about Riley. A finding is one of:
 
 Drop, without asking: media and artifact paths, captions, alt text, theme, fonts, motion, visibility flags other than `openToRelocation`, `proofId` cross-links, site-only page copy, and wording changes that do not change meaning.
 
-Rules every proposal must already satisfy (from `custom-resume` and `fix-my-resume`):
+Rules every proposal must already satisfy (from `create-custom-resume-pdf` and `fix-my-resume`):
 
 - Never invent a number, tool, date, or credential; every word traces to data. Keep a metric's baseline when the data records one.
 - Never repeat a claim. Each fact, metric, machine, or project appears once; a Selected Projects entry only carries a project no bullet describes. Say what an addition displaces.
@@ -72,16 +72,16 @@ Apply only what Riley picks; reword on request. Do not start editing before the 
 2. Print to a scratch file, not to `public/`:
 
    ```bash
-   node .claude/skills/custom-resume/scripts/print-resume.mjs ResumeBuilder/main-resume/main-resume.html <scratch>/main-resume.pdf <manifest.spacingMultiplier>
+   node .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs ResumeBuilder/main-resume/main-resume.html <scratch>/main-resume.pdf <manifest.spacingMultiplier>
    ```
 
 3. Validate with the manifest's page count and look at every render:
 
    ```bash
-   python .claude/skills/custom-resume/scripts/validate-resume.py <scratch>/main-resume.pdf <manifest.pages> --png <scratch>
+   python .claude/skills/create-custom-resume-pdf/scripts/validate-resume.py <scratch>/main-resume.pdf <manifest.pages> --png <scratch>
    ```
 
-   It must print `RESULT: OK` (page count and size, styled links, no blue non-links, no letter-spaced headings, no repeated 8-word fragment). Inspect the PNGs for clipping, overlap, an orphaned heading, or a bullet split across pages; apply the craft floor the `custom-resume` skill describes in its step 8.
+   It must print `RESULT: OK` (page count and size, styled links, no blue non-links, no letter-spaced headings, no repeated 8-word fragment). Inspect the PNGs for clipping, overlap, an orphaned heading, or a bullet split across pages; apply the craft floor the `create-custom-resume-pdf` skill describes in its step 8.
 4. If the content no longer fits `manifest.pages`, first tune the spacing multiplier (0.8x to 1.7x, every gap together, never a smaller body font). If that fails, ask Riley whether to cut the weakest line or change the page count; never pad a page with filler. Page 3 (Selected Projects) is a forced break and may end short.
 
 ## 5. Ask for the file name

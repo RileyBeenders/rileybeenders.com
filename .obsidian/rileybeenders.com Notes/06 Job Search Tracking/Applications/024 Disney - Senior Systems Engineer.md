@@ -90,4 +90,5 @@ The position is with Walt Disney Attractions Technology LLC, part of Disney Expe
 ## Related
 - [[Job Application Tracker]]
 - Source posting: `2.JobsApplliedTo/024_Senior Systems Engineer at DISNEY - Disney Careers.pdf`
-- Resume used: `1.ApplicationsUsed/024_RileyBeenders_Disney_Senior_Systems_Engineer.pdf` (3 pages, built, grilled, and fixed Nov 7, 2026; source `output/resume-html/RileyBeenders_Disney_Senior_Systems_Engineer.html`)
+- Resume used: `1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.pdf` (3 pages, built, grilled, and fixed Nov 7, 2026; source `output/resume-html/024-RileyBeenders-Senior_Systems_Engineer.html`)
+- Interactive HTML resume: `1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.html` (built with create-custom-resume-html; prints to the same 3-page layout as the PDF)

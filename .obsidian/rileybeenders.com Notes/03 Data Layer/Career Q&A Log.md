@@ -6,7 +6,7 @@ tags: [data, content, resume]
 
 `data/career-qa/qa-log.json` is the running history of career questions put to Riley (by a resume review, a recruiter, or an agent) and Riley's answers. Added 2026-10-20 after the `grill-my-resume` run on the Disney Program Engineer resume (application 023).
 
-The site does not import it, and it is not in the Studio's `FILES` map, so edit it by hand. Its readers are the resume procedures: `custom-resume` treats every `answered` or `partial` entry as evidence like any other `data/**/*.json` file, and `fix-my-resume` checks it before asking Riley for a fact, appends new questions as `open`, and records answers (see [[Repository Agent Skills]]).
+The site does not import it, and it is not in the Studio's `FILES` map, so edit it by hand. Its readers are the resume procedures: `create-custom-resume-pdf` treats every `answered` or `partial` entry as evidence like any other `data/**/*.json` file, and `fix-my-resume` checks it before asking Riley for a fact, appends new questions as `open`, and records answers (see [[Repository Agent Skills]]).
 
 ## Shape
 

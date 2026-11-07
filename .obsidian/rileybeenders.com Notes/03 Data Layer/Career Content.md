@@ -106,7 +106,7 @@ The single professional-summary paragraph rendered under `01 Summary` on the hom
 - Whether to merge `proofs` into `projects` is an open question.
 - "Alter Line 136" — link the network project to VLAN/Wifi routing detail (refers to an older `experience.json`; the `unifi-network`-tagged bullet is the current target).
 - The two ExtrusionLine proofs it lists as "to create" already exist — that item is done.
-- The resume-PDF data rules that used to be drafted here moved into `.claude/skills/custom-resume/SKILL.md` step 3 on 2026-09-19; the file now just points there.
+- The resume-PDF data rules that used to be drafted here moved into `.claude/skills/create-custom-resume-pdf/SKILL.md` step 3 on 2026-09-19; the file now just points there.
 
 ## Related
 - [[Data Layer and Types]]

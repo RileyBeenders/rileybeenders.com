@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>Riley Beenders - Disney Sr Controls Engineer Resume</title>
-  <!-- Interactive resume, built by .claude/skills/custom-resume/scripts/build-web-resume.mjs from
-       output/resume-html/RileyBeenders_Disney_Sr_Controls_Engineer.html. The content below is that source's <body>, unchanged, so every claim matches
-       the PDF. Screen styles mirror rileybeenders.com (Blueprint Press, Electric palette); print uses
+  <title>Riley Beenders - Disney Senior Systems Engineer Resume</title>
+  <!-- Interactive resume, built by .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs from
+       output/resume-html/024-RileyBeenders-Senior_Systems_Engineer.html. The content below is that source's <body>, unchanged, so every claim matches
+       the PDF (plus any .web-only extras, which never print). Screen styles mirror rileybeenders.com (Blueprint Press, Electric palette); print uses
        the source's own stylesheet, so printing this page reproduces the PDF layout. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +15,11 @@
   <style>
 @media print {
   
-      /* Source for output/pdf/RileyBeenders_Disney_Sr_Controls_Engineer.pdf (3 pages: 2 core + 1 Selected Projects).
-         Print with .claude/skills/custom-resume/scripts/print-resume.mjs; --m scales every gap on pages 1-2,
-         --p scales the gaps on the Selected Projects page (tuned by hand). */
-      :root { --m: 1.1; --p: 1; }
+      /* Source for 1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.pdf (application 024).
+         Print with .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs; --m scales every gap on the
+         two core pages, --mp every gap on the Selected Projects page (page 3, forced break).
+         Delivered at --m 1 after the 2026-11-07 review cuts (page 2 ends short by design) and --mp 1.3 (1.35 spills). */
+      :root { --m: 1; --mp: 1.3; }
       @page { size: Letter portrait; margin: 0.46in 0.50in 0.42in; }
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: #ffffff; }
@@ -93,22 +94,21 @@
       .cert-list .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
       .keep { break-inside: avoid; }
   
-      /* Selected Projects: always starts page 3. */
+      /* Page 3: Selected Projects, on its own page with its own gap multiplier. */
       .projects { break-before: page; }
-      .projects h2 { margin-top: 0; margin-bottom: calc(4.2pt * var(--p)); }
-      .projects .intro { color: #52606d; font-size: 8.6pt; line-height: 1.14; margin-bottom: calc(5pt * var(--p)); }
+      .projects h2 { margin-top: 0; margin-bottom: calc(4.2pt * var(--mp)); }
+      .projects .lede { margin-bottom: calc(2pt * var(--mp)); color: #52606d; font-size: 8.6pt; line-height: 1.16; }
       .project { break-inside: avoid; }
       .project + .project {
-        margin-top: calc(7pt * var(--p));
-        padding-top: calc(6pt * var(--p));
+        margin-top: calc(6pt * var(--mp));
+        padding-top: calc(5pt * var(--mp));
         border-top: 0.5pt solid #d3dde5;
       }
-      .project .stack { margin-top: calc(2.2pt * var(--p)); color: #334e68; font-size: 8.9pt; font-style: italic; line-height: 1.14; }
-      .project .problem { margin-top: calc(3pt * var(--p)); line-height: 1.19; }
-      .project .problem strong, .project .result strong { color: #243b53; }
-      .project ul { margin-top: calc(3pt * var(--p)); }
-      .project li { margin-bottom: calc(2.6pt * var(--p)); }
-      .project .result { margin-top: calc(1pt * var(--p)); line-height: 1.19; }
+      .project .role-line { margin-top: calc(2.2pt * var(--mp)); }
+      .project .problem { margin-top: calc(2.4pt * var(--mp)); line-height: 1.19; }
+      .project .problem strong { color: #243b53; }
+      .project ul { margin-top: calc(3pt * var(--mp)); }
+      .project li { margin-bottom: calc(2.6pt * var(--mp)); }
     
   .web-only { display: none !important; }
   /* The script turns Core Expertise terms into pills; on paper they are plain inline text again. */
@@ -221,7 +221,23 @@
   .skill-line { padding: 14px 0; border-top: 1px solid var(--rule); }
   .skill-line:first-of-type { border-top: 0; padding-top: 0; }
   .skill-line > strong { display: block; margin-bottom: 10px; font-weight: 400; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink); }
-  .sep { display: none; }
+  .sep, .print-only { display: none; }
+
+  /* Screen-only bullet detail: <details class="web-only more"><summary>Details</summary><p>…</p></details>
+     inside an <li>. Opens with a height transition where the browser supports it. */
+  details.more { margin-top: 4px; }
+  details.more > summary { display: inline-flex; align-items: center; gap: 8px; list-style: none; cursor: pointer;
+    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more > summary::after { content: "+"; font-size: 15px; letter-spacing: 0; transition: transform 0.42s var(--ease); }
+  details.more[open] > summary::after { transform: rotate(45deg); }
+  details.more > :not(summary) { margin-top: 8px; padding-left: 14px; border-left: 1px solid var(--accent); color: var(--prose); font-size: 16px; }
+  details.more > :not(summary) + :not(summary) { margin-top: 6px; }
+  @supports (interpolate-size: allow-keywords) {
+    :root { interpolate-size: allow-keywords; }
+    details.more::details-content { height: 0; overflow: clip; transition: height 0.42s var(--ease), content-visibility 0.42s allow-discrete; }
+    details.more[open]::details-content { height: auto; }
+  }
   .pill { display: inline-block; margin: 0 6px 7px 0; padding: 3px 11px; border: 1px solid var(--rule);
     font: 400 14px/1.5 var(--body); color: var(--ink-soft); background: color-mix(in srgb, var(--paper) 70%, transparent); }
   button.pill { cursor: pointer; border-color: color-mix(in srgb, var(--ink) 28%, var(--rule));  color: var(--ink);
@@ -273,7 +289,7 @@
   .compact-role:hover { color: var(--ink); }
   .compact-role:hover::before { background: var(--accent); }
   .compact-role strong { display: block; font: 400 23px/1.25 var(--serif); color: var(--ink); }
-  .compact-role .dates { display: inline-block; margin: 2px 0 6px; }
+  .compact-role .dates { display: inline-block; margin: 2px 0 6px; white-space: normal; }
 
   .education-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 24px; }
   .education-row strong { font: 400 28px/1.2 var(--serif); font-weight: 400; }
@@ -299,7 +315,7 @@
   .js body.ready > header::after { transform: scaleX(1); }
 
   @media (max-width: 760px) {
-    main > section { grid-template-columns: 1fr; padding: 34px 0; }
+    main > section { grid-template-columns: minmax(0, 1fr); padding: 34px 0; }
     main > section > h2 { grid-row: auto; margin-bottom: 18px; }
     main > section > h2::before { display: inline; margin: 0 12px 0 0; font-size: 26px; }
     main > section > :not(h2) { grid-column: 1; }
@@ -326,20 +342,20 @@
 </head>
 <body>
   <div class="bar web-only" role="toolbar" aria-label="Resume tools">
-    <a class="bar-brand" href="https://rileybeenders.com" style="text-decoration:none"><span class="bar-mark" aria-hidden="true">RB</span><span>Resume · Disney Sr Controls Engineer</span></a>
+    <a class="bar-brand" href="https://rileybeenders.com" style="text-decoration:none"><span class="bar-mark" aria-hidden="true">RB</span><span>Resume · Disney Senior Systems Engineer</span></a>
     <div class="bar-actions">
       <button class="btn btn--quiet" type="button" data-theme-toggle aria-label="Switch light or dark">Theme</button>
-      <button class="btn" type="button" data-print>Print / PDF</button>
+      <button class="btn" type="button" data-print>Print / PDF · 3 pages</button>
     </div>
   </div>
   <div class="spine web-only" aria-hidden="true"></div>
 
 <header>
     <h1>Riley Beenders</h1>
-    <div class="tagline">Electromechanical &amp; Controls Engineer | Industrial Automation | Reliability</div>
+    <div class="tagline">Production Systems | COTS Platform Support | Infrastructure &amp; Integration</div>
     <div class="contact" aria-label="Contact information">
       <span>Bethlehem, PA</span>
-      <span>Open to relocation (Anaheim, CA)</span>
+      <span>Open to relocation (Lake Buena Vista, FL)</span>
       <span><a href="tel:+14845234431">(484) 523-4431</a></span>
       <span><a href="mailto:rileybeenders@gmail.com">rileybeenders@gmail.com</a></span>
       <span><a href="https://rileybeenders.com">rileybeenders.com</a></span>
@@ -350,40 +366,39 @@
   <main>
     <section>
       <h2>Professional Summary</h2>
-      <p class="summary">Electromechanical engineer who has designed, wired, and troubleshot industrial machines and their controls in a manufacturing plant since 2020, and designs each revision to be more reliable and easier to service. Works independently across mechanical, electrical, and software disciplines and documents every system for the people who support it next.</p>
+      <p class="summary">Engineer who takes vendor platforms and plant systems from go-live into stable daily production, and the person called when they fail. Diagnoses problems across application, integration, network, and hardware layers, and explains each problem and its fix clearly to vendors, operators, and leadership.</p>
     </section>
 
     <section>
       <h2>Core Expertise</h2>
-      <p class="skill-line"><strong>Controls &amp; Automation:</strong> Modbus TCP data acquisition; multi-board CAN-bus control architectures; Siemens PLC support on production lines; servo, linear-motor, and braked NEMA 34 stepper motion; sensor and I/O integration; control-system performance monitoring and alarming; Allen-Bradley (Rockwell) PLCs</p>
-      <p class="skill-line"><strong>Electrical Design &amp; Documentation:</strong> Electrical layout and schematic design to IEEE conventions; AutoCAD Electrical, KiCad, Altium, and Visio; wiring harnesses, interconnects, and cut-panel design; 120/240 VAC machine power; engineering documentation and BOM control; SolidWorks, Autodesk Inventor, Siemens NX, CATIA, Fusion 360</p>
-      <p class="skill-line"><strong>Software &amp; Scripting:</strong> Python (asyncio, SQLite); LabVIEW; TypeScript and JavaScript (Electron, Node.js); PowerShell; MATLAB, Simulink, and Simscape; Git and GitHub; Linux (Debian) and Windows administration; VLAN segmentation of production networks</p>
-      <p class="skill-line"><strong>Safety, Reliability &amp; Leadership:</strong> Risk and hazard analysis and mitigation; product safety and regulatory compliance; root-cause troubleshooting; vendor and fabrication coordination; project budgeting and status reporting; Lean Six Sigma; hiring and technical interviews; worldwide project collaboration</p>
+      <p class="skill-line"><strong>Production Support &amp; Operations:</strong> Implementation and go-live; post-implementation stabilization; root cause analysis; troubleshooting across compute, networking, and system integrations; technical escalation point; vendor coordination and resolution; operational documentation and user guides; written incident reports for leadership; risk analysis and mitigation; data migration and inventory reconciliation</p>
+      <p class="skill-line"><strong>Vendor &amp; COTS Platforms:</strong> Microsoft Dynamics 365 Business Central (cloud-hosted on Azure); SimplyPrint; Ubiquiti UniFi; Siemens PLCs; Duet3D controllers</p>
+      <p class="skill-line"><strong>Infrastructure &amp; Networking:</strong> Windows/Linux systems administration; Debian servers; Kubernetes; Docker and containerized applications; Proxmox virtualization; VLAN segmentation; DHCP and IP address management; DNS; reverse proxy and firewall routing; network monitoring; multi-site network management; Raspberry Pi device fleets</p>
+      <p class="skill-line"><strong>Software, Data &amp; Delivery:</strong> Python (asyncio, Starlette); Modbus TCP; SQLite; Server-Sent Events; PowerShell and WinGet; TypeScript and Electron; Git and GitHub; Kanban boards in Microsoft Teams; LabVIEW; data logging and process analysis; technical writing; worldwide project collaboration</p>
     </section>
 
     <section>
       <h2>Professional Experience</h2>
       <article class="job">
         <div class="job-head">
-          <div><span class="company">Proteor</span> <span class="location">| Coplay, PA</span></div>
+          <div><span class="company">Proteor / Proteor Printing Solutions</span> <span class="location">| Coplay, PA</span></div>
           <div class="dates">January 2025 - Present</div>
         </div>
         <p class="role-line"><span>Lead, Research &amp; Development Engineer</span></p>
-        <p class="context">Proteor acquired Filament Innovations in January 2025, and the CTO role below carried forward as Lead R&amp;D Engineer for the same product line, now sold as Proteor Print.</p>
+        <p class="context">Proteor acquired Filament Innovations in January 2025, and the CTO role below continued as Lead R&amp;D Engineer for the same product line, now Proteor Print.</p>
         <ul>
-          <li>Serve as the technical subject-matter expert across the plant, from industrial electronics and Siemens PLCs on the three filament extrusion lines to low-voltage sensors, and as the escalation contact for customer troubleshooting across mechanical faults, electrical faults, and user error.</li>
-          <li>Built ExtrusionStudio, the plant's measurement and QC system, live on all three filament extrusion lines since October 2026 with no unplanned outage during production. A LabVIEW proof of concept established Modbus TCP communication with each line's tri-axial laser gauge; a Python rewrite then replaced three single-line executables with one service that polls every line concurrently at 20&nbsp;Hz, so a powered-down line never stalls the others.</li>
-          <li>Monitor every line against its tolerance band: an offset for the 1-2 minute lag between the laser and the spool ties each reading and out-of-spec alarm to the filament being wound, and a line that goes out of spec turns red on the floor projector with a timer showing how long it has been out.</li>
-          <li>Gave every spool a serial, CSV record, QR label, and certificate, so the packing bench approves or rejects spools against gauge data instead of by eye; print-on-demand thermal labels reduced label waste by up to 30% per run.</li>
-          <li>Resolved packing-bench panel lag and dropped connections at go-live by ruling out causes one at a time (frame rate, Raspberry Pi thermals, a fresh Pi and SD card, the network, display scaling): a hard-wired Ethernet run fixed the connection and the label-printer delay, and a display-scaling change removed the lag.</li>
-          <li>Cut assembly time by 80% compared to previous designs on ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production; led its design and development and owned the mechanical, electrical, and software design, including custom AC heaters and an IEEE-style electrical design adaptable to 120 or 240 VAC input.</li>
-          <li>Completed product changes supporting conformity with the 2006/42/EC Machinery Directive and performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products; ICARUS-Lite and ICARUS-Pro are now in CE testing.</li>
-          <li>Re-engineered POSEIDON and ICARUS around one linear-motor motion platform with universal mounts, replacing servo-driven ballscrews to reduce product-to-product complexity and simplify service; validated 4-micron precision at 4 m/s on a 30 kg moving mass.</li>
-          <li>Co-developed a custom hotend with an outside manufacturing partner, improving reliability and reducing cost for the company's materials.</li>
-          <li>Contributed machine requirements and integration to ProteorPrintOS, built with external partner SimplyPrint, enabling remote operation and AI-assisted failure detection with live video and material, waste, and outcome metrics.</li>
-          <li>Developing an offline version of the ICARUS-Lite and ICARUS-Pro control screen, together with over-the-air automated updates, so customers can run without a Wi-Fi or Ethernet connection.</li>
-          <li>Ran the Coplay site's five-week Microsoft Business Central ERP implementation (2,000+ items, 150+ products) and the 2026 inventory count, tracing discrepancies to unverified production orders and helping move to a warehouse-focused workflow.</li>
-          <li>Estimate and track the budget of every engineering project, build its BOMs, and maintain each product's unit cost; present status, constraints, and budgets at Proteor's monthly USA review, write incident reports for leadership, and track work on GitHub and Kanban boards in Microsoft Teams.</li>
+          <li>Took the Coplay location's Microsoft Dynamics 365 Business Central, Microsoft's SaaS ERP hosted on Azure, from evaluation to live production in five weeks: two weeks evaluating the software, then three migrating more than 2,000 items and 150+ products into the live system, reconciling inventory counts on the floor, and syncing SKUs with Proteor's global locations. The whole facility of 10 to 15 people works in it, and 10 to 30 more at Proteor locations worldwide reference it.</li>
+          <li>Traced the discrepancies in the 2026 Business Central inventory count, which I led across every item, to production orders processed without verification that never took items out of inventory, and helped move the plant to a more warehouse-focused workflow.</li>
+          <li>Own ExtrusionStudio, the plant's QC and production system, live on all three filament extrusion lines since October 2026 with no unplanned outage during production; rebuilt it from a LabVIEW proof of concept into a Python service.</li>
+          <li>Fixed a lagging, disconnecting packing-bench panel during the ExtrusionStudio rollout by testing one layer at a time: halving the animation frame rate, checking for thermal throttling, and swapping in a fresh Raspberry Pi and SD card changed nothing; a direct Ethernet run fixed the dropouts and the label-printer delay, and running the 1440p touch screen at 1080p removed the lag.</li>
+          <li>Serve as the plant's technical subject-matter expert, from industrial electronics on the extrusion lines to low-voltage sensors, and the escalation point for customer issues that go beyond what support can resolve, across mechanical faults, electrical faults, and user error.</li>
+          <li>Work directly with equipment and software vendors to resolve issues on the Siemens PLC-controlled extrusion lines and the Duet3D printer controls, regularly into nights and early mornings.</li>
+          <li>Contributed the machine requirements and integration for ProteorPrintOS, built with an external software partner on SimplyPrint, giving users remote operation, live video, AI-assisted failure alerts, and material, waste, and outcome metrics.</li>
+          <li>Managed and expanded the division's IT infrastructure after the acquisition, standardizing software and internal processes to align with Proteor's company-wide systems.</li>
+          <li>Write incident reports for leadership, and present project status, constraints, and budgets at Proteor's monthly USA review with leadership from its global locations.</li>
+          <li>Developing an offline version of the ICARUS-Lite and ICARUS-Pro control screen with over-the-air automated updates, so customers can run without a Wi-Fi or Ethernet connection.</li>
+          <li>Performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products.</li>
+          <li>Owned the ICARUS-Lite, a compact industrial printer for prosthetic and orthotic production, through commercialization against unit goals of 60 in 2025 and 100 in 2026.</li>
           <li>Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.</li>
         </ul>
       </article>
@@ -393,49 +408,48 @@
           <div><span class="company">Filament Innovations</span> <span class="location">| Whitehall, PA</span></div>
           <div class="dates">May 2020 - January 2025</div>
         </div>
-        <p class="context">Also wrote customer proposals, scopes of work, and estimates.</p>
+        <p class="context">Across these roles, wrote customer proposals, scopes of work, and estimates, and began tracking project budgets.</p>
         <p class="role-line sub"><span>Chief Technology Officer</span><span class="dates">January 2023 - January 2025</span></p>
         <ul>
-          <li>Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while keeping hands-on ownership of mechanical, electrical, firmware, and software systems, and gave the CEO and the company regular updates as designs and software iterated.</li>
-          <li>Led the design and launch of Gen3 POSEIDON, combining a 1&nbsp;m&sup3; build volume, filament-and-pellet dual extrusion, industrial-servo XY motion, and a custom gantry.</li>
-          <li>Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM for orders, inventory, tasks, projects, and customer interactions, with dynamic BOM generation linked to purchasing.</li>
-          <li>Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy, and conducted early 6-axis robotic non-planar printing research.</li>
+          <li>Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while keeping hands-on responsibility for mechanical, electrical, firmware, and software systems, and gave the CEO and the company regular updates as designs and software iterated.</li>
+          <li>Led the design and launch of Gen3 POSEIDON, the flagship's production redesign, combining a 1 m³ build volume, filament-and-pellet dual extrusion, and braked Z drives that prevent uncontrolled motion during power loss.</li>
+          <li>Researched high-speed linear motors that moved a 30 kg payload at 3 m/s with 5-micron accuracy and conducted early 6-axis robotic non-planar printing research.</li>
         </ul>
         <p class="role-line sub"><span>Lead Electro-Mechanical Engineer</span><span class="dates">June 2022 - January 2023</span></p>
         <ul>
-          <li>Simplified wiring and debugging on larger, modular machines by integrating a multi-board CAN-bus control architecture.</li>
-          <li>Developed independently testable electronics enclosures that install in minutes, and coordinated custom harnesses, cut-panel designs, and hardware improvements with vendors.</li>
-          <li>Improved thermal and acoustic performance through enclosure redesign and component placement, including custom tooling with local fabricators for large-radius aluminum-panel bends.</li>
+          <li>Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging on larger, modular machines.</li>
+          <li>Removed a manufacturing bottleneck with independently testable electronics enclosures that installed in minutes, coordinating custom harnesses, cut panels, and hardware improvements with vendors.</li>
         </ul>
         <p class="role-line sub"><span>Industrial Engineer</span><span class="dates">April 2021 - June 2022</span></p>
         <ul>
-          <li>Expanded motion safety on next-generation ICARUS and POSEIDON models with higher-performance components, NEMA 34 motors, planetary gearboxes, and power-failure brakes that prevent uncontrolled axis motion during power loss.</li>
-          <li>Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.</li>
-          <li>Designed THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry machine for a client producing the world's largest 3D-printed statue, and managed CAD, BOM, sourcing, fabrication, assembly, firmware tuning, customer support, and operator training.</li>
+          <li>Delivered THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry machine for a client producing the world's largest 3D-printed statue, carrying it from CAD, BOM, and sourcing through fabrication, assembly, and firmware tuning to customer support and operator training.</li>
         </ul>
         <p class="role-line sub"><span>Engineering Technician</span><span class="dates">May 2020 - April 2021</span></p>
         <ul>
-          <li>Improved early product reliability by diagnosing mechanical and electrical problems during assembly and operation.</li>
-          <li>Tuned, calibrated, and optimized machine parameters while documenting design limitations and opportunities for product improvement.</li>
+          <li>Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.</li>
+          <li>Tuned, calibrated, and optimized machine parameters while documenting design limitations and improvement opportunities.</li>
         </ul>
       </article>
     </section>
 
     <section>
       <h2>Additional Relevant Experience</h2>
-      <p class="compact-role"><strong>Blue Mountain Ski Resort - Ski Lift Operator (seasonal)</strong> <span class="dates">| Palmerton, PA | November 2019 - January 2021</span> | Performed motor and control safety checks on passenger ski lifts and supported the maintenance team during lift breakdowns, while operating lifts and assisting thousands of guests.</p>
-      <p class="compact-role"><strong>Northampton Area School District - Computer / Network Technician</strong> <span class="dates">| June 2016 - August 2019</span> | Built network infrastructure and deployed more than 750 wireless access points across six school buildings; accelerated deployment of more than 2,500 Chromebooks with an Arduino-based tool that automated setup-data entry, then coordinated final device distribution with school administrators.</p>
-      <p class="compact-role"><strong>RJB.Engineering - Owner &amp; Engineering Consultant</strong> <span class="dates">| 2015 - Present</span> | Deliver project-based engineering support for automotive clients and operate a small online store for printer heat inserts and accessories; produced plastic face shields during the COVID-19 pandemic.</p>
+      <p class="compact-role"><strong>Northampton Area School District - Computer / Network Technician</strong> <span class="dates">| June 2016 - August 2019</span> | Built network infrastructure and deployed more than 750 wireless access points across six school buildings; accelerated deployment of more than 2,500 Chromebooks with an Arduino-based tool that automated setup-data entry, and coordinated final device distribution with school administrators.</p>
+      <p class="compact-role"><strong>Blue Mountain Ski Resort - Ski Lift Operator (seasonal)</strong> <span class="dates">| November 2019 - January 2021</span> | Operated lifts and assisted thousands of guests with ticketing, weather, and slope information; performed motor and control safety checks and supported the maintenance team during lift breakdowns.</p>
+      <p class="compact-role"><strong>Carver House Homeowners Association - Treasurer</strong> <span class="dates">| April 2026 - Present</span> | Manage the banking and monthly insurance payments for an association of about 80 units, and help establish a community-focused member board in place of a property management company, remaining Treasurer through a mid-year restructure.</p>
     </section>
 
     <section class="keep">
       <h2>Education &amp; Certifications</h2>
       <div class="education-row">
-        <p><strong>Penn State University</strong> | Bachelor of Science in Electromechanical Engineering</p>
+        <p><strong>Penn State University</strong> | B.S., Electro-Mechanical Engineering</p>
         <p class="dates">December 2024</p>
       </div>
       <ul class="cert-list">
-        <li><span>MATLAB, Simulink, Simscape, and Machine Learning Onramps, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Machine Learning Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>MATLAB Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Simulink Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Simscape Onramp, MathWorks</span><span class="dates">2026</span></li>
         <li><span>Lean Six Sigma Yellow Belt, Educate 360</span><span class="dates">2025</span></li>
         <li><span>Lean Six Sigma White Belt, Educate 360</span><span class="dates">2025</span></li>
         <li><span>Certificate in Engineering Design and Tools, Penn State University</span><span class="dates">2023</span></li>
@@ -445,41 +459,70 @@
 
     <section class="projects">
       <h2>Selected Projects</h2>
+
       <article class="project">
         <div class="job-head">
-          <div><span class="company">BulkSSH</span> <span class="location">| Windows desktop app, open source at <a href="https://github.com/RileyBeenders/BulkSSH">github.com/RileyBeenders/BulkSSH</a></span></div>
-          <div class="dates">October 2026 - Present</div>
+          <div><span class="company">ExtrusionStudio</span> <span class="location">| Plant measurement and production system, Proteor</span></div>
+          <div class="dates">September 2025 - Present</div>
         </div>
-        <p class="stack">TypeScript, Electron, Node.js, SSH</p>
-        <p class="problem"><strong>Problem:</strong> Testing ExtrusionStudio's Pi kiosks meant repeating the same commands on every Pi, one SSH window at a time, after every change to the image.</p>
+        <p class="role-line"><span>Python, asyncio, Modbus TCP, Starlette, SQLite, Server-Sent Events, Raspberry Pi, Debian</span></p>
+        <p class="problem"><strong>Problem:</strong> Each of three extrusion lines had a tri-axial laser gauge, and the only record of a spool's diameter was whatever an operator wrote down. The LabVIEW proof of concept was one program compiled once per line with a hard-coded address and delay, so a line could not be added without a rebuild, a dead line held up the others, and no reading was tied to a spool.</p>
         <ul>
-          <li>Opens every device in a grid of live terminals, mirrors keystrokes to every ticked device, and broadcasts a command with each device's output and exit code, so a change to the Pi image is tried on every Pi in one pass.</li>
-          <li>Requires confirmation before risky commands such as reboot or rm -r reach several devices, never accepts host keys silently, and reconnects dropped connections by itself; released as an installer and a portable executable.</li>
-          <li>Simulates SSH devices for development, so the app can be tried without hardware; saved passwords are optional and encrypted with the Windows account.</li>
+          <li>Built for supportability: Server-Sent Events that reconnect by themselves, no internet dependency on the floor, guides served by the server itself, a hand-written Modbus simulator that shares no code with the client, and a server that updates itself daily from its checked-out git branch so a fix can be tried on the real system.</li>
+          <li>Runs one asyncio poller and Modbus TCP session per line, reading every line concurrently at 20 Hz so a powered-down line never stalls a healthy one; the poll rate is per-line configuration with a floor, because the right value depends on the PLC's response time.</li>
+          <li>Added a calibration phase that times the filament from the laser to the spool, a delay of one to two minutes through the accumulator, so each reading and alarm lands on the spool it is actually wound on instead of firing at the laser.</li>
+          <li>Logs every spool to its own CSV and a SQLite run table with a serial, QR label, and HTML certificate; the packing bench approves, inspects, or rejects each spool against the gauge's figures and prints spool, box, and master case labels on demand, removing up to about 30% of label waste per run.</li>
+          <li>Runs a fleet of Raspberry Pi kiosks (projector, a touch screen per line, packing bench, statistics TV) that check in with the server and are updated, configured, and switched on and off with the work hours from one settings panel.</li>
         </ul>
       </article>
 
       <article class="project">
         <div class="job-head">
-          <div><span class="company">Production Network Segmentation</span> <span class="location">| Ubiquiti UniFi, three independent sites</span></div>
+          <div><span class="company">Unified UniFi Network</span> <span class="location">| Network infrastructure, Proteor plus two residential sites</span></div>
           <div class="dates">March 2024 - Present</div>
         </div>
-        <p class="problem"><strong>Problem:</strong> The plant's consumer-grade mesh network could not keep up as production grew: machines coming online together were sometimes assigned the same IP address, and the mesh did not detect or resolve the conflicts.</p>
+        <p class="role-line"><span>Ubiquiti UniFi cloud gateways, VLANs, DHCP, DNS, firewall routing, network monitoring</span></p>
+        <p class="problem"><strong>Problem:</strong> As production grew, the plant's consumer mesh network assigned the same IP address to machines that came online together and never reliably detected or resolved the conflicts.</p>
         <ul>
-          <li>Replaced it with UniFi cloud gateways, using VLANs to separate production equipment, work devices, and IoT devices, with central control of DHCP, DNS, port forwarding, and firewall routing.</li>
-          <li>Reduced IP conflicts and network-related downtime, and uses monitoring tools to find and resolve connectivity problems faster.</li>
+          <li>Replaced it with a centrally managed UniFi network, using VLANs to separate production equipment, work devices, and IoT devices, and took central control of IP address assignment, DNS, VLANs, and port forwarding.</li>
+          <li>Reduced IP conflicts and network-related downtime, improved security through segmentation, and gave room to add equipment; monitoring tools now surface connectivity problems so they are resolved faster, and all three sites are configured and monitored remotely from one interface.</li>
         </ul>
       </article>
 
       <article class="project">
         <div class="job-head">
-          <div><span class="company">RB's Auto App Updater</span> <span class="location">| Windows utility, personal project</span></div>
+          <div><span class="company">Engineering Operations Platform</span> <span class="location">| Internal ERP/CRM, Filament Innovations (as CTO)</span></div>
+        </div>
+        <p class="role-line"><span>Kubernetes, ERP/CRM development, BOM automation, infrastructure design</span></p>
+        <p class="problem"><strong>Problem:</strong> Orders, inventory, tasks, projects, customer interactions, engineering BOMs, and purchasing ran as separate manual workflows.</p>
+        <ul>
+          <li>Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM that centralized those records, generated BOMs dynamically, and linked design data directly to purchasing, reducing the separation between design decisions and purchasing execution.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">BulkSSH</span> <span class="location">| Windows desktop app,</span> <a href="https://github.com/RileyBeenders/BulkSSH">github.com/RileyBeenders/BulkSSH</a></div>
+          <div class="dates">October 2026 - Present</div>
+        </div>
+        <p class="role-line"><span>TypeScript, Electron, Node.js, SSH</span></p>
+        <p class="problem"><strong>Problem:</strong> Testing ExtrusionStudio's Pi kiosks meant repeating the same commands on every Pi, one SSH window at a time, after every change to the image.</p>
+        <ul>
+          <li>Opens many devices in a grid of live terminals, mirrors keystrokes to every ticked device, or broadcasts one command and collects each device's output and exit code, so an image change is tried on every Pi in one pass.</li>
+          <li>Destructive commands such as reboot or rm -r need confirming before they reach several devices, host keys are never accepted silently, and dropped connections reconnect by themselves; released as an installer and a portable executable.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">RB's Auto App Updater</span> <span class="location">| Windows utility</span></div>
           <div class="dates">September 2026</div>
         </div>
-        <p class="stack">PowerShell, WinGet, Windows Task Scheduler, GitHub</p>
+        <p class="role-line"><span>PowerShell, WinGet, Windows Task Scheduler, GitHub, SHA-256 verification</span></p>
+        <p class="problem"><strong>Problem:</strong> Windows applications update through different methods, so keeping dozens of them current meant visiting websites, downloading installers, and running each one by hand.</p>
         <ul>
-          <li>Updates every WinGet-managed application from one desktop shortcut, upgrading each package on its own so a single failure never stops the rest, and translates exit codes into plain-language statuses such as restart needed or application in use.</li>
-          <li>Runs upgrades through an elevated scheduled task with no UAC prompt after setup, and updates itself from a GitHub version manifest only after the new script's SHA-256 hash matches; detailed logs make remote troubleshooting possible.</li>
+          <li>Updates every WinGet-managed application with one double-click and no UAC prompt after a one-time setup, running the upgrades through an elevated scheduled task and upgrading each package on its own so a single failure never stops the rest.</li>
+          <li>Translates WinGet exit codes into plain-language statuses such as security blocked, restart needed, and application in use, writes detailed logs that make remote troubleshooting possible, and updates itself only after the new script's SHA-256 hash matches its version manifest.</li>
         </ul>
       </article>
     </section>

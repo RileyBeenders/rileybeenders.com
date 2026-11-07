@@ -41,7 +41,7 @@ These are recorded so no agent re-asks them:
 ## Where the other procedures call it
 
 - `site-timeline-sync` runs the detector over changed UI files before recapturing the About page's screenshots, so a capture never immortalizes a tell.
-- `custom-resume` applies the craft floor (`reference/craft-floor.md`, the Verify list read as print) to the rendered PDF. The PDF keeps its own ATS identity and does not follow `DESIGN.md`.
+- `create-custom-resume-pdf` applies the craft floor (`reference/craft-floor.md`, the Verify list read as print) to the rendered PDF. The PDF keeps its own ATS identity and does not follow `DESIGN.md`.
 - `sync-charts` carries the Hard-Copy Rule: `GanttChart.tsx` bakes colors into mermaid, so a palette change must reach it by hand, and the detector runs over it afterward.
 - `vault-sync` maps `PRODUCT.md`, `DESIGN.md`, and `.impeccable/` to this note and to [[Design System (Blueprint Press)]].
 - `motion-design` names the two motion rules the craft floor adds (one authored moment per surface; no looping ambient effect that carries no state).

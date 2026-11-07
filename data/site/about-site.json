@@ -454,7 +454,7 @@
         "date": "2026-11-01",
         "era": "future",
         "title": "Resume PDFs from the site itself",
-        "summary": "The custom-resume skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
+        "summary": "The create-custom-resume-pdf skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
         "tags": [
           "agents",
           "data"
@@ -594,7 +594,7 @@
           ],
           "skills": [
             {
-              "name": "custom-resume",
+              "name": "create-custom-resume-pdf",
               "trigger": "\"Tailor a resume for this posting\"",
               "does": "Reads the job PDF and the site's data, keeps only the claims the data supports, and writes a one-page PDF in the site's format."
             },

@@ -13,12 +13,16 @@ CLAUDE.md                      # routing index + Next.js agent-rules block (repo
   settings.local.json          # per-machine Claude Code settings
   worktrees/                   # Claude Code checkouts, git-ignored
   skills/                      # every skill, one folder each (25 as of 2026-10-20)
-    custom-resume/             # name: custom-resume — step 1 of the resume chain
+    create-custom-resume-pdf/  # name: create-custom-resume-pdf — step 1 of the resume chain
       SKILL.md
       scripts/print-resume.mjs   # HTML → PDF (repo playwright-core + local Chromium), one spacing multiplier
       scripts/validate-resume.py # page count/size, fill, link styling, letter-spaced headings, repeated claims
-      scripts/build-web-resume.mjs     # verified HTML source → interactive site-styled HTML in output/resume-web/
-      assets/web-resume-template.html  # screen styles, motion, and skill-highlight layer; print uses the source's CSS
+    create-custom-resume-html/ # name: create-custom-resume-html — same process, interactive HTML output
+      SKILL.md
+      scripts/build-web-resume.mjs    # shared source → site-styled interactive HTML in 1.ApplicationsUsed/
+      scripts/verify-web-resume.mjs   # light/dark/phone/no-JS checks; printed HTML must match the PDF page for page
+      scripts/compare-pdf-text.py     # per-page text comparison used by the verifier (pymupdf)
+      assets/web-resume-template.html # screen styles, motion, skill highlight; print uses the source CSS
     grill-my-resume/SKILL.md   # name: grill-my-resume — step 2, the review (from MCP Market as grill-my-cv; not in skills-lock.json)
     fix-my-resume/SKILL.md     # name: fix-my-resume — step 3, applies a review to output/resume-html/*.html and reprints
     update-main-resume/        # name: update-main-resume — the untailored Download PDF resume
@@ -54,7 +58,7 @@ CLAUDE.md                      # routing index + Next.js agent-rules block (repo
 Each `SKILL.md` is YAML frontmatter (`name` matching the folder, `description` used by a strict loader for triggering) followed by a free-form markdown body. `CLAUDE.md` has no frontmatter and is just the human/agent-facing index.
 
 ## The procedures
-### `custom-resume`
+### `create-custom-resume-pdf`
 
 Generates a job-targeted resume PDF for a specific posting in `2.JobsApplliedTo/`. In short:
 
@@ -63,12 +67,16 @@ Generates a job-targeted resume PDF for a specific posting in `2.JobsApplliedTo/
 3. Builds a **fact-only evidence matrix** from the live site + `data/**/*.json` + relevant source files. Explicitly forbidden from inventing experience; unsupported claims are excluded, not softened. `data/career-qa/qa-log.json` ([[Career Q&A Log]]) is part of that evidence: its answered and partial entries count as facts, and its open entries are known gaps that are reported, not asked again.
    Then fills the requested pages **without ever repeating a claim** (Riley's rule of 2026-10-20: each fact, metric, machine, or project appears once; a Selected Projects entry may only carry a project no experience bullet already describes; the summary is a short value statement with no metrics and no title recital; skills follow the bullets; Education stays last with its real date and never gains "recent graduate", a GPA, or coursework; certifications go one per line; a relocation line appears when the job is on-site elsewhere and `header.json` says `openToRelocation`). It adds supported content first (more `experience.json` bullets, per-role Filament Innovations entries, projects not already covered, more relevant experience, the certification list), then tunes all vertical gaps together with one spacing multiplier (`--m`, about 0.8x–1.3x the reference). It never shrinks body text or pads with filler; if supported evidence runs out, the last page ends short and the summary says so. Multi-page resumes put their margins in `@page` and keep headings with their first bullet.
 4. Matches the visual layout/theme of `output/pdf/Riley_Beenders_Disney_Principal_Ride_Control_Software_Engineer_Resume_v2.pdf` — US Letter portrait, navy headings, Arial, single column, blue underlined clickable contact links.
-5. Saves to `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf`, with the HTML source beside it in `output/resume-html/`, printed by the skill's own `scripts/print-resume.mjs`.
+5. Saves straight to `1.ApplicationsUsed/<ID>-RileyBeenders-<Job_Title>.pdf` (the posting's three-digit prefix, then the posting's job title with underscores for spaces and no company, e.g. `022-RileyBeenders-Sr_Controls_Engineer.pdf`; adopted 2026-11-07, older builds keep their `output/pdf/RileyBeenders_<Company>_<Job_Title>.pdf` names), with the HTML source under the same name in `output/resume-html/`, printed by the skill's own `scripts/print-resume.mjs`.
 6. Validates before delivery with `scripts/validate-resume.py`: exact page count at `612×792pt`, measured page fill (reported in the summary), visual inspection of rendered pages for clipping/overlap, working phone/email/website/LinkedIn link annotations, all links blue+underlined and no blue text that is not a link, headings that extract as plain words, no eight-word fragment appearing twice, supported keywords present and unsupported claims absent.
 7. Hands off: offers `grill-my-resume` on the result, whose findings `fix-my-resume` applies.
-8. Optionally, for employers that accept HTML, `scripts/build-web-resume.mjs` wraps the verified source in `assets/web-resume-template.html` and writes `output/resume-web/<same name>.html` (added 2026-11-07 for the Disney 022 and 024 applications). The body is copied unchanged, so the claims match the PDF. On screen it reads like rileybeenders.com: Blueprint Press grid and type, Electric palette with dark mode, the site's role and bullet hovers, a once-only scroll rise, a progress spine, accent figures on hover, and Core Expertise pills that highlight the bullets containing that exact term. In print the source's own stylesheet applies, and the check is that the printed HTML's per-page text is identical to the delivered PDF's. The PDF stays the primary upload; the HTML goes alongside it.
+8. For employers that accept HTML, `create-custom-resume-html` (below) runs this same process and wraps the result. Renamed from `custom-resume` on 2026-11-07, when the HTML skill split off.
 
 Can parallelize job analysis, evidence auditing, and content strategy across subagents, but keeps final writing/PDF generation/approval with the primary agent.
+
+### `create-custom-resume-html`
+
+Added 2026-11-07 for the Disney 022 and 024 applications, after Disney turned out to accept HTML files. Takes the same two inputs (the page count is the **printed** length) and runs `create-custom-resume-pdf` steps 1–8 to the same validated source and PDF. It may then add a reader-focused screen-only layer to the source: `<details class="web-only more">` bullet details, case-study links, or a section cut from the print for length, each held to the same evidence and copy rules and kept out of `print-resume.mjs` output by a `.web-only { display: none; }` rule (the build refuses a source without it). `scripts/build-web-resume.mjs <source> --pages N` writes `1.ApplicationsUsed/<ID>-RileyBeenders-<Job_Title>.html` beside the PDF (older-named sources go to `output/resume-web/`). It copies the source body unchanged into `assets/web-resume-template.html` and wraps the source stylesheet in `@media print`, so the **Print / PDF · N pages** button reproduces the PDF. On screen it reads like rileybeenders.com: blueprint grid, Instrument Serif and Spectral, the Electric palette with dark mode and a toggle, the site's role and bullet hovers, a once-only scroll rise, a reading-progress spine, accent figures on hover, and Core Expertise pills that dim every line not containing that exact term. `scripts/verify-web-resume.mjs` fails on script errors, sideways scroll at 390px, a broken highlight, hidden lines with JavaScript off, or any page-count or per-page text difference between the printed HTML and the delivered PDF. The PDF stays the primary upload; the HTML goes alongside it. `fix-my-resume` rebuilds and re-verifies the HTML whenever it reprints a source that has one.
 
 ### `grill-my-resume` and `fix-my-resume`
 
@@ -78,7 +86,7 @@ Steps 2 and 3 of the resume chain, both added 2026-10-20. **`grill-my-resume`** 
 
 ### `update-main-resume`
 
-Added 2026-11-07, when the home page's Download PDF switched from the per-request jsPDF generator to a static copy of the Disney Imagineering Ride Controls layout (see [[Resume PDF Pipeline]]). Not part of the tailored chain, but bound by its copy rules. It runs `scripts/collect-changes.mjs` to list what changed in resume data (`header.json`, the four `data/home/*.json` files, `projects.json`, `qa-log.json`) since `ResumeBuilder/main-resume/manifest.json`'s `reviewedThrough` commit, plus tailored resumes edited since the last build and newly answered Q&A entries; keeps only resume-worthy findings (Add / Replace / Update / Remove, dropping media, theme, and site-only changes); and **asks Riley which to apply** (multi-select for up to four, a numbered list beyond that). It then edits `ResumeBuilder/main-resume/main-resume.html`, prints and validates with `custom-resume`'s scripts at the manifest's page count, **asks Riley what the downloaded file should be named** (portable `Riley_Beenders_…pdf` names only, since it lands on other people's computers), and publishes with `scripts/publish-main-resume.mjs`. The PDF is public, so nothing from `private/career-evidence.md` and no open Q&A entry goes on it. Ends with `vault-sync` and an offer of `write-commit`.
+Added 2026-11-07, when the home page's Download PDF switched from the per-request jsPDF generator to a static copy of the Disney Imagineering Ride Controls layout (see [[Resume PDF Pipeline]]). Not part of the tailored chain, but bound by its copy rules. It runs `scripts/collect-changes.mjs` to list what changed in resume data (`header.json`, the four `data/home/*.json` files, `projects.json`, `qa-log.json`) since `ResumeBuilder/main-resume/manifest.json`'s `reviewedThrough` commit, plus tailored resumes edited since the last build and newly answered Q&A entries; keeps only resume-worthy findings (Add / Replace / Update / Remove, dropping media, theme, and site-only changes); and **asks Riley which to apply** (multi-select for up to four, a numbered list beyond that). It then edits `ResumeBuilder/main-resume/main-resume.html`, prints and validates with `create-custom-resume-pdf`'s scripts at the manifest's page count, **asks Riley what the downloaded file should be named** (portable `Riley_Beenders_…pdf` names only, since it lands on other people's computers), and publishes with `scripts/publish-main-resume.mjs`. The PDF is public, so nothing from `private/career-evidence.md` and no open Q&A entry goes on it. Ends with `vault-sync` and an offer of `write-commit`.
 
 ### `vault-sync`
 

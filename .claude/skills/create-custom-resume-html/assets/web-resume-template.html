@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <title>{{TITLE}}</title>
-  <!-- Interactive resume, built by .claude/skills/custom-resume/scripts/build-web-resume.mjs from
+  <!-- Interactive resume, built by .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs from
        {{SOURCE}}. The content below is that source's <body>, unchanged, so every claim matches
-       the PDF. Screen styles mirror rileybeenders.com (Blueprint Press, Electric palette); print uses
+       the PDF (plus any .web-only extras, which never print). Screen styles mirror rileybeenders.com (Blueprint Press, Electric palette); print uses
        the source's own stylesheet, so printing this page reproduces the PDF layout. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +126,23 @@
   .skill-line { padding: 14px 0; border-top: 1px solid var(--rule); }
   .skill-line:first-of-type { border-top: 0; padding-top: 0; }
   .skill-line > strong { display: block; margin-bottom: 10px; font-weight: 400; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink); }
-  .sep { display: none; }
+  .sep, .print-only { display: none; }
+
+  /* Screen-only bullet detail: <details class="web-only more"><summary>Details</summary><p>…</p></details>
+     inside an <li>. Opens with a height transition where the browser supports it. */
+  details.more { margin-top: 4px; }
+  details.more > summary { display: inline-flex; align-items: center; gap: 8px; list-style: none; cursor: pointer;
+    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more > summary::after { content: "+"; font-size: 15px; letter-spacing: 0; transition: transform 0.42s var(--ease); }
+  details.more[open] > summary::after { transform: rotate(45deg); }
+  details.more > :not(summary) { margin-top: 8px; padding-left: 14px; border-left: 1px solid var(--accent); color: var(--prose); font-size: 16px; }
+  details.more > :not(summary) + :not(summary) { margin-top: 6px; }
+  @supports (interpolate-size: allow-keywords) {
+    :root { interpolate-size: allow-keywords; }
+    details.more::details-content { height: 0; overflow: clip; transition: height 0.42s var(--ease), content-visibility 0.42s allow-discrete; }
+    details.more[open]::details-content { height: auto; }
+  }
   .pill { display: inline-block; margin: 0 6px 7px 0; padding: 3px 11px; border: 1px solid var(--rule);
     font: 400 14px/1.5 var(--body); color: var(--ink-soft); background: color-mix(in srgb, var(--paper) 70%, transparent); }
   button.pill { cursor: pointer; border-color: color-mix(in srgb, var(--ink) 28%, var(--rule));  color: var(--ink);
@@ -178,7 +194,7 @@
   .compact-role:hover { color: var(--ink); }
   .compact-role:hover::before { background: var(--accent); }
   .compact-role strong { display: block; font: 400 23px/1.25 var(--serif); color: var(--ink); }
-  .compact-role .dates { display: inline-block; margin: 2px 0 6px; }
+  .compact-role .dates { display: inline-block; margin: 2px 0 6px; white-space: normal; }
 
   .education-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 24px; }
   .education-row strong { font: 400 28px/1.2 var(--serif); font-weight: 400; }
@@ -204,7 +220,7 @@
   .js body.ready > header::after { transform: scaleX(1); }
 
   @media (max-width: 760px) {
-    main > section { grid-template-columns: 1fr; padding: 34px 0; }
+    main > section { grid-template-columns: minmax(0, 1fr); padding: 34px 0; }
     main > section > h2 { grid-row: auto; margin-bottom: 18px; }
     main > section > h2::before { display: inline; margin: 0 12px 0 0; font-size: 26px; }
     main > section > :not(h2) { grid-column: 1; }
@@ -234,7 +250,7 @@
     <a class="bar-brand" href="https://rileybeenders.com" style="text-decoration:none"><span class="bar-mark" aria-hidden="true">RB</span><span>{{ROLE_LABEL}}</span></a>
     <div class="bar-actions">
       <button class="btn btn--quiet" type="button" data-theme-toggle aria-label="Switch light or dark">Theme</button>
-      <button class="btn" type="button" data-print>Print / PDF</button>
+      <button class="btn" type="button" data-print>Print / PDF{{PAGES_LABEL}}</button>
     </div>
   </div>
   <div class="spine web-only" aria-hidden="true"></div>
