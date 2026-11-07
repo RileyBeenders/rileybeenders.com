@@ -683,37 +683,37 @@
       "samples": [
         {
           "label": "Spool certificate",
-          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-SS33-A5NA.html",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-DSSN.html",
           "kind": "HTML · 75 KB",
           "note": "The page the label's QR code opens: the spool's serial, material, batch, figures and its average trace with the tolerance band. Self-contained, so it can be kept with the spool or copied anywhere.",
           "shot": {
             "id": "certificate",
-            "src": "/project-images/ExtrusionStudio/certificate-SS33-A5NA.webp",
-            "alt": "The certificate for spool SS33-A5NA, with its figures and chart",
-            "caption": "Spool certificate SS33-A5NA"
+            "src": "/project-images/ExtrusionStudio/certificate-DSSN.webp",
+            "alt": "The certificate for spool DSSN, with its figures and chart",
+            "caption": "Spool certificate DSSN"
           }
         },
         {
           "label": "Certificate with a reason",
-          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-AAD0-YJM1.html",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-GJPM.html",
           "kind": "HTML · 75 KB",
           "note": "A spool that went out of spec and was approved anyway. The reason is on the certificate and its letter is on the end of the serial.",
           "shot": {
             "id": "certificate-reason",
-            "src": "/project-images/ExtrusionStudio/certificate-AAD0-YJM1.webp",
-            "alt": "The certificate for spool AAD0-YJM1, approved with a reason after going out of spec",
-            "caption": "Spool certificate AAD0-YJM1"
+            "src": "/project-images/ExtrusionStudio/certificate-GJPM.webp",
+            "alt": "The certificate for spool GJPM, approved with a reason after going out of spec",
+            "caption": "Spool certificate GJPM"
           }
         },
         {
           "label": "Spool CSV",
-          "src": "/project-artifacts/ExtrusionStudio/sample-spool-SS33-A5NA.csv",
+          "src": "/project-artifacts/ExtrusionStudio/sample-spool-DSSN.csv",
           "kind": "CSV · 150 KB · 1,800 rows",
           "note": "Ninety seconds at 20 Hz. A header with the line, spec and spool, one row per reading with X, Y, Z, average and in-spec, then the summary and the decision appended at the end."
         },
         {
           "label": "Filament file",
-          "src": "/project-artifacts/ExtrusionStudio/sample-filament-SS33-A5NA.csv",
+          "src": "/project-artifacts/ExtrusionStudio/sample-filament-DSSN.csv",
           "kind": "CSV · 1 KB",
           "note": "The spool's production settings and filament notes as they stood when the run began and when it ended. Formula data, so it goes here and nowhere else."
         }
