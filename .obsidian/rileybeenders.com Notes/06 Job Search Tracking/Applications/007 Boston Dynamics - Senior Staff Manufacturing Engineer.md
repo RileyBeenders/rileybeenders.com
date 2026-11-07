@@ -4,7 +4,7 @@ Company: "Boston Dynamics"
 Role: "Senior Staff Manufacturing Engineer (Atlas)"
 JobID: "007"
 Date Applied: 2026-08-08
-Status: "Application Received"
+Status: "No longer in consideration (Aug 27, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/007_Senior%20Staff%20Manufacturing%20Engineer%20at%20Boston%20Dynamics.pdf"
 ---
 
@@ -56,9 +56,10 @@ Not itemized beyond stated base pay range; standard Boston Dynamics compensation
 - **Gap:** the role asks for 8–15 years of relevant experience; professional experience runs from May 2020, roughly 6 years at application — under the stated range, though not far off the low end.
 - **Gap:** no humanoid/robotics-program experience specifically (additive-manufacturing/prosthetics domain, not robotics) and no PLM/MES or TWI certification evidence.
 
-### Now — Sep 19, 2026
+### Now — Nov 6, 2026
 
 No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but every skill the snapshot above relies on (SolidWorks and CATIA, DFM/DFA, GD&T, Lean Manufacturing, Lean Six Sigma, fixture and tooling design) is still explicit, and nothing robotics-, PLM/MES- or TWI-specific was added.
+- **Production and inventory facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item, traced discrepancies to production orders processed without verification, and helped implement a more warehouse-focused workflow. ExtrusionStudio has been live on all three extrusion lines since October 2026, with an offset that ties readings and alarms to the filament reaching the spool. This is new evidence of production-floor and process work; the gaps noted above are unchanged.
 
 ---
 

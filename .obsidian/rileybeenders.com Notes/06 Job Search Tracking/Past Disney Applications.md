@@ -6,7 +6,9 @@ tags: [job-search, content]
 
 The **Inactive** list in Disney's Workday candidate portal (`disney.wd5.myworkdayjobs.com`, Candidate Home → My Applications), copied on Sep 24, 2026: 29 applications, all *No Longer In Consideration*. 26 of them came before this site and the `custom-resume` builder existed, so they have no posting PDF, no tailored resume, and no three-digit tracker ID. The other 3 are tracked in the main tracker as 006, 013, and 014 (see [[Job Application Tracker]]).
 
-The README's `## Past Disney Applications` section lists only the 26 pre-site roles (006, 013, and 014 are left out because the main tracker already has them). It sits between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md`, so the `sync-charts` procedure doesn't cover it. The live `/more-info` table does list the 26 pre-site roles, in gray, from `data/more-info/past-applications.json` (see [[More Info and Gantt Data]]).
+Four older internship applications from the 2021–2022 cycle, made through the separate Disney Professional Internships (Brassring) portal rather than Workday, were added on Nov 7, 2026 from Riley's Gmail confirmation and decision emails. They are listed under **Disney Professional Internships (2021–2022)** below.
+
+The README's `## Past Disney Applications` section lists the 26 pre-site Workday roles plus the 4 internships (rows 27–30) (006, 013, and 014 are left out because the main tracker already has them). It sits between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md`, so the `sync-charts` procedure doesn't cover it. The live `/more-info` table lists all 30, in gray, from `data/more-info/past-applications.json` (see [[More Info and Gantt Data]]).
 
 ## Highlight: Ride Control System Security Engineer - Operational Technology (OT)
 
@@ -60,6 +62,19 @@ Newest first, as Workday orders it.
 | 27 | Staff Media Systems Engineer | 10127411 | Sep 8, 2025 | |
 | 28 | Ride Development Engineer Senior | 10124086 | Jun 18, 2025 | |
 | 29 | Principal R&D Imagineer - Mechanical Engineer | 10113427 | Jun 13, 2025 | |
+
+## Disney Professional Internships (2021–2022)
+
+Requisition numbers end in `BR` (Brassring). Every one ended in a "not pursuing your candidacy" email.
+
+| Job Title | Req # | Date Submitted | Decision |
+|---|---|---|---|
+| DLR Industrial Engineering Co-op/Internship, Fall 2022 | 914640BR | Feb 18, 2022 | Jun 18, 2022 |
+| WDI Show Control Systems Internship, Glendale - Summer 2022 | 905466BR | Dec 27, 2021 | Feb 12, 2022 |
+| WDI Show Mechanical Engineering Internship, Glendale - Summer 2022 | 904337BR | Dec 27, 2021 | Jan 26, 2022 |
+| Industrial Engineering Co-op/Internship WDW Summer 2022 | 864070BR | Oct 15, 2021 | Dec 1, 2021 |
+
+A fifth internship application, Industrial Engineering Co-op/Internship WDW Fall 2022 (913412BR, applied Feb 18, 2022), has a confirmation but no decision email, so it is not in the data yet.
 
 Patterns worth noting: nine applications went in on Sep 8, 2025, eight on May 23, 2026, and most roles are Walt Disney Imagineering ride control, design assurance, or OT/network positions.
 

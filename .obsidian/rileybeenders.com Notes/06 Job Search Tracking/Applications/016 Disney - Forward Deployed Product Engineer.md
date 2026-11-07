@@ -4,7 +4,7 @@ Company: "The Walt Disney Company (Corporate)"
 Role: "Forward Deployed Product Engineer"
 JobID: "016"
 Date Applied: 2026-09-15
-Status: "Application Received"
+Status: "No longer in consideration (Oct 2, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/016_Forward%20Deployed%20Product%20Engineer%20at%20DISNEY.pdf"
 ---
 
@@ -64,12 +64,13 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **The software/LLM requirements remain a significant gap:** the evidence does not establish three years shipping conventional software products or one year shipping LLM-based AI features in production. It also does not substantiate production RAG, LLM APIs, agents, SQL, regression/golden-set evaluation pipelines, trace analysis, LLM-as-judge, Cursor, Claude Code, or formal code reviews. The resume uses supported language such as AI-assisted diagnostics and local LLM tooling rather than converting those adjacent skills into unsupported claims.
 - **Education is satisfied:** the posting accepts a bachelor's degree and/or equivalent experience, and the record includes a completed B.S. in Electro-Mechanical Engineering.
 
-### Now — Oct 20, 2026
+### Now — Nov 6, 2026
 
 - **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** Riley now reports project status, constraints, and budgets to Proteor leadership from its global locations at a monthly USA review, which supports the ask to communicate clearly with senior stakeholders. The conventional software-shipping, production LLM, and RAG gaps are unchanged.
 - **ExtrusionStudio (published Oct 17, 2026)** is the clearest shipped-software evidence in the record so far: a Python production system deployed on a plant server and a fleet of Raspberry Pi screens, with operator, packing-bench, statistics and admin panels, daily self-updates and an audit log. BulkSSH, a TypeScript/Electron desktop app released as v1.0.0, was built to test that deployment. This narrows the software-tenure gap; the LLM application-stack gap is unchanged.
 - *Earlier (Sep 19, 2026):* No material change to the match since application. Product engineering, workflow design, automation, commercialization, enterprise infrastructure, and stakeholder-facing delivery remain strong; the role's production software tenure and modern LLM application-stack requirements remain the principal gaps.
 - Since Sep 15–16, 2026 the record additionally states that Riley is "quick to pick up, apply, and integrate new technologies into real-world systems" (the rewritten summary) and acts as Hiring Manager for engineering roles — supporting, not new, evidence for the builder/operator and stakeholder side of this posting.
+- **Deployment and support facts added to the record (Nov 6, 2026):** ExtrusionStudio has been live on all three extrusion lines since October 2026. Riley is also developing an offline ICARUS-Lite and ICARUS-Pro control screen with over-the-air automated updates (still in R&D, not shipped), and is the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error. The gaps noted above are unchanged.
 
 ---
 

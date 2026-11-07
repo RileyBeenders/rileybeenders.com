@@ -114,7 +114,7 @@
       ],
       "question": "Did ICARUS-Lite meet its 2025 goal of 60 units? How many units were delivered in 2025?",
       "answer": null,
-      "notes": null,
+      "notes": "Riley chose not to include delivered units on the site or resumes (2026-11-06). Do not ask again unless Riley raises it.",
       "usedIn": []
     },
     {
@@ -129,7 +129,7 @@
       ],
       "question": "How many ICARUS-Lite units have been delivered so far in 2026, against the goal of 100?",
       "answer": null,
-      "notes": null,
+      "notes": "Riley chose not to include delivered units on the site or resumes (2026-11-06). Do not ask again unless Riley raises it.",
       "usedIn": []
     },
     {
@@ -332,6 +332,254 @@
       "answer": "Yes, the ski lift operator role was seasonal.",
       "notes": "Riley asked that the resume not be labeled seasonal or part-time; the overlap stays unexplained on the page by choice.",
       "usedIn": []
+    },
+    {
+      "id": "2026-11-06-01",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ExtrusionStudio",
+        "labels",
+        "material savings"
+      ],
+      "question": "What does the 20-30% material consumption reduction from ExtrusionStudio measure?",
+      "answer": "It refers to label material, not filament. We used to print a full 8.5 x 11 inch sheet of labels for spools and spool boxes, with each sheet dedicated to one material and lot. Labels are now printed on demand, which eliminates that waste.",
+      "notes": "Riley cleared the label figure for publication. Do not describe this as raw material or filament savings. How the 20-30% was measured is asked in 2026-11-06-05.",
+      "usedIn": [
+        "data/home/experience.json",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-02",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "answered",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ExtrusionStudio",
+        "calibration",
+        "alarms"
+      ],
+      "question": "How does ExtrusionStudio tie its readings and alarms to the spool?",
+      "answer": "The program accounts for an offset, so its data and alarms align with what is landing on the spool. Alerts used to fire at the laser, while the error still had to pass through the accumulator before reaching the spool. We have since learned that this delay is one to two minutes.",
+      "notes": null,
+      "usedIn": [
+        "data/home/experience.json",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-03",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "answered",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ExtrusionStudio",
+        "deployment"
+      ],
+      "question": "When did ExtrusionStudio go live, and on how many lines?",
+      "answer": "It went live around October 6-7, 2026 on all three lines. The thermal label printer was added on October 12, 2026.",
+      "notes": "Riley chose to keep the spool count private, so it is deliberately not recorded in this public repository.",
+      "usedIn": [
+        "data/home/experience.json",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-04",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ExtrusionStudio",
+        "server hardware"
+      ],
+      "question": "What does the upcoming ExtrusionStudio hardware update change?",
+      "answer": "It moves the system from a mini PC to a rack server with ECC memory and RAID 5 storage.",
+      "notes": "Planned, not yet shipped, so it stays off the site until it is running. The reason for the move and the backup plan are asked in 2026-11-06-06.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-06-05",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "answered",
+      "source": "follow-up to 2026-11-06-01",
+      "topics": [
+        "ExtrusionStudio",
+        "labels",
+        "material savings"
+      ],
+      "question": "How was the 20-30% label material reduction measured, given that the printer has been running only since October 12, 2026? Does it mean label stock used per spool, and how does it fit with print-on-demand leaving no waste?",
+      "answer": "It is based on the extra labels printed before the thermal printer was in place. Each sheet holds 18 labels, and a run rarely used a whole number of sheets, so the unused labels were wasted. A typical example works out to about 25% of the labels printed for that run.",
+      "notes": "This is an estimate from sheet arithmetic, not a measured before-and-after comparison, and the waste varies with run length. Run lengths are kept out of this public file.",
+      "usedIn": [
+        "data/home/experience.json",
+        "data/projects/projects.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-06",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "follow-up to 2026-11-06-04",
+      "topics": [
+        "ExtrusionStudio",
+        "server hardware",
+        "reliability"
+      ],
+      "question": "Why is ExtrusionStudio moving to the rack server, and how are spool records backed up beyond RAID?",
+      "answer": "The move is for data retention and to finish deploying cloud data.",
+      "notes": "The backup plan beyond RAID is not yet recorded. Stays off the site until the server is running.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-06-07",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "answered",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ExtrusionStudio",
+        "production planning",
+        "lead times"
+      ],
+      "question": "What decisions have you made from the extrusion data?",
+      "answer": "We do not yet have enough data to estimate lead times on large orders, but we can now estimate how many spools per material can be completed in a week, and we keep a running history of the schedule and material parameters. Running speed also correlates with temperature and humidity from day to day; more humidity makes the lines run slower.",
+      "notes": "Not on the site: ExtrusionStudio has been live only since October 2026, so the humidity effect is early data.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-06-08",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "answered",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "technical support",
+        "customers",
+        "electronics"
+      ],
+      "question": "What is an example of your role as the technical subject-matter expert?",
+      "answer": "In the plant, I bring industrial electronics experience to the extrusion lines and low-voltage sensor knowledge to the rest of the building. With customers, I am the go-to person for a quick and correct answer when troubleshooting product issues, whether mechanical, electrical, or most commonly user error, including how to mitigate the error, move forward, and learn from it.",
+      "notes": null,
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-09",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "HOA",
+        "treasurer",
+        "governance"
+      ],
+      "question": "What is your role with your homeowners association?",
+      "answer": "I have been Treasurer since April 2026 for an association of about 80 units. I manage its banking and, as of November 2026, pay its monthly insurance. We are gradually establishing a community-focused board and moving away from a property management company. We recently went through a mid-year restructure, and I remain Treasurer.",
+      "notes": "Riley first said May, then gave April 2026 as the start date; April is used. The association's name stays off the site. Riley wants this on resumes.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-12",
+      "asked": "2026-11-06",
+      "answered": "2026-11-07",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "availability",
+        "dedication"
+      ],
+      "question": "Riley is salaried and increasingly works outside shop hours whenever the work needs it. What is a specific recent example, such as a plant or customer issue handled off hours or a deployment done outside production?",
+      "answer": "Working with vendors regularly extends into nights and very early mornings.",
+      "notes": "Not on the site. A specific dated example (an incident, vendor escalation, or off-hours deployment) is still not recorded. Show this through examples rather than stating 24/7 availability; it is not a formal on-call rotation.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-06-10",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "inventory",
+        "Business Central",
+        "warehouse workflow"
+      ],
+      "question": "For the 2026 inventory count you led in Business Central: when did it take place, how many items did it cover, what caused the discrepancies you found, and what was your part in the warehouse-focused workflow?",
+      "answer": "The count covered every item. The errors came from when we first implemented Business Central, when production orders were not properly verified as they were processed, so items were not taken from inventory.",
+      "notes": "The date of the count and Riley's specific part in the warehouse workflow are not yet recorded.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-06-11",
+      "asked": "2026-11-06",
+      "answered": "2026-11-06",
+      "status": "partial",
+      "source": "grill-me, Proteor experience review",
+      "topics": [
+        "ICARUS-Lite",
+        "ICARUS-Pro",
+        "control software"
+      ],
+      "question": "For the offline control screen on the ICARUS-Lite and ICARUS-Pro: has it shipped, did you write it yourself and in what, and which functions work without a network connection?",
+      "answer": "It is still in the research and development phase and will be implemented together with over-the-air automated updates.",
+      "notes": "Not shipped, so the site says \"Developing\". Whether Riley is writing it personally, and in what language, is not yet recorded.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-07-01",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "Application 024 (Disney Senior Systems Engineer) COTS review",
+      "topics": [
+        "Business Central",
+        "cloud",
+        "SaaS",
+        "Azure"
+      ],
+      "question": "Is Proteor's Business Central the online version hosted by Microsoft on Azure, or installed on-premises?",
+      "answer": "It is the online version, hosted by Microsoft on Azure. I can reach it from any device, including when I am off the company network.",
+      "notes": "Supports \"supported a cloud-hosted SaaS ERP in production\". It is not Azure administration; do not list Azure, AWS, or GCP as a skill on this basis.",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md"
+      ]
+    },
+    {
+      "id": "2026-11-07-02",
+      "asked": "2026-11-07",
+      "answered": "2026-11-07",
+      "status": "answered",
+      "source": "Application 024 (Disney Senior Systems Engineer) COTS review",
+      "topics": [
+        "COTS",
+        "vendor platforms",
+        "PLCs",
+        "controls"
+      ],
+      "question": "Which vendor-provided (COTS) platforms do you support besides SimplyPrint (ProteorPrintOS), Ubiquiti UniFi, and Allen Bradley PLCs?",
+      "answer": "I also support Mean Well power supplies, Duet3D controllers, and the Siemens PLCs on the filament extrusion lines. Supporting vendor platforms and working with their vendors is part of my day-to-day work.",
+      "notes": "Added to data/home/skills.json (Controls & Automation) on 2026-11-07. Brand spelled \"Mean Well\" (Riley wrote \"Meanwell\").",
+      "usedIn": [
+        ".obsidian/rileybeenders.com Notes/06 Job Search Tracking/Applications/024 Disney - Senior Systems Engineer.md",
+        "data/home/skills.json"
+      ]
     }
   ]
 }

@@ -122,7 +122,7 @@
         ]
       },
       {
-        "text": "Added a calibration phase that times the filament from the laser to the spool, so each reading is logged onto the spool it is actually wound on.",
+        "text": "Added a calibration phase that times the filament from the laser to the spool, a delay of one to two minutes through the accumulator, so each reading and alarm lands on the spool it is actually wound on.",
         "emphasis": [
           "calibration phase"
         ]
@@ -169,7 +169,9 @@
         "The server runs whichever git branch is checked out and updates itself daily, so a test branch can be tried on the real server"
       ],
       "impact": [
+        "Live on all three lines since October 2026",
         "Every spool off every line has a record, a serial, a label and a certificate",
+        "Print-on-demand thermal labels replaced full-sheet printing, removing up to about 30% label waste per run",
         "The whole plant sees production and alarms on the projector and the statistics TV",
         "The packing bench decides spools against the gauge's figures instead of by eye",
         "Screens come on an hour into the workday and go off at the end of it without anyone touching them",
@@ -681,37 +683,37 @@
       "samples": [
         {
           "label": "Spool certificate",
-          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-SS33-A5NA.html",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-DSSN.html",
           "kind": "HTML · 75 KB",
           "note": "The page the label's QR code opens: the spool's serial, material, batch, figures and its average trace with the tolerance band. Self-contained, so it can be kept with the spool or copied anywhere.",
           "shot": {
             "id": "certificate",
-            "src": "/project-images/ExtrusionStudio/certificate-SS33-A5NA.webp",
-            "alt": "The certificate for spool SS33-A5NA, with its figures and chart",
-            "caption": "Spool certificate SS33-A5NA"
+            "src": "/project-images/ExtrusionStudio/certificate-DSSN.webp",
+            "alt": "The certificate for spool DSSN, with its figures and chart",
+            "caption": "Spool certificate DSSN"
           }
         },
         {
           "label": "Certificate with a reason",
-          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-AAD0-YJM1.html",
+          "src": "/project-artifacts/ExtrusionStudio/sample-certificate-GJPM.html",
           "kind": "HTML · 75 KB",
           "note": "A spool that went out of spec and was approved anyway. The reason is on the certificate and its letter is on the end of the serial.",
           "shot": {
             "id": "certificate-reason",
-            "src": "/project-images/ExtrusionStudio/certificate-AAD0-YJM1.webp",
-            "alt": "The certificate for spool AAD0-YJM1, approved with a reason after going out of spec",
-            "caption": "Spool certificate AAD0-YJM1"
+            "src": "/project-images/ExtrusionStudio/certificate-GJPM.webp",
+            "alt": "The certificate for spool GJPM, approved with a reason after going out of spec",
+            "caption": "Spool certificate GJPM"
           }
         },
         {
           "label": "Spool CSV",
-          "src": "/project-artifacts/ExtrusionStudio/sample-spool-SS33-A5NA.csv",
+          "src": "/project-artifacts/ExtrusionStudio/sample-spool-DSSN.csv",
           "kind": "CSV · 150 KB · 1,800 rows",
           "note": "Ninety seconds at 20 Hz. A header with the line, spec and spool, one row per reading with X, Y, Z, average and in-spec, then the summary and the decision appended at the end."
         },
         {
           "label": "Filament file",
-          "src": "/project-artifacts/ExtrusionStudio/sample-filament-SS33-A5NA.csv",
+          "src": "/project-artifacts/ExtrusionStudio/sample-filament-DSSN.csv",
           "kind": "CSV · 1 KB",
           "note": "The spool's production settings and filament notes as they stood when the run began and when it ended. Formula data, so it goes here and nowhere else."
         }

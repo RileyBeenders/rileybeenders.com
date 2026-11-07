@@ -8,39 +8,70 @@
     "context": "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer.",
     "bullets": [
       {
-        "text": "Led the design and development of the ICARUS-Lite, a revolutionary tool designed to transform the O&P industry. Owned its mechanical, electrical, and software design, including custom AC heaters.",
+        "text": "Led the design and development of the ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production with minimal customer setup. Owned its mechanical, electrical, and software design, including custom AC heaters.",
         "emphasis": [
           "design and development"
         ],
         "projectId": "icarus-lite"
       },
       {
-        "text": "Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.",
+        "text": "Owned the ICARUS-Lite through commercialization against unit goals of 60 in 2025 and 100 in 2026.",
         "emphasis": [
-          "Hiring Manager",
-          "technical interviews"
+          "unit goals of 60 in 2025 and 100 in 2026"
         ]
       },
       {
-        "text": "Owned the ICARUS-Lite through commercialization against unit goals of 60 in 2025 and 100 in 2026, contributing to increased revenue.",
+        "text": "Built ExtrusionStudio, a QC and production system live on all three filament extrusion lines since October 2026, taking it from a LabVIEW proof of concept to a Python service. An offset for the 1-2 minute lag between the laser and the spool ties each reading and alarm to the filament being wound, and print-on-demand thermal labels reducing up to 30% of paper waste per run.",
         "emphasis": [
-          "unit goals of 60 in 2025 and 100 in 2026",
-          "increased revenue"
-        ]
-      },
-      {
-        "text": "Built an automated LabVIEW QC system for real-time tolerance monitoring.",
-        "emphasis": [
-          "QC system",
-          "real-time tolerance monitoring"
+          "ExtrusionStudio",
+          "1-2 minute lag",
+          "up to 30% of paper waste"
         ],
         "projectId": "extrusionstudio"
+      },
+      {
+        "text": "Serve as the technical subject-matter expert across the plant, from industrial electronics on the extrusion lines to low-voltage sensors, and the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error.",
+        "emphasis": [
+          "technical subject-matter expert",
+          "customer troubleshooting"
+        ]
+      },
+      {
+        "text": "Assisted in implementation of ProteorPrintOS with SimplyPrint, enabling remote operation and AI-assisted diagnostics with live video and material, waste, and outcome metrics.",
+        "emphasis": [
+          "ProteorPrintOS",
+          "remote operation",
+          "AI-assisted diagnostics"
+        ],
+        "projectId": "proteor-print"
+      },
+      {
+        "text": "Developing an offline version of the ICARUS-Lite and ICARUS-Pro control screen, along with over-the-air automated updates, so customers can run without a Wi-Fi or Ethernet connection.",
+        "emphasis": [
+          "offline version",
+          "over-the-air automated updates"
+        ]
+      },
+      {
+        "text": "Co-developed a custom hotend with an outside partner, improving reliability and reducing cost for our materials.",
+        "emphasis": [
+          "custom hotend",
+          "improving reliability",
+          "reducing cost"
+        ]
       },
       {
         "text": "Managed the Coplay location's Microsoft Business Central ERP implementation in five weeks, migrating more than 2,000 items and 150+ products, reconciling inventory counts on the floor, and syncing SKUs with Proteor's global locations.",
         "emphasis": [
           "Microsoft Business Central ERP implementation",
           "2,000 items and 150+ products"
+        ]
+      },
+      {
+        "text": "Led the 2026 inventory count in Business Central, tracing discrepancies to production orders that were processed without verification and never took items out of inventory, then assisted in  implementation of a more warehouse-focused workflow.",
+        "emphasis": [
+          "2026 inventory count",
+          "warehouse-focused workflow"
         ]
       },
       {
@@ -57,12 +88,11 @@
         ]
       },
       {
-        "text": "Implemented ProteorPrint OS with SimplyPrint, enabling remote operation and AI-assisted diagnostics with live remote video and material, waste, and outcome metrics.",
+        "text": "Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.",
         "emphasis": [
-          "ProteorPrint OS",
-          "AI-assisted diagnostics"
-        ],
-        "projectId": "proteor-print"
+          "Hiring Manager",
+          "technical interviews"
+        ]
       },
       {
         "text": "Performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products.",
@@ -71,25 +101,14 @@
         ]
       },
       {
-        "text": "Co-developed a custom hotend with another additive manufacturing partner, improving reliability and reducing cost for our materials.",
+        "text": "Re-engineered POSEIDON and ICARUS around one linear-motor motion platform with universal mounts, reaching 4 m/s with 4-micron precision on a 30 kg moving mass.",
         "emphasis": [
-          "custom hotend",
-          "improving reliability",
-          "reducing cost"
-        ]
-      },
-      {
-        "text": "Provide cross-functional technical support for the product line, from troubleshooting to after-sales service.",
-        "emphasis": [
-          "cross-functional technical support",
-          "troubleshooting",
-          "after-sales service"
-        ]
-      },
-      {
-        "text": "Re-engineered POSEIDON and ICARUS with a standardized architecture, reaching 4 m/s and 1-micron precision.",
-        "emphasis": [
-          "standardized architecture"
+          "POSEIDON",
+          "ICARUS",
+          "universal mounts",
+          "4 m/s",
+          "4-micron precision",
+          "30 kg"
         ]
       },
       {
@@ -241,6 +260,27 @@
         "text": "Produced 3D-printed plastic face shields during the COVID-19 pandemic.",
         "emphasis": [
           "face shields"
+        ]
+      }
+    ]
+  },
+  {
+    "company": "Homeowners Association",
+    "role": "Treasurer",
+    "location": "Pennsylvania",
+    "start": "April 2026",
+    "end": "Present",
+    "bullets": [
+      {
+        "text": "Manage the banking and monthly insurance payments for an association of about 80 units.",
+        "emphasis": [
+          "about 80 units"
+        ]
+      },
+      {
+        "text": "Help establish a community-focused member board in place of a property management company, remaining Treasurer through a mid-year restructure.",
+        "emphasis": [
+          "community-focused member board"
         ]
       }
     ]

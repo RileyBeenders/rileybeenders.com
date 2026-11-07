@@ -6,7 +6,7 @@ tags: [overview, architecture]
 
 ## Stack
 
-- **Next.js `^16.2.12`**, App Router (`app/` directory), Turbopack in dev
+- **Next.js `^16.4.5`**, App Router (`app/` directory), Turbopack in dev
 - **React** `latest` + **TypeScript** `strict: true`
 - **framer-motion** — `Reveal` entrances, the scroll-spring spines (`PageSpine`, `ProjectListSpine`), the relocation badge's hop, `CountUp` / `ScrollWords`, the project entries, gallery wipes and case-study expansion, and the About page's timeline and demos ([[Blueprint UI Components]], [[Projects Route (BpComingSoon)]], [[About This Site Page]])
 - **lucide-react** — one icon (`ExternalLink`) in `JobsTable`

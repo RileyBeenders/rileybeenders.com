@@ -4,7 +4,7 @@ Company: "Walt Disney World Resort"
 Role: "Program Engineer"
 JobID: "023"
 Date Applied: 2026-10-20
-Status: "Application Received"
+Status: "No longer in consideration (Declined in Workday, seen Nov 7, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/ProgramDevelopmentDocs-BulkSSH_%26_ExtrusionStudio/2.JobsApplliedTo/023_Program%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf"
 ---
 
@@ -68,9 +68,9 @@ A rewards package that includes health and savings benefits, educational opportu
 - **Gaps:** the data does not establish Smartsheet, Airtable, Bluebeam, SAP, or Maximo; IFP, MPU, or Gate Review processes; change orders; consolidating proposals with funding approvals inside a large organization; or Facilities and Operations Services work. Riley's Filament-era customer proposals, scopes, and estimates are recorded in the [[Career Q&A Log]] but not yet on the site. No master's degree (preferred only).
 - **Level:** the role's pay band and reporting line sit below Riley's CTO and Lead R&D titles, so overqualification is the likelier recruiter concern than capability.
 
-### Now — Oct 20, 2026
+### Now — Nov 6, 2026
 
-- No change since application, evaluated the day it was applied.
+- **Program and finance facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item and traced its discrepancies to their source. Since April 2026 Riley has also been Treasurer of a homeowners association of about 80 units, managing its banking and monthly insurance payments and helping establish a member-run board. This adds financial and governance evidence outside engineering; the gaps noted above are unchanged.
 
 ---
 

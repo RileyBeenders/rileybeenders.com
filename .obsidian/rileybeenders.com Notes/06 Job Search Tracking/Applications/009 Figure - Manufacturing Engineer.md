@@ -57,9 +57,10 @@ Total compensation may include additional components/benefits depending on the r
 - **Gap:** no explicit Manufacturing Execution Systems (implementation/integration/optimization) experience on record — BOM/ERP oversight (Business Central, a self-developed ERP/CRM with dynamic BOM generation) is adjacent operational-systems experience but not literally MES.
 - **Gap:** no CATIA V6 specifically (general CATIA is listed) and no robotics-industry-specific experience — additive manufacturing/prosthetics is the closest adjacent domain, not robotics.
 
-### Now — Sep 19, 2026
+### Now — Nov 6, 2026
 
 No material change. The record was edited between Sep 15 and Sep 19, 2026 — the Proteor bullets were condensed, a bullet stating that Riley acts as Hiring Manager for engineering roles was added, the summary was rewritten, and the skills list had one typo and one duplicate fixed — but nothing MES-specific, CATIA V6-specific or robotics-industry-specific has been added, and the CAD, fixture/tooling and production-ramp evidence above is still in the record.
+- **Production and inventory facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item, traced discrepancies to production orders processed without verification, and helped implement a more warehouse-focused workflow. ExtrusionStudio has been live on all three extrusion lines since October 2026, with an offset that ties readings and alarms to the filament reaching the spool. This is new evidence of production-floor and process work; the gaps noted above are unchanged.
 
 ---
 

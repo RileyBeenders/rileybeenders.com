@@ -4,7 +4,7 @@ Company: "Disney Experiences"
 Role: "Manager, Software Engineering"
 JobID: "020"
 Date Applied: 2026-09-24
-Status: "Application Received"
+Status: "No longer in consideration (Sep 25, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf"
 ---
 
@@ -65,11 +65,13 @@ A bonus and/or long-term incentive units may be included, along with a full rang
 - **Vendor and cost management:** vendor communication and cost negotiation, the Microsoft Business Central ERP implementation, and worldwide collaboration support the multi-vendor requirement.
 - **Gaps:** the data does not establish managing a dedicated software engineering team, 8 years in software roles, Java/J2EE, public cloud platforms, mobile development, formal OOAD, Agile delivery, enterprise architecture frameworks, or budget ownership with forecasting and accruals (MyPPM).
 
-### Now — Oct 20, 2026
+### Now — Nov 6, 2026
 
 - **Budget, ERP, and reporting facts added to the record (Oct 20, 2026):** The finance gap narrows: Riley estimates and tracks the budget of every engineering project, maintains product unit costs in Business Central, and presents status, constraints, and budgets at Proteor's monthly USA review with global leadership. MyPPM itself, billing, forecasting, and accruals are still not in the record, nor is dedicated software-team management.
 - **ExtrusionStudio (published Oct 17, 2026)** is end-to-end software delivery evidence: a Python service (asyncio, Starlette, Server-Sent Events, SQLite) with six audience-specific panels, tests against a Modbus simulator that shares no code with the client, documentation served by the product, and a Raspberry Pi deployment. BulkSSH (TypeScript, Electron, Node.js) shipped as v1.0.0 with an installer and a portable build. Both strengthen the backend and front-end evidence; the dedicated software-team management, Java/J2EE, cloud and Agile gaps stand.
 - *Earlier (Sep 24, 2026):* No change since application, evaluated the day it was applied.
+- **Deployment and support facts added to the record (Nov 6, 2026):** ExtrusionStudio has been live on all three extrusion lines since October 2026. Riley is also developing an offline ICARUS-Lite and ICARUS-Pro control screen with over-the-air automated updates (still in R&D, not shipped), and is the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error. The gaps noted above are unchanged.
+- **Program and finance facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item and traced its discrepancies to their source. Since April 2026 Riley has also been Treasurer of a homeowners association of about 80 units, managing its banking and monthly insurance payments and helping establish a member-run board. This adds financial and governance evidence outside engineering; the gaps noted above are unchanged.
 
 ---
 

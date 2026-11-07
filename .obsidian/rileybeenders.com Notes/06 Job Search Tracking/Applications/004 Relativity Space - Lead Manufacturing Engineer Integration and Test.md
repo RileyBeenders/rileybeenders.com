@@ -4,7 +4,7 @@ Company: "Relativity Space"
 Role: "Lead, Manufacturing Engineer, Integration & Test"
 JobID: "004"
 Date Applied: 2026-08-01
-Status: "Application Received"
+Status: "No longer in consideration (Aug 24, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/004_Lead%2C%20Manufacturing%20Engineer%2C%20Integration%20%26%20Test%20at%20Relativity%20Space.pdf"
 ---
 
@@ -57,11 +57,12 @@ Competitive salary and equity, generous PTO/sick leave, parental leave, an annua
 - **Gap:** no explicit pneumatic-systems experience; no PFMEA/value-stream-mapping/RCCA terminology in the record, though Lean Six Sigma methodology and continuous-improvement work is adjacent.
 - **Domain gap:** rocketry/aerospace is a new industry relative to additive-manufacturing/prosthetics — transferable electromechanical and manufacturing-systems skill, not direct sector experience.
 
-### Now — Sep 19, 2026
+### Now — Nov 6, 2026
 
 - Same update as noted for K2 Space: GD&T, Lean Manufacturing, and Lean Six Sigma are now explicit skills as of Aug 8, 2026, closing part of the keyword gap.
 - The "lead and mentor" evidence changed shape on Sep 15–16, 2026: the record no longer mentions East Coast team oversight or the ~5 new hires, but it now states that Riley is the **Hiring Manager for engineering roles (technical interviews, final hiring decisions)** — explicit people-leadership evidence the snapshot above could only infer. The linear-motor bullet was condensed to "reaching 4 m/s and 1-micron precision"; the 30 kg moving-mass figure survives in the Filament-era bullets and the project entry.
 - Pneumatic-systems and PFMEA/value-stream-mapping gaps remain unchanged.
+- **Production and inventory facts added to the record (Nov 6, 2026):** Riley led the 2026 inventory count in Business Central across every item, traced discrepancies to production orders processed without verification, and helped implement a more warehouse-focused workflow. ExtrusionStudio has been live on all three extrusion lines since October 2026, with an offset that ties readings and alarms to the filament reaching the spool. This is new evidence of production-floor and process work; the gaps noted above are unchanged.
 
 ---
 

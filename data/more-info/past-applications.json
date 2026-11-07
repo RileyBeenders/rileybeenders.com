@@ -1,6 +1,42 @@
 {
-  "_source": "Disney Careers (Workday) candidate portal, Inactive list, copied 2026-09-24. Applications made before this site and its tailored resumes; the ones made with the site live in gantt.md.",
+  "_source": "Disney Careers (Workday) candidate portal, Inactive list, copied 2026-09-24, plus four 2021-2022 internship applications made through the Disney Professional Internships (Brassring) portal, taken from Riley's Gmail confirmation and decision emails on 2026-11-07. Applications made before this site and its tailored resumes; the ones made with the site live in gantt.md.",
   "applications": [
+    {
+      "jobTitle": "Industrial Engineering Co-op/Internship WDW Summer 2022",
+      "company": "Walt Disney World Resort",
+      "location": "Lake Buena Vista, FL",
+      "dateSubmitted": "2021-10-15",
+      "resumeUsed": "Handmade Resume",
+      "status": "🔴",
+      "jobId": "864070BR"
+    },
+    {
+      "jobTitle": "WDI Show Control Systems Internship, Glendale - Summer 2022",
+      "company": "Walt Disney Imagineering",
+      "location": "Glendale, CA",
+      "dateSubmitted": "2021-12-27",
+      "resumeUsed": "Handmade Resume",
+      "status": "🔴",
+      "jobId": "905466BR"
+    },
+    {
+      "jobTitle": "WDI Show Mechanical Engineering Internship, Glendale - Summer 2022",
+      "company": "Walt Disney Imagineering",
+      "location": "Glendale, CA",
+      "dateSubmitted": "2021-12-27",
+      "resumeUsed": "Handmade Resume",
+      "status": "🔴",
+      "jobId": "904337BR"
+    },
+    {
+      "jobTitle": "DLR Industrial Engineering Co-op/Internship, Fall 2022",
+      "company": "Disneyland Resort",
+      "location": "Anaheim, CA",
+      "dateSubmitted": "2022-02-18",
+      "resumeUsed": "Handmade Resume",
+      "status": "🔴",
+      "jobId": "914640BR"
+    },
     {
       "jobTitle": "Principal R&D Imagineer - Mechanical Engineer",
       "company": "The Walt Disney Company",
