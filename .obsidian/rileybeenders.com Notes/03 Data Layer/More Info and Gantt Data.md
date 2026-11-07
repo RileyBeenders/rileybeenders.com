@@ -36,7 +36,7 @@ Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (n
 
 ### Current tracked applications (as of `gantt.md`)
 
-24 applications, IDs 001–024, spanning Disney (×14), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. As of Nov 7, 2026, 8 are waiting for a reply (001, 002, 005, 009–012, 024), 15 are no longer in consideration (003, 004, 006–008, 013–021, 023), and 022 is not yet confirmed submitted. Full per-application file references live in [[Job Application Tracker]].
+24 applications, IDs 001–024, spanning Disney (×14), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. As of Nov 7, 2026, 9 are waiting for a reply (001, 002, 005, 009–012, 022, 024) and 15 are no longer in consideration (003, 004, 006–008, 013–021, 023). Full per-application file references live in [[Job Application Tracker]].
 
 ## Related
 - [[Job Application Tracker]]
