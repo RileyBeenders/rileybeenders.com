@@ -28,6 +28,11 @@ const nextConfig = {
   // Temporary (307) so the target can be repointed without fighting caches.
   async redirects() {
     return [
+      // The About-this-site page and More Info folded into the projects
+      // catalog in the 2026-11 redesign: the site is one project among the
+      // others, and the application tracker is a section of its page.
+      { source: "/about-this-site", destination: "/projects/rileybeenders-com", permanent: false },
+      { source: "/more-info", destination: "/projects/rileybeenders-com#tracker", permanent: false },
       {
         source: "/AutoWinUpdater",
         destination:

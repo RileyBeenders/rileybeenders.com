@@ -8,7 +8,7 @@ The **Inactive** list in Disney's Workday candidate portal (`disney.wd5.myworkda
 
 Four older internship applications from the 2021–2022 cycle, made through the separate Disney Professional Internships (Brassring) portal rather than Workday, were added on Nov 7, 2026 from Riley's Gmail confirmation and decision emails. They are listed under **Disney Professional Internships (2021–2022)** below.
 
-The README's `## Past Disney Applications` section lists the 26 pre-site Workday roles plus the 4 internships (rows 27–30) (006, 013, and 014 are left out because the main tracker already has them). It sits between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md`, so the `sync-charts` procedure doesn't cover it. The live `/more-info` table lists all 30, in gray, from `data/more-info/past-applications.json` (see [[More Info and Gantt Data]]).
+The README's `## Past Disney Applications` section lists the 26 pre-site Workday roles plus the 4 internships (rows 27–30) (006, 013, and 014 are left out because the main tracker already has them). It sits between the main tracker's `***` divider and `### Running the Local Environment`. It is **not** part of `data/more-info/gantt.md`, so the `sync-charts` procedure doesn't cover it. The site's tracker table (at the foot of `/projects/rileybeenders-com`, formerly `/more-info`) lists all 30, in gray, from `data/more-info/past-applications.json` (see [[More Info and Gantt Data]]).
 
 ## Highlight: Ride Control System Security Engineer - Operational Technology (OT)
 

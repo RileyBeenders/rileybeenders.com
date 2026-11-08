@@ -13,17 +13,19 @@ svelte-bits feels fluid for reasons that have nothing to do with Svelte: every e
 
 | Thing | Where | Use it for |
 |---|---|---|
-| `--ease: cubic-bezier(0.22, 0.9, 0.28, 1)` | `app/(site)/blueprint.css`, `.bp` block | Every CSS `transition` and `animation` that eases. |
-| `const EASE = [0.22, 0.9, 0.28, 1] as const` | `components/projects/ProjectEntry.tsx`, `ProjectGallery.tsx` | Every framer-motion `transition.ease`. framer can't read CSS vars, so the tuple is duplicated with the comment `/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */`. Copy that line and comment into any new file that needs it; don't import it across components. |
-| `Reveal` | `components/blueprint/Reveal.tsx` | Scroll entrances. `as="rise"` (opacity + y 22) or `as="rule"` (scaleX from left). Extend this component with new `as` variants before writing a new wrapper. |
-| Spring `{ stiffness: 220, damping: 34–36, mass: 0.4 }` | `PageSpine.tsx`, `ProjectListSpine.tsx`, `ProjectEntry.tsx` | Smoothing any `useScroll` progress. Reuse these numbers so scroll-linked motion settles at one speed site-wide. |
-| Variants pattern | `ProjectEntry.tsx` (`bulletListVariants` / `bulletItemVariants`), `ProjectGallery.tsx` (`gridVariants` / `shotVariants`) | Staggered children: parent carries `staggerChildren`/`delayChildren`, children carry `hidden`/`shown`. |
+| `--ease: cubic-bezier(0.22, 0.9, 0.28, 1)` | `app/(site)/sheet.css`, `.bp` block (Blue Sheet, since 2026-11-08; `blueprint.css` is gone) | Every CSS `transition` and `animation` that eases. |
+| `const EASE = [0.22, 0.9, 0.28, 1] as const` | `components/sheet/ProjectBody.tsx`, `ProjectCard.tsx`, `ProjectDialog.tsx`, `components/projects/ProjectGallery.tsx` | Every framer-motion `transition.ease`. framer can't read CSS vars, so the tuple is duplicated per file. The older files carry the comment `/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */`; the stylesheet is now `sheet.css`, so write that name in any new file. Don't import it across components. |
+| `Reveal` | `components/blueprint/Reveal.tsx` | Scroll entrances. `as="rise"` (opacity + y 22), `as="rule"` (scaleX from left), `as="fade"` (optional blur ≤ 6px), `as="slide"` (18px from a side). Extend this component with new `as` variants before writing a new wrapper. |
+| Spring `{ stiffness: 220, damping: 34–36, mass: 0.4 }` | `components/blueprint/ScrollWords.tsx` (the spines and `ProjectEntry` that used it were retired on 2026-11-08) | Smoothing any `useScroll` progress. Reuse these numbers so scroll-linked motion settles at one speed site-wide. |
+| Pointer / highlight springs | `components/sheet/CursorMark.tsx` (`260 / 26 / 0.5`), `SiteNav.tsx` `layoutId` (`420 / 38 / 0.6`) | A follower that trails the pointer; a highlight that slides between siblings. Reuse before inventing a third. |
+| Smooth wheel scroll | `components/sheet/SmoothScroll.tsx` | Already lerps wheel scrolling site-wide (`motion.smoothScroll`). Anything that scrolls on its own must carry `data-native-scroll` (or be a real overflow scroller) so it is left alone, and anything modal sets `data-lock` on `<html>`. Never add a second scroll smoother. |
+| Variants pattern | `ProjectGallery.tsx` (`gridVariants` / `shotVariants`) | Staggered children: parent carries `staggerChildren`/`delayChildren`, children carry `hidden`/`shown`. |
 | `useReducedMotion()` branch | Every client component that animates | The convention is an explicit early branch that renders the static markup (`if (reduced) return <div>…</div>`), not a transition-duration hack. Match it. |
-| Blanket reduced-motion CSS | Bottom of `blueprint.css` and `projects/projects.css` | Already collapses all CSS animation/transition under `.bp`. New CSS effects get this for free; only add a targeted rule if the final *state* differs from the animated one (e.g. a drawn stroke must be forced to `stroke-dashoffset: 0`). |
-| `viewport` defaults | `Reveal.tsx` | `{ once: true, amount: 0.25, margin: "0px 0px -80px 0px" }`. Reuse for any `whileInView`. |
-| Class prefixes | `blueprint.css` | `.bp-` site-wide, `.hp-` home page, `.pj-` projects. New classes follow the section they live in; keep the section-comment banners (`/* --- pills --- */`). |
+| Blanket reduced-motion CSS | Bottom of `sheet.css` and `projects/projects.css` | Already collapses all CSS animation/transition under `.bp`. New CSS effects get this for free; only add a targeted rule if the final *state* differs from the animated one (e.g. a drawn stroke must be forced to `stroke-dashoffset: 0`). |
+| `viewport` defaults | `Reveal.tsx` | `{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }`. Reuse for any `whileInView` (`ProjectCard` uses `amount: 0.2, margin -40px`). |
+| Class prefixes | `sheet.css` | Blue Sheet uses short section names (`.nav-*`, `.hero-*`, `.activity-*`, `.role-*`, `.project-*`, `.dlg-*`, `.pbody-*`, `.stack-*`, `.contact-*`, `.footer-*`) beside the kept `.bp-` primitives (`.bp-link`, `.bp-pill`, `.bp-top`, `.bp-spot`) and `.pj-` in `projects/projects.css`. New classes follow the section they live in; keep the section-comment banners (`/* ---- hero --- */`). |
 
-Every animating component is `"use client"`. Server components (`app/(site)/page.tsx`) compose them; they don't animate.
+Every animating component is `"use client"`. Server components (`app/(site)/page.tsx`, `HeroCover`, `Stack`, `Education`) compose them; CSS-only motion (the hero cover's stroke-draw) is fine in a server component.
 
 ## The five grammars
 
@@ -51,11 +53,11 @@ Rules: `once: true` always (svelte-bits never replays entrances); wait for `docu
 
 svelte-bits: Scroll Reveal, Scroll Float, Scroll Velocity, Scroll Stack, `ScrollTrigger { scrub: true }`. Mechanism: map the element's position in the viewport to a 0→1 progress and drive properties from it, often with a spring so it settles instead of tracking 1:1.
 
-Here: `useScroll({ target, offset })` → `useSpring(progress, { stiffness: 220, damping: 34, mass: 0.4 })` → `useTransform(smooth, [0, 1], [from, to])` → `style={{ y }}`. `PageSpine` and `ProjectEntry` are the models.
+Here: `useScroll({ target, offset })` → `useSpring(progress, { stiffness: 220, damping: 34, mass: 0.4 })` → `useTransform(smooth, [0, 1], [from, to])` → `style={{ y }}`. `ScrollWords` is the model in the current tree (Blueprint Press's `PageSpine` and `ProjectEntry` parallax, in git at `d1360bb`, were the fuller ones).
 
 GSAP `start`/`end` strings map to framer `offset` pairs: `"top bottom"` → `"start end"`, `"top 80%"` → `"start 0.8"`, `"bottom bottom"` → `"end end"`, `"center center"` → `"center center"`. Scroll Reveal's `start: "top bottom-=20%", end: "bottom bottom"` becomes `offset: ["start 0.8", "end 1"]`.
 
-Rules: transform/opacity/filter only; the spring numbers above; no pinning (`position: sticky` for effect) — see `ProjectEntry`'s comment; keep the per-word stagger for word reveals by offsetting each word's input range (`[i/n, (i+1)/n]`) rather than spawning a hook per word.
+Rules: transform/opacity/filter only; the spring numbers above; no pinning (`position: sticky` for effect); keep the per-word stagger for word reveals by offsetting each word's input range (`[i/n, (i+1)/n]`) rather than spawning a hook per word.
 
 ### 3. Pointer proximity (continuous response to cursor position)
 
@@ -79,7 +81,7 @@ Rules: cycle ≥ 5s; periphery only (eyebrows, footer, pills), never prose; the 
 
 svelte-bits: Stepper, dropdown menus, hamburger, Counter, Count Up, True Focus frame, Rotating Text. Mechanism: measure the incoming content, transition `height`/`transform`, key the content so it re-mounts, spring numbers to their targets.
 
-Here: `AnimatePresence` + `motion.div` with `initial/animate/exit` (the case-study panel in `ProjectEntry` is the model for `height: 0 ↔ "auto"`); `layout` / `layoutId` for a highlight that moves between siblings (the nav highlight pill); `useSpring` on a `MotionValue` + `useMotionValueEvent` for numbers (Count Up); keyed `motion.span` with `y: "100%" → 0 → "-120%"` for cycling words (Rotating Text).
+Here: `AnimatePresence` + `motion.div` with `initial/animate/exit` (the case-study panel in `ProjectBody` is the model for `height: 0 ↔ "auto"`, and `ProjectDialog` for an enter/exit pair with a scrim); `layout` / `layoutId` for a highlight that moves between siblings (the nav's active tint in `SiteNav`) or a grid that reflows (`ProjectCard`'s `layout`); `useSpring` on a `MotionValue` + `useMotionValueEvent` for numbers (Count Up); keyed `motion.span` with `y: "100%" → 0 → "-120%"` for cycling words (Rotating Text).
 
 Rules: `AnimatePresence initial={false}` so the first render doesn't animate; `mode="wait"` when swapping words in place; `aria-live="polite"` on counters and rotating text; `tabular-nums` on any number that changes width.
 
@@ -139,14 +141,14 @@ Before opening a PR for any motion change:
 - [ ] Only `transform`, `opacity`, `clip-path`, `filter`, `background-position`, or CSS custom properties change per frame. No `height`/`width`/`top`/`left` except through `AnimatePresence` height-auto.
 - [ ] No per-frame `setState`. Motion values or CSS vars only.
 - [ ] Listeners, observers, and `requestAnimationFrame` are cleaned up in the effect's return.
-- [ ] SSR-safe: `IntersectionObserver`, `matchMedia`, `window` are only touched inside effects (see `HeroRibbon.tsx`'s guard).
+- [ ] SSR-safe: `IntersectionObserver`, `matchMedia`, `window` are only touched inside effects (see `CursorMark.tsx`'s and `SmoothScroll.tsx`'s `matchMedia` checks inside `useEffect`).
 - [ ] `will-change` only on elements that actually animate for more than a hover, and removed when idle if it was added dynamically.
 - [ ] Split text waits for `document.fonts.ready`; counters and rotating text have `aria-live="polite"`; decorative wrappers have `aria-hidden`.
 - [ ] Type-checks (`npm run typecheck`) and the dev preview shows no console errors. Verify reduced motion by emulating it in the preview (`resize_window` won't do it; toggle it in DevTools rendering settings or test the `reduced` branch directly).
-- [ ] `vault-sync` run: `components/**` and `blueprint.css` changes map to `02 Components/*` and `05 Styling and Design/Design System (Blueprint Press).md`.
+- [ ] `vault-sync` run: `components/**` and `sheet.css` changes map to `02 Components/*` and `05 Styling and Design/Design System (Blue Sheet).md`.
 
 ## Where to go next
 
 - [`references/grammar-map.md`](references/grammar-map.md) — each borrow-worthy svelte-bits component: the exact numbers it uses, the mechanism excerpt, and the framer/CSS translation with the site's numbers. Read the section for the component you're translating.
-- [`references/recipes.md`](references/recipes.md) — complete, copy-ready TSX/CSS for this codebase: `Reveal` extensions, `WordReveal`, `ScrollWords`, `Magnet`, `Spotlight`, `Tilt`, `CountUp`, `Marquee`, `Shine`, `Expandable`, `SlidingHighlight`, `CondensingNav`. Each states which grammar it is, its amplitude, and its reduced-motion behavior.
+- [`references/recipes.md`](references/recipes.md) — complete, copy-ready TSX/CSS for this codebase: `Reveal` extensions, `WordReveal`, `ScrollWords`, `Magnet`, `Spotlight`, `Tilt`, `CountUp`, `Marquee`, `Shine`, `Expandable`, `SlidingHighlight`, `CondensingNav`. Each states which grammar it is, its amplitude, and its reduced-motion behavior. They were written against Blueprint Press (`BpNav`, `blueprint.css`); the sliding highlight and condensing nav now exist in `SiteNav.tsx`, so read those recipes as background and extend the shipped component instead.
 - [`../motion-design/references/component-catalog.md`](../motion-design/references/component-catalog.md) — the adopt/adapt/avoid verdicts, if the component isn't in the grammar map.

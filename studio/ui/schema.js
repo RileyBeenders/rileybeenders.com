@@ -119,6 +119,12 @@ const PALETTE_OPTIONS = [
     swatchDark: { paper: "#0d1b2a", white: "#142a3d", ink: "#eef3f7", accent: "#ff6b62", blue: "#5aa9e6" }
   },
   {
+    id: "blue-sheet", name: "Blue Sheet",
+    description: "The redesign's own palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    swatch: { paper: "#f4f7fd", white: "#ffffff", ink: "#0d182c", accent: "#2457e6", blue: "#173ea8" },
+    swatchDark: { paper: "#070b15", white: "#0e1627", ink: "#e8eefb", accent: "#6a93ff", blue: "#9db9ff" }
+  },
+  {
     id: "electric", name: "Electric",
     description: "Tesla-inspired white canvas in light, Bugatti-inspired near-black canvas in dark — one electric-blue accent both ways.",
     swatch: { paper: "#ffffff", white: "#f4f4f4", ink: "#171a20", accent: "#3e6ae1", blue: "#3e6ae1" },
@@ -623,12 +629,14 @@ export const SCHEMAS = {
         name: "headings",
         type: "group",
         label: "Section headings",
-        help: "The numbers in front of them are added by the site.",
+        help: "The home page's sections, top to bottom after the hero: activity, summary, experience, projects, stack, education.",
         fields: [
           { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
-          { name: "skills", type: "text", label: "Skills", required: true, span: "half" },
-          { name: "education", type: "text", label: "Education", required: true, span: "half" }
+          { name: "skills", type: "text", label: "Stack", required: true, span: "half", help: "The four skill groups, as cards of pills." },
+          { name: "education", type: "text", label: "Education", required: true, span: "half" },
+          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The contribution calendar under the hero, read from the GitHub profile in Site Settings → Person." },
+          { name: "projects", type: "text", label: "Projects", required: true, span: "half", help: "The project grid on the home page." }
         ]
       },
       {
@@ -745,14 +753,31 @@ export const SCHEMAS = {
           { name: "title", type: "text", label: "Section title", required: true, span: "half" },
           { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true }
         ]
+      },
+      {
+        name: "form",
+        type: "group",
+        label: "Message form",
+        help: "\"Send me a message\", on the contact page and at the foot of the home page. Messages go to the inbox named by CONTACT_TO on the server (see .env.example); until that is set, the form opens the visitor's own mail app instead.",
+        fields: [
+          { name: "title", type: "text", label: "Form title", required: true, span: "half" },
+          { name: "nameLabel", type: "text", label: "Name field", required: true, span: "third" },
+          { name: "emailLabel", type: "text", label: "Email field", required: true, span: "third" },
+          { name: "messageLabel", type: "text", label: "Message field", required: true, span: "third" },
+          { name: "send", type: "text", label: "Send button", required: true, span: "half" },
+          { name: "sending", type: "text", label: "While sending", required: true, span: "half" },
+          { name: "sent", type: "text", label: "After it sent", required: true },
+          { name: "failed", type: "text", label: "When it failed", required: true },
+          { name: "fallback", type: "text", label: "When the mail app opens instead", required: true }
+        ]
       }
     ]
   },
 
   moreInfo: {
-    label: "More Info",
+    label: "Application tracker",
     shape: "object",
-    description: "The About page: who you are, why this site exists, and the application tracker.",
+    description: "The application tracker, now a section at the foot of the site's own project page (/projects/rileybeenders-com). The About header and the About me / About this site paragraphs here are kept from the retired More Info page and are not shown.",
     fields: [
       META_GROUP,
       {
@@ -938,9 +963,7 @@ export const SCHEMAS = {
         fields: [
           { name: "home", type: "text", label: "Home", required: true, span: "third" },
           { name: "projects", type: "text", label: "Projects", required: true, span: "third" },
-          { name: "contact", type: "text", label: "Contact", required: true, span: "third" },
-          { name: "moreInfo", type: "text", label: "More Info", required: true, span: "third" },
-          { name: "aboutSite", type: "text", label: "About this site", required: true, span: "third" }
+          { name: "contact", type: "text", label: "Contact", required: true, span: "third" }
         ]
       },
       {
@@ -960,6 +983,33 @@ export const SCHEMAS = {
       { name: "openToRelocation", type: "text", label: "Relocation badge", required: true, span: "half", help: "Shown while Site Settings → Visibility has it on." },
       { name: "bulletReadMore", type: "text", label: "Resume bullet link", required: true, span: "half", help: "On a bullet that links to its project." },
       { name: "showCredential", type: "text", label: "Certificate link", required: true, span: "half", help: "When a certificate doesn't name its own." },
+      {
+        name: "projects",
+        type: "group",
+        label: "Project cards & dialog",
+        help: "The grid of project cards and the box a card opens into.",
+        fields: [
+          { name: "openFull", type: "text", label: "Open full page", required: true, span: "third", help: "The dialog's link to the project's own page." },
+          { name: "close", type: "text", label: "Close", required: true, span: "third" },
+          { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
+          { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },
+          { name: "siteBadge", type: "text", label: "Tag on the site's own card", required: true, span: "third" },
+          { name: "photos", type: "text", label: "Photo count", required: true, span: "third", help: "{count} is the number of photographs." },
+          { name: "onePhoto", type: "text", label: "…with one photo", required: true, span: "third" }
+        ]
+      },
+      {
+        name: "activity",
+        type: "group",
+        label: "GitHub activity",
+        fields: [
+          { name: "total", type: "text", label: "Total line", required: true, span: "half", help: "{count} is the number of contributions." },
+          { name: "profile", type: "text", label: "Profile link", required: true, span: "half" },
+          { name: "less", type: "text", label: "Legend: less", required: true, span: "third" },
+          { name: "more", type: "text", label: "Legend: more", required: true, span: "third" },
+          { name: "unavailable", type: "text", label: "When GitHub can't be read", required: true }
+        ]
+      },
       {
         name: "caseStudy",
         type: "group",
@@ -1148,6 +1198,22 @@ export const SCHEMAS = {
             default: false,
             omitWhenDefault: true,
             help: "On: every repeating animation runs on one shared beat, so all the Read more glints sweep together and all the skill pills' borders move together. Off: each runs on its own offset, as the site does now."
+          },
+          {
+            name: "smoothScroll",
+            type: "boolean",
+            label: "Smooth scrolling",
+            default: false,
+            omitWhenDefault: true,
+            help: "On: mouse-wheel scrolling glides to a stop instead of stepping. Touch, keyboard and reduced-motion visitors always get the browser's own scrolling."
+          },
+          {
+            name: "cursorMark",
+            type: "boolean",
+            label: "Cursor mark",
+            default: false,
+            omitWhenDefault: true,
+            help: "On: a small monogram chip trails the pointer across the hero card. Pointer devices only."
           }
         ]
       },
@@ -1166,8 +1232,8 @@ export const SCHEMAS = {
 export const RAIL = [
   { page: "Home", path: "/", keys: ["homePage", "summary", "experience", "skills", "education"] },
   { page: "Projects", path: "/projects", keys: ["projectsPage", "projects", "proofs"] },
+  // The site's own entry in the catalog: its page is /projects/rileybeenders-com, with the tracker at its foot.
+  { page: "About this site", path: "/projects/rileybeenders-com", keys: ["aboutSite", "moreInfo"] },
   { page: "Contact", path: "/contact", keys: ["contact"] },
-  { page: "More Info", path: "/more-info", keys: ["moreInfo"] },
-  { page: "About this site", path: "/about-this-site", keys: ["aboutSite"] },
   { page: "Site settings", path: "/", keys: ["header", "interface"] }
 ];

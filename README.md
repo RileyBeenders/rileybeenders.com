@@ -2,9 +2,9 @@
 
 ***
 
-'RileyBeenders.com' is a resume-shaped portfolio website designed to complement a traditional ATS-friendly resume PDF. The PDF remains the official application document, while the website serves as an interactive evidence layer that demonstrates the work behind the claims on the resume.
+'RileyBeenders.com' is a resume-shaped portfolio website designed to complement a traditional ATS-friendly resume PDF. The PDF remains the official application document, while the website is the evidence layer behind it: the same career data, every claim traced to the site's data files, with the projects that back the resume's lines one click away. The home page reads as the resume at rest (experience, skills, education, a GitHub activity calendar, and a contact form), and each resume bullet that a project supports links straight to it.
 
-The site stays readable as a conventional resume at rest, then reveals additional proof of work through hover states, subtle mouse-driven 3D motion, persistent project links, and expandable information drawers. Its goal is to preserve the clarity and familiarity of a standard resume while giving visitors a more engaging way to explore projects, supporting visuals, and professional impact.
+The current design, Blue Sheet (November 2026, set to run first at beta.rileybeenders.com before replacing the main site), sets that content on a blue-white drafting sheet of rounded cards with light and dark themes chosen in a local editor, the Studio. Project cards open into a dialog with the gallery, write-up, and full case study, and each project also has its own page under `/projects/<id>`. The site documents itself the same way: `/projects/rileybeenders-com` is its own case study, with a commit timeline, the tools and agents that maintain it, and the live job-application tracker that the tables below mirror.
 
 ## Job Application Tracker
 

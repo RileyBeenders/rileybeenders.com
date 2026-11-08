@@ -4,90 +4,117 @@ tags: [routes, pages]
 
 # Routes Overview
 
-All routes are Next.js App Router server components. None use dynamic segments — the whole route table is static. Every page route lives in the `app/(site)/` route group, which supplies the Blueprint Press chrome.
+There are four page routes, all App Router server components in the `app/(site)/` route group, which supplies the Blue Sheet chrome. Since the 2026-11-08 redesign (see [[Blue Sheet (2026-11 redesign)]]), one route has a dynamic segment, `/projects/[id]`, and it is statically generated for every catalog entry. `/about-this-site` and `/more-info` are gone as pages and redirect to the site's own project entry.
 
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
-| `/` | `app/(site)/page.tsx` | Editorial one-page resume (hero + 4 numbered sections + footer) | "Riley Beenders \| R&D, Electromechanical and Automation Engineer" (root layout) |
-| `/projects` | `app/(site)/projects/page.tsx` | Hero + one [[Projects Route (BpComingSoon)\|ProjectEntry]] per published project inside `ProjectListSpine` (falls back to `BpComingSoon` when none) | "Projects \| Riley Beenders" |
-| `/contact` | `app/(site)/contact/page.tsx` | Hero + `BpActions` + a Details paragraph with the email address spelled out — copy from `data/contact/contact.json` | "Contact \| Riley Beenders" |
-| `/more-info` | `app/(site)/more-info/page.tsx` | About copy + "Read the full story" link to `/about-this-site` + [[GanttChart JobsTable and gantt.ts\|GanttChart + JobsTable]] (the tracker section shows when `ganttSection.chartVisible` or `tableVisible` is on — currently table only) | "More Info \| Riley Beenders" |
-| `/about-this-site` | `app/(site)/about-this-site/page.tsx` | The site as its own case study: hero + running date bar, summary/bullets/gallery, case study, then stats, the commit timeline, pillars, annotated screenshots — see [[About This Site Page]] | "About this site \| Riley Beenders" |
+| `/` | `app/(site)/page.tsx` (async) | The resume in cards: hero card, GitHub activity, Who is Riley?, Experience, Projects grid, Tech & hardware stack, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
+| `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with type filters. A card opens its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
+| `/projects/[id]` | `app/(site)/projects/[id]/page.tsx` | One entry's `ProjectBody` on its own page, a back link to Projects, and previous/next links. Ids come from `generateStaticParams()` over `getCatalog()`. `dynamicParams = false`, so an unknown id is a 404 | "`<project name>` \| Riley Beenders" (`generateMetadata`; the description is the tagline or the summary's first paragraph) |
+| `/projects/rileybeenders-com` | (the above) | The site's own entry: summary, gallery, case study, the deep dive (stats, timeline, pillars, demos), and the application tracker at `#tracker`. See [[Site Project (About this site)]] | "RileyBeenders.com \| Riley Beenders" (the entry's name is `caseStudy.title`; its type, "About this site", is `hero.title`) |
+| `/contact` | `app/(site)/contact/page.tsx` | The headline (`hero.title`, with `details.title` as the sub-line) + `<ContactBlock heading={false}>` (the ways in + the message form) + footer | `contact.json` `meta.title`, "Contact \| Riley Beenders" |
+| `/api/contact` | `app/api/contact/route.ts` | `POST` the message form → Resend. See below | n/a |
 | `/api/resume-pdf` | `app/api/resume-pdf/route.ts` | `GET` → `307` to `header.json`'s `resumePdfPath` (the static main resume), kept for older links | n/a |
-| `/api/geo` | `app/api/geo/route.ts` | `GET` → JSON `{ country, region, city }` from Vercel's IP headers, for the analytics Visit event — see [[Site Analytics]] | n/a |
+| `/api/geo` | `app/api/geo/route.ts` | `GET` → JSON `{ country, region, city }` from Vercel's IP headers, for the analytics Visit event. See [[Site Analytics]] | n/a |
 
-Also under `app/` (not routes): `icon.svg` (favicon), `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes Next wires up automatically). See [[Design System (Blueprint Press)]].
+Also under `app/`, but not routes: `icon.svg` (the favicon), and `apple-icon.tsx` and `opengraph-image.tsx` (next/og image routes that Next wires up automatically). See [[Site Nav and Mark]].
 
-## Root layout — `app/layout.tsx`
+## Redirects (`next.config.mjs` `redirects()`)
 
-- Shell only: `<html lang="en" data-scroll-behavior="smooth">`, `<body suppressHydrationWarning>`, `{children}`, then `<SiteAnalytics />` (Vercel `<Analytics />` with an owner opt-out and a per-visit state/city event — see [[Site Analytics]]) and `<SpeedInsights />`. Imports `app/base.css` (a bare reset — box-sizing, body margin, `img`, `a`, `.sr-only`).
-- `metadata` is a static object: `metadataBase: new URL("https://rileybeenders.com")` (needed so the generated `opengraph-image` resolves to an absolute URL), a fixed `title`/`description`, plus `openGraph` and `twitter` blocks that both use the title "Riley's Professional Portfolio".
-- No `siteMode` / `comingSoon` branching — that logic was removed with the reskin.
+All three are `permanent: false` (307), so a target can be repointed without fighting caches:
 
-## Site layout — `app/(site)/layout.tsx`
+| Source | Destination | Why |
+|---|---|---|
+| `/about-this-site` | `/projects/rileybeenders-com` | The About page became the site's catalog entry in the redesign |
+| `/more-info` | `/projects/rileybeenders-com#tracker` | The application tracker became a section of that entry |
+| `/AutoWinUpdater` | `https://raw.githubusercontent.com/RileyBeenders/RB-s-Auto-App-Updater/main/install.ps1` | The short link for the install script (case-insensitive) |
 
-- Preloads **eight** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). Instrument Serif is weight 400 (normal + italic); Spectral 300–600. Which face fills each role is data: `header.json.fonts` (`header` / `subheader` / `body`, ids from `lib/fonts.ts`) becomes `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` via `fontVarExpression()`.
-- Resolves the palette the same way: `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (or the `custom` seeds), and the layout writes them as an inline `<style>` — `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `blueprint.css`'s own `.bp` block is only the no-override fallback.
-- Imports `app/(site)/blueprint.css`.
-- Wraps everything in `<ThemeProvider>` (owns `data-theme` on `<html>` and the `localStorage` preference; `useTheme()` for components that need the mode) and `<div class="bp {font vars}" data-theme-id={paletteId}>`, rendering `<BpNav />` (see [[Blueprint Nav and Mark]]; five links — Home, Projects, Contact, More Info, About this site — and the theme toggle) above `{children}` and `<BpFixedRelocationBadge />` below — the docked bottom-right "Open to relocation" pill on every page except `/`, where the hero renders its own two-state badge (see [[Blueprint UI Components]]). Both render nothing when `visibility.openToRelocation` is off.
-- Sets its own `metadata` (`title` / `description`) — the More Info / Projects / Contact / About pages override `title` per-route from their own `export const metadata`.
+## Root layout: `app/layout.tsx`
 
-## `/` — `app/(site)/page.tsx`
+- Shell only: `<html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>`, `<body suppressHydrationWarning>`, a `beforeInteractive` theme-init script that stamps `data-theme` before first paint, `{children}`, then `<SiteAnalytics />` (Vercel `<Analytics />` with an owner opt-out and a per-visit state/city event; see [[Site Analytics]]) and `<SpeedInsights />`. It imports `app/base.css`, a bare reset.
+- `metadata` comes from `data/home/page.json` `meta` (`title`, `description`, `shareTitle` for Open Graph/Twitter), with `metadataBase: new URL("https://rileybeenders.com")` so the generated `opengraph-image` resolves to an absolute URL.
 
-Server component, `data = resumeData`, `<main class="hp">`. Renders:
+## Site layout: `app/(site)/layout.tsx`
 
-1. **Hero** (`.bp-hero`) — `<BpHeroRelocationBadge />` (rests beside the rule under the name, hops to the bottom-right corner once the page scrolls; see [[Blueprint UI Components]]), then inside the shell `<HeroRibbon />` (the faint B-bowl flourish whose CSS stroke-draw replays whenever the hero scrolls back into view), `h1` "Riley / Beenders", a rule, then a meta row: `data.person.title` in italic on the left and, on the right, the uppercase location over an italic fact line built from `experience[0]` ("Lead, Research & Development Engineer / Proteor, since January 2025", `.bp-hero-now`). No eyebrow above the name since 2026-09-18 (see the No-Eyebrow Rule in [[Design System (Blueprint Press)]]). Then `<BpActions data={data} />`.
-2. **`<PageSpine>`** wraps the four sections — a hairline down the left whose accent fill springs with scroll from "01 Summary" to the footer.
-3. **`01 Summary`** — `data.summary` with a `.bp-dropcap` on the first character (only when the summary opens with a whole word), and the literal text "RileyBeenders.com" inside it turned into an external link to the site.
-4. **`02 Experience`** — `data.experience.map(...)` → `.bp-role` articles (role, `start — end`, `company · location`, optional `context`, `bullets`). Each bullet is `<EmphasizedText text phrases={bullet.emphasis} />` so its `emphasis` phrases take the accent on hover, and a bullet whose `projectId` names a *published* project ends with a `<BulletLink>` (`components/blueprint/BulletLink.tsx`): the "READ MORE ↗" `.bp-bullet-link` button → `/projects#project-<id>`, labelled from `ui.bulletReadMore`, its aria-label naming the project. Its hover animation is `data-motion`, from `page.readMore.animation` (Studio: Home page → Read more button; blank means `sweep`), styled in `app/(site)/bullet-link.css`; the page counts the links as it renders so a Glint link gets its own beat (`--i`). Only shown while Site Settings → Visibility → Project links on resume bullets is on.
-5. **`03 Skills`** (labelled "Toolchain" until 2026-09-18) — `data.skills.map(...)` → `.bp-skill-group` with `.bp-pill` tags per `group.items`. `skillTargets(group, data)` (`lib/skill-links.ts`) resolves the group's `links`; an item with a published target renders as `<LinkedSkill>` instead (link icon, a marked border, a hover card with the Read more button), styled by `page.linkedSkills` (`border`, `reveal`, `labels`; Studio: Home page → Linked skills). The page counts linked skills as it renders (`--k`, each one's loop beat). Nine are linked today: eight Infrastructure & Systems skills → Unified Ubiquiti Network, GitHub → RB's Auto App Updater.
-6. **`04 Education`** — `data.education.degrees` then, if any, `data.education.certificates` as `.bp-cert` cards (each with an optional `.bp-link` "Show credential" external link + diagonal arrow).
-7. **Footer** — `<BpMark id="footer" size={58} animated float />` beside a one-line note ("A website built to house my experience, compiled into one place for the next challenge."), and the `.bp-footer-block` title block — a `<dl>` of **Sheet** (`rileybeenders.com`), **Rev.** (short commit · build date from `lib/build-stamp.ts`, omitted when no commit is known) and **Drawn in** (`person.location`).
-8. `<BackToTop />` (bottom-left, appears after 80% of a viewport of scroll).
+- **Fonts.** Preloads **eight** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). `header.json.fonts` picks the faces for `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` via `fontVarExpression()`. Today they are Instrument Serif / Instrument Serif / Inter. IBM Plex Mono is the sheet's fixed `--mono`.
+- **Palette.** `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (today `blue-sheet`) or the `custom` seeds. The layout writes them as an inline `<style>`: `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `sheet.css`'s own `.bp` block is only the no-override fallback.
+- **Stylesheets.** Imports `./sheet.css`, `./bullet-link.css`, `./skill-pills.css`, `./projects/projects.css`, `./projects/feature.css` and `./projects/walkthrough.css`, in that order.
+- **Chrome.** Renders `<ThemeProvider>` → `<div class="bp {font vars}" data-theme-id={paletteId} data-motion-sync?>`. Inside that: the style override, `<SiteNav name={person.name} />` (see [[Site Nav and Mark]]), `<div class="sheet-frame">{children}</div>`, the portal host `<div data-sheet-portal />`, `<AnimationSync />` (when `motion.syncAnimations` is on), `<SmoothScroll />` (when `motion.smoothScroll` is on), and the dev-only `<StudioLink />` (a `next/dynamic` import that exists only when `NODE_ENV === "development"`).
+- **Metadata.** Sets `title` / `description` from `page.json` `meta`. The projects, project and contact pages override them.
 
-Section indexes are `h2`s and every section has an id (`#summary`, `#experience`, `#skills`, `#education`). Every block is wrapped in `<Reveal>` for a staggered scroll entrance. There is no scroll-spy / in-page section nav on `main`.
+## `/`: `app/(site)/page.tsx`
 
-## `/projects` — `app/(site)/projects/page.tsx`
+An async server component. It reads `resumeData`, `data/home/page.json`, `getCatalog()`, `todayIso()`, and `await getContributions(githubUsername(person.github))`. Because that `fetch` carries `next: { revalidate: 3600 }`, the route is ISR. It renders, inside `<main>`:
 
-Builds `buildProjectViews(resumeData.projects, resumeData.proofs)` and renders a hero, then `<ProjectListSpine>` wrapping one `<ProjectEntry view index total />` per published project (summary, bullets, gallery, an optional date box, and the case study behind a toggle) — the list wrapped in `<PhotoModeProvider>`, whose dev-only Photo Mode floats photos in the body text — a `.pj-outro` footer, and `<BackToTop />`. The intro line pluralizes ("One project — …" / "N projects — …"). With nothing published it falls back to the hero + `<BpComingSoon />`. Imports `projects.css` and `feature.css`. See [[Projects Route (BpComingSoon)]].
+1. **Hero** (`section.shell.hero` → `.hero-card[data-cursor-zone]`):
+   - `<HeroCover label="<footer.sheetLabel> · <location>">`, then the `.hero-avatar` (`BpMark` 60px, animated) and, when `openToRelocation` is on, a `.chip` "Open to relocation".
+   - The `h1.hero-name` (`page.hero.lines` joined), the `p.hero-role` (the title plus a blinking `.hero-caret`), and the `.hero-meta` line: location, and the current role "· `<company>`, since `<start>`" from `page.hero.currentRole`.
+   - `<HeroActions>`, then `<CursorMark>` when `motion.cursorMark` is on.
 
-## `/about-this-site` — `app/(site)/about-this-site/page.tsx`
+   See [[Sheet Components (Home Page)]].
+2. **GitHub activity**: `<GithubGraph title={headings.activity} data profileUrl />` in a `Reveal`. It shows "unavailable" copy when GitHub could not be read.
+3. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact cards. The cards are the current role, the degree, the location (plus "Open to relocation"), and Sheet (the site link).
+4. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
+5. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
+6. **`#skills`, "Tech & hardware stack"**: `<Stack data linkedSkills />`.
+7. **`#education`**: `<Education />`.
+8. **`#contact`**: `<ContactBlock person relocation />`.
+9. `<SiteFooter location />` and `<BackToTop />`.
 
-Server component reading `data/site/about-site.json` and `todayIso()`; renders the hero with the running date bar, `<AboutSiteStory>`, `<ProjectFeature>` (stats · timeline · pillars · screenshots), an outro, and `<BackToTop />`. Imports the projects stylesheets plus `about-site.css`. Fully documented in [[About This Site Page]].
+## `/projects`: `app/(site)/projects/page.tsx`
 
-## `/contact` — `app/(site)/contact/page.tsx`
+Reads `data/projects/page.json` (`ProjectsPageData`) and `getCatalog()`.
 
-Copy comes from `data/contact/contact.json` (typed `ContactData`, `types/contact.ts` — `hero { title, tagline }`, `details { title, description[] }`; Studio: **Contact**), the rest from `resumeData`. Hero (`hero.title` "Get in touch", no eyebrow; `hero.tagline` as the italic line; the location, and — when `visibility.openToRelocation` is on — an accent "Open to relocation" beside it), `<BpActions data={resumeData} />`, then a `01 Details` section with the `details.description` paragraph(s) and `person.email` printed once as a `mailto:` link in prose. The three Email / LinkedIn / GitHub cards that duplicated the button row were removed on 2026-09-18 (the impeccable critique's "same three links twice on one screen"), and with them `ContactDetails.linkedinLabel` / `githubLabel` and `ContactHero.eyebrow` left `types/contact.ts`, `data/contact/contact.json`, and the Studio schema.
+- **The head:** `h1` "Projects" with `counted(page.intro, projectCount)` as the sub-line. `projectCount` counts the catalog minus the site entry.
+- **The grid:** `<ProjectGrid entries today paletteId filters />`. The filter chips are "All" plus each distinct `type`, and they show only when there are at least two types.
+- **The close:** an outro (`page.outro.lead` as `.bp-outro-lead`, `counted(page.outro.body, n)`), then `<SiteFooter>` and `<BackToTop>`.
+- **With an empty catalog**, it shows `page.comingSoon.heading` / `body` as a plain `.project-empty` block. `comingSoon.phases` and `queueLabel` are no longer rendered, because `BpComingSoon` is gone.
 
-## `/more-info` — `app/(site)/more-info/page.tsx`
+See [[Project Catalog and Dialog]].
 
-The only involved server component:
+## `/projects/[id]`: `app/(site)/projects/[id]/page.tsx`
 
-1. Imports `data/more-info/more-info.json` (typed `MoreInfoData`) for the About copy.
-2. When `ganttSection.chartVisible` or `ganttSection.tableVisible` is not `false`, reads `data/more-info/gantt.md` off disk with `fs.readFileSync(path.join(process.cwd(), "data/more-info/gantt.md"), "utf-8")` — **not** imported as a module — and parses the raw text via `parseGanttFile()` from `lib/gantt.ts`. It skips the file read when both are off.
-3. Renders: a hero from `aboutHeader`, section `01` from `aboutMe`, section `02` from `aboutSite` — whose paragraphs are followed by a `.bp-link.bp-readmore` link (`aboutSite.readMore`, currently "Read the full story" → `/about-this-site`; a path starting with `/` renders as a `next/link` in the same tab, anything else as an external `<a target="_blank">`) — and, when either flag is on, section `03` from `ganttSection` containing `<GanttChart chart={chart} />` (only if `chartVisible` is not `false`) and, only if `tableVisible` is not `false`, a status key plus `<JobsTable>` listing every application: the `gantt.md` rows merged with `data/more-info/past-applications.json` by `buildApplicationRows()`, oldest first, with pre-site rows in gray. Studio shows these as two switches, **Show Gantt chart on live site** and **Show tracker table on live site**; with both off, the page omits section 03 and skips reading/parsing `gantt.md`.
+- `generateStaticParams()` returns every `getCatalog()` id. `dynamicParams = false`.
+- `generateMetadata()` titles the page "`<name>` | `<person.name>`".
+- The page finds the entry's index, renders a `.page-back` link to `/projects` (labelled `ui.nav.projects`), then `<ProjectBody entry today paletteId mode="page" />` (which gives an `h1` title), then a `.page-nav` with the previous and next catalog entries (their type and name), the footer and `BackToTop`.
+- The site entry is the last in the catalog, so `/projects/rileybeenders-com` has a previous link only.
 
-Because it uses `fs`, this page can't be statically exported without the file present at build time (fine on Vercel). **Today `tableVisible` is on and `chartVisible` is off**, so section 03 shows only the tracker table. See [[More Info and Gantt Data]].
+## `/contact`: `app/(site)/contact/page.tsx`
 
-## `/api/resume-pdf` — `app/api/resume-pdf/route.ts`
+Copy comes from `data/contact/contact.json` (typed `ContactData`, `types/contact.ts`: `meta`, `hero { title, tagline }`, `details { title, description[] }`, and `form { … }`; Studio: **Contact**), and the person from `resumeData`. It renders a `.sec-head` with `hero.title` "Get in touch" as the `h1` and `details.title` as the sub-line, then `<ContactBlock person relocation heading={false} />`. That block shows `hero.tagline`, the details paragraphs, the email / LinkedIn / GitHub / location rows, and `ContactForm`. Then the footer. There is no `BpActions` row any more; the ways in are the rows.
+
+## `/api/contact`: `app/api/contact/route.ts`
+
+- `runtime = "nodejs"`, `dynamic = "force-dynamic"`. `POST` only.
+- Body `{ name, email, message, company }`:
+  - Bad JSON gets **400**.
+  - A non-empty `company` (the honeypot) gets a quiet `{ ok: true }`.
+  - Missing or over-long fields (name 120, email 200, message 5000) or a malformed email get **422**.
+  - More than five posts from one `x-forwarded-for` address in 10 minutes gets **429** (in memory, per instance).
+- Without `RESEND_API_KEY` or `CONTACT_TO` it answers **503** `{ reason: "unconfigured" }`, and `ContactForm` then opens `mailto:<person.email>` with the subject and message filled in.
+- Otherwise it `POST`s `https://api.resend.com/emails` with `from` (`CONTACT_FROM`, defaulting to `<person.name> <contact@rileybeenders.com>`), `to: [CONTACT_TO]`, `reply_to` set to the visitor, the subject "Message from `<name>` via rileybeenders.com", and a plain-text body. A Resend error, or Resend being unreachable, gets **502**.
+- The env vars are documented in `.env.example` and [[Build Tooling and Config]].
+
+## `/api/resume-pdf`: `app/api/resume-pdf/route.ts`
 
 - `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`.
-- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) and `Cache-Control: no-store`. Relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
-- The Download PDF button no longer calls this route; it opens `resumeHtmlPath` in a new tab (or fetches `resumePdfPath` directly when that is unset). The route only keeps older `/api/resume-pdf` links working.
+- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) and `Cache-Control: no-store`. It is relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
+- The Download PDF button does not call this route. It opens `resumeHtmlPath` in a new tab (or fetches `resumePdfPath` directly when that is unset). The route only keeps older `/api/resume-pdf` links working.
 
 The main resume itself is described in [[Resume PDF Pipeline]].
 
-## `/api/geo` — `app/api/geo/route.ts`
+## `/api/geo`: `app/api/geo/route.ts`
 
 - `dynamic = "force-dynamic"`, `Cache-Control: no-store`.
-- `GET(request)` returns `{ country, region, city }` from the `x-vercel-ip-country` / `x-vercel-ip-country-region` / `x-vercel-ip-city` request headers (city URL-decoded). Stores nothing. Locally the headers don't exist, so every field is `null`.
-- Only caller is `SiteAnalytics`, once per tab session. Detail in [[Site Analytics]].
+- `GET(request)` returns `{ country, region, city }` from the `x-vercel-ip-country` / `x-vercel-ip-country-region` / `x-vercel-ip-city` request headers (the city URL-decoded). It stores nothing. Locally the headers don't exist, so every field is `null`.
+- Its only caller is `SiteAnalytics`, once per tab session. Detail in [[Site Analytics]].
 
 ## Related
 - [[Site Analytics]]
 - [[Architecture and Data Flow]]
-- [[About This Site Page]]
-- [[Blueprint Nav and Mark]]
-- [[Blueprint UI Components]]
-- [[Projects Route (BpComingSoon)]]
+- [[Project Catalog and Dialog]]
+- [[Site Project (About this site)]]
+- [[Site Nav and Mark]]
+- [[Sheet Components (Home Page)]]
+- [[Blue Sheet (2026-11 redesign)]]
 - [[Home]]

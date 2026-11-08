@@ -13,8 +13,8 @@ export const alt = SHARE_TITLE;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const INK = "#171a20";
-const BLUE = "#3e6ae1";
+const INK = "#0d182c";
+const BLUE = "#2457e6";
 const PAPER = "#ffffff";
 
 /**

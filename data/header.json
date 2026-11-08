@@ -18,7 +18,7 @@
     "openToRelocation": true
   },
   "theme": {
-    "paletteId": "electric",
+    "paletteId": "blue-sheet",
     "custom": {
       "light": {
         "paper": "#ffffff",
@@ -39,13 +39,15 @@
   "fonts": {
     "header": "instrument-serif",
     "subheader": "instrument-serif",
-    "body": "spectral"
+    "body": "inter"
   },
   "layout": {
     "introAlign": "full"
   },
   "motion": {
-    "syncAnimations": true
+    "syncAnimations": true,
+    "smoothScroll": true,
+    "cursorMark": true
   },
   "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
   "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"

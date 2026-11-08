@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import contactData from "@/data/contact/contact.json";
 import resumeData from "@/data/resumeData";
 import { Reveal } from "@/components/blueprint/Reveal";
-import { BpActions } from "@/components/blueprint/BpActions";
+import { ContactBlock } from "@/components/sheet/ContactBlock";
+import { SiteFooter } from "@/components/sheet/SiteFooter";
 import type { ContactData } from "@/types/contact";
-import { splitParagraphs } from "@/components/content/Paragraphs";
-import { ui } from "@/lib/copy";
 
 const data = contactData as ContactData;
 
@@ -14,53 +13,23 @@ export const metadata: Metadata = {
   description: data.meta.description
 };
 
+/** The contact page: the headline, then the same block the home page ends with (the ways in and the message form). */
 export default function ContactPage() {
   const { person, visibility } = resumeData;
 
   return (
     <main>
-      <section className="bp-hero" style={{ paddingBottom: 8 }}>
-        <div className="bp-shell">
-          <h1 style={{ fontSize: "clamp(48px, 9vw, 116px)" }}>
-            <Reveal delay={0.14}><span style={{ display: "block" }}>{data.hero.title}</span></Reveal>
-          </h1>
-          <Reveal as="rule" delay={0.3}>
-            <div className="bp-rule" style={{ marginTop: 32 }} />
-          </Reveal>
-          <Reveal delay={0.38}>
-            <div className="bp-hero-meta">
-              <p className="bp-hero-tagline">{data.hero.tagline}</p>
-              <div className="bp-hero-place">
-                <span>{person.location}</span>
-                {visibility.openToRelocation ? (
-                  <span style={{ color: "var(--accent)" }}>{ui.openToRelocation}</span>
-                ) : null}
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.46}><BpActions data={resumeData} /></Reveal>
-        </div>
+      <section className="shell sec sec--tight" aria-label={data.hero.title}>
+        <Reveal>
+          <div className="sec-head">
+            <h1 className="sec-title">{data.hero.title}</h1>
+            <p className="sec-sub">{data.details.title}</p>
+          </div>
+        </Reveal>
+        <ContactBlock person={person} relocation={visibility.openToRelocation} heading={false} />
       </section>
 
-      <section className="bp-section">
-        <div className="bp-shell">
-          <Reveal as="rule"><div className="bp-rule bp-rule--hair" /></Reveal>
-          <div className="bp-section-grid">
-            <Reveal><h2 className="bp-section-index">01&nbsp;&nbsp;{data.details.title}</h2></Reveal>
-            <Reveal delay={0.06}>
-              <div>
-                {data.details.description.flatMap(splitParagraphs).map((paragraph) => (
-                  <p className="bp-prose" key={paragraph}>{paragraph}</p>
-                ))}
-                {/* The address itself, spelled out once, so it can be read and copied without the button. */}
-                <p className="bp-prose" style={{ marginTop: 20 }}>
-                  <a href={`mailto:${person.email}`} suppressHydrationWarning>{person.email}</a>
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <SiteFooter location={person.location} />
     </main>
   );
 }

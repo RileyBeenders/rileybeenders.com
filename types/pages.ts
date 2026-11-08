@@ -50,6 +50,10 @@ export type HomePageData = {
     experience: string;
     skills: string;
     education: string;
+    /** The GitHub contribution calendar under the hero. */
+    activity: string;
+    /** The project grid on the home page. */
+    projects: string;
   };
   /** The "Read more" button at the end of a resume bullet that links to its project. */
   readMore: {
@@ -105,8 +109,32 @@ export type InterfaceData = {
     home: string;
     projects: string;
     contact: string;
-    moreInfo: string;
-    aboutSite: string;
+  };
+  /** The project grid and the dialog a card opens into. */
+  projects: {
+    /** The link from the dialog to the project's own page. */
+    openFull: string;
+    close: string;
+    /** From the home page's grid to /projects. */
+    viewAll: string;
+    /** The first filter chip on /projects. */
+    all: string;
+    /** The tag on the card for the site's own case study. */
+    siteBadge: string;
+    /** On a card with photographs: "{count} photos". */
+    photos: string;
+    onePhoto: string;
+  };
+  /** The GitHub contribution calendar. */
+  activity: {
+    /** "{count} contributions in the last year" */
+    total: string;
+    less: string;
+    more: string;
+    /** When GitHub could not be reached at build time. */
+    unavailable: string;
+    /** The link to the profile beside the calendar. */
+    profile: string;
   };
   actions: {
     downloadPdf: string;

@@ -16,7 +16,7 @@ type RevealProps = {
   className?: string;
 };
 
-/** Everything on the page shares one easing curve so the motion reads as a single hand. Matches --ease in blueprint.css. */
+/** Everything on the page shares one easing curve so the motion reads as a single hand. Matches --ease in sheet.css. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 const DURATION = { rise: 0.82, rule: 0.9, fade: 0.7, slide: 0.72 } as const;

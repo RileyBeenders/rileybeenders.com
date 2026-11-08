@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { NODE_HEIGHT, type FlowDiagramSpec, type FlowEdge, type FlowNode } from "@/components/projects/diagrams/flows";
 
-/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
+/** Matches --ease in sheet.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 /** Gap between an arrow's tip and the box it points at. */

@@ -39,12 +39,12 @@
   "images": [
     {
       "src": "/project-images/rileybeenders-com/home-hero-light.png",
-      "alt": "The home page hero in light mode: the eyebrow, the two-line name, a hairline rule, and the action row over the blueprint grid.",
-      "caption": "Home · Blueprint Press · light"
+      "alt": "The home page hero in light mode: the drawn cover band, the monogram, the name and title, and the action row inside the sheet.",
+      "caption": "Home · Blue Sheet · light"
     },
     {
       "src": "/project-images/rileybeenders-com/home-hero-dark.png",
-      "alt": "The same hero in dark mode: the palette's dark paper and light ink.",
+      "alt": "The same hero in dark mode: the near-black navy sheet, pale ink, and the cover's blue turned down.",
       "caption": "Home · dark mode"
     }
   ],
@@ -98,7 +98,7 @@
     "stats": [
       {
         "label": "Commits",
-        "value": 190,
+        "value": 195,
         "note": "on main and its version branches"
       },
       {
@@ -113,7 +113,7 @@
       },
       {
         "label": "Vault notes",
-        "value": 50,
+        "value": 52,
         "note": "kept in sync by an agent"
       },
       {
@@ -413,7 +413,7 @@
       },
       {
         "date": "2026-09-18",
-        "era": "present",
+        "era": "past",
         "title": "A design critic joins the repository",
         "summary": "The impeccable skill arrives with the site's first PRODUCT.md and a real DESIGN.md, then reviews the site and the Studio. One batch follows: the grey ramp fixed for contrast, every label above a heading gone, the evidence link named, a two-row phone nav, a title block in the footer, and the Studio rebuilt as the site's own drafting room.",
         "tags": [
@@ -423,41 +423,42 @@
         ]
       },
       {
-        "date": "2026-10-01",
-        "era": "future",
-        "title": "ExtrusionLine Studio",
-        "summary": "The LabVIEW metrology project is written and hidden in the Studio, waiting on its two proofs (Modbus negotiation, hands-free start) before it publishes.",
+        "date": "2026-10-17",
+        "era": "past",
+        "title": "ExtrusionStudio and the network publish",
+        "summary": "The plant-wide measurement system and the Ubiquiti network project go live on the projects page, in the order the resume lists them, each with its photographs and case study.",
         "tags": [
           "content"
         ]
       },
       {
-        "date": "2026-10-01",
-        "era": "future",
-        "title": "PROTEOR Print and the network",
-        "summary": "Remote printer operations and the Ubiquiti network project follow, in the order the resume lists them.",
-        "tags": [
-          "content"
-        ]
-      },
-      {
-        "date": "2026-10-15",
-        "era": "future",
-        "title": "The tracker returns",
-        "summary": "The application timeline and table come back to More Info once the Studio can edit them, so the job search stays visible on the site that supports it.",
-        "tags": [
-          "data",
-          "studio"
-        ]
-      },
-      {
-        "date": "2026-11-01",
-        "era": "future",
-        "title": "Resume PDFs from the site itself",
-        "summary": "The create-custom-resume-pdf skill already tailors a PDF per posting; the plan is to generate it from the site's own data at request time, so the download button is never stale.",
+        "date": "2026-11-07",
+        "era": "past",
+        "title": "Interactive HTML resumes",
+        "summary": "Each tailored application gains an HTML resume beside its PDF, styled like the site, with its own Print / PDF button; the home page's Download PDF opens the main one in a new tab.",
         "tags": [
           "agents",
           "data"
+        ]
+      },
+      {
+        "date": "2026-11-08",
+        "era": "present",
+        "title": "Blue Sheet: the redesign",
+        "summary": "A fresh UI on the same data: a floating nav, a hero on a drawn blueprint cover, the GitHub contribution calendar, project cards that open into a dialog with a full page behind it, the stack as cards of pills, a message form, and a dark mode where every blue cuts deeper. About this site becomes a project in the catalog, with the application tracker at its foot.",
+        "tags": [
+          "design",
+          "launch"
+        ],
+        "screenshotId": "home-full"
+      },
+      {
+        "date": "2026-12-01",
+        "era": "future",
+        "title": "contact@ inbox and the beta cut-over",
+        "summary": "The message form's inbox goes live on the contact@ address, and the redesign, running first at beta.rileybeenders.com, replaces the main site.",
+        "tags": [
+          "launch"
         ]
       }
     ],
@@ -468,7 +469,8 @@
         "body": [
           "The site is set on paper with ink, one accent, and hairline rules, over a fixed blueprint grid you can see through the page. Which colors those are is not fixed in the code: paper, ink, and accent are CSS tokens, filled from whichever palette is chosen in the Studio's Site Settings, so the page re-inks itself from a form. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
           "Dark mode swaps in the palette's own dark paper and ink and changes nothing else. Ten palettes plus custom colors, and three font roles, are all Studio settings, so the whole system re-tunes without a code change.",
-          "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top."
+          "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top.",
+          "On November 8, 2026 the same data was re-set as Blue Sheet: a cool blue-white sheet inside a dashed cut line, rounded cards, a serif over a sans, one blue from pale washes to a deep fill, and a dark mode where the fills cut deeper instead of brighter. Blueprint Press's palettes stay in the list as the Default and Electric presets; the Studio still re-inks the whole site from a form."
         ],
         "screenshotId": "home-full"
       },

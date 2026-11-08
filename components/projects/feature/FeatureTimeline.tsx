@@ -11,7 +11,7 @@ import { ThemedShot } from "@/components/projects/feature/ThemedShot";
 import { Paragraphs } from "@/components/content/Paragraphs";
 import { ui } from "@/lib/copy";
 
-/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
+/** Matches --ease in sheet.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 /** The axis keeps 4% of empty track at each end so the first and last dots aren't flush with the edge. */

@@ -13,7 +13,7 @@ import { fill, ui } from "@/lib/copy";
 import { isPdf, isVideo, pdfPreviewSrc, videoPosterSrc } from "@/lib/media";
 import { canFloat, type ShownImage } from "@/lib/photo-place";
 
-/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */
+/** Matches --ease in sheet.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 const gridVariants = {

@@ -1,48 +1,63 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-19T00:54:18.982Z",
-  "title": "Design System: Blueprint Press",
+  "generatedAt": "2026-11-08T05:44:35.441183+00:00",
+  "title": "Design System: Blue Sheet",
   "extensions": {
     "colorMeta": {
       "accent": {
         "role": "primary",
-        "displayName": "Electric Blue (active preset)",
-        "canonical": "#3e6ae1",
+        "displayName": "Sheet Blue (active preset)",
+        "canonical": "#2457e6",
         "tonalRamp": [
-          "#132044",
-          "#223a7c",
-          "#3255b4",
-          "#3e6ae1",
-          "#6e8fe9",
-          "#9fb5f0",
-          "#cfdaf8",
+          "#0e235c",
+          "#16348a",
+          "#1d46b8",
+          "#2457e6",
+          "#6689ee",
+          "#9cb3f4",
+          "#cfdafa",
           "#f0f3fd"
         ],
-        "note": "Studio preset 'electric'. Default preset uses Signal Red #e3342f / #ff6b62."
+        "note": "Studio preset 'blue-sheet' (2026-11-08). Fills use accent-fill, which cuts 30% toward black on a dark palette; text keeps the lighter dark accent #6a93ff."
       },
       "blue": {
         "role": "secondary",
-        "displayName": "Diagram Blue",
-        "canonical": "#3e6ae1",
+        "displayName": "Deep Blue",
+        "canonical": "#173ea8",
         "tonalRamp": [
-          "#132044",
-          "#223a7c",
-          "#3255b4",
-          "#3e6ae1",
-          "#6e8fe9",
-          "#9fb5f0",
-          "#cfdaf8",
-          "#f0f3fd"
+          "#091943",
+          "#0e2565",
+          "#123286",
+          "#173ea8",
+          "#5d78c2",
+          "#97a8d8",
+          "#ccd5ec",
+          "#eff1f9"
         ],
-        "note": "Equals the accent on Electric; a distinct cooler hue on the other presets."
+        "note": "The deeper partner for drawn geometry and data (monogram bowl, calendar step 4, gantt series)."
       },
       "paper": {
         "role": "neutral",
-        "displayName": "Paper",
+        "displayName": "Sheet",
+        "canonical": "#f4f7fd",
+        "tonalRamp": [
+          "#626365",
+          "#929498",
+          "#c3c6ca",
+          "#f4f7fd",
+          "#f7f9fe",
+          "#fafbfe",
+          "#fdfdff",
+          "#fefeff"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Card White",
         "canonical": "#ffffff",
         "tonalRamp": [
-          "#4d4d4d",
-          "#8c8c8c",
+          "#666666",
+          "#999999",
           "#cccccc",
           "#ffffff",
           "#ffffff",
@@ -51,34 +66,19 @@
           "#ffffff"
         ]
       },
-      "white": {
-        "role": "neutral",
-        "displayName": "Sheet White",
-        "canonical": "#f4f4f4",
-        "tonalRamp": [
-          "#494949",
-          "#868686",
-          "#c3c3c3",
-          "#f4f4f4",
-          "#f7f7f7",
-          "#fafafa",
-          "#fcfcfc",
-          "#fefefe"
-        ]
-      },
       "ink": {
         "role": "neutral",
-        "displayName": "Carbon Ink",
-        "canonical": "#171a20",
+        "displayName": "Navy Ink",
+        "canonical": "#0d182c",
         "tonalRamp": [
-          "#07080a",
-          "#0d0e12",
-          "#12151a",
-          "#171a20",
-          "#515358",
-          "#8b8d90",
-          "#c5c6c7",
-          "#eceded"
+          "#050a12",
+          "#080e1a",
+          "#0a1323",
+          "#0d182c",
+          "#565d6b",
+          "#9297a0",
+          "#caccd1",
+          "#eeeff0"
         ]
       },
       "prose": {
@@ -280,6 +280,70 @@
           "#ebeced"
         ],
         "note": "The lightbox backdrop."
+      },
+      "tint": {
+        "role": "surface",
+        "displayName": "tint",
+        "canonical": "#eef2fd",
+        "tonalRamp": [
+          "#5f6165",
+          "#8f9198",
+          "#bec2ca",
+          "#eef2fd",
+          "#f3f6fe",
+          "#f7f9fe",
+          "#fbfcff",
+          "#fefeff"
+        ],
+        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+      },
+      "accentSoft": {
+        "role": "surface",
+        "displayName": "accentSoft",
+        "canonical": "#cfdafa",
+        "tonalRamp": [
+          "#535764",
+          "#7c8396",
+          "#a6aec8",
+          "#cfdafa",
+          "#dde5fc",
+          "#e9eefd",
+          "#f4f7fe",
+          "#fcfcff"
+        ],
+        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+      },
+      "accentFill": {
+        "role": "surface",
+        "displayName": "accentFill",
+        "canonical": "#2457e6",
+        "tonalRamp": [
+          "#0e235c",
+          "#16348a",
+          "#1d46b8",
+          "#2457e6",
+          "#6689ee",
+          "#9cb3f4",
+          "#cfdafa",
+          "#f0f3fd"
+        ],
+        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+      },
+      "glow": {
+        "role": "surface",
+        "displayName": "glow",
+        "canonical": "#d3ddf9",
+        "tonalRamp": [
+          "#545864",
+          "#7f8595",
+          "#a9b1c7",
+          "#d3ddf9",
+          "#e0e7fb",
+          "#ebf0fc",
+          "#f5f8fe",
+          "#fcfdff"
+        ],
+        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
       }
     },
     "typographyMeta": {
@@ -332,92 +396,49 @@
         "purpose": "Cert dates and the footer URL."
       }
     },
-    "shadows": [
-      {
-        "name": "hover-lift",
-        "value": "0 6px 18px color-mix(in srgb, var(--ink) 10%, transparent)",
-        "purpose": "Skill pills on hover, with a 3px rise."
+    "shadows": {
+      "sm": "0 1px 2px ink/6%, 0 6px 18px ink/5%",
+      "md": "0 2px 6px ink/6%, 0 18px 44px ink/9%",
+      "lg": "0 10px 30px ink/12%, 0 40px 90px ink/16%",
+      "accent": "0 8px 22px accent/30%"
+    },
+    "motion": {
+      "ease": "cubic-bezier(0.22, 0.9, 0.28, 1)",
+      "easeOut": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "reveal": {
+        "rise": "0.82s, 22px",
+        "fade": "0.7s",
+        "rule": "0.9s"
       },
-      {
-        "name": "card-lift",
-        "value": "0 16px 34px color-mix(in srgb, var(--ink) 13%, transparent)",
-        "purpose": "Cert cards on hover, with a 5px rise."
+      "hover": {
+        "lift": "2-4px",
+        "shadowStep": 1
       },
-      {
-        "name": "floating-pill",
-        "value": "0 10px 28px color-mix(in srgb, var(--ink) 10%, transparent)",
-        "purpose": "The relocation badge and back-to-top control at rest."
-      }
-    ],
-    "motion": [
-      {
-        "name": "ease",
-        "value": "cubic-bezier(0.22, 0.9, 0.28, 1)",
-        "purpose": "The one easing curve for every transition and framer-motion Reveal (EASE = [0.22, 0.9, 0.28, 1])."
-      },
-      {
-        "name": "reveal-rise",
-        "value": "0.82s, y 22px to 0, opacity 0 to 1, once, 25% in view",
-        "purpose": "Default section entrance."
-      },
-      {
-        "name": "reveal-rule",
-        "value": "0.9s, scaleX 0 to 1 from the left",
-        "purpose": "Every hairline and 2px rule."
-      },
-      {
-        "name": "reveal-fade",
-        "value": "0.7s, opacity, optional 6px blur",
-        "purpose": "Images and captions."
-      },
-      {
-        "name": "reveal-slide",
-        "value": "0.72s, x +/-18px",
-        "purpose": "Side panels."
-      },
-      {
-        "name": "hover-lift",
-        "value": "0.34 to 0.44s on --ease, translateY(-2px to -5px)",
-        "purpose": "Pills, cards, buttons, floating pills."
-      },
-      {
-        "name": "wipe",
-        "value": "0.42 to 0.52s on --ease, scaleX or scaleY 0 to 1",
-        "purpose": "Button fills, link underlines, role bars, cert bars, nav underline."
-      },
-      {
-        "name": "mark-draw",
-        "value": "bp-draw 7.3s infinite; bp-chase 1.8s linear infinite; bp-float 5s",
-        "purpose": "The monogram draws on and off; the footer mark floats."
-      },
-      {
-        "name": "ribbon-draw",
-        "value": "bp-draw-in 1.7s cubic-bezier(0.5, 0, 0.2, 1) 0.4s",
-        "purpose": "The hero ribbon draws in once."
-      },
-      {
-        "name": "reduced-motion",
-        "value": "animation-duration 0.001ms; transition-duration 0.001ms; strokes at final offset",
-        "purpose": "prefers-reduced-motion freezes everything on its final frame."
-      }
-    ],
-    "breakpoints": [
-      {
-        "name": "stack",
-        "value": "860px"
-      },
-      {
-        "name": "print",
-        "value": "@media print"
-      }
-    ],
+      "dialog": "0.45s scale 0.97->1, y 24->0",
+      "navActive": "spring 420/38/0.6",
+      "smoothScroll": "lerp 0.11 per frame, wheel only",
+      "cursorMark": "spring 260/26/0.5"
+    },
+    "breakpoints": {
+      "frame": "1000px",
+      "grid": "980px",
+      "phone": "760px"
+    },
     "surfaces": [
       {
         "name": "blueprint-grid",
         "value": "16px fine at 4.5% ink + 96px coarse at 8.5% ink, background-attachment: fixed",
         "purpose": "The drafting grid behind every page; it is the subject's own surface, not decoration."
       }
-    ]
+    ],
+    "radii": {
+      "sm": "10px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "30px",
+      "pill": "999px"
+    },
+    "note": "Narrative, components and token roles: see DESIGN.md (Blue Sheet). Component snippets from the Blueprint Press era below are historical; the live markup is in components/sheet/ and app/(site)/sheet.css."
   },
   "components": [
     {

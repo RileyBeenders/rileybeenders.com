@@ -14,7 +14,7 @@ export function splitParagraphs(text: string | undefined | null): string[] {
 
 /**
  * A field's text as one <p> per paragraph, all with the same class. Each
- * carries `data-para`, which blueprint.css uses to space a paragraph from the
+ * carries `data-para`, which sheet.css uses to space a paragraph from the
  * one before it, so a field that has always been one paragraph renders
  * exactly as it did.
  */

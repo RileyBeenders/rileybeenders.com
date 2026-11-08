@@ -10,7 +10,7 @@ web
 
 Everyone who follows the link. A recruiter placing the name, a hiring manager checking the claims on the PDF they were sent, an engineer at the target company deciding whether the work is real, a family member seeing what Riley does. The site is written for all of them at once, so the surface has to be easy to read and professional throughout.
 
-The site reads at two depths. The surface (hero, summary, the role list, the project cards, the contact block) is for every visitor. The depth (a project's case study, "Read more", the deep dive on `/about-this-site`, the project links on individual resume bullets) is where a reader a little above the normal reader goes for the heaviness of the work. Nothing on the surface should require that reader.
+The site reads at two depths. The surface (hero, the GitHub activity calendar, summary, the role list, the project cards, the stack, education, the contact block) is for every visitor. The depth (a project's dialog and its full page, the case study, "Read more", the site's own deep dive and application tracker on `/projects/rileybeenders-com`, the project links on individual resume bullets) is where a reader a little above the normal reader goes for the heaviness of the work. Nothing on the surface should require that reader.
 
 ## Product Purpose
 
@@ -29,14 +29,18 @@ Every line of the resume links to the evidence behind it, and the same data rend
 - Content lives in JSON under `data/` and is edited through the Studio, a local-only editor (`npm run site` brings it up beside the dev server; `127.0.0.1:3001`) that is never deployed. In development every page carries an "Edit in Studio" control that opens the file behind it. Site settings (palette preset, custom palette seeds, the three font roles, visibility switches) are Studio fields in `data/header.json`.
 - The site deploys continuously to Vercel from a solo workflow. Next.js 16, React 19, TypeScript, framer-motion, plain global CSS (no Tailwind, no CSS modules).
 - An Obsidian vault at `.obsidian/rileybeenders.com Notes/` documents the code, the data layer, the styling, and every application. Agents update it in the same session as any change.
-- `/about-this-site` is the site's own case study: stats from git, a curated commit timeline, three pillars, and three live demos of the tooling (the resume formatter, the Studio, the agent skills). It is refreshed by an agent procedure, not by hand.
+- The site's own case study is one entry in the projects catalog, `/projects/rileybeenders-com` (the retired `/about-this-site` and `/more-info` redirect there): stats from git, a curated commit timeline, three pillars, three live demos of the tooling (the resume formatter, the Studio, the agent skills), and the application tracker at its foot. It is refreshed by an agent procedure, not by hand.
+- The message form posts to `/api/contact`, which delivers through Resend to one inbox (`CONTACT_TO`, intended to be contact@rileybeenders.com; see `.env.example`). Until the inbox and key are configured the route answers 503 and the form opens the visitor's own mail app with the message filled in.
+- The GitHub contribution calendar is read from GitHub's public contributions fragment on the server at build time and revalidated hourly; no token, no third-party widget.
 
 ## Capabilities and Constraints
 
 Confirmed functionality:
 
-- Five routes: `/` (the resume: hero, summary, experience, toolchain, education), `/projects` (published projects with galleries, lightbox, and case studies; proofs exist in data but are hidden), `/contact`, `/more-info` (about-me and about-this-site prose; an application tracker section that is currently hidden), `/about-this-site`.
-- Light and dark themes, ten palette presets plus a custom palette, and three font roles (header, sub-header, body), all switched from the Studio and written as CSS tokens at render time.
+- Four routes: `/` (the resume: hero, GitHub activity, summary, experience, a project grid, the stack, education, contact), `/projects` (the catalog: every published project plus the site itself as cards with type filters; a card opens a dialog, with galleries, lightbox, and case studies inside; proofs exist in data but are hidden), `/projects/[id]` (each entry's own page, prerendered), `/contact` (the ways in and the message form). `/about-this-site` and `/more-info` redirect into the catalog.
+- Light and dark themes, eleven palette presets (Blue Sheet is the active one) plus a custom palette, and three font roles (header, sub-header, body), all switched from the Studio and written as CSS tokens at render time. Dark mode lightens the accent for text and deepens it for fills.
+- Projects open in a dialog addressed by the URL hash (`#project-<id>`, `-case-study` to expand the case study) with a full page behind each one, so resume links, linked skills and shared links all land with the project up.
+- Motion switches in the Studio: synced repeating animations, inertial wheel scrolling, and the monogram chip that trails the pointer across the hero.
 - A PDF download of the resume generated on demand from the site's data (`/api/resume-pdf`).
 - An "Open to relocation" badge, switchable in the Studio.
 - Resume bullets that link to their project; projects that open into a case study.
@@ -44,25 +48,26 @@ Confirmed functionality:
 
 Constraints future work must preserve:
 
-- The home page must stay recognizable as a resume at rest: no hero video, no marketing voice. The surface reads like the document a recruiter expects; the depth opens on request.
+- The home page must stay recognizable as a resume at rest: no hero video, no marketing voice. The surface reads like the document a recruiter expects (hero, activity, who, experience, projects, stack, education, contact, in that order); the depth opens on request.
 - Every claim on the site must trace to real work in the data files. No invented metrics, testimonials, clients, or capabilities.
 - Content edits must never require touching code. Any new field is a Studio schema entry, not a hard-coded string.
 - Motion must be subtle enough to survive a recruiter's ten-second scan and must respect `prefers-reduced-motion`. No pinning or scroll-jacking.
-- Both themes are first-class. Dark mode is a token swap, not a second design.
+- Both themes are first-class. Dark mode is a token swap, not a second design; fills use `--accent-fill` so they deepen in the dark while text on `--accent` lightens.
 - The Studio runs outside the Next app on localhost only and must stay that way.
 - Every rendered `<a>` / `<Link>` carries `suppressHydrationWarning` (a browser extension on Riley's machine stamps anchors; `scripts/check-anchor-hydration.mjs` verifies).
 - `components/GanttChart.tsx`, `app/apple-icon.tsx`, and `app/opengraph-image.tsx` carry hard-coded copies of the active palette because mermaid and Satori cannot read CSS variables. A palette change has to reach them by hand.
+- Tokens are scoped to `.bp`; anything portalled must land in `[data-sheet-portal]` (the project dialog does) or carry literal colours (the lightbox does).
 
 Terminology: "projects" are published work with galleries and case studies; "proofs" are supporting evidence entries (hidden today); the "Studio" is the local editor; "skills" or "procedures" are the agent instructions under `.claude/skills/`; the "vault" is the Obsidian documentation.
 
-Undecided: whether proofs ever surface publicly; whether the application tracker returns to `/more-info`.
+Undecided: whether proofs ever surface publicly; whether the beta (this branch, planned for beta.rileybeenders.com) replaces the main site as is or after a round of changes.
 
 ## Brand Commitments
 
 - The name is Riley Beenders; the site is RileyBeenders.com. Title line: "R&D, Electromechanical and Automation Engineer".
 - Voice is first person, plain, and specific, in Riley's own words. Facts over adjectives. Copy that exists in `data/` is content, not placeholder, and is replaced only with Riley's agreement.
 - The "B" monogram (`components/blueprint/BpMark.tsx`, `app/icon.svg`, the apple icon and social card) is the site's mark and stays.
-- The visual system is "Blueprint Press" (paper, ink, hairline rules, a blueprint grid, Instrument Serif and Spectral, one easing curve), documented in `DESIGN.md`. On 2026-09-18 Riley confirmed it as the standing direction: the general layout, the resume section order, the Studio's palette and font switching, and the fluid motion all stay. Design work on the site is refinement inside this world (craft, specificity, removing the generated-interface feel, adding human touches), not a replacement world.
+- The visual system is "Blue Sheet" (a cool blue-white drafting sheet inside a dashed cut line, rounded cards, one blue from a pale wash to a deep fill, Instrument Serif over Inter with IBM Plex Mono labels, one easing curve), documented in `DESIGN.md`. It replaced "Blueprint Press" on 2026-11-08 at Riley's request for a fresh UI on the same data and wording, taking its cues from the portfolios Riley named (a profile-card hero and contribution calendar, project tiles that open into a dialog with a full page behind, a message form, a dark mode that deepens its colour). The monogram, the Studio's palette and font switching, the resume section order and the fluid motion carried over. Design work on the site is refinement inside this world, not a replacement world; Blueprint Press survives as the "Default" palette's lineage and in the vault's history.
 - The Studio (local editor) is a sibling surface in the same world and may change more freely than the site, since it never ships.
 
 ## Evidence on Hand
@@ -81,7 +86,7 @@ Undecided: whether proofs ever surface publicly; whether the application tracker
 2. **Everything traces.** A claim exists on the site only because it exists in the data, and the data exists because the work happened.
 3. **Content is data, design is tokens.** Riley edits words, images, palettes, and fonts from a form; agents and code change how they render.
 4. **Readable by everyone, professional throughout.** The heaviness of the work lives behind "Read more", not on the first screen.
-5. **The site keeps itself honest.** Procedures, the vault, and `/about-this-site` document what changed and why, in the same session as the change.
+5. **The site keeps itself honest.** Procedures, the vault, and the site's own project entry (`/projects/rileybeenders-com`) document what changed and why, in the same session as the change.
 
 ## Accessibility & Inclusion
 

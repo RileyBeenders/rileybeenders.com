@@ -10,7 +10,7 @@ Two **separate, unrelated** PDF systems live in this repo. Don't confuse them.
 
 Since 2026-11-07 the button serves a **static, curated PDF** rather than one generated per request. It started as a copy of the tailored Disney Imagineering Ride Controls resume (`output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html`) with the posting's relocation cities removed: three Letter pages, navy headings, Arial, Selected Projects on page 3.
 
-**Chain (today):** `BpActions`'s Download PDF (see [[Blueprint UI Components]]) is a link to `data/header.json` `resumeHtmlPath` (`/resume/RileyBeenders_Resume_26311.html`) that opens in a new tab. That page is the interactive HTML resume built by `create-custom-resume-html`; the visitor saves the PDF with its own **Print / PDF · 3 pages** button. The files in `public/resume/` are copies of Riley's working pair in `.DefaultResume/` (renamed from `.DisneyDefaultResume/` on 2026-11-07); the `_26311` suffix is the last-updated date Riley tracks, so a newer copy means new files in both folders and both `header.json` paths updated.
+**Chain (today):** the hero card's Download PDF (`components/sheet/HeroActions.tsx`, which replaced Blueprint Press's `BpActions` on 2026-11-08; see [[Sheet Components (Home Page)]]) is a link to `data/header.json` `resumeHtmlPath` (`/resume/RileyBeenders_Resume_26311.html`) that opens in a new tab. That page is the interactive HTML resume built by `create-custom-resume-html`; the visitor saves the PDF with its own **Print / PDF · 3 pages** button. The files in `public/resume/` are copies of Riley's working pair in `.DefaultResume/` (renamed from `.DisneyDefaultResume/` on 2026-11-07); the `_26311` suffix is the last-updated date Riley tracks, so a newer copy means new files in both folders and both `header.json` paths updated.
 
 **Chain (fallback, no `resumeHtmlPath`):** the button runs `ResumeBuilder/downloadPublishedResume.ts` (client) → `GET <resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) → the browser saves the static PDF.
 
@@ -33,7 +33,7 @@ The pair published on 2026-11-07 (`_26311`) was swapped in by hand from the Disn
 2. Fetches with `cache: "no-store"` and a 30s `AbortController` timeout.
 3. Validates the response: status ok, `content-type` includes `application/pdf`, blob size `>= 5` bytes, and the **first 5 bytes literally spell `%PDF-`** (a real magic-number check, not just content-type trust).
 4. On success, creates an object URL, synthesizes a hidden `<a download>` click to trigger the browser's save dialog, removes the anchor, and revokes the object URL after 60s. The saved name is the basename of the final response URL when it ends in `.pdf` (so renaming the file renames every download), else `Riley_Beenders_Resume.pdf`.
-5. Throws descriptive errors for timeout, bad status, wrong content-type, empty body, or invalid signature — all surfaced by `BpActions` as the inline `.bp-error` message.
+5. Throws descriptive errors for timeout, bad status, wrong content-type, empty body, or invalid signature — all surfaced by `HeroActions` as the inline `.hero-error` alert.
 
 ### `app/api/resume-pdf/route.ts`
 
@@ -60,8 +60,10 @@ A **standalone Node script**, not part of the Next.js app or any route — run m
 
 Neither of the above produces the files in `1.ApplicationsUsed/` (the main resume shares their layout and print/validate scripts, but is general, not tailored). Those come from manually invoking the `create-custom-resume-pdf` agent procedure against a specific `2.JobsApplliedTo/*.pdf` posting — see [[Repository Agent Skills]] and [[Job Application Tracker]].
 
+Since 2026-11-07 each tailored application can also carry an **interactive HTML resume beside its PDF**, `1.ApplicationsUsed/<ID>-RileyBeenders-<Job_Title>.html` (022, 024, 025, 026 and 027 so far), built by `create-custom-resume-html` (`scripts/build-web-resume.mjs`) from the same verified source and checked by `scripts/verify-web-resume.mjs`, which fails on any page-count or per-page text difference between the printed HTML and the PDF. The PDF stays the primary upload. The HTML template (`.claude/skills/create-custom-resume-html/assets/web-resume-template.html`) still dresses the screen layer in the Blueprint Press look (Instrument Serif + Spectral, the Electric palette), so since the Blue Sheet redesign (2026-11-08) the resumes no longer match the site's look exactly; the chain and its skills were not changed by the redesign. See [[Blue Sheet (2026-11 redesign)]].
+
 ## Related
-- [[Blueprint UI Components]]
+- [[Sheet Components (Home Page)]]
 - [[Routes Overview]]
 - [[Data Layer and Types]]
 - [[Home]]

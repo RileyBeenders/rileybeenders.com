@@ -16,10 +16,12 @@
     "href": "https://www.rileybeenders.com"
   },
   "headings": {
-    "summary": "Summary",
+    "summary": "Who is Riley?",
     "experience": "Experience",
-    "skills": "Skills",
-    "education": "Education"
+    "skills": "Tech & hardware stack",
+    "education": "Education",
+    "activity": "GitHub activity",
+    "projects": "Projects"
   },
   "readMore": {
     "animation": "glint"

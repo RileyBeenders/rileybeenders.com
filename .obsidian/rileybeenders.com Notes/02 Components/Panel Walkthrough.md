@@ -4,12 +4,12 @@ tags: [component, projects]
 
 # Panel Walkthrough
 
-An interactive tour of a program's screens under a project's entry on `/projects` (2026-10-17). First and so far only use: **ExtrusionStudio**, whose six stops walk the plant's panels in the order the plant uses them — Operator-GUI, Operator-Graphs, Packaging Panel, Production Statistics, Server Settings, Admin Settings — and end with the sample files the program itself wrote.
+An interactive tour of a program's screens inside a project's body, in its dialog and on its `/projects/<id>` page (2026-10-17). First and so far only use: **ExtrusionStudio**, whose six stops walk the plant's panels in the order the plant uses them — Operator-GUI, Operator-Graphs, Packaging Panel, Production Statistics, Server Settings, Admin Settings — and end with the sample files the program itself wrote.
 
 ## Where it lives
 
-- `components/projects/walkthrough/PanelWalkthrough.tsx` — client component, rendered by `ProjectEntry` when `project.walkthrough` is set, between the entry grid and the case study (see [[Projects Route (BpComingSoon)]]).
-- `app/(site)/projects/walkthrough.css` — `.wt-*` styles, imported by `app/(site)/projects/page.tsx` next to `projects.css` and `feature.css`. It also holds `.pj-links` (the project's link buttons, which arrived with it).
+- `components/projects/walkthrough/PanelWalkthrough.tsx` — client component, rendered by `ProjectBody` when `project.walkthrough` is set, after the case study (see [[Project Catalog and Dialog]]). Under Blueprint Press it was rendered by `ProjectEntry`, between the entry grid and the case study.
+- `app/(site)/projects/walkthrough.css` — `.wt-*` styles, imported by the site layout (`app/(site)/layout.tsx`) after `sheet.css`, `projects.css` and `feature.css`, so the walkthrough styles reach the dialog on the home page too. It also holds `.pj-links` (the project's link buttons, which arrived with it).
 - Data: `Project.walkthrough` (`ProjectWalkthrough` in `types/resume.ts`, see [[Data Layer and Types]]) in `data/projects/projects.json`; labels in `data/site/interface.json` → `walkthrough` (`previous`, `next`, `stepOf`, `callouts`, `alsoOn`, `enlarge`, `openFile`, `download`, `viewCapture`).
 
 ## What it does
@@ -28,8 +28,8 @@ Everything the walkthrough shows is static: captures are files under `public/pro
 Taken from the program's own Modbus simulator, seeded with three weeks of made-up spools (every decision by the user **RileyBeenders**), through Playwright scripts kept in the git-ignored `tmp/` folder (`capture-extrusion.mjs`, `capture-samples.mjs`, `convert-extrusion.mjs`, `es-seed.py`). Before each capture the DOM is masked: LAN addresses become "plant network", the server's hostname "ExtrusionStudio", the local install path a generic one, and the Pi token is blanked. The simulator clone is patched before seeding so Spool SNs are four characters (the real program's eight-character format is never shown, so no published code can match a real customer spool) and the materials are generic (PLA, PETG, ABS, ASA; no trade names or supplier codes). The samples are one 90-second spool's certificate (`sample-certificate-DSSN.html`), a second certificate approved with a reason (`sample-certificate-GJPM.html`), its CSV (`sample-spool-DSSN.csv`, 1,800 rows at 20 Hz, hostname masked) and its filament file. The deployment diagram `public/project-artifacts/ExtrusionStudio/deployment.svg` is a themed SVG (listed in `THEMED_SVGS`) drawn by hand, so it follows the palette and theme in the case study.
 
 ## Related
-- [[Projects Route (BpComingSoon)]]
-- [[About This Site Page]] — `ThemedShot` and the themed-capture rule it shares
+- [[Project Catalog and Dialog]]
+- [[Site Project (About this site)]] — `ThemedShot` and the themed-capture rule it shares
 - [[Data Layer and Types]]
 - [[Career Content]]
 - [[Home]]

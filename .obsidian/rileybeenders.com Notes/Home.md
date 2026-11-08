@@ -4,70 +4,78 @@ tags: [moc, home]
 
 # RileyBeenders.com — Documentation Vault
 
-This vault is a complete, high-detail breakdown of the `rileybeenders.com` repository: a Next.js resume/portfolio site that pairs a traditional ATS resume PDF with an editorial website — the resume at rest, published case studies and an About page one layer down — plus the local Studio that edits its content and the agent procedures that keep it (and this vault) current.
+This vault is a complete, high-detail breakdown of the `rileybeenders.com` repository. The repository holds three things:
 
-Documentation reflects the codebase as of the **`main`** branch after the **Blueprint Press** reskin (the `app/(site)/` route group, `components/blueprint/*`, `app/base.css` + `app/(site)/blueprint.css`). The pre-reskin design (`InteractiveResume`, `SiteHeader`, `ProjectsExplorer`, one `app/globals.css`, pointer-tilt 3D, proof/project drawers) lived on `Version-2.0` and is gone from `main`. See [[Repository Agent Skills]] for how this vault is kept current as the site changes.
+- A Next.js resume/portfolio site that pairs a traditional ATS resume PDF with an evidence layer. The resume is readable at rest, and project tiles open into a dialog with a full page behind each one. The site documents itself as one of those projects.
+- The local Studio that edits the site's content.
+- The agent procedures that keep the site, and this vault, current.
+
+The documentation reflects the codebase on the **`design/UI_Refresh`** branch after the **Blue Sheet** redesign of 2026-11-08 (`app/(site)/sheet.css`, `components/sheet/*`, `lib/catalog.ts`, routes `/`, `/projects`, `/projects/[id]` and `/contact`). The branch runs first as beta.rileybeenders.com and merges to `main` later, so `main` (the live site) is still on the previous design. That design, **Blueprint Press** (2026-08-27 to 2026-11-08: five nav links, `/about-this-site`, `/more-info`, `ProjectEntry`, `blueprint.css`), is recorded in [[Blueprint Press (2026-08 to 2026-11)]]. The design before that (`InteractiveResume`, `SiteHeader`, one `app/globals.css`, pointer-tilt 3D) lived on `Version-2.0`. See [[Repository Agent Skills]] for how this vault is kept current as the site changes.
 
 ## Quick facts
 
 |                 |                                                                                                                                                                                                                                                                                                                                                  |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Framework       | Next.js `^16.4.5` (App Router, Turbopack dev), React `^19.2.7`, TypeScript `^6` `strict` — `package.json` is `rileybeenders.com` v`3.1.0`, every range pinned since 2026-09-19                                                                                                                                                                  |
-| Live site       | https://rileybeenders.com                                                                                                                                                                                                                                                                                                                        |
-| Hosting signal  | Vercel (`@vercel/analytics`, `@vercel/speed-insights`, Vercel CDN cache headers)                                                                                                                                                                                                                                                                 |
-| Repo owner      | RileyBeenders (GitHub)                                                                                                                                                                                                                                                                                                                           |
-| Current branch  | `main`                                                                                                                                                                                                                                                                                                                                           |
-| Package manager | npm                                                                                                                                                                                                                                                                                                                                              |
-| Design language | Blueprint Press — blueprint-grid texture, a Studio-picked palette (active: **Electric**, `#3e6ae1` accent on white / on black in dark mode; fallback: the Swiss navy `#0b1a2b` / red `#e3342f` / blue `#2f86c4` on paper `#fbfbf9`), Instrument Serif + Spectral type, one continuous-stroke RB monogram; specified in the repo-root `DESIGN.md` |
+| Framework       | Next.js `^16.4.5` (App Router, Turbopack dev), React `^19.2.7`, TypeScript `^6` `strict`. `package.json` is `rileybeenders.com` v`3.1.0`, with every range pinned since 2026-09-19 |
+| Live site       | https://rileybeenders.com (`main`, Blueprint Press). The beta, beta.rileybeenders.com (this branch, Blue Sheet), is planned but not yet pointed |
+| Hosting signal  | Vercel (`@vercel/analytics`, `@vercel/speed-insights`, Vercel CDN cache headers) |
+| Repo owner      | RileyBeenders (GitHub) |
+| Current branch  | `design/UI_Refresh` (merges to `main`) |
+| Package manager | npm |
+| Design language | Blue Sheet: a cool blue-white drafting sheet inside a dashed cut line, rounded cards, one blue from a pale wash to a deep fill. The palette is picked in the Studio (active: **Blue Sheet**, accent `#2457e6` on paper `#f4f7fd`, and `#6a93ff` on `#070b15` in dark mode, where fills cut deeper). Type is Instrument Serif over Inter, with IBM Plex Mono labels, plus the one-stroke RB monogram. It is specified in the repo-root `DESIGN.md` and replaced Blueprint Press on 2026-11-08 |
 
 ## Map of Content
 
 ### Overview
-- [[Project Overview]] — what the site is and why it exists
-- [[Architecture and Data Flow]] — how data becomes pages
-- [[Repository Map]] — annotated full file tree
+- [[Project Overview]]: what the site is and why it exists
+- [[Architecture and Data Flow]]: how data becomes pages
+- [[Repository Map]]: the annotated full file tree
 
 ### Routes & Pages
-- [[Routes Overview]] — every route, its file, and what it renders (now including `/about-this-site`)
+- [[Routes Overview]]: the four page routes (`/`, `/projects`, `/projects/[id]`, `/contact`), the redirects from `/about-this-site` and `/more-info`, and the API routes (`/api/contact`, `/api/resume-pdf`, `/api/geo`)
 
 ### Components
-- [[Blueprint Nav and Mark]] — the sticky `BpNav` header, the `BpMark` RB monogram, and the static favicon/apple-icon
-- [[Blueprint UI Components]] — `BpActions` (Download/Email/LinkedIn/GitHub), `Reveal` (four entrance variants), `PageSpine`, `HeroRibbon`, the two-state relocation badge, `BackToTop`, the theme toggle, `CountUp` / `WordReveal` / `ScrollWords`, `EmphasizedText`, and `BpComingSoon` (the projects fallback)
-- [[GanttChart JobsTable and gantt.ts]] — the client mermaid Gantt chart, the tracker table, and the shared parser
-- [[Projects Route (BpComingSoon)]] — the projects page: `ProjectEntry`, spine, gallery, lightbox, the optional per-project date box, project link buttons
-- [[Panel Walkthrough]] — the interactive tour of a program's screens under a project entry (ExtrusionStudio): rail, captures with numbered callouts, extras, the sample files
-- [[About This Site Page]] — `/about-this-site`: the running date bar, `CountUp` stats, the time-scaled commit timeline, pillars, pinned screenshots, and the scripts and Studio entry behind them
-- [[Site Analytics]] — the Vercel Web Analytics wrapper: owner opt-out (`?analytics=off`), and the per-visit state/city `Visit` event fed by `/api/geo`
+- [[Site Nav and Mark]]: the floating `SiteNav` pill, the `BpMark` RB monogram, and the static favicon, apple icon and social card
+- [[Sheet Components (Home Page)]]: the hero card (`HeroCover`, `HeroActions`, `CursorMark`), `GithubGraph`, `Experience`, `Stack`, `Education`, `ContactBlock` / `ContactForm`, `SiteFooter`, `SmoothScroll`, and the kept primitives (`Reveal`, `BackToTop`, `StudioLink`, the theme toggle, `EmphasizedText`, `BulletLink`, `LinkedSkill`, `CountUp`, `ScrollWords`, `AnimationSync`)
+- [[Project Catalog and Dialog]]: `lib/catalog.ts`, `ProjectGrid` / `ProjectCard` / `ProjectDialog` / `ProjectBody`, the `/projects/[id]` page, and the kept project media (gallery, lightbox, PDF pages, post card, compare, date box, status, case study, diagrams)
+- [[Site Project (About this site)]]: the site's own catalog entry at `/projects/rileybeenders-com`, with its deep dive (stats, the time-scaled commit timeline, pillars, the live demos), the application tracker at its foot, and the scripts and Studio entry behind them
+- [[Panel Walkthrough]]: the interactive tour of a program's screens inside a project (ExtrusionStudio): the rail, captures with numbered callouts, extras, and the sample files
+- [[GanttChart JobsTable and gantt.ts]]: the client mermaid Gantt chart, the tracker table, and the shared parser
+- [[Site Analytics]]: the Vercel Web Analytics wrapper, with the owner opt-out (`?analytics=off`) and the per-visit state/city `Visit` event fed by `/api/geo`
 
 ### Data Layer
-- [[Data Layer and Types]] — types, the `resumeData.ts` merge pipeline, `header.json`, the dead "coming soon" schema
-- [[Career Content]] — experience, projects, proofs, education, skills
-- [[More Info and Gantt Data]] — the More Info page's content source and the hand-authored Gantt file
-- [[Career Q&A Log]] — Riley's answers to resume-review questions, read by the resume procedures, not the site
+- [[Data Layer and Types]]: the types, the `resumeData.ts` merge pipeline, `header.json` (including the motion switches), the page/interface/contact copy files, and the dead "coming soon" schema
+- [[Career Content]]: experience, projects, proofs, education, skills
+- [[More Info and Gantt Data]]: the application tracker's sources (`more-info.json` `ganttSection`, the hand-authored `gantt.md`, `past-applications.json`), now read by the catalog for the site project's page
+- [[Career Q&A Log]]: Riley's answers to resume-review questions, read by the resume procedures, not the site
 
 ### Resume PDF Pipeline
-- [[Resume PDF Pipeline]] — the static main resume behind Download PDF and the template-mockup script
+- [[Resume PDF Pipeline]]: the static main resume pair behind Download PDF, the per-application HTML + PDF resumes, and the template-mockup script
 
 ### Styling
-- [[Design System (Blueprint Press)]] — `base.css` reset, `blueprint.css` tokens, layout and motion patterns, the OG image / icon renderers; the machine-readable spec is the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]])
+- [[Design System (Blue Sheet)]]: the `base.css` reset, `sheet.css` tokens and sections, the palette derivation (`deriveSheetTokens`), the kept component stylesheets, layout and motion patterns, and the OG image / icon renderers. The machine-readable spec is the repo-root `DESIGN.md` (see [[Impeccable Design Workflow]])
+
+### Design History
+- [[Blueprint Press (2026-08 to 2026-11)]]: what the site was. The five-link nav, the editorial home page with its spine and ribbon, `ProjectEntry` with media parallax, Photo Mode, `/about-this-site` and `/more-info`, the `blueprint.css` tokens, the Electric preset, Instrument Serif + Spectral, and where to read it all in git
+- [[Blue Sheet (2026-11 redesign)]]: why and how the site changed on 2026-11-08. Riley's brief and the four reference sites, the new file map, data and Studio field additions, env vars, redirects, the HTML/PDF resume files, and the follow-ups
 
 ### Job Search Tracking
-- [[Past Disney Applications]] — the 29 inactive Disney applications from the Workday portal (26 from before this site), with the four-month 10119309 interview timeline
-- [[Job Application Tracker]] — how applications, tailored resumes, and references are tracked and stored, with links to a deep-dive page per application (`06 Job Search Tracking/Applications/`) covering the posting itself and a skills-match comparison that's frozen at application time versus kept current now
+- [[Past Disney Applications]]: the 30 inactive Disney applications from the Workday portal and Brassring (26 from before this site, plus four internships), with the four-month 10119309 interview timeline
+- [[Job Application Tracker]]: how applications, tailored resumes and references are tracked and stored. It links to a deep-dive page per application (`06 Job Search Tracking/Applications/`), each covering the posting itself and a skills-match comparison frozen at application time beside one kept current
 
 ### Build, Tooling & Config
-- [[Build Tooling and Config]] — package.json, tsconfig, next.config, `.gitignore`, running the site and the Studio locally, the `scripts/` folder
+- [[Build Tooling and Config]]: package.json, tsconfig, `next.config.mjs` (redirects, dev origins), `.env.example`, `.gitignore`, running the site and the Studio locally, the `scripts/` folder (screenshot capture, hydration check, stats)
 
 ### Agents & Automation
-- [[Repository Agent Skills]] — the eight repo agent procedures: `create-custom-resume-pdf`, Vault Sync (this vault's self-updating skill), Sync Charts, Design Guidelines, the three `motion-*` skills, and `site-timeline-sync` (which also runs by itself after every push to `main`, via the repo's one GitHub Actions workflow)
-- [[Impeccable Design Workflow]] — the `impeccable` design skill: `PRODUCT.md`, the repo-root `DESIGN.md` + `.impeccable/design.json`, the detector, the standing interview decisions (refinement inside Blueprint Press, not a redesign), and the critique history
+- [[Repository Agent Skills]]: the repo agent procedures (the resume chain, Vault Sync for this vault, Sync Charts, Design Guidelines, the three `motion-*` skills, `site-timeline-sync`, and the skill router), plus the GitHub Actions workflow that runs `site-timeline-sync` after every push to `main`
+- [[Impeccable Design Workflow]]: the `impeccable` design skill. It covers `PRODUCT.md`, the repo-root `DESIGN.md` (now Blue Sheet) + `.impeccable/design.json`, the detector, the standing decisions (refinement inside Blue Sheet since 2026-11-07), and the critique history
 
 ## Known gaps / WIP notes worth remembering
 
-- `types/resume.ts` still declares the full `ComingSoonContent` schema and `ResumeData.siteMode` / `comingSoon`, but **nothing reads any of it** on `main` — `header.json` has `siteMode: "resume"` and no `comingSoon`, and the root `app/layout.tsx` uses a static title/description. It is dead code, not a dormant feature. See [[Data Layer and Types]].
-- `data/projects/proofs.json` is loaded whenever the Projects page is on (it is the case-study detail layer `buildProofView` reads), but since 2026-09-16 every one of its 17 entries is `visible: false`, so `resumeData.proofs` is `[]` and each case study comes from the project's own `additionalInfo`. The standalone proof index and the resume's proof buttons stay off too (`visibility.proofIndex` / `experienceProofButtons` are `false`). See [[Career Content]] and [[Projects Route (BpComingSoon)]].
-- Six projects are published on `/projects` (ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects); the other six are `visible: false` drafts. BulkSSH's gallery card has an empty `src` until its demo GIF is added. See [[Career Content]].
-- The tracker on `/more-info` has separate switches for the chart and the table (`ganttSection.chartVisible` / `tableVisible`); right now only the **table** is on. The Gantt chart + table exist in **two** hand-maintained places that can drift, `README.md` and `data/more-info/gantt.md`; they currently match. See [[More Info and Gantt Data]] and the Sync Charts procedure in [[Repository Agent Skills]].
-- The About-this-site nav tab still carries the gradient-text sweep (`gradient: true` in `BpNav`, `.bp-nav-link--gradient` in `blueprint.css`). The 2026-09-18 impeccable critique flagged it and the decision was to flatten it, but that change never reached `main`. See [[Blueprint Nav and Mark]].
-- `README.md`'s version line and folder tree were refreshed on 2026-09-19 (Version 3.1), but its opening prose still describes the old "mouse-driven 3D motion / expandable information drawers" design.
-- `README_TODO.md` lists open content tasks (possible proofs/projects merge, "Alter Line 136" link fix); the resume-PDF data rules it used to draft moved into `create-custom-resume-pdf` step 3 on 2026-09-19. The two ExtrusionLine proofs it lists as "to create" already exist in `proofs.json`.
+- **Blue Sheet follow-ups.** The contact@rileybeenders.com inbox and the Resend key are not set up, so the message form falls back to the visitor's mail app (`/api/contact` answers 503). The `studio-*.png` captures were not retaken for the redesign. beta.rileybeenders.com is not yet pointed at this branch. See [[Blue Sheet (2026-11 redesign)]].
+- **Dead types.** `types/resume.ts` still declares the full `ComingSoonContent` schema and `ResumeData.siteMode` / `comingSoon`, but **nothing reads any of it**. `header.json` has `siteMode: "resume"` and no `comingSoon`. It is dead code, not a dormant feature. See [[Data Layer and Types]].
+- **Dormant proofs.** `data/projects/proofs.json` loads whenever the Projects switch is on (it is the case-study detail layer `buildProofView` reads), but every one of its 17 entries is `visible: false`, so `resumeData.proofs` is `[]` and each case study comes from the project's own `additionalInfo`. See [[Career Content]] and [[Project Catalog and Dialog]].
+- **Published projects.** Six projects are published (ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects), and the site entry makes the catalog seven cards. The other six projects are `visible: false` drafts. BulkSSH's gallery card has an empty `src` until its demo GIF is added. See [[Career Content]].
+- **The tracker.** It now sits at the foot of `/projects/rileybeenders-com` (`#tracker`), with separate switches for the chart and the table (`ganttSection.chartVisible` / `tableVisible`). Only the **table** is on. The Gantt chart + table exist in **two** hand-maintained places that can drift, `README.md` and `data/more-info/gantt.md`. See [[More Info and Gantt Data]] and the Sync Charts procedure in [[Repository Agent Skills]].
+- **Copy kept but not shown.** `about-site.json` `meta` / `storyHeading` / `outro`, `more-info.json` `aboutHeader` / `aboutMe` / `aboutSite`, and `interface.json` `projects.position`. See [[Blue Sheet (2026-11 redesign)]].
+- **Open content tasks.** `README_TODO.md` lists them (a possible proofs/projects merge, the "Alter Line 136" link fix).

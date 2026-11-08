@@ -2,9 +2,7 @@
   "nav": {
     "home": "Home",
     "projects": "Projects",
-    "contact": "Contact",
-    "moreInfo": "More Info",
-    "aboutSite": "About this site"
+    "contact": "Contact"
   },
   "actions": {
     "downloadPdf": "Download PDF",
@@ -17,6 +15,22 @@
   "openToRelocation": "Open to relocation",
   "bulletReadMore": "Read more",
   "showCredential": "Show credential",
+  "projects": {
+    "openFull": "Open full page",
+    "close": "Close",
+    "viewAll": "View all projects",
+    "all": "All",
+    "siteBadge": "This site",
+    "photos": "{count} photos",
+    "onePhoto": "1 photo"
+  },
+  "activity": {
+    "total": "{count} contributions in the last year",
+    "less": "Less",
+    "more": "More",
+    "unavailable": "GitHub activity is unavailable right now.",
+    "profile": "View on GitHub"
+  },
   "caseStudy": {
     "view": "View the full case study",
     "hide": "Hide the case study",

@@ -12,5 +12,16 @@
     "description": [
       "I usually respond rather quickly — feel free to include a bit of context on what you’d like to talk about."
     ]
+  },
+  "form": {
+    "title": "Send me a message",
+    "nameLabel": "Your name",
+    "emailLabel": "Your email",
+    "messageLabel": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "sent": "Sent. I’ll get back to you soon.",
+    "failed": "That didn’t go through. Please try again, or email me directly.",
+    "fallback": "Opening your mail app with the message filled in."
   }
 }

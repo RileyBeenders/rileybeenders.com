@@ -467,6 +467,10 @@ export type LayoutSettings = {
  */
 export type MotionSettings = {
   syncAnimations?: boolean;
+  /** Wheel scrolling eases toward its target instead of jumping (components/sheet/SmoothScroll.tsx). Off when left out. */
+  smoothScroll?: boolean;
+  /** The monogram chip that trails the pointer across the hero (components/sheet/CursorMark.tsx). Off when left out. */
+  cursorMark?: boolean;
 };
 
 export type ResumeData = {
