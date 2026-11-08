@@ -32,11 +32,11 @@ Read at request time by `app/(site)/more-info/page.tsx` via `fs.readFileSync` (n
 
 ### Duplicated in `README.md`
 
-`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Nov 7, 2026 the two copies (key, chart, and table) are identical. That day 004, 007, and 015–021 were closed from rejection emails, 023 from its Workday "Declined" status, and 022 was added with `TBD` as its date and a blank status until Riley confirms whether it was submitted. The **Sync Charts** procedure in [[Repository Agent Skills]] reconciles them when they drift. The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
+`README.md` contains **its own copy** of the same Gantt chart and tracker table (see [[Job Application Tracker]]) — two independently hand-maintained documents describing the same job-search state, with no code-level link, so they drift if only one is edited. As of Nov 7, 2026 the two copies (key, chart, and table) are identical. That day 004, 007, and 015–021 were closed from rejection emails, 023 from its Workday "Declined" status, and 022 was added with `TBD` as its date and a blank status until Riley confirms whether it was submitted; 022 has since been marked submitted, and 025, 026, and 027 were added and submitted the same day with their own chart sections. The **Sync Charts** procedure in [[Repository Agent Skills]] reconciles them when they drift. The 012 row's filename was also corrected in both files on 2026-09-19 (the em dash in "… Engineering — Google Careers.pdf" became a hyphen to match the file on disk).
 
 ### Current tracked applications (as of `gantt.md`)
 
-24 applications, IDs 001–024, spanning Disney (×14), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. As of Nov 7, 2026, 8 are waiting for a reply (001, 002, 005, 009–012, 024), 15 are no longer in consideration (003, 004, 006–008, 013–021, 023), and 022 is not yet confirmed submitted. Full per-application file references live in [[Job Application Tracker]].
+27 applications, IDs 001–027, spanning Disney (×17), Fluidstack, K2 Space, Relativity Space, SpaceX, Boston Dynamics (×2), Figure Robotics (×3), and Google. As of Nov 7, 2026, 12 are waiting for a reply (001, 002, 005, 009–012, 022, 024–027) and 15 are no longer in consideration (003, 004, 006–008, 013–021, 023). Full per-application file references live in [[Job Application Tracker]].
 
 ## Related
 - [[Job Application Tracker]]

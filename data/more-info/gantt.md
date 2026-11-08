@@ -114,6 +114,8 @@
 
     section 022
     Resume Ready Oct 20             :milestone, 2026-10-20, 0d
+    Applied Nov 07                  :milestone, 2026-11-07, 0d
+    Waiting for Reply               :active, 2026-11-07, 1d
 
     section 023
     Applied Oct 20                  :milestone, 2026-10-20, 0d
@@ -121,6 +123,18 @@
     No Longer in Consideration      :crit, milestone, 2026-11-07, 0d
 
     section 024
+    Applied Nov 07                  :milestone, 2026-11-07, 0d
+    Waiting for Reply               :active, 2026-11-07, 1d
+
+    section 025
+    Applied Nov 07                  :milestone, 2026-11-07, 0d
+    Waiting for Reply               :active, 2026-11-07, 1d
+
+    section 026
+    Applied Nov 07                  :milestone, 2026-11-07, 0d
+    Waiting for Reply               :active, 2026-11-07, 1d
+
+    section 027
     Applied Nov 07                  :milestone, 2026-11-07, 0d
     Waiting for Reply               :active, 2026-11-07, 1d
 ```
@@ -148,6 +162,9 @@
 | 019 | [Sr Site Reliability Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/019_Disney_Sr%20Site%20Reliability%20Engineer.pdf) | Disney Signature Experiences | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/019_RileyBeenders_Disney_Sr_Site_Reliability_Engineer_2-Page.pdf) | 🔴 | 10160567 |
 | 020 | [Manager, Software Engineering](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/020_Disney_Manager%2C%20Software%20Engineering.pdf) | Disney Experiences | Orlando, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/020_RileyBeenders_Disney_Manager_Software_Engineering_2-Page.pdf) | 🔴 | 10158386 |
 | 021 | [Manager, Systems Engineering (DCL New Build)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/021_Disney_Manager%2C%20Systems%20Engineering%20%28DCL%20New%20Build%29.pdf) | Disney Signature Experiences (Disney Cruise Line) | Celebration, FL | September 24, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/021_RileyBeenders_Disney_Senior_Manager_Solutions_Architecture_2-Page.pdf) | 🔴 | 10160198 |
-| 022 | [Sr Controls Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf) | Disney Experiences (Disneyland Resort) | Anaheim, CA | TBD | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf) |  | 10162313 |
+| 022 | [Sr Controls Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf) | Disney Experiences (Disneyland Resort) | Anaheim, CA | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf) | 🟢 | 10162313 |
 | 023 | [Program Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/023_Program%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Walt Disney World Resort | Lake Buena Vista, FL | October 20, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/023_RileyBeenders_Disney_Program_Engineer.pdf) | 🔴 | 10161727 |
 | 024 | [Senior Systems Engineer](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/024_Senior%20Systems%20Engineer%20at%20DISNEY%20-%20Disney%20Careers.pdf) | Disney Experiences | Lake Buena Vista, FL | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/024-RileyBeenders-Senior_Systems_Engineer.pdf) | 🟢 | 10161502 |
+| 025 | [Senior Production Site Reliability Engineer - PH](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/025_Senior%20Production%20Site%20Reliability%20Engineer%20-%20PH%20in%20Glendale%2C%20California%2C%20United%20States%20of%20America%20with%20The%20Walt%20Disney%20Company%20_%20Disney%20Careers.pdf) | Disney Television Animation (Disney Kids & Family) | Glendale, CA | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/025-RileyBeenders-Senior_Production_Site_Reliability_Engineer_-_PH.pdf) | 🟢 | 10162977 |
+| 026 | [Product Designer II (Commerce)](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/026_Product%20Designer%20II%20(Commerce)%20in%20New%20York%2C%20New%20York%2C%20United%20States%20of%20America%20with%20The%20Walt%20Disney%20Company%20_%20Disney%20Careers.pdf) | Disney Entertainment and ESPN Product & Technology | New York, NY | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/026-RileyBeenders-Product_Designer_II_(Commerce).pdf) | 🟢 | 10160859 |
+| 027 | [Product Mgr II, Subscriber Data](https://github.com/RileyBeenders/rileybeenders.com/blob/main/2.JobsApplliedTo/027_Product%20Mgr%20II%2C%20Subscriber%20Data%20in%20Santa%20Monica%2C%20California%2C%20United%20States%20of%20America%20with%20The%20Walt%20Disney%20Company%20_%20Disney%20Careers.pdf) | Disney Entertainment and ESPN Product & Technology | Santa Monica, CA | November 07, 2026 | [Tailored Resume](https://github.com/RileyBeenders/rileybeenders.com/blob/main/1.ApplicationsUsed/027-RileyBeenders-Product_Mgr_II_Subscriber_Data.pdf) | 🟢 | 10162575 |

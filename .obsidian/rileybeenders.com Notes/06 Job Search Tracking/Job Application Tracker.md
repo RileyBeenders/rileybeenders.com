@@ -10,8 +10,8 @@ The repo doubles as the owner's personal job-search system of record. This note 
 
 | Folder | Contents |
 |---|---|
-| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`024`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `create-custom-resume-pdf` procedure resolves near-misses to it.) |
-| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `create-custom-resume-pdf` agent procedure. From 2026-11-07 both resume skills write here directly as `<ID>-RileyBeenders-<Job_Title>.pdf` / `.html`; earlier files keep their original names. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, the 2-page Disney resumes for 017–021, the Disney Sr Controls Engineer resume for 022, the 2-page Disney Program Engineer resume for 023, and the 3-page Disney Senior Systems Engineer resume for 024 (two core pages plus Selected Projects); 023 and 024 were built, grilled, and fixed through the resume chain. |
+| `2.JobsApplliedTo/` | The **original job posting** PDF for each application, numbered `001`–`027`, named `<ID>_<Job Title> at <Company>[ - <date/slug>].pdf`. (Note the double-l `Applliedto` spelling — the `create-custom-resume-pdf` procedure resolves near-misses to it.) |
+| `1.ApplicationsUsed/` | The **actual tailored resume/cover letter** submitted for each application — the deliverable of the `create-custom-resume-pdf` agent procedure. From 2026-11-07 both resume skills write here directly as `<ID>-RileyBeenders-<Job_Title>.pdf` / `.html`; earlier files keep their original names. Includes a `000_` website-generated baseline, matching cover letters (`.docx` + `.pdf`) for applications 011, 012, 013, the role-specific Disney Applied AI resumes for 015 and 016, the 2-page Disney resumes for 017–021, the Disney Sr Controls Engineer resume for 022, the 2-page Disney Program Engineer resume for 023, the 3-page Disney Senior Systems Engineer resume for 024 (two core pages plus Selected Projects), and 3-page PDF + interactive HTML resumes in the same layout for 025 (Senior Production Site Reliability Engineer - PH), 026 (Product Designer II, Commerce), and 027 (Product Mgr II, Subscriber Data), built and submitted Nov 7, 2026; 023 and 024 were built, grilled, and fixed through the resume chain. |
 | `output/pdf/` | Generated resume PDF variants, including the Disney Forward Deployed Engineer and Forward Deployed Product Engineer resumes, the full-length and `_2-Page` variants for applications 017–021, plus the `v1`/`v2` Disney Ride Control **reference resumes** the procedure matches its layout to. |
 | `references/` | Dated **snapshot resumes** (`RileyBeenders_Apr2022.pdf`, `_Sept2025.pdf`, `_Jan2026.pdf`) kept as historical evidence of how the resume has evolved, and as reference material the `create-custom-resume-pdf` procedure can draw layout/content cues from. |
 | `output/resumeTemplates/` | Abstract layout mockups from `generateResumeTemplates.mjs` — see [[Resume PDF Pipeline]]. |
@@ -49,9 +49,12 @@ Both `README.md` and `data/more-info/gantt.md` contain a Status Key, a Gantt cha
 | [[019 Disney - Sr Site Reliability Engineer\|019]] | Disney Signature Experiences | Sr Site Reliability Engineer | 🔴 No longer in consideration |
 | [[020 Disney - Manager Software Engineering\|020]] | Disney Experiences | Manager, Software Engineering | 🔴 No longer in consideration |
 | [[021 Disney - Manager Systems Engineering DCL New Build\|021]] | Disney Signature Experiences (Disney Cruise Line) | Manager, Systems Engineering (DCL New Build) | 🔴 No longer in consideration |
-| [[022 Disney - Sr Controls Engineer\|022]] | Disney Experiences (Disneyland Resort) | Sr Controls Engineer | Not confirmed submitted (blank status, date TBD) |
+| [[022 Disney - Sr Controls Engineer\|022]] | Disney Experiences (Disneyland Resort) | Sr Controls Engineer | 🟢 Application Received |
 | [[023 Disney - Program Engineer\|023]] | Walt Disney World Resort | Program Engineer | 🔴 No longer in consideration |
 | [[024 Disney - Senior Systems Engineer\|024]] | Disney Experiences | Senior Systems Engineer | 🟢 Application Received |
+| [[025 Disney - Senior Production Site Reliability Engineer\|025]] | Disney Television Animation (Disney Kids & Family) | Senior Production Site Reliability Engineer - PH | 🟢 Application Received |
+| [[026 Disney - Product Designer II Commerce\|026]] | Disney Entertainment and ESPN Product & Technology | Product Designer II (Commerce) | 🟢 Application Received |
+| [[027 Disney - Product Mgr II Subscriber Data\|027]] | Disney Entertainment and ESPN Product & Technology | Product Mgr II, Subscriber Data | 🟢 Application Received |
 
 ### Before the tracker
 

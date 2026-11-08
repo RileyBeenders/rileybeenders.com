@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <title>Riley Beenders - Resume</title>
+  <!-- Tab icon: the site favicon (app/icon.svg), inlined so the file works offline and from any folder. -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%23fff'/%3E%3Cg transform='translate(2 2)' fill='none' stroke-linecap='round'%3E%3Ccircle cx='20' cy='20' r='18.4' stroke='%23171a20' stroke-width='1.7'/%3E%3Cpath d='M13 10.6v18.8' stroke='%23171a20' stroke-width='3.4'/%3E%3Cpath d='M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7' stroke='%233e6ae1' stroke-width='3.4' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E">
   <!-- Interactive resume, built by .claude/skills/create-custom-resume-html/scripts/build-web-resume.mjs from
        output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html. The content below is that source's <body>, unchanged, so every claim matches
        the PDF (plus any .web-only extras, which never print). Screen styles mirror rileybeenders.com (Blueprint Press, Electric palette); print uses
@@ -156,11 +158,25 @@
     font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
   }
   .bar-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink-soft); }
-  .bar-mark {
-    display: grid; place-items: center; flex: none; width: 34px; height: 34px;
-    background: var(--ink); color: var(--paper);
-    font: 400 19px/1 var(--serif); letter-spacing: 0; text-transform: none;
+  /* The site's RB monogram (components/blueprint/BpMark.tsx): ring, stem, and one continuous B
+     whose ink-to-accent gradient follows the stroke. Draws in once on load. */
+  .bar-mark { display: block; flex: none; width: 34px; height: 34px; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .bar-mark .ring { stroke: var(--ink); stroke-width: 1; }
+  .bar-mark .stem { stroke: var(--ink); stroke-width: 2.4; }
+  .bar-mark .bowl { stroke: url(#rb-mark-grad); stroke-width: 2.4; }
+  .bar-mark .g0 { stop-color: var(--ink); }
+  .bar-mark .g1 { stop-color: var(--accent); }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .bar-mark .ring { stroke-dasharray: 116; -webkit-animation: rb-ring 0.9s var(--ease) 0.1s both; animation: rb-ring 0.9s var(--ease) 0.1s both; }
+    .js .bar-mark .stem { stroke-dasharray: 19; -webkit-animation: rb-stem 0.4s var(--ease) 0.4s both; animation: rb-stem 0.4s var(--ease) 0.4s both; }
+    .js .bar-mark .bowl { stroke-dasharray: 62; -webkit-animation: rb-bowl 0.8s var(--ease) 0.65s both; animation: rb-bowl 0.8s var(--ease) 0.65s both; }
   }
+  @-webkit-keyframes rb-ring { from { stroke-dashoffset: 116; } to { stroke-dashoffset: 0; } }
+  @keyframes rb-ring { from { stroke-dashoffset: 116; } to { stroke-dashoffset: 0; } }
+  @-webkit-keyframes rb-stem { from { stroke-dashoffset: 19; } to { stroke-dashoffset: 0; } }
+  @keyframes rb-stem { from { stroke-dashoffset: 19; } to { stroke-dashoffset: 0; } }
+  @-webkit-keyframes rb-bowl { from { stroke-dashoffset: 62; } to { stroke-dashoffset: 0; } }
+  @keyframes rb-bowl { from { stroke-dashoffset: 62; } to { stroke-dashoffset: 0; } }
   .bar-brand span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     font: 400 19px/1.15 var(--serif); letter-spacing: -0.005em; text-transform: none; color: var(--ink); }
   .bar-actions { display: flex; gap: 10px; flex: none; justify-self: end; }
@@ -446,7 +462,7 @@
 </head>
 <body>
   <div class="bar web-only" role="toolbar" aria-label="Resume tools">
-    <a class="bar-brand" href="#top" style="text-decoration:none" aria-label="Riley Beenders, Resume: back to top"><span class="bar-mark" aria-hidden="true">RB</span><span>Resume</span></a>
+    <a class="bar-brand" href="#top" style="text-decoration:none" aria-label="Riley Beenders, Resume: back to top"><svg class="bar-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><defs><linearGradient id="rb-mark-grad" x1="13" y1="10" x2="26" y2="30" gradientUnits="userSpaceOnUse"><stop class="g0" offset="0"/><stop class="g1" offset="1"/></linearGradient></defs><circle class="ring" cx="20" cy="20" r="18.4"/><path class="stem" d="M13 10.6v18.8"/><path class="bowl" d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7"/></svg><span>Resume</span></a>
     <nav class="bar-nav" aria-label="Sections" hidden></nav>
     <div class="bar-actions">
       <button class="btn btn--theme" type="button" data-theme-toggle><span class="to-dark">Dark</span><span class="to-light">Light</span></button>

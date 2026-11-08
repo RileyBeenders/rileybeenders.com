@@ -98,32 +98,32 @@
     "stats": [
       {
         "label": "Commits",
-        "value": 123,
+        "value": 190,
         "note": "on main and its version branches"
       },
       {
         "label": "Days in motion",
-        "value": 83,
+        "value": 133,
         "note": "since the first commit"
       },
       {
         "label": "Agent skills",
-        "value": 23,
-        "note": "8 repo procedures, 15 registered"
+        "value": 48,
+        "note": "33 repo procedures, 15 registered"
       },
       {
         "label": "Vault notes",
-        "value": 35,
+        "value": 50,
         "note": "kept in sync by an agent"
       },
       {
         "label": "Applications tracked",
-        "value": 16,
+        "value": 27,
         "note": "each with a tailored PDF"
       },
       {
         "label": "Projects queued",
-        "value": 8,
+        "value": 6,
         "note": "written, hidden, waiting"
       }
     ],

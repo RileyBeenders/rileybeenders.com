@@ -3,9 +3,9 @@ Tags: [job-application]
 Company: "Disney Experiences (Disneyland Resort)"
 Role: "Sr Controls Engineer"
 JobID: "022"
-Date Applied: 
-Status: "Not confirmed submitted (resume ready Oct 20, 2026)"
-PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/ProgramDevelopmentDocs-BulkSSH_%26_ExtrusionStudio/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf"
+Date Applied: 2026-11-07
+Status: "Application Received"
+PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/applications/Nov7/2.JobsApplliedTo/022_Sr%20Controls%20Engineer%20at%20DISNEY.pdf"
 ---
 
 # Sr Controls Engineer — Disney Experiences (Disneyland Resort)
@@ -13,7 +13,7 @@ PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/Program
 ---
 **Job ID:** 10162313
 **Date Posted:** Oct 14, 2026
-**Date Applied:** Not confirmed. The posting was saved and the tailored resume built on Oct 20, 2026, but there is no Workday confirmation email for it, so Riley is checking whether it was submitted.
+**Date Applied:** Nov 7, 2026. The posting was saved and a first resume built on Oct 20, 2026, but it was not submitted then; Riley submitted the reworked 3-page resume on Nov 7, 2026.
 **Salary Range:** $130,800–$159,800 per year — Anaheim, CA
 ---
 
@@ -61,20 +61,19 @@ A bonus and/or long-term incentive units may be included, plus the full range of
 
 ## How I Match Up
 
-### At Application — Oct 20, 2026 (resume built; submission not confirmed)
+### At Application — Nov 7, 2026
 
-No submission date is confirmed yet, so this compares the posting against the record as of the day the tailored resume was built.
+Compares the posting against the record on the day the reworked resume was submitted (the first resume was built Oct 20, 2026 and never sent).
 
 - **Industrial controls tenure fits:** the record covers designing, wiring, commissioning, and troubleshooting industrial production machines and their control systems in a manufacturing environment since May 2020, which meets the 5+ years industrial/manufacturing path.
-- **Controls and electrical overlap:** Allen Bradley PLCs are listed in the skills record; the record also shows Modbus TCP data acquisition (ExtrusionStudio), a multi-board CAN-bus control architecture, servo, linear-motor, and braked NEMA 34 stepper motion, electrical layout and schematics drawn to IEEE conventions, 120/240 VAC machine power, wiring harnesses, and interconnect and panel design. Python, LabVIEW, and JavaScript cover the scripting preference.
-- **Reliability and troubleshooting:** cross-functional troubleshooting through after-sales service, control-system performance monitoring in ExtrusionStudio (tolerance-band alarms, out-of-spec timers), and the linear-motor standardization done to simplify service support the reliability and downtime-response duties.
+- **Controls and electrical overlap:** Allen Bradley and Siemens PLCs are listed in the skills record (Riley supports the Siemens PLCs on the filament extrusion lines); the record also shows Modbus TCP data acquisition (ExtrusionStudio), a multi-board CAN-bus control architecture, servo, linear-motor, and braked NEMA 34 stepper motion, electrical layout and schematics drawn to IEEE conventions, 120/240 VAC machine power, wiring harnesses, and interconnect and panel design. Python, LabVIEW, and JavaScript cover the scripting preference.
+- **Reliability and troubleshooting:** cross-functional troubleshooting through after-sales service, control-system performance monitoring in ExtrusionStudio (tolerance-band alarms, out-of-spec timers), and the linear-motor standardization done to simplify service support the reliability and downtime-response duties. ExtrusionStudio has been live on all three extrusion lines since October 2026, and Riley is the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error.
 - **Safety work is adjacent:** risk analysis and mitigation to EU and U.S. standards and changes for 2006/42/EC Machinery Directive conformity are on record, but the method (FMEA, fault tree) is not; the [[Career Q&A Log]] has this as an open question.
 - **Gaps:** the record does not establish ladder-logic or PLC program authoring (an open Q&A question asks whether PLC work went beyond integration), AutoCAD, C/C++, variable frequency drives or soft starts, NEC/CEC, NRTL certification work, hydraulic or pneumatic analysis, safety PLCs, PDL/ICL, amusement-industry experience, or California Professional Registration. The B.S. in Electro-Mechanical Engineering is close to, but not, the Electrical Engineering degree named.
 
 ### Now — Nov 7, 2026
 
-- **Siemens PLCs added to the skills record (Nov 7, 2026):** Riley supports the Siemens PLCs on the filament extrusion lines, which covers a second PLC family the posting names. The ladder-logic, AutoCAD, C/C++, VFD, and code-compliance gaps above are unchanged.
-- **Deployment and support facts (Nov 6, 2026):** ExtrusionStudio has been live on all three extrusion lines since October 2026, and Riley is the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error, which strengthens the downtime-response and troubleshooting fit.
+Nothing relevant has changed since the application was submitted today.
 
 ---
 
@@ -87,5 +86,5 @@ The role sits in Sustaining Engineering at the Disneyland Resort in Anaheim, pro
 ## Related
 - [[Job Application Tracker]]
 - Source posting: `2.JobsApplliedTo/022_Sr Controls Engineer at DISNEY.pdf`
-- Resume used: `1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf` (rebuilt Nov 7, 2026 through create-custom-resume-pdf, grill-my-resume, and fix-my-resume: 3 pages, two core pages plus Selected Projects; source `output/resume-html/022-RileyBeenders-Sr_Controls_Engineer.html`)
+- Resume used: `1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.pdf` (submitted Nov 7, 2026; rebuilt that day through create-custom-resume-pdf, grill-my-resume, and fix-my-resume: 3 pages, two core pages plus Selected Projects; source `output/resume-html/022-RileyBeenders-Sr_Controls_Engineer.html`)
 - Interactive HTML resume: `1.ApplicationsUsed/022-RileyBeenders-Sr_Controls_Engineer.html` (built with create-custom-resume-html; prints to the same 3-page layout as the PDF)
