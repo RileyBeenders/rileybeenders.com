@@ -3,10 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import resumeData from "@/data/resumeData";
-import { Reveal } from "@/components/blueprint/Reveal";
 import { BackToTop } from "@/components/blueprint/BackToTop";
-import { ProjectBody } from "@/components/sheet/ProjectBody";
-import { SiteFooter } from "@/components/sheet/SiteFooter";
+import { ProjectBody } from "@/components/bench/ProjectBody";
+import { SiteFooter } from "@/components/bench/SiteFooter";
 import { getCatalog, getEntry } from "@/lib/catalog";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { todayIso } from "@/lib/dates";
@@ -48,15 +47,13 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   return (
     <main>
       <section className="shell sec sec--tight" aria-label={entry.project.name}>
-        <Reveal>
+        <div className="page-in">
           <Link className="page-back" href="/projects" suppressHydrationWarning>
             <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
             <span>{ui.nav.projects}</span>
           </Link>
-        </Reveal>
-        <Reveal delay={0.06}>
           <ProjectBody entry={entry} today={todayIso()} paletteId={resumeData.theme.paletteId} mode="page" />
-        </Reveal>
+        </div>
 
         {(previous || next) && (
           <nav className="page-nav" aria-label="Other projects">

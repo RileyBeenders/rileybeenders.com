@@ -4,7 +4,7 @@ tags: [overview, reference]
 
 # Repository Map
 
-This is the full annotated tree of `rileybeenders.com` on the **`design/UI_Refresh`** branch, after the Blue Sheet redesign of 2026-11-08 (Version 3.1). Paths are relative to the repo root (`C:\Users\riley\Documents\GitHub_Repos\rileybeenders.com`). The files the redesign deleted are listed in [[Blue Sheet (2026-11 redesign)]], and the tree they belonged to is described in [[Blueprint Press (2026-08 to 2026-11)]].
+This is the full annotated tree of `rileybeenders.com` on the **`design/UI_Refresh`** branch, after the Clean Bench redesign of 2026-11-09, which followed the one-day Blue Sheet redesign of 2026-11-08 (Version 3.1). Paths are relative to the repo root (`C:\Users\riley\Documents\GitHub_Repos\rileybeenders.com`). The files the redesigns deleted are listed in [[Blue Sheet (2026-11-08, one day)]] and [[Clean Bench (2026-11 redesign)]], and the tree they belonged to is described in [[Blueprint Press (2026-08 to 2026-11)]].
 
 ```text
 CLAUDE.md                      # routing index for the agent skills + the Next.js agent-rules block, kept current by hand
@@ -40,12 +40,12 @@ app/
   icon.svg                     # static favicon, the hand-drawn static form of the BpMark monogram
   apple-icon.tsx               # iOS home-screen icon, rendered via next/og ImageResponse
   opengraph-image.tsx          # 1200x630 OG/Twitter card, rendered via next/og + Satori (reads assets/fonts/InstrumentSerif)
-  (site)/                      # route group: everything with the Blue Sheet chrome
-    layout.tsx                 # 8 Google faces, the Studio palette + font roles as a <style> override, ThemeProvider, <SiteNav>, .sheet-frame, the [data-sheet-portal] host, AnimationSync / SmoothScroll switches, dev-only StudioLink
-    sheet.css                  # the Blue Sheet design system (1,120 lines), all scoped under .bp, in banner-commented sections
+  (site)/                      # route group: everything with the Clean Bench chrome
+    layout.tsx                 # 10 Google faces, the Studio palette + four font roles as a <style> override, ThemeProvider, <SiteNav>, .page, the [data-bench-portal] host, AnimationSync / SmoothScroll switches, dev-only StudioLink
+    bench.css                  # the Clean Bench design system (1,119 lines), all scoped under .bp, in banner-commented sections (tiles, bento, bloom)
     bullet-link.css            # the resume bullets' Read more button variants (data-motion); also served to the Studio
     skill-pills.css            # skill pills and linked skills (data-border / data-reveal); also served to the Studio
-    page.tsx                   # / (async server): hero card, GitHub activity, Who is Riley?, Experience, Projects grid, Stack, Education, Contact, footer
+    page.tsx                   # / (async server): the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Stack, Education, Contact, footer
     projects/page.tsx          # /projects: the catalog grid with type filters (projects + the site entry), outro
     projects/[id]/page.tsx     # /projects/<id>: one entry's ProjectBody on its own page, prev/next; generateStaticParams over the catalog
     projects/projects.css      # .pj-*: gallery, lightbox, case study, date box, status, compare, post card, flow diagrams
@@ -60,22 +60,21 @@ components/
   GanttChart.tsx               # client-side mermaid Gantt renderer for the job tracker
   JobsTable.tsx                # renders the merged job-tracker rows
   SiteAnalytics.tsx            # client wrapper for Vercel <Analytics>: va-disable opt-out, ?analytics=off/on, per-session "Visit" event
-  sheet/                       # the Blue Sheet components (2026-11-08)
+  bench/                       # the Clean Bench components (components/sheet/ until 2026-11-09)
     SiteNav.tsx                # floating pill nav (Home · Projects · Contact), condenses at 28px, sliding active tint, theme toggle
-    HeroCover.tsx              # the hero card's drawn SVG blueprint band (stroke-draw on load), with the sheet label
     HeroActions.tsx            # Download PDF (opens resumeHtmlPath in a new tab, else downloads the PDF) / Email / LinkedIn / GitHub
-    CursorMark.tsx             # monogram chip trailing the pointer across the hero card (Site Settings → Motion → Cursor mark)
+    CursorMark.tsx             # monogram chip trailing the pointer across the bento (Site Settings → Motion → Cursor mark)
     GithubGraph.tsx            # the contribution calendar drawn from lib/github.ts, cells popping in column by column
-    Experience.tsx             # roles on a timeline rail; emphasis phrases + Read more links; folds roles over 7 bullets after 6
-    Stack.tsx                  # the four skill groups as cards of pills (LinkedSkill for linked ones)
-    Education.tsx              # the degree card + a grid of certificate cards
-    ProjectGrid.tsx            # the project cards + the dialog; #project-<id>[-case-study] hash routing; type filters
-    ProjectCard.tsx            # one tile: cover (or monogram), type and "This site" tags, name, summary line, dates and photo count
-    ProjectDialog.tsx          # the dialog: portal into [data-sheet-portal], focus trap, Escape, data-lock scroll lock, Open full page
+    Experience.tsx             # roles on a timeline rail in one tile; emphasis phrases + Read more links; folds roles over 7 bullets after 6
+    Stack.tsx                  # the four skill groups as tiles of pills (LinkedSkill for linked ones)
+    Education.tsx              # the degree tile + a grid of certificate tiles
+    ProjectGrid.tsx            # the project tiles + the dialog; #project-<id>[-case-study] hash routing; type filters
+    ProjectCard.tsx            # one tile: cover (or monogram), type and "This site" tags, name, summary line, dates and photo count; exports MORPH + tileLayoutId
+    ProjectDialog.tsx          # the dialog the tile morphs into: portal into [data-bench-portal], focus trap, Escape, data-lock scroll lock, Open full page
     ProjectBody.tsx            # everything an entry has: head, gallery, summary, status, bullets, links, case study, walkthrough, deep dive, tracker
     ContactBlock.tsx           # the ways in beside ContactForm (home page foot and /contact)
     ContactForm.tsx            # "Send me a message": POST /api/contact, mailto: fallback on 503, honeypot field
-    SiteFooter.tsx             # the monogram, footer note and the Sheet · Rev. · Drawn in title block, on every page
+    SiteFooter.tsx             # the monogram, footer note and the Site · Updated · Based in meta line, on every page
     SmoothScroll.tsx           # inertial wheel scrolling (Site Settings → Motion → Smooth scrolling)
     BrandIcons.tsx             # GitHub and LinkedIn marks drawn to lucide's 24-box
   blueprint/                   # primitives kept from Blueprint Press
@@ -149,11 +148,11 @@ lib/
   aspect.ts                    # aspectRatio() for ImageAspect
   photo-place.ts               # ShownImage, canFloat(), the old Photo Mode placement rules (types still used by ProjectGallery)
   dates.ts                     # isIsoDate, parseIsoDate (UTC), formatDate, daysBetween, todayIso
-  build-stamp.ts               # short commit + build date for the footer title block; server-only
-  palette.ts                   # PaletteTokens: the ramp, onAccent and the Blue Sheet surfaces (deriveSheetTokens, isDarkPalette); tokensToCssVars()
-  palettes.ts                  # the 11 presets (default, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose, slate)
+  build-stamp.ts               # short commit + build date for the footer's Updated line; server-only
+  palette.ts                   # PaletteTokens: the ramp, onAccent and the accent surfaces (deriveSheetTokens, isDarkPalette); tokensToCssVars()
+  palettes.ts                  # the 12 presets (default, clean-bench, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose, slate)
   theme.ts                     # resolveThemeTokens(header.theme) → light + dark token sets
-  fonts.ts                     # the eight font options; fontVarExpression()
+  fonts.ts                     # the ten font options; fontVarExpression()
   useInViewOnce.ts             # once-only IntersectionObserver hook for CSS-stagger reveals (GithubGraph, stats)
   useSpotlight.ts              # writes --sx/--sy on pointer move for the .bp-spot cursor wash (project cards, stats)
   site.ts                      # REPO_URL for commit links and the site entry's GitHub button
@@ -211,9 +210,9 @@ references/                    # dated snapshot resumes (Apr 2022, Sept 2025, Ja
 
 README.md                      # project description + duplicate Gantt/tracker table + Past Disney Applications + local-dev and Studio instructions
 README_TODO.md                 # open content tasks
-PRODUCT.md                     # product truth for the impeccable skill (interviewed 2026-09-18, updated for Blue Sheet 2026-11-08)
-DESIGN.md                      # the Blue Sheet token spec in Stitch DESIGN.md format
-.impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); critique/ is git-ignored run output
+PRODUCT.md                     # product truth for the impeccable skill (interviewed 2026-09-18, updated for Blue Sheet 2026-11-08 and Clean Bench 2026-11-09)
+DESIGN.md                      # the Clean Bench token spec in Stitch DESIGN.md format
+.impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); surfaces/ holds the Clean Bench direction contract; critique/ is git-ignored run output
 skills-lock.json               # source repo + path + content hash for each vendored skill
 .markdownlint.jsonc            # markdownlint exceptions
 package.json / package-lock.json   # rileybeenders.com 3.1.0, pinned ranges; `site`, `dev`, `build`, `start`, `typecheck`, `studio` scripts
@@ -234,5 +233,6 @@ next-env.d.ts                  # Next-generated; git-ignored
 ## Related
 - [[Project Overview]]
 - [[Architecture and Data Flow]]
-- [[Blue Sheet (2026-11 redesign)]]
+- [[Clean Bench (2026-11 redesign)]]
+- [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

@@ -7,9 +7,9 @@ const page = homePageData as HomePageData;
 
 /**
  * The foot of every page: the monogram with the footer note beside it, and
- * a drawing's title block — sheet, revision (the commit the page was built
- * from), and where it was drawn. All of it is Studio copy (Home page →
- * Footer) and Site Settings.
+ * a quiet line of small facts in the label face: the site's own link, the
+ * commit and date the page was built from, and where Riley is based. All of
+ * it is Studio copy (Home page → Footer) and Site Settings.
  */
 export function SiteFooter({ location }: { location: string }) {
   const stamp = getBuildStamp();
@@ -18,18 +18,18 @@ export function SiteFooter({ location }: { location: string }) {
       <div className="shell">
         <div className="footer-inner">
           <div className="footer-mark">
-            <BpMark id="footer" size={52} animated float />
+            <BpMark id="footer" size={44} animated float />
             <p className="footer-note">{page.footer.note}</p>
           </div>
-          <dl className="footer-block" aria-label="About this page">
+          <dl className="footer-meta" aria-label="About this page">
             <div>
-              <dt>{page.footer.sheetLabel}</dt>
-              <dd><a href={page.footer.sheetLink.href} suppressHydrationWarning>{page.footer.sheetLink.text}</a></dd>
+              <dt>{page.footer.siteLabel}</dt>
+              <dd><a href={page.footer.siteLink.href} suppressHydrationWarning>{page.footer.siteLink.text}</a></dd>
             </div>
             {stamp.commit && (
               <div>
-                <dt>{page.footer.revisionLabel}</dt>
-                <dd>{stamp.commit} · {stamp.date}</dd>
+                <dt>{page.footer.updatedLabel}</dt>
+                <dd>{stamp.date} · {stamp.commit}</dd>
               </div>
             )}
             <div>

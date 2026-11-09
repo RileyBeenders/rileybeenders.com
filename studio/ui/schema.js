@@ -119,8 +119,14 @@ const PALETTE_OPTIONS = [
     swatchDark: { paper: "#0d1b2a", white: "#142a3d", ink: "#eef3f7", accent: "#ff6b62", blue: "#5aa9e6" }
   },
   {
+    id: "clean-bench", name: "Clean Bench",
+    description: "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    swatch: { paper: "#f4f5f8", white: "#ffffff", ink: "#111318", accent: "#2457e6", blue: "#173ea8" },
+    swatchDark: { paper: "#0f1115", white: "#181b22", ink: "#eceef2", accent: "#6a93ff", blue: "#9db9ff" }
+  },
+  {
     id: "blue-sheet", name: "Blue Sheet",
-    description: "The redesign's own palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    description: "The 2026-11-08 drafting-sheet look's palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark.",
     swatch: { paper: "#f4f7fd", white: "#ffffff", ink: "#0d182c", accent: "#2457e6", blue: "#173ea8" },
     swatchDark: { paper: "#070b15", white: "#0e1627", ink: "#e8eefb", accent: "#6a93ff", blue: "#9db9ff" }
   },
@@ -277,6 +283,8 @@ const SKILL_REVEALS = [
 
 /** Every option next/font/google preloads in app/(site)/layout.tsx — see lib/fonts.ts. */
 const FONT_OPTIONS = [
+  { value: "instrument-sans", label: "Instrument Sans — clean grotesque, the Clean Bench face" },
+  { value: "azeret-mono", label: "Azeret Mono — wide monospace for small labels" },
   { value: "instrument-serif", label: "Instrument Serif — editorial display serif" },
   { value: "spectral", label: "Spectral — warm reading serif" },
   { value: "playfair-display", label: "Playfair Display — high-contrast formal serif" },
@@ -616,6 +624,16 @@ export const SCHEMAS = {
         ]
       },
       {
+        name: "bento",
+        type: "group",
+        label: "Bench tiles",
+        help: "The small labels on the tiles beside the hero. The other tiles take their labels from Section headings, Navigation & labels (This site) and the Contact page.",
+        fields: [
+          { name: "now", type: "text", label: "Current role tile", required: true, span: "half", help: "Over the first Experience entry." },
+          { name: "location", type: "text", label: "Location tile", required: true, span: "half", help: "Over Site Settings → Location." }
+        ]
+      },
+      {
         name: "summaryLink",
         type: "group",
         label: "Summary link",
@@ -629,13 +647,13 @@ export const SCHEMAS = {
         name: "headings",
         type: "group",
         label: "Section headings",
-        help: "The home page's sections, top to bottom after the hero: activity, summary, experience, projects, stack, education.",
+        help: "The home page's sections, top to bottom after the bench: summary, experience, projects, stack, education. Activity names the GitHub tile on the bench.",
         fields: [
           { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
           { name: "skills", type: "text", label: "Stack", required: true, span: "half", help: "The four skill groups, as cards of pills." },
           { name: "education", type: "text", label: "Education", required: true, span: "half" },
-          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The contribution calendar under the hero, read from the GitHub profile in Site Settings → Person." },
+          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The GitHub tile on the bench, read from the GitHub profile in Site Settings → Person." },
           { name: "projects", type: "text", label: "Projects", required: true, span: "half", help: "The project grid on the home page." }
         ]
       },
@@ -705,9 +723,9 @@ export const SCHEMAS = {
         label: "Footer",
         fields: [
           { name: "note", type: "textarea", label: "Note beside the mark", rows: 2, required: true },
-          { name: "sheetLabel", type: "text", label: "Site label", required: true, span: "third" },
+          { name: "siteLabel", type: "text", label: "Site label", required: true, span: "third" },
           {
-            name: "sheetLink",
+            name: "siteLink",
             type: "group",
             label: "Site link",
             fields: [
@@ -715,7 +733,7 @@ export const SCHEMAS = {
               { name: "href", type: "text", label: "URL", required: true, span: "half" }
             ]
           },
-          { name: "revisionLabel", type: "text", label: "Revision label", required: true, span: "third", help: "Beside the latest commit." },
+          { name: "updatedLabel", type: "text", label: "Updated label", required: true, span: "third", help: "Beside the commit and date the page was built from." },
           { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "Beside Site Settings → Location." }
         ]
       }
@@ -1159,7 +1177,8 @@ export const SCHEMAS = {
         fields: [
           { name: "header", type: "select", label: "Headers (H1)", span: "third", options: FONT_OPTIONS, always: true },
           { name: "subheader", type: "select", label: "Sub-headers (H2/H3)", span: "third", options: FONT_OPTIONS, always: true },
-          { name: "body", type: "select", label: "Body copy", span: "third", options: FONT_OPTIONS, always: true }
+          { name: "body", type: "select", label: "Body copy", span: "third", options: FONT_OPTIONS, always: true },
+          { name: "mono", type: "select", label: "Small labels", span: "third", options: FONT_OPTIONS, always: true, help: "Dates, captions, eyebrows and other minor notes." }
         ]
       },
       {

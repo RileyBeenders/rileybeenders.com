@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { BackendSkill } from "@/types/resume";
 import { Paragraphs } from "@/components/content/Paragraphs";
 
-/** Matches --ease in sheet.css — framer-motion can't read CSS custom properties. */
+/** Matches --ease in bench.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 /** How long each skill holds before the router moves on by itself (until the visitor touches it). */

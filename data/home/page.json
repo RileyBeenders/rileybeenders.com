@@ -11,6 +11,10 @@
     ],
     "currentRole": "{company}, since {start}"
   },
+  "bento": {
+    "now": "Now",
+    "location": "Based in"
+  },
   "summaryLink": {
     "text": "RileyBeenders.com",
     "href": "https://www.rileybeenders.com"
@@ -27,8 +31,8 @@
     "animation": "glint"
   },
   "linkedSkills": {
-    "border": "signal",
-    "reveal": "callout",
+    "border": "marks",
+    "reveal": "tab",
     "labels": {
       "project": "Project",
       "proof": "Proof"
@@ -36,12 +40,12 @@
   },
   "footer": {
     "note": "A website built to house my experience, compiled into one place for the next challenge.",
-    "sheetLabel": "Sheet",
-    "sheetLink": {
+    "siteLabel": "Site",
+    "siteLink": {
       "text": "rileybeenders.com",
       "href": "https://rileybeenders.com"
     },
-    "revisionLabel": "Rev.",
-    "locationLabel": "Drawn in"
+    "updatedLabel": "Updated",
+    "locationLabel": "Based in"
   }
 }

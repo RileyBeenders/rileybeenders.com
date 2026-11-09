@@ -18,7 +18,7 @@
     "openToRelocation": true
   },
   "theme": {
-    "paletteId": "blue-sheet",
+    "paletteId": "clean-bench",
     "custom": {
       "light": {
         "paper": "#ffffff",
@@ -37,9 +37,10 @@
     }
   },
   "fonts": {
-    "header": "instrument-serif",
-    "subheader": "instrument-serif",
-    "body": "inter"
+    "header": "instrument-sans",
+    "subheader": "instrument-sans",
+    "body": "instrument-sans",
+    "mono": "azeret-mono"
   },
   "layout": {
     "introAlign": "full"

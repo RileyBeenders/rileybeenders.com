@@ -1,10 +1,10 @@
 import { Mail, MapPin } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/sheet/BrandIcons";
+import { GithubIcon, LinkedinIcon } from "@/components/bench/BrandIcons";
 import contactData from "@/data/contact/contact.json";
 import type { ContactData } from "@/types/contact";
 import type { ResumeData } from "@/types/resume";
 import { Reveal } from "@/components/blueprint/Reveal";
-import { ContactForm } from "@/components/sheet/ContactForm";
+import { ContactForm } from "@/components/bench/ContactForm";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { ui } from "@/lib/copy";
 

@@ -2,42 +2,40 @@
 tags: [component, client]
 ---
 
-# Sheet Components (Home Page)
+# Bench Components (Home Page)
 
-This note covers the `components/sheet/*` pieces the home page is built from (everything except the nav, which is in [[Site Nav and Mark]], and the project grid and dialog, which are in [[Project Catalog and Dialog]]). It also covers the primitives kept from Blueprint Press in `components/blueprint/` and `components/content/`. All of `components/sheet/` arrived with the Blue Sheet redesign on 2026-11-08 (see [[Blue Sheet (2026-11 redesign)]]). The Blueprint Press pieces it replaced (`BpActions`, `HeroRibbon`, `PageSpine`, `BpRelocationBadge`, `BpComingSoon`, `WordReveal`) are described in [[Blueprint Press (2026-08 to 2026-11)]].
+This note covers the `components/bench/*` pieces the home page is built from, and the bento of tiles that opens it (everything except the nav, which is in [[Site Nav and Mark]], and the project grid and dialog, which are in [[Project Catalog and Dialog]]). It also covers the primitives kept from Blueprint Press in `components/blueprint/` and `components/content/`. The folder arrived as `components/sheet/` with the Blue Sheet redesign on 2026-11-08 (see [[Blue Sheet (2026-11-08, one day)]]) and was renamed `components/bench/` with Clean Bench on 2026-11-09 (see [[Clean Bench (2026-11 redesign)]]), when `HeroCover.tsx` was deleted. The Blueprint Press pieces it replaced (`BpActions`, `HeroRibbon`, `PageSpine`, `BpRelocationBadge`, `BpComingSoon`, `WordReveal`) are described in [[Blueprint Press (2026-08 to 2026-11)]].
 
-The home page itself (`app/(site)/page.tsx`) is an async server component; [[Routes Overview]] lists its sections in order. Each section is a `section.shell.sec` with a `.sec-head` (an `h2.sec-title` with its short accent rule, plus an optional `.sec-sub`) inside a `Reveal`.
+The home page itself (`app/(site)/page.tsx`) is an async server component; [[Routes Overview]] lists its sections in order. It opens with the bento, then each section is a `section.shell.sec` with a `.sec-head` (an `h2.sec-title`, plus an optional `.sec-sub`) inside a `Reveal`.
 
-## The hero card
+## The bento (in `page.tsx`)
 
-`section.shell.hero` → `.hero-card[data-cursor-zone]`. This is a 30px-radius white card on `--shadow`, entering with a 0.9s `hero-in` (rise 18px, a 6px blur clearing).
+`section.shell.hero` → `.bento[data-cursor-zone]`: a six-column grid of tiles at `--gap`. Every tile is a `.card` (`.card--hover` when it links somewhere) and enters once with the CSS `tile-in` (16px rise, 0.8s), staggered 70ms by `--i`. `page.tsx` numbers the tiles in order with a small counter (`order()`), so a new tile takes the next number. The bento has no observer: it is above the fold.
 
-### `HeroCover.tsx`
+| Tile | Span | Content | Links to |
+|---|---|---|---|
+| `.tile-hero` (`article`) | 4 columns × 3 rows | The identity row, name, title, meta line and `HeroActions` | (none) |
+| `.tile-now` | 2 | `page.bento.now` ("Now"), the current role, "company · start – end" | `#experience` |
+| `.tile-where` | 2 | `page.bento.location` ("Based in"), the location, and "Open to relocation" when on | (none) |
+| `.tile-edu` | 2 | `page.headings.education`, the first degree (`.tile-value--sm`), "school · graduation" | `#education` |
+| `.tile-activity` | full width | `GithubGraph` | (none) |
+| `.tile-site` | 3 | `ui.projects.siteBadge` ("This site"), the site entry's name and tagline | `#project-rileybeenders-com` (opens the dialog) |
+| `.tile-contact` | 3 | `contact.hero.title`, `contact.form.title`, the contact tagline | `#contact` |
 
-Server-safe, pure SVG + CSS. The band across the top of the card is `clamp(150px, 24vw, 250px)` tall, on an `--accent-fill` gradient (so in dark mode it is the deeper blue). It is drawn as a sheet of construction lines in white:
+Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `MapPin`, `GraduationCap`, `Monitor`, `MessageSquare`), a `.tile-value`, a `.tile-sub`, and, when it links, a `.tile-arrow` (`ArrowUpRight` in a 30px circle) that nudges on hover. At 980px the bento is two columns (the hero and education full width); at 640px, one. The bento labels are Studio copy (Home page → Bench tiles).
 
-- a fine 25px grid and a coarse 125px grid (SVG `<pattern>`s) under a radial fade;
-- a circle with a dashed inner circle and centre marks;
-- two section arcs;
-- a dimension line with its arrows;
-- a run of ticks;
-- a hex nut, drawn last;
-- mono labels ("Ø 340", "R 86", "SEC A-A").
+### The hero tile
 
-Each stroke is `.draw` with its own `--len` and `--delay`, and runs `bp-draw-in` once (1.6s on `--ease`). Under reduced motion the cover shows complete. The bottom-right label is `"<footer.sheetLabel> · <location>"` (`.hero-cover-label`). This is the "blueprint intro" taken from imdaryl.com.
-
-### The identity row and text (in `page.tsx`)
-
-- `.hero-avatar` is a round white disc holding `<BpMark id="hero" size={60} animated />`. It overlaps the cover's bottom edge by 44px.
-- When `visibility.openToRelocation` is on, the row also has a `.chip` with a pinging `.chip-dot` and `ui.openToRelocation`.
-- Then:
-  - `h1.hero-name`: `page.hero.lines` joined;
-  - `p.hero-role`: `person.title` and a blinking `.hero-caret`;
-  - `.hero-meta`: lucide `MapPin` + the location, and `Briefcase` + `.hero-now-role` (the current role) "· `<company>`, since `<start>`" from `page.hero.currentRole`.
+- `.tile-hero` carries its own accent-soft glow top right (`::before`) so it reads as the brightest thing on the bench.
+- `.hero-top`: `.hero-avatar`, a 72px round disc on `--paper` holding `<BpMark id="hero" size={46} animated />` (60px with a 38px mark under 760px). When `visibility.openToRelocation` is on, the row also has a `.chip` with a pinging `.chip-dot` and `ui.openToRelocation`.
+- `h1.hero-name`: `page.hero.lines` joined, `clamp(38px, 5.4vw, 62px)` at 600.
+- `p.hero-role`: `person.title` in the accent. (The Blue Sheet caret is gone.)
+- `.hero-meta`: lucide `MapPin` + the location, and `Briefcase` + `.hero-now-role` (the current role) "· `<company>`, since `<start>`" from `page.hero.currentRole`.
+- `HeroActions` at the foot.
 
 ### `HeroActions.tsx`
 
-`"use client"`. This is the row under the hero (it replaces `BpActions`).
+`"use client"`. This is the button row at the foot of the hero tile (it replaced `BpActions` in Blue Sheet and is unchanged by Clean Bench).
 
 - **Download PDF.** When `resumeHtmlPath` is set (today `"/resume/RileyBeenders_Resume_26311.html"`), it is a `.btn.btn--solid` anchor with `target="_blank" rel="noopener"` that opens the interactive HTML resume in a new tab, where its Print / PDF button saves the file. Without it, the button runs a three-state machine (`idle | loading | error`): it dynamically imports `ResumeBuilder/downloadPublishedResume` and calls `downloadPublishedResumePdf(resumePdfPath)`. A failure renders `.hero-error` with `role="alert"`. The solid button carries the looping `.bp-sheen` while idle.
 - **Email / LinkedIn / GitHub.** Plain `.btn` anchors (`mailto:`, `person.linkedin`, `person.github`; the last two open with `target="_blank" rel="noreferrer"`). The icons are lucide `Mail` and the `BrandIcons` marks.
@@ -46,12 +44,12 @@ See [[Resume PDF Pipeline]].
 
 ### `CursorMark.tsx`
 
-`"use client"`. A monogram chip (`<BpMark id="cursor" size={24} />` on a small white disc, `.cursor-mark`) that trails the pointer inside the nearest `[data-cursor-zone]` (the hero card).
+`"use client"`. A monogram chip (`<BpMark id="cursor" size={24} />` on a small white disc, `.cursor-mark`) that trails the pointer inside the nearest `[data-cursor-zone]` (the whole bento).
 
 - It follows on a spring (`stiffness 260, damping 26, mass 0.5`), offset 18px from the pointer.
 - It leans into its direction of travel (`rotate` = the spring's lag × 0.18, clamped to ±14°).
 - It fades and scales in on `pointermove` and out on `pointerleave`.
-- It is enabled only for `(hover: hover) and (pointer: fine)`, and renders nothing under reduced motion.
+- It is enabled only for `(hover: hover) and (pointer: fine)`. It always renders (so the server and client trees match) and stays hidden under reduced motion.
 
 Gated by Site Settings → Motion → **Cursor mark** (`header.json` `motion.cursorMark`, on). Print hides it.
 
@@ -62,21 +60,21 @@ Gated by Site Settings → Motion → **Cursor mark** (`header.json` `motion.cur
 **`GithubGraph.tsx`** (`"use client"`) draws the calendar as one SVG:
 
 - **Layout.** One column per week, Sunday at the top. The cells are 12px with 3px gaps (`rx 2.5`). Month labels sit over the first week of each month (skipping a label that would collide). Mon / Wed / Fri labels run down the left.
-- **Colour.** The fill is GitHub's own five levels mapped to `--lv0…--lv4` in `sheet.css`'s activity section. In light mode they come from `--ink` / `--white` / `--accent-soft` / `--accent-fill`. In dark mode `--lv1`, `--lv2` and `--lv4` are literal Blue Sheet hexes.
+- **Colour.** The fill is GitHub's own five levels mapped to `--lv0…--lv4` in `bench.css`'s activity section. In light mode they come from `--ink` / `--white` / `--accent-soft` / `--accent-fill`. In dark mode `--lv1`, `--lv2` and `--lv4` are literal hexes (`#1d2a4d`, `#27408f`, `#6a93ff`).
 - **Text.** Each cell has a `<title>` ("3 contributions on November 7, 2026"). The header shows `ui.activity.total` ("{count} contributions in the last year"), and the foot has a "View on GitHub" `.bp-link` and the Less → More legend.
-- **Motion.** The first time 25% of the card is in view (`useInViewOnce`), the cells pop in column by column: `activity-in`, 0.5s, `--i` × 11ms per week.
+- **Motion.** The first time 25% of the tile is in view (`useInViewOnce`), the cells pop in column by column: `activity-in`, 0.5s, `--i` × 11ms per week.
 - **Overflow.** The SVG has a `min-width` of 720px, so on a phone the calendar scrolls sideways inside `.activity-scroll` (marked `data-native-scroll`).
-- **Fallback.** With `data === null` the card shows `ui.activity.unavailable`. Print hides the card.
+- **Fallback.** With `data === null` the tile shows `ui.activity.unavailable`. Print hides it.
 
 Labels come from Studio: Navigation & labels → GitHub activity, and the heading from Home page → headings → GitHub activity.
 
-## The summary and fact cards (in `page.tsx`)
+## The summary and fact tiles (in `page.tsx`)
 
-`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact cards are the current role · company, the first degree · school, the location (with "· Open to relocation" when on), and Sheet → the site link. Under 980px the grid is one column.
+`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact tiles are labelled in mono from Studio copy: Experience (the current role · company), Education (the first degree · school), Based in (`footer.locationLabel`; the location, with "· Open to relocation" when on), and Site (`footer.siteLabel` → `footer.siteLink`). Under 980px the grid is one column.
 
 ## `Experience.tsx`
 
-`"use client"` (for the per-role fold). It renders the roles, newest first, as a timeline.
+`"use client"` (for the per-role fold). It renders the roles, newest first, as a timeline inside one tile (`div.card.roles`).
 
 - **Layout.** Each `article.role` is a `150px | 1fr` grid. The left column holds the mono dates (start in bold ink, then the end) on a `.role-rail` with a `.role-dot`, which fills with the accent and scales 1.2× on hover. The right column has the `h3` role, `.role-org` (the company in the accent, then "· location" muted), the optional italic `context` (`Paragraphs`), and the bullets.
 - **Bullets.** Each bullet is `<EmphasizedText className="bp-bullet-emphasis">`, so the Studio's accent phrases take the accent (plus a hairline text stroke) when the `li` is hovered or focused, and the `li` nudges 3px. A bullet whose `projectId` names a published catalog entry ends with a `<BulletLink>` to `/projects#project-<id>`, which opens that project's dialog. Its label is `ui.bulletReadMore`, its motion is `page.readMore.animation` (today `glint`), and `index` counts links across all roles, so each glint gets its own beat.
@@ -86,7 +84,7 @@ Labels come from Studio: Navigation & labels → GitHub activity, and the headin
 
 ## `Stack.tsx`
 
-Server-safe. The four skill groups as cards (`.stack-grid`, two columns, one under 760px). Each `section.card.stack-card.bp-skill-group` has a header (the `h3` category and a mono `.stack-count`) and the group's items as `.bp-pill`s. `skillTargets(group, data)` (`lib/skill-links.ts`) resolves the group's `links`, and a linked item renders as `<LinkedSkill>` with `page.linkedSkills` `border` / `reveal` / `labels` (today `orbit` / `card`). The `--k` beat counts across groups. The section heading is "Tech & hardware stack". Pill styles stay in `app/(site)/skill-pills.css`.
+Server-safe. The four skill groups as tiles (`.stack-grid`, two columns, one under 760px). Each `section.card.stack-card.bp-skill-group` has a header (the `h3` category and a mono `.stack-count`) and the group's items as `.bp-pill`s. `skillTargets(group, data)` (`lib/skill-links.ts`) resolves the group's `links`, and a linked item renders as `<LinkedSkill>` with `page.linkedSkills` `border` / `reveal` / `labels` (today `orbit` / `card`). The `--k` beat counts across groups. The section heading is "Tech & hardware stack". Pill styles stay in `app/(site)/skill-pills.css`.
 
 ## `Education.tsx`
 
@@ -97,7 +95,7 @@ Server-safe. An `.edu-grid` (1.1fr : 2fr, one column under 980px):
 
 ## `ContactBlock.tsx` + `ContactForm.tsx`
 
-**`ContactBlock`** (server-safe) ends the home page (`#contact`) and is the body of `/contact` (`heading={false}`, because that page draws its own `h1`). It is one `.card.contact-card` split 1 : 1.15. The left half, on `--tint`, holds:
+**`ContactBlock`** (server-safe) ends the home page (`#contact`) and is the body of `/contact` (`heading={false}`, because that page draws its own `h1`). It is one `.card.contact-card` tile split 1 : 1.15. The left half, on `--tint`, holds:
 
 - the `hero.title` as an `h2` (home only);
 - the italic `hero.tagline` and the `details.description` paragraphs;
@@ -115,13 +113,13 @@ The server side is in [[Routes Overview]].
 
 ## `SiteFooter.tsx`
 
-Server-safe, and on every page (home, projects, a project page, contact). `<footer class="footer">` holds `<BpMark id="footer" size={52} animated float />` beside `page.footer.note`, and the drawing title block `<dl class="footer-block" aria-label="About this page">`:
+Server-safe, and on every page (home, projects, a project page, contact). `<footer class="footer">` holds `<BpMark id="footer" size={44} animated float />` beside `page.footer.note`, then a quiet mono line, `<dl class="footer-meta" aria-label="About this page">`:
 
-- **Sheet**: `footer.sheetLink`;
-- **Rev.**: the short commit · build date from `lib/build-stamp.ts`, omitted when no commit is known;
-- **Drawn in**: the location.
+- **Site** (`footer.siteLabel`): `footer.siteLink`;
+- **Updated** (`footer.updatedLabel`): the build date · short commit from `lib/build-stamp.ts`, omitted when no commit is known;
+- **Based in** (`footer.locationLabel`): the location.
 
-All of it is Studio copy (Home page → Footer).
+All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were `sheetLabel` / `sheetLink` / `revisionLabel` and the line was Blue Sheet's drawing title block.
 
 ## `SmoothScroll.tsx`
 
@@ -144,12 +142,12 @@ All of it is Studio copy (Home page → Footer).
 
 - Under `useReducedMotion()` it renders a plain `<div>`.
 - `rise` is opacity 0 → 1 with y 22 → 0.
-- It uses `whileInView` with `viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}`.
-- The curve is `[0.22, 0.9, 0.28, 1]`, the same as `--ease` in `sheet.css`. Durations: rise 0.82s, rule 0.9s, fade 0.7s, slide 0.72s.
+- It uses `whileInView` with `viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}`. An element taller than the viewport can never reach that, so a whole project page uses the CSS `.page-in` entrance instead.
+- The curve is `[0.22, 0.9, 0.28, 1]`, the same as `--ease` in `bench.css`. Durations: rise 0.82s, rule 0.9s, fade 0.7s, slide 0.72s.
 
 ### `components/blueprint/BackToTop.tsx`
 
-`"use client"`. The bottom-left "Back to Top" pill (`.bp-top`, styled in `sheet.css`'s floating-controls section: translucent white, `blur(10px)`, `--shadow`, mono 11px uppercase). It shows (`is-shown`) once `scrollY` passes 80% of the viewport and smooth-scrolls to the top. It is on `/`, `/projects` and every project page. `next.config.mjs` moves the Next dev overlay to the bottom-right so it doesn't cover the button.
+`"use client"`. The bottom-left "Back to Top" pill (`.bp-top`, styled in `bench.css`'s floating-controls section: frosted white, `blur(10px)`, `--shadow`, mono 10.5px uppercase). It shows (`is-shown`) once `scrollY` passes 80% of the viewport and smooth-scrolls to the top. It is on `/`, `/projects` and every project page. `next.config.mjs` moves the Next dev overlay to the bottom-right so it doesn't cover the button.
 
 ### `components/blueprint/StudioLink.tsx`
 
@@ -193,9 +191,10 @@ Both live in `components/blueprint/` and are used by the site entry's deep dive 
 Both render static markup under reduced motion. `WordReveal` was deleted in the redesign (it had no call site since 2026-09-18).
 
 ## Related
+- [[Clean Bench (2026-11 redesign)]]
 - [[Routes Overview]]
 - [[Site Nav and Mark]]
 - [[Project Catalog and Dialog]]
 - [[Resume PDF Pipeline]]
-- [[Design System (Blue Sheet)]]
+- [[Design System (Clean Bench)]]
 - [[Home]]

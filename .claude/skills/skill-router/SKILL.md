@@ -22,7 +22,7 @@ node .claude/skills/skill-router/scripts/route.mjs "make the hero animate in smo
 1. Take the plan in the order shown: ground, decide, build, verify, ship. Load each skill with the `Skill` tool, not by reading its file.
 2. Obey every `!` note. They are the repo guardrails for that skill.
 3. Skills marked `[heavy]` are large: read only the section the task needs.
-4. `Explicit-only` skills (greenfield design, image generation, GSAP-heavy) conflict with `PRODUCT.md` (refinement inside Blue Sheet, subtle motion). Surface them to Riley; do not run them on your own.
+4. `Explicit-only` skills (greenfield design, image generation, GSAP-heavy) conflict with `PRODUCT.md` (refinement inside Clean Bench, subtle motion). Surface them to Riley; do not run them on your own.
 5. If nothing clears the threshold, proceed without a skill. Do not force one.
 6. Router output is a recommendation. If the plan looks wrong for the request, say so and override it.
 

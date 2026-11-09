@@ -10,7 +10,7 @@ The site documents itself as one entry in its own project catalog. The entry is 
 - An agent procedure, `site-timeline-sync`, keeps its numbers and timeline current, automatically after every push to `main` through a GitHub Actions workflow (see [[Build Tooling and Config]]).
 - At its foot sits the **job-application tracker** (`#tracker`).
 
-Until the Blue Sheet redesign of 2026-11-08 this was the `/about-this-site` page (added 2026-09-17), with its own nav tab, layout and `AboutSiteStory` component, and the tracker was section 03 of `/more-info`. Both routes now redirect here (see [[Routes Overview]]). The old page is described in [[Blueprint Press (2026-08 to 2026-11)]]. This note was **About This Site Page** before the redesign.
+Until the Blue Sheet redesign of 2026-11-08 (whose structure Clean Bench kept) this was the `/about-this-site` page (added 2026-09-17), with its own nav tab, layout and `AboutSiteStory` component, and the tracker was section 03 of `/more-info`. Both routes now redirect here (see [[Routes Overview]]). The old page is described in [[Blueprint Press (2026-08 to 2026-11)]]. This note was **About This Site Page** before the redesign.
 
 ## How the entry is built: `lib/catalog.ts`
 
@@ -56,7 +56,7 @@ In the dialog both sit inside the scrolling `.dlg-body`. On `/projects/rileybeen
 | Pillars | `feature/FeaturePillars.tsx` | Three hairline cards (`title` as an `h3`, the first paragraph at rest, "Read more" opening the rest with an `AnimatePresence` height-auto). A 16:9 screenshot thumbnail on top opens the viewer. `.bp-spot` on hover, a 70ms stagger, one column under 860px. |
 | Behind the site | `feature/FeatureBackend.tsx` | One row per backend tool (`feature.backend.items`): a live replica on one side, the notes (an `h3`, paragraphs, a hairline list) on the other, sides alternating. Stacked under 860px. |
 
-`feature.css` keeps its own 860px breakpoint for these blocks; the Blue Sheet shell breaks at 1000/980/760.
+`feature.css` keeps its own 860px breakpoint for these blocks; the Clean Bench shell breaks at 980/760/640.
 
 ### The demos: `feature/demos/`
 
@@ -99,7 +99,7 @@ Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `Themed
 | `lib/dates.ts` | `isIsoDate`, `parseIsoDate` (UTC), `formatDate`, `daysBetween`, `todayIso`. |
 | `lib/useInViewOnce.ts` / `lib/useSpotlight.ts` | The once-only in-view hook and the `--sx/--sy` cursor wash. |
 | `lib/site.ts` | `REPO_URL`, for commit links and the entry's GitHub button. |
-| `scripts/capture-site-screenshots.mjs` | Recaptures the entry's screenshots with `playwright-core` (the machine's Chrome/Edge) at 1440×900 @2x, each in **both** themes via the real toggles. The shots are the home hero, the full home page, `/projects` (scrolled to `.project-grid`), the timeline on `/projects/rileybeenders-com` (`.pbody .tl`), and the Studio with this entry open, written as `<name>-light.png` / `<name>-dark.png` into `public/project-images/rileybeenders-com/`. It needs `npm run site` (the Studio shots are skipped if :3001 is down), and it hides the dev badge and the Edit in Studio control. The 2026-11-08 run retook all but the `studio-*` pair. |
+| `scripts/capture-site-screenshots.mjs` | Recaptures the entry's screenshots with `playwright-core` (the machine's Chrome/Edge) at 1440×900 @2x, each in **both** themes via the real toggles. The shots are the home hero, the full home page, `/projects` (scrolled to `.project-grid`), the timeline on `/projects/rileybeenders-com` (`.pbody .tl`), and the Studio with this entry open, written as `<name>-light.png` / `<name>-dark.png` into `public/project-images/rileybeenders-com/`. It needs `npm run site` (the Studio shots are skipped if :3001 is down), and it hides the dev badge and the Edit in Studio control. The 2026-11-09 run retook every capture, the `studio-*` pair included, for Clean Bench. |
 | `scripts/site-stats.mjs` | Computes the six stats from git and the repo, and lists commits since the last hashed timeline entry with key-commit candidates. `--write` refreshes the stats in the data file. |
 | `scripts/check-about-site.mjs` | Validates the data file (dates in order, known eras, at most one `present`, real hashes, resolvable connectors and `screenshotId`s, the six stats). It exits 1 with a list on failure. It runs before committing, and in the workflow. |
 
@@ -107,21 +107,22 @@ Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `Themed
 
 The shape is `types/about-site.ts` → `AboutSiteData`: `meta`, `hero { title, tagline }`, `storyHeading`, `outro { lead, body }`, `dates`, `summary`, `bullets`, `images`, optional `caseStudy` (`ProjectAdditionalInfo`), and `feature` (`ProjectFeature`: `intro`, `stats[]`, `timeline[]`, `pillars[]`, `screenshots[]`, `backend`, and the heading fields). The feature types live in `types/resume.ts`. The screenshots are served from `public/project-images/rileybeenders-com/`.
 
-As of 2026-11-08:
+As of 2026-11-09:
 
-- **The timeline** holds 26 entries: 24 past, 1 present ("Blue Sheet: the redesign", 2026-11-08), and 1 planned ("contact@ inbox and the beta cut-over", 2026-12-01).
-- **The six stats** read Commits 195 · Days in motion 133 · Agent skills 48 · Vault notes 50 · Applications tracked 27 · Projects queued 6.
-- **The design pillar** gained a paragraph on Blue Sheet, and the hero captions say "Blue Sheet".
+- **The timeline** holds 27 entries: 25 past (the last, "Blue Sheet: one day as a drafting sheet", 2026-11-08), 1 present ("Clean Bench: everything is a tile", 2026-11-09), and 1 planned ("contact@ inbox and the beta cut-over", 2026-12-01).
+- **The six stats** read Commits 196 · Days in motion 134 · Agent skills 48 · Vault notes 53 · Applications tracked 27 · Projects queued 6.
+- **The first pillar** is titled "Three designs on one data set" and ends with a paragraph on Clean Bench; the hero captions say "Home · Clean Bench · light" (and dark).
 
 It is edited in the Studio under **About this site**. The rail group is "About this site" → `/projects/rileybeenders-com`, holding the `aboutSite` and `moreInfo` keys, the latter relabelled **Application tracker**. `StudioLink` on this page opens `#aboutSite`. It is refreshed by the `site-timeline-sync` procedure, locally on request and unattended after every push to `main` by `.github/workflows/site-timeline-sync.yml` (see [[Repository Agent Skills]]).
 
 ## Related
 - [[Project Catalog and Dialog]]
-- [[Sheet Components (Home Page)]]
+- [[Bench Components (Home Page)]]
 - [[More Info and Gantt Data]]
 - [[Data Layer and Types]]
-- [[Design System (Blue Sheet)]]
+- [[Design System (Clean Bench)]]
 - [[Repository Agent Skills]]
 - [[Routes Overview]]
-- [[Blue Sheet (2026-11 redesign)]]
+- [[Clean Bench (2026-11 redesign)]]
+- [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

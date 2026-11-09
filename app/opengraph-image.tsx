@@ -5,7 +5,8 @@ import homePage from "@/data/home/page.json";
 import header from "@/data/header.json";
 
 // The Home page's share title, set on two lines (its first word, then the rest),
-// with straight apostrophes turned typographic as the serif expects.
+// with straight apostrophes turned typographic as the serif expects. The card is
+// set in Instrument Serif, the monogram's face and the one font file the repo ships.
 const SHARE_TITLE = homePage.meta.shareTitle;
 const [TITLE_FIRST, ...TITLE_REST] = SHARE_TITLE.replace(/'/g, "’").split(" ");
 
@@ -13,26 +14,25 @@ export const alt = SHARE_TITLE;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const INK = "#0d182c";
+const INK = "#111318";
 const BLUE = "#2457e6";
-const PAPER = "#ffffff";
+const PAPER = "#f4f5f8";
+const TILE = "#ffffff";
+const LINE = "rgba(17, 19, 24, 0.09)";
 
 /**
- * The blueprint grid, as a data URI. Satori does not handle
- * repeating-linear-gradient, so the ruling is drawn with an SVG <pattern>.
+ * The bench's bloom: two soft blue washes behind the tile, as a data URI.
+ * Satori's gradient support is partial, so the bloom is an SVG.
  */
-const grid = `data:image/svg+xml;base64,${Buffer.from(
+const bloom = `data:image/svg+xml;base64,${Buffer.from(
   `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
      <defs>
-       <pattern id="fine" width="16" height="16" patternUnits="userSpaceOnUse">
-         <path d="M16 0H0V16" fill="none" stroke="rgba(23,26,32,0.055)" stroke-width="1"/>
-       </pattern>
-       <pattern id="coarse" width="96" height="96" patternUnits="userSpaceOnUse">
-         <path d="M96 0H0V96" fill="none" stroke="rgba(23,26,32,0.1)" stroke-width="1"/>
-       </pattern>
+       <radialGradient id="a" cx="22%" cy="18%" r="42%"><stop offset="0" stop-color="#cfdafa"/><stop offset="1" stop-color="#cfdafa" stop-opacity="0"/></radialGradient>
+       <radialGradient id="b" cx="82%" cy="12%" r="38%"><stop offset="0" stop-color="#d3dcf5"/><stop offset="1" stop-color="#d3dcf5" stop-opacity="0"/></radialGradient>
      </defs>
-     <rect width="1200" height="630" fill="url(#fine)"/>
-     <rect width="1200" height="630" fill="url(#coarse)"/>
+     <rect width="1200" height="630" fill="${PAPER}"/>
+     <rect width="1200" height="630" fill="url(#a)"/>
+     <rect width="1200" height="630" fill="url(#b)"/>
    </svg>`
 ).toString("base64")}`;
 
@@ -40,7 +40,7 @@ const grid = `data:image/svg+xml;base64,${Buffer.from(
  * Just the two flowing bowls of the mark — no stem — oversized as a
  * watermark and placed so the curves sit behind the end of the headline.
  */
-const GHOST = { width: 420, height: 640, top: -4, right: 176 };
+const GHOST = { width: 380, height: 580, top: 20, right: 190 };
 
 const ghostB = `data:image/svg+xml;base64,${Buffer.from(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 165 250" width="${GHOST.width}" height="${GHOST.height}">
@@ -65,11 +65,28 @@ export default async function OpengraphImage() {
           justifyContent: "center",
           position: "relative",
           backgroundColor: PAPER,
-          padding: "0 84px"
+          padding: "48px"
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={grid} width={1200} height={630} alt="" style={{ position: "absolute", top: 0, left: 0 }} />
+        <img src={bloom} width={1200} height={630} alt="" style={{ position: "absolute", top: 0, left: 0 }} />
+
+        {/* The tile: the share card is one bench tile. */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            padding: "0 72px",
+            borderRadius: 28,
+            border: `1px solid ${LINE}`,
+            backgroundColor: TILE,
+            overflow: "hidden"
+          }}
+        >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={ghostB}
@@ -95,7 +112,7 @@ export default async function OpengraphImage() {
             {TITLE_REST.length > 0 && <div style={{ display: "flex" }}>{TITLE_REST.join(" ")}</div>}
           </div>
 
-          <div style={{ display: "flex", width: 660, height: 3, backgroundColor: INK, marginTop: 40 }} />
+          <div style={{ display: "flex", width: 56, height: 4, borderRadius: 4, backgroundColor: BLUE, marginTop: 36 }} />
 
           <div
             style={{
@@ -107,8 +124,9 @@ export default async function OpengraphImage() {
               fontFamily: "Instrument Serif"
             }}
           >
-            {homePage.footer.sheetLink.text} &nbsp;·&nbsp; {header.person.location}
+            {homePage.footer.siteLink.text} &nbsp;·&nbsp; {header.person.location}
           </div>
+        </div>
         </div>
       </div>
     ),

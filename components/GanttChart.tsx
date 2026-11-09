@@ -24,7 +24,7 @@ const GANTT_LAYOUT = {
 /**
  * Mermaid bakes colors into the SVG it returns rather than consuming CSS
  * variables, so the light/dark palettes are duplicated here to match the
- * `--ink`/`--paper`/etc. tokens in sheet.css (Blue Sheet, 2026-11-08).
+ * `--ink`/`--paper`/etc. tokens in bench.css (Blue Sheet, 2026-11-08).
  *
  * The site's accent and secondary-blue tokens are the same electric blue now
  * (see lib/palettes.ts "electric"), so it alone can't separate the chart's two
@@ -32,14 +32,14 @@ const GANTT_LAYOUT = {
  * neutral ink-gray instead of a second blue, keeping the one-accent palette.
  */
 const THEME_LIGHT = {
-  primaryColor: "rgba(62, 106, 225, 0.14)",
+  primaryColor: "rgba(36, 87, 230, 0.14)",
   primaryBorderColor: "#2457e6",
-  primaryTextColor: "#0d182c",
+  primaryTextColor: "#111318",
   secondaryColor: "rgba(23, 26, 32, 0.08)",
   secondaryBorderColor: "#5c5e62",
   tertiaryColor: "rgba(23, 26, 32, 0.10)",
   lineColor: "#c7ccd1",
-  textColor: "#0d182c",
+  textColor: "#111318",
   // Mermaid's "done" task styling doesn't derive from the colors above, so it
   // needs an explicit pin — otherwise the dark palette below inherits
   // mermaid's default lightgrey bar, which near-white task text disappears on.
@@ -48,7 +48,7 @@ const THEME_LIGHT = {
 } as const;
 
 const THEME_DARK = {
-  primaryColor: "rgba(62, 106, 225, 0.28)",
+  primaryColor: "rgba(36, 87, 230, 0.28)",
   primaryBorderColor: "#2457e6",
   primaryTextColor: "#ffffff",
   secondaryColor: "rgba(255, 255, 255, 0.08)",

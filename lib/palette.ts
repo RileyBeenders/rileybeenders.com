@@ -10,7 +10,7 @@ export type PaletteTokens = PaletteSeeds & {
   /** Text set on the accent fill (the solid button, the bullet's project link). */
   onAccent: string;
   /**
-   * The Blue Sheet surfaces built from the accent. `tint` is the faint accent
+   * The Clean Bench surfaces built from the accent (introduced with Blue Sheet). `tint` is the faint accent
    * wash a chip or active control sits on; `accentSoft` is a stronger wash
    * for hovered chips and the contribution graph's lightest step; `accentFill`
    * is what solid controls are painted with: the accent itself on a light
@@ -20,7 +20,7 @@ export type PaletteTokens = PaletteSeeds & {
   tint: string;
   accentSoft: string;
   accentFill: string;
-  /** The soft glow behind the hero and the frame's corner marks. */
+  /** The soft bloom behind the top of the page and inside the hero tile. */
   glow: string;
 };
 
@@ -95,7 +95,7 @@ export function isDarkPalette({ paper, ink }: Pick<PaletteSeeds, "paper" | "ink"
 }
 
 /**
- * The Blue Sheet surfaces, from the same five seeds. The fills are the accent
+ * The accent surfaces, from the same five seeds. The fills are the accent
  * itself on a light palette and the accent cut toward black (not toward the
  * paper, which would wash it out) on a dark one. Exported so the hand-tuned
  * Default preset, which skips the ramp, can still carry them.

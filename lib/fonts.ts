@@ -1,5 +1,7 @@
 export type FontId =
   | "instrument-serif"
+  | "instrument-sans"
+  | "azeret-mono"
   | "spectral"
   | "playfair-display"
   | "fraunces"
@@ -21,7 +23,7 @@ export type FontOption = {
 /**
  * Every font here is preloaded once in app/(site)/layout.tsx via next/font/google
  * and exposed as a CSS variable — Studio only ever chooses which variable each
- * typographic role (header/sub-header/body) points at. The Studio's own copy of
+ * typographic role (header/sub-header/body/mono) points at. The Studio's own copy of
  * this list lives in studio/ui/schema.js; keep the two in step.
  */
 const FONT_OPTIONS: FontOption[] = [
@@ -30,14 +32,28 @@ const FONT_OPTIONS: FontOption[] = [
     label: "Instrument Serif",
     cssVar: "--font-instrument-serif",
     fallback: '"Iowan Old Style", Georgia, serif',
-    mood: "Editorial display serif — the site's current header font"
+    mood: "Editorial display serif — the monogram's face, the site's header font until 2026-11"
+  },
+  {
+    id: "instrument-sans",
+    label: "Instrument Sans",
+    cssVar: "--font-instrument-sans",
+    fallback: "system-ui, sans-serif",
+    mood: "Clean grotesque, sibling of Instrument Serif — the Clean Bench display and body face"
+  },
+  {
+    id: "azeret-mono",
+    label: "Azeret Mono",
+    cssVar: "--font-azeret-mono",
+    fallback: '"SF Mono", Menlo, monospace',
+    mood: "Wide, characterful monospace — the Clean Bench label face for dates, captions and small notes"
   },
   {
     id: "spectral",
     label: "Spectral",
     cssVar: "--font-spectral",
     fallback: "Georgia, serif",
-    mood: "Warm reading serif — the site's current body font"
+    mood: "Warm reading serif — the site's body font until 2026-11"
   },
   {
     id: "playfair-display",

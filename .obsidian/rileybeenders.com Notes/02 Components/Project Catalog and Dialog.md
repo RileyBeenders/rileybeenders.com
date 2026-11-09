@@ -4,11 +4,11 @@ tags: [component, routes]
 
 # Project Catalog and Dialog
 
-How projects reach the visitor since the Blue Sheet redesign (2026-11-08):
+How projects reach the visitor since the Blue Sheet redesign (2026-11-08), kept by Clean Bench (2026-11-09):
 
 - `lib/catalog.ts` builds one list of entries: the published projects, then the site itself.
-- `ProjectGrid` shows them as cards, on `/projects` with type filters and on the home page with "View all projects".
-- A card opens its project in `ProjectDialog`, over the page.
+- `ProjectGrid` shows them as tiles, on `/projects` with type filters and on the home page with "View all projects".
+- A tile opens its project in `ProjectDialog` by **morphing** into it: the tile and the dialog share a framer-motion `layoutId`, so the tile grows into the dialog and collapses back into it on close.
 - Every entry also has its own page at `/projects/<id>`.
 - The dialog and the page render the same `ProjectBody`.
 
@@ -28,7 +28,7 @@ This note was **Projects Route (BpComingSoon)** before the redesign. The Bluepri
 
 Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects, and the site entry, **RileyBeenders.com** (type "About this site").
 
-## `components/sheet/ProjectGrid.tsx`
+## `components/bench/ProjectGrid.tsx`
 
 `"use client"`. Props: `entries`, `today` (ISO, from the server), `paletteId`, `filters?` (the `/projects` chips), `viewAllHref?` (the home page's "View all projects" `.btn`).
 
@@ -42,24 +42,29 @@ Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB
 
 The same component runs on `/` and `/projects`, so `/#project-icarus-lite` opens the dialog over the home page.
 
-## `components/sheet/ProjectCard.tsx`
+## `components/bench/ProjectCard.tsx`
 
-`"use client"`. One tile, `motion.article#project-<id>.card.card--hover.project-card.bp-spot` (the id is the anchor the resume's links point at). The whole tile is one `<button>` that calls `onOpen(id)`, aria-labelled "`<name>`: open".
+`"use client"`. One tile: a `motion.div` that handles the entrance, wrapping `motion.article#project-<id>.card.card--hover.project-tile.bp-spot` (the id is the anchor the resume's links point at). It also exports the two pieces the morph is built from:
 
-- **Cover** (16:10). The entry's `cover` as a `next/image` (`fill`, `sizes` tracking the grid, eager for the first three). It scales 1.04× on hover. A PDF whose first image is `fit: "contain"` is shown contained with padding. With no cover, `.project-card-typo` draws the animated monogram over a grid.
+- `MORPH`: the spring, `{ type: "spring", stiffness: 380, damping: 36, mass: 0.8 }`.
+- `tileLayoutId(id)`: `project-tile-<id>`, the `layoutId` the article carries (dropped under reduced motion) and the dialog panel reuses.
+
+The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can animate the corner through the morph. The whole tile is one `<button>` that calls `onOpen(id)`, aria-labelled "`<name>`: open".
+
+- **Cover** (16:10). The entry's `cover` as a `next/image` (`fill`, `sizes` tracking the grid, eager for the first three). It scales 1.04× on hover. A PDF whose first image is `fit: "contain"` is shown contained with padding. With no cover, `.project-card-typo` draws the animated monogram on a soft accent wash.
 - **Tags** over the cover: the `type`, plus "This site" (`ui.projects.siteBadge`, filled with `--accent-fill`) on the site entry. The site's card also gets an accent-tinted border (`.project-card--site`).
 - **Body.** The `h3` name, the summary's first paragraph clamped to two lines, and a mono meta line: "Jun 2026 → Present" from `dates`, "· N photos" (photos only; PDFs and posts don't count), and an `ArrowUpRight` that nudges 3px on hover.
-- **Motion.** It enters on view (opacity, y 18 → 0, 0.6s on the site curve, a stagger of `min(index, 5) × 0.06`s) and keeps `layout` on, so filtering animates the reflow. The `.bp-spot` cursor wash follows the pointer via `useSpotlight`. Under reduced motion it does neither.
+- **Motion.** It enters on view (opacity, y 18 → 0, 0.6s on the site curve, a stagger of `min(index, 5) × 0.06`s) and keeps `layout` on (with `MORPH`), so filtering animates the reflow. Hover lifts the tile 3px and zooms the cover 1.04×. The `.bp-spot` cursor wash follows the pointer via `useSpotlight`. Under reduced motion it does neither.
 
-## `components/sheet/ProjectDialog.tsx`
+## `components/bench/ProjectDialog.tsx`
 
-`"use client"`. The box a card opens into.
+`"use client"`. The box a tile opens into, and grows out of.
 
-- **Portal.** It renders through `createPortal` into **`[data-sheet-portal]`**, the empty div the site layout puts *inside* `.bp`, so every palette token resolves in the dialog. Portalling to `<body>` would leave `var(--ink)` undefined (the Portal Rule in `DESIGN.md`). It falls back to `document.body` only if the host is missing. The component's own doc comment still says "into `<body>`"; the code uses the portal host.
+- **Portal.** It renders through `createPortal` into **`[data-bench-portal]`**, the empty div the site layout puts *inside* `.bp` (beside `.page`), so every palette token resolves in the dialog. Portalling to `<body>` would leave `var(--ink)` undefined (the Portal Rule in `DESIGN.md`). It falls back to `document.body` only if the host is missing.
 - **Markup.**
-  - A `.dlg-scrim` (blurred, fades 0.3s, a click closes).
-  - A `.dlg-wrap` holding `motion.div.dlg[role=dialog][aria-modal][aria-labelledby]`, `min(1040px, 100%)` wide and centred. It enters at opacity 0, y 24, scale 0.97 over 0.45s on the site curve, and under reduced motion fades only.
-  - A sticky translucent `.dlg-bar`: the name (serif) and type (mono), an **Open full page** `.btn.btn--sm` (`ui.projects.openFull`, a `next/link` to `/projects/<id>`), and a close `X` button (`ui.projects.close`).
+  - A `.dlg-scrim` (ink at 45% with a 6px blur, fades 0.3s, a click closes).
+  - A `.dlg-wrap` holding `motion.div.dlg[role=dialog][aria-modal][aria-labelledby]`, `min(1040px, 100%)` wide and centred. **The morph:** the panel carries the same `tileLayoutId(id)` as the tile that opened it, with `transition={{ layout: MORPH }}`, so it grows out of the tile's box and shrinks back into it on close. The bar and the body fade in (0.32s on the site curve) after a 0.18s delay, once the box has mostly settled. Under reduced motion there is no `layoutId`: the panel, bar and body simply fade (0.2s).
+  - A sticky translucent `.dlg-bar`: the name (sub-header face, 600) and type (mono), an **Open full page** `.btn.btn--sm` (`ui.projects.openFull`, a `next/link` to `/projects/<id>`), and a close `X` button (`ui.projects.close`).
   - The `.dlg-body`, which scrolls on its own (`overscroll-behavior: contain`) and is marked `data-native-scroll` so `SmoothScroll` leaves it alone.
 - **Behaviour while open:**
   - sets `data-lock` on `<html>` (`html[data-lock] { overflow: hidden }`, which also pauses `SmoothScroll`);
@@ -71,7 +76,7 @@ The same component runs on `/` and `/projects`, so `/#project-icarus-lite` opens
 
 `ui.projects.position` ("Project {index} of {count}") is a Studio field that the dialog does not render yet.
 
-## `components/sheet/ProjectBody.tsx`
+## `components/bench/ProjectBody.tsx`
 
 `"use client"`. Everything an entry has, top to bottom. It is the same in the dialog (`mode="dialog"`, `h2` title) and on the page (`mode="page"`, `h1` title):
 
@@ -111,7 +116,7 @@ Unchanged by the redesign. `ProjectBody` composes them.
 | `walkthrough/PanelWalkthrough.tsx` | The guided tour of a program's screens. See [[Panel Walkthrough]]. |
 | `ProjectFeature.tsx` + `feature/*` | The deep dive, carried only by the site entry. See [[Site Project (About this site)]]. |
 
-The styles are in `app/(site)/projects/projects.css` (`.pj-*`, `.cmp-*`, `.pj-flow-*`, the lightbox), `projects/walkthrough.css` (`.wt-*`, `.pj-links`) and `projects/feature.css`. The site layout imports all three after `sheet.css`, and the card, dialog and body classes (`.project-*`, `.dlg-*`, `.pbody-*`) live in `sheet.css`'s projects, dialog and project-body sections.
+The styles are in `app/(site)/projects/projects.css` (`.pj-*`, `.cmp-*`, `.pj-flow-*`, the lightbox), `projects/walkthrough.css` (`.wt-*`, `.pj-links`) and `projects/feature.css`. The site layout imports all three after `bench.css`, and the tile, dialog and body classes (`.project-*`, `.dlg-*`, `.pbody-*`) live in `bench.css`'s projects, dialog and project-body sections.
 
 `lib/projects.ts` (`buildProofView`, `buildProjectViews`) assembles the `ProjectView` each entry starts from. `ownImages` is true when `images` is the project's own list rather than diagrams standing in.
 
@@ -131,8 +136,8 @@ The other six projects are `visible: false` drafts. All 17 proofs are also `visi
 ## Related
 - [[Site Project (About this site)]]
 - [[Panel Walkthrough]]
-- [[Sheet Components (Home Page)]]
+- [[Bench Components (Home Page)]]
 - [[Career Content]]
 - [[Routes Overview]]
-- [[Design System (Blue Sheet)]]
+- [[Design System (Clean Bench)]]
 - [[Home]]

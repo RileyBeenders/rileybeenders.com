@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Download, Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/sheet/BrandIcons";
+import { GithubIcon, LinkedinIcon } from "@/components/bench/BrandIcons";
 import type { ResumeData } from "@/types/resume";
 import { ui } from "@/lib/copy";
 

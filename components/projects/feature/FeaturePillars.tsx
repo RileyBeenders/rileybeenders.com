@@ -10,7 +10,7 @@ import { ThemedShot } from "@/components/projects/feature/ThemedShot";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { ui } from "@/lib/copy";
 
-/** Matches --ease in sheet.css — framer-motion can't read CSS custom properties. */
+/** Matches --ease in bench.css — framer-motion can't read CSS custom properties. */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 
 type FeaturePillarsProps = {

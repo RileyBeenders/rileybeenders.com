@@ -43,6 +43,13 @@ export type HomePageData = {
     /** Under the tagline: "{company}, since {start}" for the current role. */
     currentRole: string;
   };
+  /** The small labels on the bench tiles beside the hero. */
+  bento: {
+    /** Over the current role. */
+    now: string;
+    /** Over the location. */
+    location: string;
+  };
   /** A phrase in the summary that becomes a link wherever it appears. */
   summaryLink: LinkText;
   headings: {
@@ -71,9 +78,11 @@ export type HomePageData = {
   };
   footer: {
     note: string;
-    sheetLabel: string;
-    sheetLink: LinkText;
-    revisionLabel: string;
+    /** Beside the site's own link. */
+    siteLabel: string;
+    siteLink: LinkText;
+    /** Beside the commit and date the page was built from. */
+    updatedLabel: string;
     locationLabel: string;
   };
 };

@@ -56,10 +56,20 @@ export const PRESET_PALETTES: Palette[] = [
     modes: { light: DEFAULT_LIGHT, dark: DEFAULT_DARK }
   },
   {
+    id: "clean-bench",
+    name: "Clean Bench",
+    description:
+      "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    modes: fromSeeds(
+      { paper: "#f4f5f8", white: "#ffffff", ink: "#111318", accent: "#2457e6", blue: "#173ea8" },
+      { paper: "#0f1115", white: "#181b22", ink: "#eceef2", accent: "#6a93ff", blue: "#9db9ff" }
+    )
+  },
+  {
     id: "blue-sheet",
     name: "Blue Sheet",
     description:
-      "The redesign's own palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark, where fills cut deeper instead of brighter.",
+      "The 2026-11-08 drafting-sheet look's palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark.",
     modes: fromSeeds(
       { paper: "#f4f7fd", white: "#ffffff", ink: "#0d182c", accent: "#2457e6", blue: "#173ea8" },
       { paper: "#070b15", white: "#0e1627", ink: "#e8eefb", accent: "#6a93ff", blue: "#9db9ff" }

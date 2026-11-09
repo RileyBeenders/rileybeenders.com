@@ -4,7 +4,7 @@ import { useCallback, type PointerEvent } from "react";
 
 /**
  * Writes the cursor position into --sx/--sy on the element so CSS can draw
- * a spotlight that follows it (see .bp-spot in sheet.css). No React
+ * a spotlight that follows it (see .bp-spot in bench.css). No React
  * state per move — the browser repaints the gradient directly.
  */
 export function useSpotlight() {

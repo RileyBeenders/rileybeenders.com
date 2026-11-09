@@ -39,12 +39,12 @@
   "images": [
     {
       "src": "/project-images/rileybeenders-com/home-hero-light.png",
-      "alt": "The home page hero in light mode: the drawn cover band, the monogram, the name and title, and the action row inside the sheet.",
-      "caption": "Home · Blue Sheet · light"
+      "alt": "The home page bench in light mode: the hero tile with the monogram, name, title and actions, the Now, Based in and Education tiles beside it, and the GitHub calendar below.",
+      "caption": "Home · Clean Bench · light"
     },
     {
       "src": "/project-images/rileybeenders-com/home-hero-dark.png",
-      "alt": "The same hero in dark mode: the near-black navy sheet, pale ink, and the cover's blue turned down.",
+      "alt": "The same bench in dark mode: graphite tiles on near-black, a lighter blue for the accent, and every fill turned down.",
       "caption": "Home · dark mode"
     }
   ],
@@ -98,12 +98,12 @@
     "stats": [
       {
         "label": "Commits",
-        "value": 195,
+        "value": 196,
         "note": "on main and its version branches"
       },
       {
         "label": "Days in motion",
-        "value": 133,
+        "value": 134,
         "note": "since the first commit"
       },
       {
@@ -113,7 +113,7 @@
       },
       {
         "label": "Vault notes",
-        "value": 52,
+        "value": 53,
         "note": "kept in sync by an agent"
       },
       {
@@ -443,9 +443,19 @@
       },
       {
         "date": "2026-11-08",
+        "era": "past",
+        "title": "Blue Sheet: one day as a drafting sheet",
+        "summary": "A fresh UI on the same data, drawn as a blueprint: a floating nav, a hero on a drawn cover, the GitHub calendar, project cards opening into a dialog with a full page behind it, a message form, and About this site folded into the catalog with the tracker at its foot. Kept for a day, then re-set.",
+        "tags": [
+          "design",
+          "launch"
+        ]
+      },
+      {
+        "date": "2026-11-09",
         "era": "present",
-        "title": "Blue Sheet: the redesign",
-        "summary": "A fresh UI on the same data: a floating nav, a hero on a drawn blueprint cover, the GitHub contribution calendar, project cards that open into a dialog with a full page behind it, the stack as cards of pills, a message form, and a dark mode where every blue cuts deeper. About this site becomes a project in the catalog, with the application tracker at its foot.",
+        "title": "Clean Bench: everything is a tile",
+        "summary": "The blueprint feel goes. White rounded tiles on a pale ground under a glass nav: the hero beside Now, Based in and Education tiles, the GitHub calendar, This site and Say hello, then the resume at rest. Project tiles grow into their dialogs; one grotesque for everything with a wide monospace for the small notes; a soft blue bloom at the top; dark mode turns the fills down.",
         "tags": [
           "design",
           "launch"
@@ -465,12 +475,13 @@
     "pillarsTitle": "What it's made of",
     "pillars": [
       {
-        "title": "Blueprint Press",
+        "title": "Three designs on one data set",
         "body": [
           "The site is set on paper with ink, one accent, and hairline rules, over a fixed blueprint grid you can see through the page. Which colors those are is not fixed in the code: paper, ink, and accent are CSS tokens, filled from whichever palette is chosen in the Studio's Site Settings, so the page re-inks itself from a form. Headings are Instrument Serif, body is Spectral, and every transition on the site uses one easing curve so the motion reads as a single hand.",
           "Dark mode swaps in the palette's own dark paper and ink and changes nothing else. Ten palettes plus custom colors, and three font roles, are all Studio settings, so the whole system re-tunes without a code change.",
           "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top.",
-          "On November 8, 2026 the same data was re-set as Blue Sheet: a cool blue-white sheet inside a dashed cut line, rounded cards, a serif over a sans, one blue from pale washes to a deep fill, and a dark mode where the fills cut deeper instead of brighter. Blueprint Press's palettes stay in the list as the Default and Electric presets; the Studio still re-inks the whole site from a form."
+          "On November 8, 2026 the same data was re-set as Blue Sheet: a cool blue-white sheet inside a dashed cut line, rounded cards, a serif over a sans, one blue from pale washes to a deep fill, and a dark mode where the fills cut deeper instead of brighter. It lasted a day.",
+          "On November 9 the sheet gave way to Clean Bench: white rounded tiles on a pale grey-blue ground under a floating glass nav, one grotesque (Instrument Sans) for headings and body with a wide monospace (Azeret Mono) for dates and small notes, a soft blue bloom behind the top of the page, and project tiles that grow into their dialogs. Every earlier look survives as a Studio palette preset; the Studio still re-inks the whole site from a form."
         ],
         "screenshotId": "home-full"
       },

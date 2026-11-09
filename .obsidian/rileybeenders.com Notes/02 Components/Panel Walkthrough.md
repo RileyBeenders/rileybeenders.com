@@ -9,7 +9,7 @@ An interactive tour of a program's screens inside a project's body, in its dialo
 ## Where it lives
 
 - `components/projects/walkthrough/PanelWalkthrough.tsx` — client component, rendered by `ProjectBody` when `project.walkthrough` is set, after the case study (see [[Project Catalog and Dialog]]). Under Blueprint Press it was rendered by `ProjectEntry`, between the entry grid and the case study.
-- `app/(site)/projects/walkthrough.css` — `.wt-*` styles, imported by the site layout (`app/(site)/layout.tsx`) after `sheet.css`, `projects.css` and `feature.css`, so the walkthrough styles reach the dialog on the home page too. It also holds `.pj-links` (the project's link buttons, which arrived with it).
+- `app/(site)/projects/walkthrough.css` — `.wt-*` styles, imported by the site layout (`app/(site)/layout.tsx`) after `bench.css`, `projects.css` and `feature.css`, so the walkthrough styles reach the dialog on the home page too. It also holds `.pj-links` (the project's link buttons, which arrived with it).
 - Data: `Project.walkthrough` (`ProjectWalkthrough` in `types/resume.ts`, see [[Data Layer and Types]]) in `data/projects/projects.json`; labels in `data/site/interface.json` → `walkthrough` (`previous`, `next`, `stepOf`, `callouts`, `alsoOn`, `enlarge`, `openFile`, `download`, `viewCapture`).
 
 ## What it does

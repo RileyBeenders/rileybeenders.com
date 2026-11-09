@@ -8,7 +8,7 @@ import { BpMark } from "@/components/blueprint/BpMark";
  * The monogram chip that trails the pointer across the hero card. It lives
  * inside the card (the nearest [data-cursor-zone]) and follows the pointer
  * on a spring, tilting with the direction of travel, and fades out when the
- * pointer leaves. Pointer devices only; reduced motion turns it off.
+ * pointer leaves. Pointer devices only; reduced motion keeps it hidden.
  * Site Settings → Motion → Cursor mark.
  */
 export function CursorMark() {
@@ -45,8 +45,7 @@ export function CursorMark() {
     };
   }, [reduced, x, y]);
 
-  if (reduced) return null;
-
+  // Rendered in every case (hidden when motion is reduced) so the server and client trees match.
   return (
     <motion.div
       ref={ref}

@@ -13,19 +13,21 @@ svelte-bits feels fluid for reasons that have nothing to do with Svelte: every e
 
 | Thing | Where | Use it for |
 |---|---|---|
-| `--ease: cubic-bezier(0.22, 0.9, 0.28, 1)` | `app/(site)/sheet.css`, `.bp` block (Blue Sheet, since 2026-11-08; `blueprint.css` is gone) | Every CSS `transition` and `animation` that eases. |
-| `const EASE = [0.22, 0.9, 0.28, 1] as const` | `components/sheet/ProjectBody.tsx`, `ProjectCard.tsx`, `ProjectDialog.tsx`, `components/projects/ProjectGallery.tsx` | Every framer-motion `transition.ease`. framer can't read CSS vars, so the tuple is duplicated per file. The older files carry the comment `/** Matches --ease in blueprint.css — framer-motion can't read CSS custom properties. */`; the stylesheet is now `sheet.css`, so write that name in any new file. Don't import it across components. |
+| `--ease: cubic-bezier(0.22, 0.9, 0.28, 1)` | `app/(site)/bench.css`, `.bp` block (Clean Bench, since 2026-11-09; `blueprint.css` and `sheet.css` are gone) | Every CSS `transition` and `animation` that eases. |
+| `const EASE = [0.22, 0.9, 0.28, 1] as const` | `components/bench/ProjectBody.tsx`, `ProjectCard.tsx`, `ProjectDialog.tsx`, `components/projects/ProjectGallery.tsx` | Every framer-motion `transition.ease`. framer can't read CSS vars, so the tuple is duplicated per file, each with a comment that it matches `--ease` in `bench.css`; write the same in any new file. Don't import it across components. |
 | `Reveal` | `components/blueprint/Reveal.tsx` | Scroll entrances. `as="rise"` (opacity + y 22), `as="rule"` (scaleX from left), `as="fade"` (optional blur ≤ 6px), `as="slide"` (18px from a side). Extend this component with new `as` variants before writing a new wrapper. |
 | Spring `{ stiffness: 220, damping: 34–36, mass: 0.4 }` | `components/blueprint/ScrollWords.tsx` (the spines and `ProjectEntry` that used it were retired on 2026-11-08) | Smoothing any `useScroll` progress. Reuse these numbers so scroll-linked motion settles at one speed site-wide. |
-| Pointer / highlight springs | `components/sheet/CursorMark.tsx` (`260 / 26 / 0.5`), `SiteNav.tsx` `layoutId` (`420 / 38 / 0.6`) | A follower that trails the pointer; a highlight that slides between siblings. Reuse before inventing a third. |
-| Smooth wheel scroll | `components/sheet/SmoothScroll.tsx` | Already lerps wheel scrolling site-wide (`motion.smoothScroll`). Anything that scrolls on its own must carry `data-native-scroll` (or be a real overflow scroller) so it is left alone, and anything modal sets `data-lock` on `<html>`. Never add a second scroll smoother. |
+| Pointer / highlight springs | `components/bench/CursorMark.tsx` (`260 / 26 / 0.5`), `SiteNav.tsx` `layoutId` (`420 / 38 / 0.6`) | A follower that trails the pointer; a highlight that slides between siblings. Reuse before inventing a third. |
+| The morph spring | `components/bench/ProjectCard.tsx` exports `MORPH` (`380 / 36 / 0.8`) and `tileLayoutId(id)`; `ProjectDialog.tsx` imports both | A tile that grows into a larger surface through a shared `layoutId`. Anything new that expands in place imports these rather than defining its own spring; the reduced branch drops the `layoutId` and fades. |
+| CSS entrances | `bench.css` (`tile-in`, `.page-in`, `bloom-drift`) | `tile-in` (16px rise, 0.8s, `--i` × 70ms) for bento tiles; `.page-in` (0.7s) for a whole page body, because `Reveal` never fires on an element taller than the viewport; `bloom-drift` (22s alternate) for the background bloom. |
+| Smooth wheel scroll | `components/bench/SmoothScroll.tsx` | Already lerps wheel scrolling site-wide (`motion.smoothScroll`). Anything that scrolls on its own must carry `data-native-scroll` (or be a real overflow scroller) so it is left alone, and anything modal sets `data-lock` on `<html>`. Never add a second scroll smoother. |
 | Variants pattern | `ProjectGallery.tsx` (`gridVariants` / `shotVariants`) | Staggered children: parent carries `staggerChildren`/`delayChildren`, children carry `hidden`/`shown`. |
 | `useReducedMotion()` branch | Every client component that animates | The convention is an explicit early branch that renders the static markup (`if (reduced) return <div>…</div>`), not a transition-duration hack. Match it. |
-| Blanket reduced-motion CSS | Bottom of `sheet.css` and `projects/projects.css` | Already collapses all CSS animation/transition under `.bp`. New CSS effects get this for free; only add a targeted rule if the final *state* differs from the animated one (e.g. a drawn stroke must be forced to `stroke-dashoffset: 0`). |
+| Blanket reduced-motion CSS | Bottom of `bench.css` and `projects/projects.css` | Already collapses all CSS animation/transition under `.bp`. New CSS effects get this for free; only add a targeted rule if the final *state* differs from the animated one (e.g. a drawn stroke must be forced to `stroke-dashoffset: 0`). |
 | `viewport` defaults | `Reveal.tsx` | `{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }`. Reuse for any `whileInView` (`ProjectCard` uses `amount: 0.2, margin -40px`). |
-| Class prefixes | `sheet.css` | Blue Sheet uses short section names (`.nav-*`, `.hero-*`, `.activity-*`, `.role-*`, `.project-*`, `.dlg-*`, `.pbody-*`, `.stack-*`, `.contact-*`, `.footer-*`) beside the kept `.bp-` primitives (`.bp-link`, `.bp-pill`, `.bp-top`, `.bp-spot`) and `.pj-` in `projects/projects.css`. New classes follow the section they live in; keep the section-comment banners (`/* ---- hero --- */`). |
+| Class prefixes | `bench.css` | Clean Bench uses short section names (`.nav-*`, `.tile-*`, `.hero-*`, `.activity-*`, `.role-*`, `.project-*`, `.dlg-*`, `.pbody-*`, `.stack-*`, `.contact-*`, `.footer-*`) beside the kept `.bp-` primitives (`.bp-link`, `.bp-pill`, `.bp-top`, `.bp-spot`) and `.pj-` in `projects/projects.css`. New classes follow the section they live in; keep the section-comment banners (`/* ---- bench --- */`). |
 
-Every animating component is `"use client"`. Server components (`app/(site)/page.tsx`, `HeroCover`, `Stack`, `Education`) compose them; CSS-only motion (the hero cover's stroke-draw) is fine in a server component.
+Every animating component is `"use client"`. Server components (`app/(site)/page.tsx`, `Stack`, `Education`, `SiteFooter`, `ContactBlock`) compose them; CSS-only motion (the bento's `tile-in`, the bloom) is fine in a server component.
 
 ## The five grammars
 
@@ -145,7 +147,7 @@ Before opening a PR for any motion change:
 - [ ] `will-change` only on elements that actually animate for more than a hover, and removed when idle if it was added dynamically.
 - [ ] Split text waits for `document.fonts.ready`; counters and rotating text have `aria-live="polite"`; decorative wrappers have `aria-hidden`.
 - [ ] Type-checks (`npm run typecheck`) and the dev preview shows no console errors. Verify reduced motion by emulating it in the preview (`resize_window` won't do it; toggle it in DevTools rendering settings or test the `reduced` branch directly).
-- [ ] `vault-sync` run: `components/**` and `sheet.css` changes map to `02 Components/*` and `05 Styling and Design/Design System (Blue Sheet).md`.
+- [ ] `vault-sync` run: `components/**` and `bench.css` changes map to `02 Components/*` and `05 Styling and Design/Design System (Clean Bench).md`.
 
 ## Where to go next
 

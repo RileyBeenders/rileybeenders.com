@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import type { CatalogEntry } from "@/lib/catalog";
-import { ProjectCard } from "@/components/sheet/ProjectCard";
-import { ProjectDialog } from "@/components/sheet/ProjectDialog";
-import { ProjectBody } from "@/components/sheet/ProjectBody";
+import { ProjectCard } from "@/components/bench/ProjectCard";
+import { ProjectDialog } from "@/components/bench/ProjectDialog";
+import { ProjectBody } from "@/components/bench/ProjectBody";
 import { ui } from "@/lib/copy";
 
 type ProjectGridProps = {
@@ -22,7 +22,8 @@ type ProjectGridProps = {
 const HASH = /^#project-([a-z0-9-]+?)(-case-study)?$/i;
 
 /**
- * The grid of project cards and the dialog they open into. Which project is
+ * The grid of project tiles and the dialog they open into (a tile morphs
+ * into the box; see ProjectCard / ProjectDialog). Which project is
  * open is the URL's hash (`#project-<id>`, with `-case-study` to open the
  * case study as well), so the resume's Read more links, the linked skills,
  * and a shared link all land on the right project with the dialog up, and
@@ -103,7 +104,7 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
       )}
 
       {viewAllHref && (
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 18 }}>
+        <div className="project-grid-foot">
           <Link className="btn" href={viewAllHref} suppressHydrationWarning>
             <span>{ui.projects.viewAll}</span>
             <ArrowRight className="bp-arrow" size={15} strokeWidth={2} aria-hidden="true" />

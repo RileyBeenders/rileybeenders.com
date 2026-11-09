@@ -4,7 +4,7 @@ tags: [history, design, styling, architecture]
 
 # Blueprint Press (2026-08 to 2026-11)
 
-**Blueprint Press** was the site's design and page architecture from **2026-08-27** to **2026-11-08**. It was replaced by [[Blue Sheet (2026-11 redesign)|Blue Sheet]] on the same data and wording. This note records what the site was, as the vault described it on `main` at the last Blueprint Press commit. Every file it names is gone from the working tree unless the note says it was kept; read the originals from git rather than looking for them on disk.
+**Blueprint Press** was the site's design and page architecture from **2026-08-27** to **2026-11-08**. It was replaced by [[Blue Sheet (2026-11-08, one day)|Blue Sheet]] on the same data and wording. This note records what the site was, as the vault described it on `main` at the last Blueprint Press commit. Every file it names is gone from the working tree unless the note says it was kept; read the originals from git rather than looking for them on disk.
 
 ## Where it lives in git
 
@@ -95,12 +95,12 @@ One easing curve everywhere. `Reveal` entrances (rise 22px, rule, fade, slide). 
 ## Design work that happened inside it
 
 - **2026-09-18, the first `$impeccable critique`** (site 22/32, Studio 23/40) and the polish pass that followed: the gray ramp re-weighted for WCAG AA (`muted` 0.36, `faint` 0.50), every eyebrow removed, the evidence link renamed, a two-row phone nav, the footer title block, and the Studio rebuilt as the site's own drafting room. Detail in [[Impeccable Design Workflow]].
-- **The standing direction** from that interview was "refinement inside Blueprint Press, never a replacement world". On **2026-11-07** Riley asked for exactly that replacement: a complete fresh UI on the same data, wording and function. [[Blue Sheet (2026-11 redesign)]] is the answer to that request.
+- **The standing direction** from that interview was "refinement inside Blueprint Press, never a replacement world". On **2026-11-07** Riley asked for exactly that replacement: a complete fresh UI on the same data, wording and function. [[Blue Sheet (2026-11-08, one day)]] is the answer to that request. Blue Sheet lasted one day: on 2026-11-09 Riley asked to drop the blueprint feel entirely, and [[Clean Bench (2026-11 redesign)|Clean Bench]] replaced it.
 
 ## What carried over
 
 - The data model and every word of copy.
-- The Studio and its palette and font switching. It gained a Blue Sheet preset, and Default and Electric are still offered.
+- The Studio and its palette and font switching. It gained the Blue Sheet and Clean Bench presets, and Default and Electric are still offered.
 - The token names, `Reveal`, and the one easing curve.
 - The monogram, favicon, apple icon and social card.
 - The resume's reactive emphasis, Read more links and linked skills.
@@ -109,8 +109,9 @@ One easing curve everywhere. `Reveal` entrances (rise 22px, rule, fade, slide). 
 - The interactive HTML resumes, whose template still uses the Blueprint Press look (see [[Resume PDF Pipeline]]).
 
 ## Related
-- [[Blue Sheet (2026-11 redesign)]]
-- [[Design System (Blue Sheet)]]
+- [[Blue Sheet (2026-11-08, one day)]]
+- [[Clean Bench (2026-11 redesign)]]
+- [[Design System (Clean Bench)]]
 - [[Impeccable Design Workflow]]
 - [[Repository Map]]
 - [[Home]]

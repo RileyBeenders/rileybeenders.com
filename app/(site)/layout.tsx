@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import {
+  Azeret_Mono,
   Fraunces,
   IBM_Plex_Mono,
   Inter,
+  Instrument_Sans,
   Instrument_Serif,
   Playfair_Display,
   Source_Serif_4,
@@ -11,14 +13,14 @@ import {
 } from "next/font/google";
 import dynamic from "next/dynamic";
 import resumeData from "@/data/resumeData";
-import { SiteNav } from "@/components/sheet/SiteNav";
-import { SmoothScroll } from "@/components/sheet/SmoothScroll";
+import { SiteNav } from "@/components/bench/SiteNav";
+import { SmoothScroll } from "@/components/bench/SmoothScroll";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
-import "./sheet.css";
+import "./bench.css";
 import "./bullet-link.css";
 import "./skill-pills.css";
 import "./projects/projects.css";
@@ -27,13 +29,25 @@ import "./projects/walkthrough.css";
 import homePage from "@/data/home/page.json";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;
-// picking a font just points --bp-font-header/subheader/body at one of these.
-// IBM Plex Mono is also the sheet's fixed label face (--mono in sheet.css).
+// picking a font just points --bp-font-header/subheader/body/mono at one of these.
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
   variable: "--font-instrument-serif",
+  display: "swap"
+});
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-instrument-sans",
+  display: "swap"
+});
+const azeretMono = Azeret_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-azeret-mono",
   display: "swap"
 });
 const spectral = Spectral({
@@ -95,6 +109,8 @@ const StudioLink =
 
 const FONT_VARIABLES = [
   instrumentSerif.variable,
+  instrumentSans.variable,
+  azeretMono.variable,
   spectral.variable,
   playfairDisplay.variable,
   fraunces.variable,
@@ -117,8 +133,8 @@ function cssBlock(vars: Record<string, string>): string {
 
 /**
  * The site shell: the palette and font tokens from Site Settings written as
- * CSS variables, the floating nav, the dashed sheet the pages sit inside,
- * and the motion switches (synced animations, smooth scrolling).
+ * CSS variables, the floating nav, the page the routes render into, and the
+ * motion switches (synced animations, smooth scrolling).
  */
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
@@ -130,7 +146,8 @@ ${cssBlock({
   ...tokensToCssVars(tokens.light),
   "--bp-font-header": fontVarExpression(resumeData.fonts.header),
   "--bp-font-subheader": fontVarExpression(resumeData.fonts.subheader),
-  "--bp-font-body": fontVarExpression(resumeData.fonts.body)
+  "--bp-font-body": fontVarExpression(resumeData.fonts.body),
+  "--bp-font-mono": fontVarExpression(resumeData.fonts.mono)
 })}
 }
 html[data-theme="dark"] .bp[data-theme-id] {
@@ -150,9 +167,9 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
         <SiteNav name={resumeData.person.name} />
-        <div className="sheet-frame">{children}</div>
+        <div className="page">{children}</div>
         {/* Dialogs portal here rather than to <body>, so the palette tokens scoped to .bp reach them. */}
-        <div data-sheet-portal="" />
+        <div data-bench-portal="" />
         {motion.syncAnimations && <AnimationSync />}
         {motion.smoothScroll && <SmoothScroll />}
         <StudioLink />

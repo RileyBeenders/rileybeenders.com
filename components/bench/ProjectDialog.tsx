@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Maximize2, X } from "lucide-react";
+import { MORPH, tileLayoutId } from "@/components/bench/ProjectCard";
 import { ui } from "@/lib/copy";
 
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -19,11 +20,13 @@ type ProjectDialogProps = {
 const FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
 
 /**
- * The box a project card opens into: a centred panel over a blurred scrim
- * with its own scroll, a bar carrying the name and the way out to the
- * project's full page, and the project body beneath. Rendered into <body>
- * through a portal so it covers the page whichever grid opened it; the
- * full-screen viewer (Lightbox) stacks above it the same way.
+ * The box a project tile opens into: it grows out of the tile (the two share
+ * a layoutId, so the morph is one continuous surface), the page dims behind
+ * it, and the body fades in once the box has settled. A bar carries the name
+ * and the way out to the project's full page; the body scrolls on its own.
+ * Rendered through a portal into [data-bench-portal] (inside .bp, so the
+ * palette tokens resolve) so it covers the page whichever grid opened it;
+ * the full-screen viewer (Lightbox) stacks above it.
  */
 export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
   const reduced = useReducedMotion();
@@ -32,7 +35,7 @@ export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
   const restoreTo = useRef<Element | null>(null);
 
   // The portal target sits inside .bp (app/(site)/layout.tsx) so every palette token resolves; <body> is outside that scope.
-  useEffect(() => setHost(document.querySelector<HTMLElement>("[data-sheet-portal]") ?? document.body), []);
+  useEffect(() => setHost(document.querySelector<HTMLElement>("[data-bench-portal]") ?? document.body), []);
 
   // Lock the page, trap focus, close on Escape; put focus back where it was.
   useEffect(() => {
@@ -73,6 +76,11 @@ export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
 
   if (!host) return null;
 
+  // The body and bar wait for the morph, then fade in; without motion the whole box just fades.
+  const inner = reduced
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2 } }
+    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.32, ease: EASE, delay: 0.18 } };
+
   return createPortal(
     <AnimatePresence>
       {open && (
@@ -94,12 +102,14 @@ export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
               aria-modal="true"
               aria-labelledby={`dlg-title-${open.id}`}
               tabIndex={-1}
-              initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
-              transition={{ duration: 0.45, ease: EASE }}
+              layoutId={reduced ? undefined : tileLayoutId(open.id)}
+              style={{ borderRadius: 22 }}
+              initial={reduced ? { opacity: 0 } : undefined}
+              animate={reduced ? { opacity: 1 } : undefined}
+              exit={reduced ? { opacity: 0 } : undefined}
+              transition={{ layout: MORPH, duration: 0.3 }}
             >
-              <div className="dlg-bar">
+              <motion.div className="dlg-bar" {...inner}>
                 <div className="dlg-bar-title">
                   <b id={`dlg-title-${open.id}`}>{open.name}</b>
                   <span>{open.type}</span>
@@ -113,10 +123,10 @@ export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
                     <X size={18} strokeWidth={2} aria-hidden="true" />
                   </button>
                 </div>
-              </div>
-              <div className="dlg-body" data-native-scroll="">
+              </motion.div>
+              <motion.div className="dlg-body" data-native-scroll="" {...inner}>
                 {children}
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </>

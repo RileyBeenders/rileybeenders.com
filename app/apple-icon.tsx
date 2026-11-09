@@ -10,8 +10,8 @@ export const contentType = "image/png";
 export default function AppleIcon() {
   const mark = `data:image/svg+xml;base64,${Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="132" height="132">
-       <circle cx="20" cy="20" r="18.4" fill="none" stroke="#0d182c" stroke-width="1.3"/>
-       <path d="M13 10.6v18.8" fill="none" stroke="#0d182c" stroke-width="2.9" stroke-linecap="round"/>
+       <circle cx="20" cy="20" r="18.4" fill="none" stroke="#111318" stroke-width="1.3"/>
+       <path d="M13 10.6v18.8" fill="none" stroke="#111318" stroke-width="2.9" stroke-linecap="round"/>
        <path d="M13 10.6c7.6 0 11.3 1.9 11.3 4.7 0 2.7-3.7 4.6-11.3 4.6 8.6 0 12.7 2 12.7 4.8 0 2.6-4.1 4.7-12.7 4.7"
              fill="none" stroke="#2457e6" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
      </svg>`

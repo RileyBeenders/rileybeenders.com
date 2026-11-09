@@ -4,12 +4,12 @@ tags: [routes, pages]
 
 # Routes Overview
 
-There are four page routes, all App Router server components in the `app/(site)/` route group, which supplies the Blue Sheet chrome. Since the 2026-11-08 redesign (see [[Blue Sheet (2026-11 redesign)]]), one route has a dynamic segment, `/projects/[id]`, and it is statically generated for every catalog entry. `/about-this-site` and `/more-info` are gone as pages and redirect to the site's own project entry.
+There are four page routes, all App Router server components in the `app/(site)/` route group, which supplies the Clean Bench chrome (since 2026-11-09; see [[Clean Bench (2026-11 redesign)]]). Since the 2026-11-08 Blue Sheet redesign (see [[Blue Sheet (2026-11-08, one day)]]), one route has a dynamic segment, `/projects/[id]`, and it is statically generated for every catalog entry. `/about-this-site` and `/more-info` are gone as pages and redirect to the site's own project entry.
 
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
-| `/` | `app/(site)/page.tsx` (async) | The resume in cards: hero card, GitHub activity, Who is Riley?, Experience, Projects grid, Tech & hardware stack, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
-| `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with type filters. A card opens its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
+| `/` | `app/(site)/page.tsx` (async) | The resume in tiles: the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Tech & hardware stack, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
+| `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with type filters. A tile morphs into its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
 | `/projects/[id]` | `app/(site)/projects/[id]/page.tsx` | One entry's `ProjectBody` on its own page, a back link to Projects, and previous/next links. Ids come from `generateStaticParams()` over `getCatalog()`. `dynamicParams = false`, so an unknown id is a 404 | "`<project name>` \| Riley Beenders" (`generateMetadata`; the description is the tagline or the summary's first paragraph) |
 | `/projects/rileybeenders-com` | (the above) | The site's own entry: summary, gallery, case study, the deep dive (stats, timeline, pillars, demos), and the application tracker at `#tracker`. See [[Site Project (About this site)]] | "RileyBeenders.com \| Riley Beenders" (the entry's name is `caseStudy.title`; its type, "About this site", is `hero.title`) |
 | `/contact` | `app/(site)/contact/page.tsx` | The headline (`hero.title`, with `details.title` as the sub-line) + `<ContactBlock heading={false}>` (the ways in + the message form) + footer | `contact.json` `meta.title`, "Contact \| Riley Beenders" |
@@ -36,30 +36,31 @@ All three are `permanent: false` (307), so a target can be repointed without fig
 
 ## Site layout: `app/(site)/layout.tsx`
 
-- **Fonts.** Preloads **eight** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). `header.json.fonts` picks the faces for `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` via `fontVarExpression()`. Today they are Instrument Serif / Instrument Serif / Inter. IBM Plex Mono is the sheet's fixed `--mono`.
-- **Palette.** `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (today `blue-sheet`) or the `custom` seeds. The layout writes them as an inline `<style>`: `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `sheet.css`'s own `.bp` block is only the no-override fallback.
-- **Stylesheets.** Imports `./sheet.css`, `./bullet-link.css`, `./skill-pills.css`, `./projects/projects.css`, `./projects/feature.css` and `./projects/walkthrough.css`, in that order.
-- **Chrome.** Renders `<ThemeProvider>` → `<div class="bp {font vars}" data-theme-id={paletteId} data-motion-sync?>`. Inside that: the style override, `<SiteNav name={person.name} />` (see [[Site Nav and Mark]]), `<div class="sheet-frame">{children}</div>`, the portal host `<div data-sheet-portal />`, `<AnimationSync />` (when `motion.syncAnimations` is on), `<SmoothScroll />` (when `motion.smoothScroll` is on), and the dev-only `<StudioLink />` (a `next/dynamic` import that exists only when `NODE_ENV === "development"`).
+- **Fonts.** Preloads **ten** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-instrument-sans`, `--font-azeret-mono`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). `header.json.fonts` picks the faces for `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` via `fontVarExpression()`. Today they are Instrument Sans for the first three and Azeret Mono for small labels; `bench.css` sets `--mono` from the last.
+- **Palette.** `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (today `clean-bench`) or the `custom` seeds. The layout writes them as an inline `<style>`: `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `bench.css`'s own `.bp` block is only the no-override fallback.
+- **Stylesheets.** Imports `./bench.css`, `./bullet-link.css`, `./skill-pills.css`, `./projects/projects.css`, `./projects/feature.css` and `./projects/walkthrough.css`, in that order.
+- **Chrome.** Renders `<ThemeProvider>` → `<div class="bp {font vars}" data-theme-id={paletteId} data-motion-sync?>`. Inside that: the style override, `<SiteNav name={person.name} />` (see [[Site Nav and Mark]]), `<div class="page">{children}</div>`, the portal host `<div data-bench-portal />`, `<AnimationSync />` (when `motion.syncAnimations` is on), `<SmoothScroll />` (when `motion.smoothScroll` is on), and the dev-only `<StudioLink />` (a `next/dynamic` import that exists only when `NODE_ENV === "development"`).
 - **Metadata.** Sets `title` / `description` from `page.json` `meta`. The projects, project and contact pages override them.
 
 ## `/`: `app/(site)/page.tsx`
 
 An async server component. It reads `resumeData`, `data/home/page.json`, `getCatalog()`, `todayIso()`, and `await getContributions(githubUsername(person.github))`. Because that `fetch` carries `next: { revalidate: 3600 }`, the route is ISR. It renders, inside `<main>`:
 
-1. **Hero** (`section.shell.hero` → `.hero-card[data-cursor-zone]`):
-   - `<HeroCover label="<footer.sheetLabel> · <location>">`, then the `.hero-avatar` (`BpMark` 60px, animated) and, when `openToRelocation` is on, a `.chip` "Open to relocation".
-   - The `h1.hero-name` (`page.hero.lines` joined), the `p.hero-role` (the title plus a blinking `.hero-caret`), and the `.hero-meta` line: location, and the current role "· `<company>`, since `<start>`" from `page.hero.currentRole`.
-   - `<HeroActions>`, then `<CursorMark>` when `motion.cursorMark` is on.
+1. **The bento** (`section.shell.hero` → `.bento[data-cursor-zone]`), each tile numbered `--i` in order for the `tile-in` stagger:
+   - `.tile-hero`: the `.hero-avatar` (`BpMark` 46px, animated) and, when `openToRelocation` is on, a `.chip` "Open to relocation"; the `h1.hero-name` (`page.hero.lines` joined), the `p.hero-role` (the title), the `.hero-meta` line (location, and the current role "· `<company>`, since `<start>`" from `page.hero.currentRole`); `<HeroActions>`.
+   - `.tile-now` (`page.bento.now`, the current role → `#experience`), `.tile-where` (`page.bento.location`, the location), `.tile-edu` (the first degree → `#education`).
+   - `.tile-activity`: `<GithubGraph title={headings.activity} data profileUrl />`, with "unavailable" copy when GitHub could not be read.
+   - `.tile-site` (the site entry → `#project-rileybeenders-com`, which opens its dialog) and `.tile-contact` (→ `#contact`).
+   - `<CursorMark>` when `motion.cursorMark` is on.
 
-   See [[Sheet Components (Home Page)]].
-2. **GitHub activity**: `<GithubGraph title={headings.activity} data profileUrl />` in a `Reveal`. It shows "unavailable" copy when GitHub could not be read.
-3. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact cards. The cards are the current role, the degree, the location (plus "Open to relocation"), and Sheet (the site link).
-4. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
-5. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
-6. **`#skills`, "Tech & hardware stack"**: `<Stack data linkedSkills />`.
-7. **`#education`**: `<Education />`.
-8. **`#contact`**: `<ContactBlock person relocation />`.
-9. `<SiteFooter location />` and `<BackToTop />`.
+   See [[Bench Components (Home Page)]].
+2. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact tiles: Experience (the current role), Education (the degree), Based in (the location, plus "Open to relocation"), and Site (the site link).
+3. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
+4. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
+5. **`#skills`, "Tech & hardware stack"**: `<Stack data linkedSkills />`.
+6. **`#education`**: `<Education />`.
+7. **`#contact`**: `<ContactBlock person relocation />`.
+8. `<SiteFooter location />` and `<BackToTop />`.
 
 ## `/projects`: `app/(site)/projects/page.tsx`
 
@@ -76,7 +77,7 @@ See [[Project Catalog and Dialog]].
 
 - `generateStaticParams()` returns every `getCatalog()` id. `dynamicParams = false`.
 - `generateMetadata()` titles the page "`<name>` | `<person.name>`".
-- The page finds the entry's index, renders a `.page-back` link to `/projects` (labelled `ui.nav.projects`), then `<ProjectBody entry today paletteId mode="page" />` (which gives an `h1` title), then a `.page-nav` with the previous and next catalog entries (their type and name), the footer and `BackToTop`.
+- The page finds the entry's index and wraps its body in one `.page-in` entrance (a CSS `tile-in`, no observer; the old `Reveal` wrappers never fired on a page taller than the viewport). It renders a `.page-back` link to `/projects` (labelled `ui.nav.projects`), then `<ProjectBody entry today paletteId mode="page" />` (which gives an `h1` title), then a `.page-nav` with the previous and next catalog entries (their type and name), the footer and `BackToTop`.
 - The site entry is the last in the catalog, so `/projects/rileybeenders-com` has a previous link only.
 
 ## `/contact`: `app/(site)/contact/page.tsx`
@@ -115,6 +116,7 @@ The main resume itself is described in [[Resume PDF Pipeline]].
 - [[Project Catalog and Dialog]]
 - [[Site Project (About this site)]]
 - [[Site Nav and Mark]]
-- [[Sheet Components (Home Page)]]
-- [[Blue Sheet (2026-11 redesign)]]
+- [[Bench Components (Home Page)]]
+- [[Clean Bench (2026-11 redesign)]]
+- [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

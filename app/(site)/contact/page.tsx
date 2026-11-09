@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import contactData from "@/data/contact/contact.json";
 import resumeData from "@/data/resumeData";
 import { Reveal } from "@/components/blueprint/Reveal";
-import { ContactBlock } from "@/components/sheet/ContactBlock";
-import { SiteFooter } from "@/components/sheet/SiteFooter";
+import { ContactBlock } from "@/components/bench/ContactBlock";
+import { SiteFooter } from "@/components/bench/SiteFooter";
 import type { ContactData } from "@/types/contact";
 
 const data = contactData as ContactData;

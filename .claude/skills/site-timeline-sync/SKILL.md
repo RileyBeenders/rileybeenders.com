@@ -7,9 +7,9 @@ description: Keep the site's own "About this site" entry (data/site/about-site.j
 
 One of several repository agent procedures — see the repo-root `CLAUDE.md` for the set.
 
-The **About this site** entry is the one place the site documents itself: a running date bar, a stats strip, a commit timeline (past · present · future), three pillars, and a "Behind the site" section of live demos (the resume formatter, the Studio, the agent skills), with the application tracker at its foot. Since the Blue Sheet redesign (2026-11-08) it is not its own route: it is the last entry in the project catalog, built by `lib/catalog.ts` (`SITE_PROJECT_ID = "rileybeenders-com"`), opening as a dialog from any project grid (`#project-rileybeenders-com`) and as a full page at **`/projects/rileybeenders-com`** (`app/(site)/projects/[id]/page.tsx` → `ProjectBody` → `ProjectFeature`). `/about-this-site` redirects there. All of its content lives in `data/site/about-site.json` (editable in the Studio under **About this site**, rail group → `/projects/rileybeenders-com`). This procedure keeps that file honest without turning it into a changelog.
+The **About this site** entry is the one place the site documents itself: a running date bar, a stats strip, a commit timeline (past · present · future), three pillars, and a "Behind the site" section of live demos (the resume formatter, the Studio, the agent skills), with the application tracker at its foot. Since the Blue Sheet redesign (2026-11-08, kept by Clean Bench on 2026-11-09) it is not its own route: it is the last entry in the project catalog, built by `lib/catalog.ts` (`SITE_PROJECT_ID = "rileybeenders-com"`), opening as a dialog from any project grid (`#project-rileybeenders-com`) and as a full page at **`/projects/rileybeenders-com`** (`app/(site)/projects/[id]/page.tsx` → `ProjectBody` → `ProjectFeature`). `/about-this-site` redirects there. All of its content lives in `data/site/about-site.json` (editable in the Studio under **About this site**, rail group → `/projects/rileybeenders-com`). This procedure keeps that file honest without turning it into a changelog.
 
-The page's value is that it's *curated*. Twenty-three entries tell the story of eighty days; a hundred would bury it. When in doubt, leave a commit out.
+The page's value is that it's *curated*. Twenty-seven entries tell the story of 134 days; a hundred would bury it. When in doubt, leave a commit out.
 
 ## When this applies
 
@@ -59,7 +59,7 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
    ```bash
    sh .claude/skills/impeccable/scripts/impeccable detect --json <changed .css/.tsx files>
    ```
-   Advisory hits on the blueprint grid (`sheet.css`'s `.bp::before`) are expected (it is the committed surface); warnings are not. If the commit changed a whole surface, run `$impeccable audit` on it first. Then, with `npm run site` running (both servers; the Studio shots are skipped if it is down):
+   Advisory hits on the bloom (`bench.css`'s `.bp::before`) are expected (it is the committed surface); warnings are not. If the commit changed a whole surface, run `$impeccable audit` on it first. Then, with `npm run site` running (both servers; the Studio shots are skipped if it is down):
    ```bash
    node scripts/capture-site-screenshots.mjs
    ```
@@ -101,7 +101,7 @@ The page's value is that it's *curated*. Twenty-three entries tell the story of 
 
 ## What "brief" means here
 
-The timeline reads as a story someone scrolls in a minute. Every entry earns its place by marking a turn: the data split, going live, the first agent instructions, Blueprint Press, the Studio, dark mode, the motion skills, Blue Sheet. If the next ten commits are polish, the right number of new entries is zero, and the stats strip is where that work shows up. A page that says "117 commits" with twenty entries is more honest than one that lists all 117.
+The timeline reads as a story someone scrolls in a minute. Every entry earns its place by marking a turn: the data split, going live, the first agent instructions, Blueprint Press, the Studio, dark mode, the motion skills, Blue Sheet, Clean Bench. If the next ten commits are polish, the right number of new entries is zero, and the stats strip is where that work shows up. A page that says "117 commits" with twenty entries is more honest than one that lists all 117.
 
 ## Related procedures
 

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-08T05:44:35.441183+00:00",
-  "title": "Design System: Blue Sheet",
+  "generatedAt": "2026-11-09T03:00:08.148621+00:00",
+  "title": "Design System: Clean Bench",
   "extensions": {
     "colorMeta": {
       "accent": {
         "role": "primary",
-        "displayName": "Sheet Blue (active preset)",
+        "displayName": "Bench Cobalt (active preset)",
         "canonical": "#2457e6",
         "tonalRamp": [
           "#0e235c",
@@ -18,10 +18,10 @@
           "#cfdafa",
           "#f0f3fd"
         ],
-        "note": "Studio preset 'blue-sheet' (2026-11-08). Fills use accent-fill, which cuts 30% toward black on a dark palette; text keeps the lighter dark accent #6a93ff."
+        "note": "Clean Bench preset (lib/palettes.ts 'clean-bench', 2026-11-09). Fills use accent-fill, which cuts 30% toward black on a dark palette; text keeps the lighter dark accent #6a93ff. Ramp: the canonical mixed toward black (0.4/0.6/0.8 of its value) and toward white (0.30/0.55/0.78/0.93)."
       },
       "blue": {
-        "role": "secondary",
+        "role": "primary",
         "displayName": "Deep Blue",
         "canonical": "#173ea8",
         "tonalRamp": [
@@ -34,26 +34,27 @@
           "#ccd5ec",
           "#eff1f9"
         ],
-        "note": "The deeper partner for drawn geometry and data (monogram bowl, calendar step 4, gantt series)."
+        "note": "Drawn geometry and data only: the monogram's bowl, the gantt's secondary series."
       },
       "paper": {
         "role": "neutral",
-        "displayName": "Sheet",
-        "canonical": "#f4f7fd",
+        "displayName": "Ground",
+        "canonical": "#f4f5f8",
         "tonalRamp": [
-          "#626365",
-          "#929498",
-          "#c3c6ca",
-          "#f4f7fd",
-          "#f7f9fe",
-          "#fafbfe",
-          "#fdfdff",
+          "#626263",
+          "#929395",
+          "#c3c4c6",
+          "#f4f5f8",
+          "#f7f8fa",
+          "#fafafc",
+          "#fdfdfd",
           "#fefeff"
-        ]
+        ],
+        "note": "The pale grey-blue ground the tiles sit on; also on <html>."
       },
       "white": {
         "role": "neutral",
-        "displayName": "Card White",
+        "displayName": "Tile",
         "canonical": "#ffffff",
         "tonalRamp": [
           "#666666",
@@ -64,242 +65,243 @@
           "#ffffff",
           "#ffffff",
           "#ffffff"
-        ]
+        ],
+        "note": "Every tile and control."
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Navy Ink",
-        "canonical": "#0d182c",
+        "displayName": "Ink",
+        "canonical": "#111318",
         "tonalRamp": [
-          "#050a12",
-          "#080e1a",
-          "#0a1323",
-          "#0d182c",
-          "#565d6b",
-          "#9297a0",
-          "#caccd1",
-          "#eeeff0"
-        ]
+          "#07080a",
+          "#0a0b0e",
+          "#0e0f13",
+          "#111318",
+          "#585a5d",
+          "#949597",
+          "#cbcbcc",
+          "#eeeeef"
+        ],
+        "note": "Headings and primary text; the ramp's start."
       },
       "prose": {
         "role": "neutral",
-        "displayName": "Prose Ink (10% toward paper)",
-        "canonical": "#2e3136",
+        "displayName": "prose",
+        "canonical": "#282a2e",
         "tonalRamp": [
-          "#0e0f10",
-          "#191b1e",
-          "#25272b",
-          "#2e3136",
-          "#626568",
-          "#97989b",
-          "#cbcccd",
-          "#eeefef"
-        ]
+          "#101112",
+          "#18191c",
+          "#202225",
+          "#282a2e",
+          "#686a6d",
+          "#9e9fa1",
+          "#d0d0d1",
+          "#f0f0f0"
+        ],
+        "note": "Ink mixed 10% toward paper."
       },
       "ink-soft": {
         "role": "neutral",
-        "displayName": "Soft Ink (25%)",
-        "canonical": "#515358",
+        "displayName": "ink-soft",
+        "canonical": "#4a4c50",
         "tonalRamp": [
-          "#18191a",
-          "#2d2e30",
-          "#414246",
-          "#515358",
-          "#7d7e82",
-          "#a8a9ac",
-          "#d4d4d5",
-          "#f1f1f2"
-        ]
+          "#1e1e20",
+          "#2c2e30",
+          "#3b3d40",
+          "#4a4c50",
+          "#808284",
+          "#aeaeb0",
+          "#d7d8d8",
+          "#f2f2f3"
+        ],
+        "note": "Ink mixed 25% toward paper."
       },
       "pill-text": {
         "role": "neutral",
-        "displayName": "Pill Ink (29%)",
-        "canonical": "#5a5c61",
+        "displayName": "pill-text",
+        "canonical": "#535559",
         "tonalRamp": [
-          "#1b1c1d",
+          "#212224",
           "#323335",
-          "#484a4e",
-          "#5a5c61",
-          "#838589",
-          "#adaeb0",
-          "#d6d6d8",
-          "#f2f2f2"
-        ]
+          "#424447",
+          "#535559",
+          "#87888b",
+          "#b2b2b4",
+          "#d9dada",
+          "#f3f3f3"
+        ],
+        "note": "Ink mixed 29% toward paper."
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted (36%)",
-        "canonical": "#6b6c70",
+        "displayName": "muted",
+        "canonical": "#636469",
         "tonalRamp": [
-          "#202022",
-          "#3b3b3e",
-          "#56565a",
-          "#6b6c70",
-          "#909194",
-          "#b5b6b8",
-          "#dadadb",
-          "#f3f3f4"
+          "#28282a",
+          "#3b3c3f",
+          "#4f5054",
+          "#636469",
+          "#929296",
+          "#b9b9bc",
+          "#ddddde",
+          "#f4f4f4"
         ],
-        "note": "The floor for text: 5.2:1 on paper, 4.8:1 on the white sheet."
+        "note": "Ink mixed 36% toward paper; the floor for text."
       },
       "faint": {
         "role": "neutral",
-        "displayName": "Faint (50%)",
-        "canonical": "#8b8d90",
+        "displayName": "faint",
+        "canonical": "#838488",
         "tonalRamp": [
-          "#2a2a2b",
-          "#4c4e4f",
-          "#6f7173",
-          "#8b8d90",
-          "#a8aaac",
-          "#c5c6c8",
-          "#e2e3e3",
-          "#f6f6f6"
+          "#343536",
+          "#4f4f52",
+          "#696a6d",
+          "#838488",
+          "#a8a9ac",
+          "#c7c8c9",
+          "#e4e4e5",
+          "#f6f6f7"
         ],
-        "note": "Rules, ticks, dots, scrollbars. Not for text."
+        "note": "Ink mixed 50% toward paper; lines and dots only."
       },
       "rule": {
         "role": "neutral",
-        "displayName": "Hairline (87%)",
-        "canonical": "#e1e1e2",
+        "displayName": "rule",
+        "canonical": "#d6d8db",
         "tonalRamp": [
-          "#444444",
-          "#7c7c7c",
-          "#b4b4b5",
-          "#e1e1e2",
-          "#e9e9e9",
-          "#f0f0f1",
-          "#f8f8f8",
-          "#fdfdfd"
-        ]
+          "#565658",
+          "#808283",
+          "#abadaf",
+          "#d6d8db",
+          "#e2e4e6",
+          "#ededef",
+          "#f6f6f7",
+          "#fcfcfc"
+        ],
+        "note": "Ink mixed 87% toward paper; hairlines."
       },
       "paper-dark": {
         "role": "neutral",
-        "displayName": "Paper, dark",
-        "canonical": "#000000",
+        "displayName": "Ground (dark)",
+        "canonical": "#0f1115",
         "tonalRamp": [
-          "#000000",
-          "#000000",
-          "#000000",
-          "#000000",
-          "#404040",
-          "#808080",
-          "#bfbfbf",
-          "#ebebeb"
-        ]
+          "#060708",
+          "#090a0d",
+          "#0c0e11",
+          "#0f1115",
+          "#57585b",
+          "#939496",
+          "#cacbcc",
+          "#eeeeef"
+        ],
+        "note": "Near-black ground in dark mode."
       },
       "white-dark": {
         "role": "neutral",
-        "displayName": "Sheet, dark",
-        "canonical": "#141414",
+        "displayName": "Tile (dark)",
+        "canonical": "#181b22",
         "tonalRamp": [
-          "#060606",
-          "#0b0b0b",
-          "#101010",
-          "#141414",
-          "#4f4f4f",
-          "#8a8a8a",
-          "#c4c4c4",
-          "#ececec"
-        ]
+          "#0a0b0e",
+          "#0e1014",
+          "#13161b",
+          "#181b22",
+          "#5d5f64",
+          "#97989c",
+          "#cccdce",
+          "#efeff0"
+        ],
+        "note": "Graphite tiles in dark mode."
       },
       "ink-dark": {
         "role": "neutral",
-        "displayName": "Ink, dark",
-        "canonical": "#ffffff",
+        "displayName": "Ink (dark)",
+        "canonical": "#eceef2",
         "tonalRamp": [
-          "#4d4d4d",
-          "#8c8c8c",
-          "#cccccc",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff"
-        ]
+          "#5e5f61",
+          "#8e8f91",
+          "#bdbec2",
+          "#eceef2",
+          "#f2f3f6",
+          "#f6f7f9",
+          "#fbfbfc",
+          "#fefefe"
+        ],
+        "note": "Text in dark mode."
       },
       "rule-dark": {
         "role": "neutral",
-        "displayName": "Hairline, dark",
-        "canonical": "#212121",
+        "displayName": "rule (dark)",
+        "canonical": "#2c2e32",
         "tonalRamp": [
-          "#0a0a0a",
-          "#121212",
-          "#1a1a1a",
-          "#212121",
-          "#595959",
-          "#909090",
-          "#c8c8c8",
-          "#ededed"
-        ]
+          "#121214",
+          "#1a1c1e",
+          "#232528",
+          "#2c2e32",
+          "#6b6d70",
+          "#a0a1a3",
+          "#d1d1d2",
+          "#f0f0f1"
+        ],
+        "note": "Hairlines in dark mode."
       },
       "on-accent": {
         "role": "neutral",
-        "displayName": "On Accent",
-        "canonical": "#ffffff",
+        "displayName": "on-accent",
+        "canonical": "#f4f5f8",
         "tonalRamp": [
-          "#4d4d4d",
-          "#8c8c8c",
-          "#cccccc",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff",
-          "#ffffff"
+          "#626263",
+          "#929395",
+          "#c3c4c6",
+          "#f4f5f8",
+          "#f7f8fa",
+          "#fafafc",
+          "#fdfdfd",
+          "#fefeff"
         ],
-        "note": "Whichever of paper or ink reads better on the accent; white on both Electric themes."
+        "note": "Text on accent-fill: whichever of paper or ink reads better."
       },
       "insertion": {
         "role": "semantic",
-        "displayName": "Insertion Green",
+        "displayName": "insertion",
         "canonical": "#2e7d4f",
         "tonalRamp": [
-          "#0e2618",
-          "#19452b",
+          "#123220",
+          "#1c4b2f",
           "#25643f",
           "#2e7d4f",
-          "#629e7b",
-          "#97bea7",
-          "#cbdfd3",
-          "#eef5f1"
+          "#6da484",
+          "#a1c4b0",
+          "#d1e2d8",
+          "#f0f6f3"
         ],
-        "note": "The + line count on a timeline entry; #6cc48e in dark. Deletions use the accent."
+        "note": "The timeline's '+ lines' count; dark #6cc48e."
       },
       "scrim": {
-        "role": "neutral",
-        "displayName": "Lightbox Scrim",
+        "role": "semantic",
+        "displayName": "lightbox scrim",
         "canonical": "rgba(8, 16, 26, 0.93)",
-        "tonalRamp": [
-          "#020508",
-          "#04090e",
-          "#060d15",
-          "#08101a",
-          "#464c53",
-          "#84888d",
-          "#c1c3c6",
-          "#ebeced"
-        ],
-        "note": "The lightbox backdrop."
+        "tonalRamp": [],
+        "note": "Literal, because the lightbox portals to <body> outside .bp. The dialog scrim is ink at 45% with a 6px blur."
       },
       "tint": {
         "role": "surface",
         "displayName": "tint",
-        "canonical": "#eef2fd",
+        "canonical": "#edf2fd",
         "tonalRamp": [
           "#5f6165",
-          "#8f9198",
+          "#8e9198",
           "#bec2ca",
-          "#eef2fd",
-          "#f3f6fe",
+          "#edf2fd",
+          "#f2f6fe",
           "#f7f9fe",
           "#fbfcff",
           "#fefeff"
         ],
-        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+        "note": "Derived from the accent in lib/palette.ts. Chips, the active nav link, table heads, the contact card's left column, the Read more chip."
       },
       "accentSoft": {
         "role": "surface",
-        "displayName": "accentSoft",
+        "displayName": "accent-soft",
         "canonical": "#cfdafa",
         "tonalRamp": [
           "#535764",
@@ -311,11 +313,11 @@
           "#f4f7fe",
           "#fcfcff"
         ],
-        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+        "note": "Derived from the accent. The bloom's main wash, the hero tile's glow, the calendar's first step."
       },
       "accentFill": {
         "role": "surface",
-        "displayName": "accentFill",
+        "displayName": "accent-fill",
         "canonical": "#2457e6",
         "tonalRamp": [
           "#0e235c",
@@ -327,283 +329,316 @@
           "#cfdafa",
           "#f0f3fd"
         ],
-        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+        "note": "The accent as a surface; #4a67b3 in dark (30% toward black)."
       },
       "glow": {
         "role": "surface",
         "displayName": "glow",
-        "canonical": "#d3ddf9",
+        "canonical": "#d3dcf5",
         "tonalRamp": [
-          "#545864",
-          "#7f8595",
-          "#a9b1c7",
-          "#d3ddf9",
-          "#e0e7fb",
-          "#ebf0fc",
-          "#f5f8fe",
-          "#fcfdff"
+          "#545862",
+          "#7f8493",
+          "#a9b0c4",
+          "#d3dcf5",
+          "#e0e6f8",
+          "#ebeffa",
+          "#f5f7fd",
+          "#fcfdfe"
         ],
-        "note": "Derived from the accent in lib/palette.ts (added with Blue Sheet, 2026-11-08)."
+        "note": "Derived from the accent. The bloom's second wash."
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The hero name only, two lines, Instrument Serif 400 at up to 152px."
+        "purpose": "The hero name: Instrument Sans 600, clamp(38px, 5.4vw, 62px), -0.035em."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page titles on every non-home route."
+        "purpose": "A project's name in its dialog and page: 600, clamp(32px, 4vw, 52px)."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Section titles: 600, clamp(28px, 3.2vw, 38px), -0.025em."
       },
       "tagline": {
         "displayName": "Tagline",
-        "purpose": "The italic line under the hero rule; ink-soft, max 24ch."
+        "purpose": "The hero title line: 500, clamp(17px, 1.7vw, 21px), accent."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Role titles and degree names."
+        "purpose": "Role titles: 600, clamp(20px, 1.9vw, 24px)."
+      },
+      "tileValue": {
+        "displayName": "Tile value",
+        "purpose": "What a bento tile says: 600, clamp(18px, 1.7vw, 21px)."
       },
       "subtitle": {
         "displayName": "Subtitle",
-        "purpose": "Skill group headings and card titles, 20 to 21px."
+        "purpose": "Project tile names, stack and activity headings, certificate names: 600, 16 to 20px."
       },
       "prose": {
         "displayName": "Prose",
-        "purpose": "Summary and page intros; drop cap on the summary."
+        "purpose": "Running text: 400, clamp(16.5px, 1.3vw, 18px), 1.7, max 68ch."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Bullets and role context at 17px."
+        "purpose": "Bullets: 400, 15.5px, 1.62."
       },
       "ui": {
         "displayName": "UI",
-        "purpose": "Buttons, nav links, the footer note."
+        "purpose": "Buttons, nav links, inline links: 500, 14px."
       },
       "small": {
         "displayName": "Small",
-        "purpose": "Pills, table cells, issuers."
-      },
-      "index": {
-        "displayName": "Section index",
-        "purpose": "The uppercase accent label in the 190px column."
+        "purpose": "Pills, filters, small buttons: 13px."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Dates, brand name, read-more, back-to-top, table headers."
+        "purpose": "Azeret Mono 10 to 11px, 0.06 to 0.1em, uppercase: tile labels, eyebrows, chips, tags, table heads."
       },
-      "caption": {
-        "displayName": "Caption",
-        "purpose": "Cert dates and the footer URL."
+      "mono": {
+        "displayName": "Mono data",
+        "purpose": "Azeret Mono 11 to 12px: dates, counts, the calendar's total, the footer meta line."
       }
     },
     "shadows": {
-      "sm": "0 1px 2px ink/6%, 0 6px 18px ink/5%",
-      "md": "0 2px 6px ink/6%, 0 18px 44px ink/9%",
-      "lg": "0 10px 30px ink/12%, 0 40px 90px ink/16%",
-      "accent": "0 8px 22px accent/30%"
+      "sm": "0 1px 2px ink/5%, 0 8px 24px -14px ink/12%",
+      "md": "0 2px 6px ink/6%, 0 18px 40px -14px ink/16%",
+      "lg": "0 10px 30px ink/12%, 0 40px 90px ink/18%",
+      "accent": "0 8px 22px -6px accent/45% (hover 0 12px 28px -6px accent/50%)"
     },
     "motion": {
       "ease": "cubic-bezier(0.22, 0.9, 0.28, 1)",
       "easeOut": "cubic-bezier(0.16, 1, 0.3, 1)",
       "reveal": {
-        "rise": "0.82s, 22px",
-        "fade": "0.7s",
-        "rule": "0.9s"
+        "tileIn": "0.8s, 16px, staggered 70ms by --i",
+        "pageIn": "0.7s, 16px, one-shot",
+        "projectTiles": "0.6s, 0.06s apart"
       },
       "hover": {
-        "lift": "2-4px",
+        "lift": "1-3px",
         "shadowStep": 1
       },
-      "dialog": "0.45s scale 0.97->1, y 24->0",
+      "morph": "spring 380/36/0.8 (shared layoutId tile -> dialog); bar and body fade 0.32s after 0.18s; reduced motion: plain fade",
+      "bloom": "bloom-drift 22s ease-in-out infinite alternate",
       "navActive": "spring 420/38/0.6",
       "smoothScroll": "lerp 0.11 per frame, wheel only",
       "cursorMark": "spring 260/26/0.5"
     },
     "breakpoints": {
-      "frame": "1000px",
       "grid": "980px",
-      "phone": "760px"
+      "phone": "760px",
+      "bento": "640px"
     },
     "surfaces": [
       {
-        "name": "blueprint-grid",
-        "value": "16px fine at 4.5% ink + 96px coarse at 8.5% ink, background-attachment: fixed",
-        "purpose": "The drafting grid behind every page; it is the subject's own surface, not decoration."
+        "name": "bloom",
+        "value": "three radial washes (accent-soft, glow, tint) behind the top of the page at 0.85 opacity (0.6 dark), drifting over 22s",
+        "purpose": "The hint of Soft Bloom: a soft blue light behind the bench, never a second hue."
+      },
+      {
+        "name": "glass",
+        "value": "white at 66 to 88% with an 18px (nav) or 10px (bar, tags, floating controls) backdrop blur",
+        "purpose": "Anything that floats over content."
       }
     ],
     "radii": {
+      "xs": "2px",
+      "focus": "4px",
       "sm": "10px",
-      "md": "16px",
-      "lg": "24px",
-      "xl": "30px",
+      "cover": "12px",
+      "md": "14px",
+      "lg": "22px",
+      "xl": "28px (defined, unused)",
       "pill": "999px"
     },
-    "note": "Narrative, components and token roles: see DESIGN.md (Blue Sheet). Component snippets from the Blueprint Press era below are historical; the live markup is in components/sheet/ and app/(site)/sheet.css."
+    "note": "Narrative, components and token roles: see DESIGN.md (Clean Bench). The live markup is in components/bench/ and app/(site)/bench.css; the direction contract is .impeccable/surfaces/app-site-page-tsx.md."
   },
   "components": [
     {
-      "name": "Outline button",
-      "kind": "button",
-      "refersTo": "button-outline",
-      "description": "The Email / LinkedIn / GitHub action; fill wipes in from the left on hover.",
-      "html": "<a class=\"ds-btn\" href=\"#\"><span>LinkedIn</span><svg class=\"ds-arrow\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2.5 8h11m0 0L9 3.5M13.5 8L9 12.5\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;min-height:48px;border:1px solid var(--ink,#171a20);background:transparent;color:var(--ink,#171a20);font:500 15px/1.4 Spectral,Georgia,serif;text-decoration:none;cursor:pointer;transition:color .42s cubic-bezier(.22,.9,.28,1),transform .42s cubic-bezier(.22,.9,.28,1)}.ds-btn>*{position:relative;z-index:1}.ds-btn::before{content:\"\";position:absolute;inset:0;background:var(--ink,#171a20);transform:scaleX(0);transform-origin:left center;transition:transform .48s cubic-bezier(.22,.9,.28,1)}.ds-btn:hover{color:var(--paper,#fff);transform:translateY(-2px)}.ds-btn:hover::before{transform:scaleX(1)}.ds-btn .ds-arrow{transition:transform .42s cubic-bezier(.22,.9,.28,1)}.ds-btn:hover .ds-arrow{transform:translateX(5px)}.ds-btn:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "name": "Tile",
+      "kind": "card",
+      "refersTo": "tile",
+      "description": "The one surface: white, 22px radius, ink hairline, small shadow; a linked tile lifts 3px and shows its arrow.",
+      "html": "<a class=\"card card--hover tile\" href=\"#experience\"><span class=\"tile-label\">Now</span><h3 class=\"tile-value\">Role</h3><p class=\"tile-sub\">Company</p><span class=\"tile-arrow\" aria-hidden=\"true\">&#8599;</span></a>",
+      "css": ".card{position:relative;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--white);box-shadow:var(--shadow-sm);transition:transform .5s var(--ease),box-shadow .5s ease,border-color .4s ease}.card--hover:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 28%,var(--line))}.tile{display:grid;align-content:start;gap:6px;padding:clamp(18px,2.2vw,24px)}.tile-label{font-family:var(--mono),monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.tile-value{font-size:clamp(18px,1.7vw,21px);line-height:1.25;letter-spacing:-.015em}.tile-sub{font-size:14px;color:var(--muted)}"
     },
     {
       "name": "Solid button",
       "kind": "button",
       "refersTo": "button-solid",
-      "description": "The Download PDF action; accent fill, ink wipe on hover, wait state when disabled.",
-      "html": "<button class=\"ds-btn ds-btn--solid\" type=\"button\"><span>Download PDF</span><svg class=\"ds-arrow\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M8 2v11m0 0l-4.5-4.5M8 13l4.5-4.5\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
-      "css": ".ds-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;min-height:48px;border:1px solid var(--ink,#171a20);background:transparent;color:var(--ink,#171a20);font:500 15px/1.4 Spectral,Georgia,serif;cursor:pointer;transition:color .42s cubic-bezier(.22,.9,.28,1),transform .42s cubic-bezier(.22,.9,.28,1),border-color .42s ease}.ds-btn>*{position:relative;z-index:1}.ds-btn::before{content:\"\";position:absolute;inset:0;background:var(--ink,#171a20);transform:scaleX(0);transform-origin:left center;transition:transform .48s cubic-bezier(.22,.9,.28,1)}.ds-btn:hover{color:var(--paper,#fff);transform:translateY(-2px)}.ds-btn:hover::before{transform:scaleX(1)}.ds-btn--solid{background:var(--accent,#3e6ae1);border-color:var(--accent,#3e6ae1);color:var(--on-accent,#fff)}.ds-btn--solid:hover{border-color:var(--ink,#171a20)}.ds-btn--solid:disabled{cursor:wait;opacity:.75;transform:none}.ds-btn:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "description": "The primary action (Download PDF, Send message): accent fill, pill, accent shadow; hover darkens 12% toward ink and lifts 2px.",
+      "html": "<a class=\"btn btn--solid\" href=\"#\">Download PDF</a>",
+      "css": ".btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;min-height:42px;border:1px solid color-mix(in srgb,var(--ink) 12%,transparent);border-radius:999px;background:var(--white);color:var(--ink);font-size:14px;font-weight:500;box-shadow:var(--shadow-sm);transition:transform .4s var(--ease),box-shadow .4s ease}.btn--solid{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--on-accent);box-shadow:0 8px 22px -6px color-mix(in srgb,var(--accent) 45%,transparent)}.btn--solid:hover{background:color-mix(in srgb,var(--accent-fill) 88%,var(--ink));transform:translateY(-2px)}"
     },
     {
-      "name": "Inline link",
-      "kind": "custom",
-      "refersTo": "link-inline",
-      "description": "Ink text with an accent underline that wipes in and a diagonal arrow that nudges.",
-      "html": "<a class=\"ds-link\" href=\"#\">Show credential<svg class=\"ds-arrow\" width=\"13\" height=\"13\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12L12 4m0 0H5.5M12 4v6.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-link{position:relative;display:inline-flex;align-items:center;gap:7px;padding:3px 0;color:var(--ink,#171a20);font:400 17px/1.5 Spectral,Georgia,serif;text-decoration:none}.ds-link::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:1.6px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:right center;transition:transform .44s cubic-bezier(.22,.9,.28,1)}.ds-link:hover::after{transform:scaleX(1);transform-origin:left center}.ds-link .ds-arrow{transition:transform .42s cubic-bezier(.22,.9,.28,1)}.ds-link:hover .ds-arrow{transform:translate(3px,-3px)}.ds-link:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "name": "Outline button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Email, LinkedIn, GitHub, Open full page: white pill with a hairline; hover lifts 2px and tints the border.",
+      "html": "<a class=\"btn\" href=\"#\">Email</a>",
+      "css": ".btn:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 40%,transparent);box-shadow:var(--shadow)}"
     },
     {
-      "name": "Nav link",
+      "name": "Nav pill",
       "kind": "nav",
-      "refersTo": "nav-link",
-      "description": "Muted at rest, ink when active, a 2px accent underline scales in from the left.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link is-active\" href=\"#\" aria-current=\"page\">Home</a><a class=\"ds-nav-link\" href=\"#\">Projects</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
-      "css": ".ds-nav{display:flex;gap:28px;font:400 15px/1.4 Spectral,Georgia,serif}.ds-nav-link{position:relative;padding:6px 2px;color:var(--muted,#6b6c70);text-decoration:none;transition:color .3s ease}.ds-nav-link::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .42s cubic-bezier(.22,.9,.28,1)}.ds-nav-link:hover,.ds-nav-link.is-active{color:var(--ink,#171a20)}.ds-nav-link:hover::after,.ds-nav-link.is-active::after{transform:scaleX(1)}.ds-nav-link:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "refersTo": "nav-pill",
+      "description": "The floating glass nav: translucent white, 18px blur, a tint that slides behind the active link.",
+      "html": "<nav class=\"nav\"><div class=\"nav-pill\"><a class=\"nav-brand\" href=\"/\">Riley Beenders</a><div class=\"nav-links\"><a class=\"nav-link is-active\" href=\"/\"><span>Home</span></a></div></div></nav>",
+      "css": ".nav{position:sticky;top:0;display:flex;justify-content:center;padding:14px var(--pad) 0}.nav-pill{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid color-mix(in srgb,var(--ink) 8%,transparent);border-radius:999px;background:color-mix(in srgb,var(--white) 66%,transparent);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--shadow-sm)}.nav-link{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;color:var(--muted)}.nav-link.is-active{color:var(--ink)}"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "A live status (Open to relocation): tint, accent mono label, a pulsing dot.",
+      "html": "<span class=\"chip\"><span class=\"chip-dot\"></span>Open to relocation</span>",
+      "css": ".chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);border-radius:999px;background:var(--tint);color:var(--accent);font-family:var(--mono),monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}"
     },
     {
       "name": "Skill pill",
       "kind": "chip",
       "refersTo": "pill",
-      "description": "A square white chip with a hairline border; lifts 3px and darkens on hover.",
-      "html": "<span class=\"ds-pill\">LabVIEW</span> <span class=\"ds-pill\">Allen Bradley PLCs</span>",
-      "css": ".ds-pill{display:inline-block;padding:8px 16px;border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);color:var(--pill-text,#5a5c61);font:400 14px/1.4 Spectral,Georgia,serif;transition:transform .34s cubic-bezier(.22,.9,.28,1),border-color .34s ease,color .34s ease,box-shadow .34s ease}.ds-pill:hover{transform:translateY(-3px);border-color:var(--ink,#171a20);color:var(--ink,#171a20);box-shadow:0 6px 18px color-mix(in srgb,var(--ink,#171a20) 10%,transparent)}"
+      "description": "A skill on paper with a hairline; hover tints and lifts 2px.",
+      "html": "<span class=\"bp-pill\">PLC programming</span>",
+      "css": ".bp .bp-pill{padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:13px;color:var(--pill-text)}.bp .bp-pill:hover{color:var(--ink);background:var(--tint);transform:translateY(-2px)}"
     },
     {
-      "name": "Cert card",
-      "kind": "card",
-      "refersTo": "card",
-      "description": "Square white card: serif title, muted issuer, faint uppercase date, an accent bar that wipes in on hover.",
-      "html": "<div class=\"ds-card\"><h4>Lean Six Sigma Yellow Belt</h4><p class=\"ds-card-issuer\">Educate 360</p><p class=\"ds-card-date\">Issued June 2016</p><div class=\"ds-card-bar\" aria-hidden=\"true\"></div></div>",
-      "css": ".ds-card{border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);padding:18px 20px;max-width:300px;transition:transform .44s cubic-bezier(.22,.9,.28,1),box-shadow .44s ease,border-color .44s ease}.ds-card:hover{transform:translateY(-5px);border-color:var(--ink,#171a20);box-shadow:0 16px 34px color-mix(in srgb,var(--ink,#171a20) 13%,transparent)}.ds-card h4{margin:0;font:400 21px/1.2 \"Instrument Serif\",Georgia,serif;color:var(--ink,#171a20)}.ds-card-issuer{margin:5px 0 0;font:400 14px/1.5 Spectral,Georgia,serif;color:var(--muted,#7f8184)}.ds-card-date{margin:8px 0 0;font:400 12px/1.4 Spectral,Georgia,serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#6b6c70)}.ds-card-bar{height:2px;margin-top:12px;background:var(--accent,#3e6ae1);transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.22,.9,.28,1)}.ds-card:hover .ds-card-bar{transform:scaleX(1)}"
-    },
-    {
-      "name": "Section index",
+      "name": "Read more chip",
       "kind": "custom",
-      "refersTo": "section-index",
-      "description": "The section's h2: the uppercase accent label in the 190px margin column.",
-      "html": "<h2 class=\"ds-index\">02&nbsp;&nbsp;Experience</h2>",
-      "css": ".ds-index{margin:0;padding-top:12px;font:400 16px/1.3 Spectral,Georgia,serif;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#3e6ae1)}"
+      "refersTo": "read-more",
+      "description": "At the end of a resume bullet: a tinted mono chip that fills with the accent on hover.",
+      "html": "<a class=\"bp-bullet-link\" href=\"#project-x\">Read more</a>",
+      "css": ".bp .bp-bullet-link{border-radius:999px;border-color:color-mix(in srgb,var(--accent) 28%,transparent);background:var(--tint);color:var(--accent);font-family:var(--mono),monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;padding:3px 10px}.bp .bp-bullet-link:hover{background:var(--accent-fill);color:var(--on-accent)}"
+    },
+    {
+      "name": "Project tile",
+      "kind": "card",
+      "refersTo": "project-tile",
+      "description": "A 16:10 cover with tags, name, two lines of summary and mono meta; it morphs into the dialog through a shared layoutId.",
+      "html": "<article class=\"card card--hover project-tile\"><button class=\"project-card\"><div class=\"project-card-cover\"></div><div class=\"project-card-body\"><h3>Project</h3><p class=\"project-card-summary\">Summary</p></div></button></article>",
+      "css": ".project-tile{padding:10px}.project-card-cover{aspect-ratio:16/10;overflow:hidden;border-radius:calc(var(--r-lg) - 10px);background:var(--tint)}.project-card h3{font-size:19px;line-height:1.2;letter-spacing:-.02em}.project-card-summary{font-size:14px;color:var(--ink-soft)}"
+    },
+    {
+      "name": "Dialog",
+      "kind": "custom",
+      "refersTo": "dialog",
+      "description": "The tile opened up: paper panel, 22px radius, large shadow over an ink/45% blurred scrim.",
+      "html": "<div class=\"dlg-wrap\"><div class=\"dlg\"><div class=\"dlg-bar\"></div><div class=\"dlg-body\"></div></div></div>",
+      "css": ".dlg-scrim{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);backdrop-filter:blur(6px)}.dlg{width:min(1040px,100%);max-height:min(92vh,100%);border-radius:var(--r-lg);border:1px solid var(--line);background:var(--paper);box-shadow:var(--shadow-lg);overflow:hidden}"
     },
     {
       "name": "Theme toggle",
       "kind": "control",
       "refersTo": "theme-toggle",
-      "description": "A 44x24 white pill; the ink thumb slides right and turns accent in dark mode.",
-      "html": "<button class=\"ds-toggle\" type=\"button\" role=\"switch\" aria-checked=\"false\" aria-label=\"Switch to dark mode\"><span class=\"ds-toggle-thumb\"></span></button>",
-      "css": ".ds-toggle{position:relative;width:44px;height:24px;padding:0;border:1px solid var(--rule,#e1e1e2);border-radius:999px;background:var(--white,#f4f4f4);cursor:pointer;transition:border-color .34s ease}.ds-toggle:hover{border-color:var(--ink,#171a20)}.ds-toggle-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--ink,#171a20);transition:transform .34s cubic-bezier(.22,.9,.28,1),background-color .34s ease}.ds-toggle[aria-checked=\"true\"] .ds-toggle-thumb{transform:translateX(20px);background:var(--accent,#3e6ae1)}.ds-toggle:focus-visible{outline:2px solid var(--accent,#3e6ae1);outline-offset:3px}"
+      "description": "A 48x28 tint pill; the accent-fill thumb slides 20px right in dark mode.",
+      "html": "<button class=\"bp-theme-toggle\" role=\"switch\" aria-checked=\"false\"><span class=\"bp-theme-toggle-thumb\"></span></button>",
+      "css": ".bp-theme-toggle{position:relative;width:48px;height:28px;border:1px solid var(--rule);border-radius:999px;background:var(--tint)}.bp-theme-toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--accent-fill)}.bp-theme-toggle[aria-checked=true] .bp-theme-toggle-thumb{transform:translateX(20px)}"
     },
     {
       "name": "Floating pill",
       "kind": "custom",
       "refersTo": "floating-pill",
-      "description": "The relocation badge: translucent white pill with blur, hairline border, soft shadow, accent dot.",
-      "html": "<span class=\"ds-float\"><span class=\"ds-float-dot\" aria-hidden=\"true\"></span>Open to relocation</span>",
-      "css": ".ds-float{display:inline-flex;align-items:center;gap:11px;padding:11px 20px;border:1px solid var(--rule,#e1e1e2);border-radius:999px;background:color-mix(in srgb,var(--white,#f4f4f4) 92%,transparent);backdrop-filter:blur(10px);box-shadow:0 10px 28px color-mix(in srgb,var(--ink,#171a20) 10%,transparent);font:400 13px/1.4 Spectral,Georgia,serif;color:var(--ink,#171a20)}.ds-float-dot{width:9px;height:9px;border-radius:50%;background:var(--accent,#3e6ae1)}"
-    },
-    {
-      "name": "Evidence link",
-      "kind": "custom",
-      "refersTo": "bullet-link",
-      "description": "At the end of a resume bullet, naming the project it links to; part of the sentence, no fill, no radius.",
-      "html": "<span>Owned its mechanical, electrical, and software design. <a class=\"ds-evidence\" href=\"#\">see ICARUS-Lite<svg width=\"11\" height=\"11\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12L12 4m0 0H5.5M12 4v6.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></span>",
-      "css": ".ds-evidence{display:inline-flex;align-items:baseline;gap:5px;margin-left:8px;color:var(--accent,#3e6ae1);font:500 15px/1.5 Spectral,Georgia,serif;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:color-mix(in srgb,var(--accent,#3e6ae1) 45%,transparent);transition:text-decoration-color .3s ease}.ds-evidence svg{align-self:center;transition:transform .3s cubic-bezier(.22,.9,.28,1)}.ds-evidence:hover{text-decoration-color:var(--accent,#3e6ae1)}.ds-evidence:hover svg{transform:translate(2px,-2px)}"
-    },
-    {
-      "name": "Title block",
-      "kind": "custom",
-      "refersTo": "footer-block",
-      "description": "The footer's drawing title block: sheet, revision, typefaces, place.",
-      "html": "<dl class=\"ds-block\"><div><dt>Sheet</dt><dd>rileybeenders.com</dd></div><div><dt>Rev.</dt><dd>aaa1715 · 18 Sep 2026</dd></div><div><dt>Set in</dt><dd>Instrument Serif & Spectral · Electric</dd></div><div><dt>Drawn in</dt><dd>Bethlehem, PA</dd></div></dl>",
-      "css": ".ds-block{display:grid;min-width:260px;margin:0;border:1px solid var(--rule,#e1e1e2);background:var(--white,#f4f4f4);font:400 12px/1.4 Spectral,Georgia,serif;color:var(--muted,#6b6c70);font-variant-numeric:tabular-nums}.ds-block>div{display:flex;justify-content:space-between;gap:18px;padding:7px 12px}.ds-block>div+div{border-top:1px solid var(--rule,#e1e1e2)}.ds-block dt{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint,#8b8d90)}.ds-block dd{margin:0;text-align:right;color:var(--ink-soft,#515358)}"
+      "description": "Back to top and Edit in Studio: frosted white pill, mono label, shadow.",
+      "html": "<button class=\"bp-top is-shown\">Back to top</button>",
+      "css": ".bp-top{position:fixed;bottom:clamp(14px,2vw,24px);padding:10px 15px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--white) 88%,transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow);font-family:var(--mono),monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}"
     }
   ],
   "narrative": {
-    "northStar": "The Blueprint Press",
-    "overview": "A resume printed on paper, over the drafting grid it was laid out on. The page is set on paper with ink, a single accent, and hairline rules, and a fixed blueprint grid shows through the whole page at a few percent of ink. Headings are Instrument Serif at regular weight, tight and large, with nothing above them: no kicker, no eyebrow, no category label. Running text is Spectral. Numbered section indexes sit in a narrow left column like the margin of an engineering drawing, and every card is a square hairline box on a slightly whiter sheet.\n\nThe voice is a document, not a campaign. At rest the home page reads top to bottom exactly like the PDF it complements; the design's job is to make the reading feel considered and to surface evidence without ever turning into a marketing page.\n\nEvery transition uses one easing curve so the motion reads as a single hand. Dark mode swaps paper and ink and changes nothing else. The palette is a Studio setting: five seeds per mode through a fixed tint ramp.",
+    "northStar": "Everything is a tile",
+    "overview": "A bench of rounded white tiles on a pale grey-blue ground under a floating glass nav. The home page opens on a bento (the hero, the current role, where Riley is based, the degree, the GitHub calendar, this site, say hello), then reads as the resume at rest below it. One cobalt accent carries links, fills and active states; a soft blue bloom drifts behind the top of the page. Instrument Sans sets headings and body; Azeret Mono sets small labels. A project tile morphs into its dialog. Dark mode is the same bench with the lights down, where every fill cuts deeper.",
     "keyCharacteristics": [
-      "Warm-neutral paper with one accent; the accent is used for indexes, the solid CTA, inline evidence links, link underlines, active nav, hover bars, and the badge dot, never for surfaces.",
-      "Instrument Serif display at weight 400 only, Spectral body, both loaded through next/font; the three roles are Studio choices among eight preloaded faces.",
-      "Square hairline cards on white (one step off paper), 1px rule borders, 2px ink rules under headings.",
-      "A visible blueprint grid on the page background, fixed to the viewport.",
-      "Uppercase, tracked labels in Spectral for indexes, dates, and captions, never as a label above a heading; the serif never appears in small caps.",
-      "One easing curve, one entrance pattern (Reveal), hover lifts of 2 to 5px, and a full prefers-reduced-motion opt-out."
+      "Everything sits on a tile: white, 22px radius, an ink hairline, a small shadow.",
+      "One blue in five jobs: tint, accent-soft, accent, accent-fill, glow.",
+      "One grotesque for names and sentences, a wide monospace for small notes only.",
+      "Rounded throughout: 10px inputs, 14px small tiles, 22px tiles and the dialog, pills for controls.",
+      "Frosted glass for anything that floats: the nav, the dialog bar, tags, floating controls.",
+      "One easing curve, one tile entrance, hover lifts of 1 to 3px, a full reduced-motion opt-out."
     ],
     "rules": [
       {
-        "name": "The One Accent Rule",
-        "body": "Color lives in the accent alone. Surfaces are paper and white; text is ink and its tints. A second hue (blue) appears only inside drawn geometry and data, never on type or chrome.",
+        "name": "The One Blue Rule",
+        "body": "Colour is one hue in five jobs plus a deeper partner for geometry and data. No second hue reaches type or chrome.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bloom-Stays-Blue Rule",
+        "body": "The bloom is built only from accent-soft, glow and tint at low opacity, drifts on a 22s cycle and holds still under reduced motion.",
+        "section": "colors"
+      },
+      {
+        "name": "The Deeper-in-the-Dark Rule",
+        "body": "Dark mode lightens the accent for text and darkens accent-fill for surfaces; new fills use --accent-fill.",
         "section": "colors"
       },
       {
         "name": "The Ramp Rule",
-        "body": "Never hand-pick a gray. Secondary tones come from lib/palette.ts's ramp (muted 0.36, faint 0.50) so all ten presets share one tonal rhythm. muted is the floor for text; faint is for lines and dots.",
+        "body": "Secondary tones and washes come from lib/palette.ts, never hand-picked.",
+        "section": "colors"
+      },
+      {
+        "name": "The Portal Rule",
+        "body": "Tokens are scoped to .bp; portals land in [data-bench-portal] or carry literal colours.",
         "section": "colors"
       },
       {
         "name": "The Hard-Copy Rule",
-        "body": "GanttChart.tsx, icon.svg, apple-icon.tsx, and opengraph-image.tsx carry literal copies of the active preset; a palette change must reach them by hand.",
+        "body": "GanttChart.tsx, app/icon.svg, apple-icon.tsx and opengraph-image.tsx carry literal palette copies (ink #111318, accent #2457e6) and change by hand.",
         "section": "colors"
       },
       {
-        "name": "The Regular Serif Rule",
-        "body": "Instrument Serif is loaded at weight 400 only. Emphasis in the serif comes from size, never from a synthesized bold.",
+        "name": "The Mono-For-Small-Notes Rule",
+        "body": "Azeret Mono only for labels, dates, counts, tags and captions, never above 12px and never for a sentence.",
         "section": "typography"
       },
       {
-        "name": "The Tracked Label Rule",
-        "body": "Anything uppercase is Spectral, 11 to 16px, with 0.1 to 0.3em of tracking. The serif is never uppercased.",
+        "name": "The Studio Roles Rule",
+        "body": "Four Studio font roles (header, sub-header, body, small labels) among ten preloaded faces.",
         "section": "typography"
       },
       {
-        "name": "The Drawn Depth Rule",
-        "body": "Rest states have no shadow. If an element needs separation at rest, it gets a hairline border or a whiter sheet, not a shadow.",
+        "name": "The Lift Rule",
+        "body": "Hover lifts are 1 to 3px and the shadow grows one step.",
         "section": "elevation"
       },
       {
-        "name": "The No-Eyebrow Rule",
-        "body": "Nothing sits above a heading. A page title is the first line of its hero; a section's index is its heading; a card's title is its first line. The words a kicker would have carried go into a fact line beside the heading or into the heading itself.",
-        "section": "typography"
+        "name": "The Everything-Is-A-Tile Rule",
+        "body": "Content is a tile or inside one, on the shared radius, border and shadow.",
+        "section": "shapes"
       },
       {
-        "name": "The Measure Rule",
-        "body": "Prose runs at most 70 characters per line; dates and counts use tabular numerals.",
-        "section": "typography"
+        "name": "The Morph-Not-Modal Rule",
+        "body": "A project grows out of the tile the visitor touched and collapses back into it; reduced motion gets a fade.",
+        "section": "components"
+      },
+      {
+        "name": "The Resume-At-Rest Rule",
+        "body": "With every tile closed the home page is the resume, in order, readable without hover or animation.",
+        "section": "components"
       }
     ],
     "dos": [
-      "Do put color only in the accent: indexes, the solid CTA, evidence links, underlines, hover bars, the badge dot. Surfaces stay paper and white.",
-      "Do derive every gray from the ramp in lib/palette.ts and every palette from five seeds, so all presets and dark mode keep the same rhythm.",
-      "Do keep cards, buttons, and frames square with 1px rule borders; reserve 999px for small floating controls and 50% for dots.",
-      "Do run every transition on --ease and every entrance through Reveal; keep hover lifts between 2 and 5px.",
-      "Do honor prefers-reduced-motion by freezing on the final frame, never by hiding content.",
-      "Do keep the index column, the hairline section rules, and the 2px ink rule under every page title; they are the page's structure.",
-      "Do put suppressHydrationWarning on every <a> and <Link>.",
-      "Do write section indexes as h2 and keep the heading outline unbroken (h1 title, h2 index, h3 entry, h4 detail).",
-      "Do theme the browser's own surfaces: ::selection, caret-color, accent-color, underline offset, scrollbars, tabular numerals."
+      "Do put every piece of content on a tile and every control in a pill.",
+      "Do use --accent-fill for painted surfaces and --accent for lines and text.",
+      "Do set labels, dates, counts and tags small in the mono.",
+      "Do keep the home page readable as the resume at rest.",
+      "Do open a project by morphing its tile and keep #project-<id> as its address.",
+      "Do lift 1 to 3px on hover with the one easing curve.",
+      "Do render portals inside [data-bench-portal].",
+      "Do derive new colours from the seeds in lib/palette.ts.",
+      "Do add new copy as a Studio field."
     ],
     "donts": [
-      "Don't synthesize a bold Instrument Serif; the face has none. Go larger instead.",
-      "Don't add a second surface color, a colored band, or a gradient surface; paper, white, and ink are the whole material.",
-      "Don't add shadows at rest to cards or controls that are not floating over the page.",
-      "Don't hand-write a gray or an accent tint; use the ramp or color-mix() from a token.",
-      "Don't introduce a second breakpoint or a mobile-only layout; scale with clamp() and collapse at 860px.",
-      "Don't change the palette in blueprint.css alone; the active preset lives in data/header.json and is injected by app/(site)/layout.tsx, and three files carry hard copies of it.",
-      "Don't put a kicker, eyebrow, or category label above any heading, on any page, in any card.",
-      "Don't set text in faint or below 11px; the miniature Studio preview on /about-this-site is the one decorative exception (aria-hidden, 9px).",
-      "Don't draw gradient text; emphasis is size, weight, or the accent."
+      "Don't introduce a second hue on type, chrome or the bloom.",
+      "Don't paint a fill with --accent.",
+      "Don't square a corner, drop a tile's border or zero its shadow.",
+      "Don't set a sentence in the mono.",
+      "Don't bring back the drafting grid, dashed frame or construction-line cover.",
+      "Don't open a dialog that ignores the tile it came from.",
+      "Don't pin, scroll-jack or trap the wheel.",
+      "Don't hand-pick a gray, a wash or a shadow colour.",
+      "Don't add a hero video, a marketing voice or an unbacked metric."
     ]
   }
 }

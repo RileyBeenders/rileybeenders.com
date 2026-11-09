@@ -2,6 +2,8 @@
 
 Every component in svelte-bits (`DavidHDev/svelte-bits`, `main` @ `ad44142`, 2026-09-09; MIT + Commons Clause, © David Haz) with its mechanism, its runtime, a verdict for *this* site, and what it becomes here. Source path for any row: `src/lib/components/library/<Category>/<PascalName>/<PascalName>.svelte`.
 
+**Reading it on Clean Bench (since 2026-11-09).** The verdicts were written for Blueprint Press and still hold. Read "paper" as the ground and its white tiles, "hairline" as `--line` or `--rule`, and "the blueprint grid" as the soft bloom (`.bp::before` in `app/(site)/bench.css`), which is now the only background: anything that would replace or texture it is still avoid. Amplitudes follow the bench: tiles rise 16px and lift 3px.
+
 **Verdicts**
 - **adopt** — the mechanism fits; re-implement in framer-motion/CSS at Blueprint amplitude (see `motion-fluidity` recipes).
 - **adapt** — keep the idea, change the material (glow → hairline, glass → paper) or cut the amplitude by half or more.

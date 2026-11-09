@@ -4,7 +4,7 @@ tags: [data, content]
 
 # More Info and Gantt Data
 
-These are the content sources for the **application tracker**. The `/more-info` page that used to render them was retired in the Blue Sheet redesign (2026-11-08) and now redirects to `/projects/rileybeenders-com#tracker`. The tracker is a section at the foot of the site's own catalog entry (see [[Site Project (About this site)]]). The files kept their paths and names. They are not part of the `resumeData.ts` merge; `lib/catalog.ts` reads them.
+These are the content sources for the **application tracker**. The `/more-info` page that used to render them was retired in the Blue Sheet redesign (2026-11-08, kept by Clean Bench) and now redirects to `/projects/rileybeenders-com#tracker`. The tracker is a section at the foot of the site's own catalog entry (see [[Site Project (About this site)]]). The files kept their paths and names. They are not part of the `resumeData.ts` merge; `lib/catalog.ts` reads them.
 
 ## `data/more-info/more-info.json`
 

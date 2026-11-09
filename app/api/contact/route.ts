@@ -1,5 +1,5 @@
 /**
- * The "Send me a message" form (components/sheet/ContactForm.tsx) posts here.
+ * The "Send me a message" form (components/bench/ContactForm.tsx) posts here.
  * Delivery goes through Resend's REST API (no SDK, one fetch), to one inbox:
  *
  *   RESEND_API_KEY   the Resend key (never public)

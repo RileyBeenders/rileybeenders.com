@@ -37,10 +37,10 @@ Every line of the resume links to the evidence behind it, and the same data rend
 
 Confirmed functionality:
 
-- Four routes: `/` (the resume: hero, GitHub activity, summary, experience, a project grid, the stack, education, contact), `/projects` (the catalog: every published project plus the site itself as cards with type filters; a card opens a dialog, with galleries, lightbox, and case studies inside; proofs exist in data but are hidden), `/projects/[id]` (each entry's own page, prerendered), `/contact` (the ways in and the message form). `/about-this-site` and `/more-info` redirect into the catalog.
-- Light and dark themes, eleven palette presets (Blue Sheet is the active one) plus a custom palette, and three font roles (header, sub-header, body), all switched from the Studio and written as CSS tokens at render time. Dark mode lightens the accent for text and deepens it for fills.
+- Four routes: `/` (the resume: a bento of tiles with the hero, current role, location, education, GitHub activity, this site and contact, then summary, experience, project tiles, the stack, education, contact), `/projects` (the catalog: every published project plus the site itself as cards with type filters; a card opens a dialog, with galleries, lightbox, and case studies inside; proofs exist in data but are hidden), `/projects/[id]` (each entry's own page, prerendered), `/contact` (the ways in and the message form). `/about-this-site` and `/more-info` redirect into the catalog.
+- Light and dark themes, twelve palette presets (Clean Bench is the active one) plus a custom palette, and four font roles (header, sub-header, body, small labels), all switched from the Studio and written as CSS tokens at render time. Dark mode lightens the accent for text and deepens it for fills.
 - Projects open in a dialog addressed by the URL hash (`#project-<id>`, `-case-study` to expand the case study) with a full page behind each one, so resume links, linked skills and shared links all land with the project up.
-- Motion switches in the Studio: synced repeating animations, inertial wheel scrolling, and the monogram chip that trails the pointer across the hero.
+- Motion switches in the Studio: synced repeating animations, inertial wheel scrolling, and the monogram chip that trails the pointer across the bento.
 - A PDF download of the resume generated on demand from the site's data (`/api/resume-pdf`).
 - An "Open to relocation" badge, switchable in the Studio.
 - Resume bullets that link to their project; projects that open into a case study.
@@ -48,15 +48,15 @@ Confirmed functionality:
 
 Constraints future work must preserve:
 
-- The home page must stay recognizable as a resume at rest: no hero video, no marketing voice. The surface reads like the document a recruiter expects (hero, activity, who, experience, projects, stack, education, contact, in that order); the depth opens on request.
+- The home page must stay recognizable as a resume at rest: no hero video, no marketing voice. The surface reads like the document a recruiter expects (the bento of tiles, who, experience, projects, stack, education, contact, in that order); the depth opens on request.
 - Every claim on the site must trace to real work in the data files. No invented metrics, testimonials, clients, or capabilities.
 - Content edits must never require touching code. Any new field is a Studio schema entry, not a hard-coded string.
 - Motion must be subtle enough to survive a recruiter's ten-second scan and must respect `prefers-reduced-motion`. No pinning or scroll-jacking.
 - Both themes are first-class. Dark mode is a token swap, not a second design; fills use `--accent-fill` so they deepen in the dark while text on `--accent` lightens.
 - The Studio runs outside the Next app on localhost only and must stay that way.
 - Every rendered `<a>` / `<Link>` carries `suppressHydrationWarning` (a browser extension on Riley's machine stamps anchors; `scripts/check-anchor-hydration.mjs` verifies).
-- `components/GanttChart.tsx`, `app/apple-icon.tsx`, and `app/opengraph-image.tsx` carry hard-coded copies of the active palette because mermaid and Satori cannot read CSS variables. A palette change has to reach them by hand.
-- Tokens are scoped to `.bp`; anything portalled must land in `[data-sheet-portal]` (the project dialog does) or carry literal colours (the lightbox does).
+- `components/GanttChart.tsx`, `app/icon.svg`, `app/apple-icon.tsx`, and `app/opengraph-image.tsx` carry hard-coded copies of the active palette because mermaid and Satori cannot read CSS variables. A palette change has to reach them by hand.
+- Tokens are scoped to `.bp`; anything portalled must land in `[data-bench-portal]` (the project dialog does) or carry literal colours (the lightbox does).
 
 Terminology: "projects" are published work with galleries and case studies; "proofs" are supporting evidence entries (hidden today); the "Studio" is the local editor; "skills" or "procedures" are the agent instructions under `.claude/skills/`; the "vault" is the Obsidian documentation.
 
@@ -67,7 +67,9 @@ Undecided: whether proofs ever surface publicly; whether the beta (this branch, 
 - The name is Riley Beenders; the site is RileyBeenders.com. Title line: "R&D, Electromechanical and Automation Engineer".
 - Voice is first person, plain, and specific, in Riley's own words. Facts over adjectives. Copy that exists in `data/` is content, not placeholder, and is replaced only with Riley's agreement.
 - The "B" monogram (`components/blueprint/BpMark.tsx`, `app/icon.svg`, the apple icon and social card) is the site's mark and stays.
-- The visual system is "Blue Sheet" (a cool blue-white drafting sheet inside a dashed cut line, rounded cards, one blue from a pale wash to a deep fill, Instrument Serif over Inter with IBM Plex Mono labels, one easing curve), documented in `DESIGN.md`. It replaced "Blueprint Press" on 2026-11-08 at Riley's request for a fresh UI on the same data and wording, taking its cues from the portfolios Riley named (a profile-card hero and contribution calendar, project tiles that open into a dialog with a full page behind, a message form, a dark mode that deepens its colour). The monogram, the Studio's palette and font switching, the resume section order and the fluid motion carried over. Design work on the site is refinement inside this world, not a replacement world; Blueprint Press survives as the "Default" palette's lineage and in the vault's history.
+- The visual system is "Clean Bench", documented in `DESIGN.md`: everything is a tile. White rounded tiles sit on a pale grey-blue ground under a floating glass nav, one cobalt accent carries links, fills and active states, a soft blue bloom sits behind the top of the page, Instrument Sans sets headings and body, and Azeret Mono sets dates, captions and other small labels. Riley chose it on 2026-11-09 from a board of six directions (Clean Bench, with a hint of Soft Bloom's bloom and glass nav and Signal Bench's monospace) after asking to drop the blueprint feel entirely. Its signature is a project tile that morphs into its dialog.
+- The monogram, the data and wording, the resume section order at rest, light and dark, the project dialog and full pages, the Studio's palette and font switching and the fluid motion carried over. Design work on the site is refinement inside Clean Bench, not a replacement world; a new world needs a direction round with Riley first.
+- History: "Blueprint Press" (2026-08 to 2026-11, paper and ink over a drafting grid) survives as the "Default" palette's lineage; "Blue Sheet" (2026-11-08, a drafting sheet, one day) survives as the `blue-sheet` palette preset. Both are told in the vault's Design History.
 - The Studio (local editor) is a sibling surface in the same world and may change more freely than the site, since it never ships.
 
 ## Evidence on Hand
@@ -77,7 +79,7 @@ Undecided: whether proofs ever surface publicly; whether the beta (this branch, 
 - `public/project-images/` and `public/project-artifacts/`: photographs, renders, and diagrams for the projects; `public/project-images/rileybeenders-com/`: the site's own screenshots in both themes.
 - `data/site/about-site.json`: the site's case study, stats, timeline, pillars, and demo copy, in Riley's words.
 - `1.ApplicationsUsed/`, `2.JobsApplliedTo/`, `output/pdf/`: sixteen tracked applications, each with the posting PDF and the tailored resume; `references/`: earlier resumes (2022, 2025, 2026).
-- `design/*.dc.html` + `canvas.json`: the Claude Design canvases the incumbent Blueprint Press direction was chosen from.
+- `design/*.dc.html` + `canvas.json`: the Claude Design canvases the Blueprint Press direction was chosen from (2026-08); `.impeccable/surfaces/app-site-page-tsx.md`: the Clean Bench direction contract (2026-11-09).
 - Absent, and not to be fabricated: testimonials, client logos, performance benchmarks beyond what the bullets state, and any project not in `projects.json`.
 
 ## Product Principles

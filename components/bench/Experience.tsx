@@ -87,8 +87,8 @@ function RoleEntry({
 }
 
 /**
- * The roles, newest first, as a timeline: dates in a left column on a rail,
- * the role, company and bullets beside them. The bullets keep their reactive
+ * The roles, newest first, in one tile as a timeline: dates in a left
+ * column on a rail, the role, company and bullets beside them. The bullets keep their reactive
  * emphasis (the Studio's accent phrases take the accent on hover) and their
  * Read more links to projects. Long roles fold after a few bullets; every
  * bullet is still in the page for printing and search.
@@ -96,7 +96,7 @@ function RoleEntry({
 export function Experience({ roles, projectNames, readMoreLabel, readMoreMotion }: ExperienceProps) {
   let linkIndexStart = 0;
   return (
-    <div className="roles">
+    <div className="card roles">
       {roles.map((role, index) => {
         const start = linkIndexStart;
         linkIndexStart += role.bullets.filter((bullet) => bullet.projectId && projectNames[bullet.projectId]).length;
