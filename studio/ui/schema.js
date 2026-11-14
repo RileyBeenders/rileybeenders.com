@@ -1233,6 +1233,40 @@ export const SCHEMAS = {
             default: false,
             omitWhenDefault: true,
             help: "On: a small monogram chip trails the pointer across the hero card. Pointer devices only."
+          },
+          {
+            name: "grid",
+            type: "boolean",
+            label: "Animated grid",
+            default: true,
+            omitWhenDefault: true,
+            help: "On: graph paper behind the tiles, drawn as plus marks that close into squares as ripples cross. Off: the plain page with only the bloom."
+          },
+          {
+            name: "gridLoopSeconds",
+            type: "number",
+            label: "Grid loop (seconds)",
+            span: "half",
+            default: 8,
+            placeholder: "8",
+            help: "How long a ripple takes to cross the window. Lower is faster; new ripples start in proportion. 2 to 30, and 8 when left blank."
+          },
+          {
+            name: "gridPointer",
+            type: "boolean",
+            label: "Pen (mouse draws on the grid)",
+            default: true,
+            omitWhenDefault: true,
+            help: "On: the mouse snaps to the grid and etches a glowing line along the grid lines as it moves. Off: only the ripples move the grid. Mouse only."
+          },
+          {
+            name: "gridTrailSeconds",
+            type: "number",
+            label: "Pen trail (seconds)",
+            span: "half",
+            default: 4,
+            placeholder: "4",
+            help: "How long a piece of the pen's line stays before it has faded away, so the line shortens from its tail. 0.5 to 30, and 4 when left blank."
           }
         ]
       },

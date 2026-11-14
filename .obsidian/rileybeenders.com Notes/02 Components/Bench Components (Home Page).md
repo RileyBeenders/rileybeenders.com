@@ -121,6 +121,18 @@ Server-safe, and on every page (home, projects, a project page, contact). `<foot
 
 All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were `sheetLabel` / `sheetLink` / `revisionLabel` and the line was Blue Sheet's drawing title block.
 
+## `PlotGrid.tsx`
+
+`"use client"`, mounted by the site layout on every page unless Site Settings → Motion → **Animated grid** is off (`motion.grid`, on when left out). It is the animated graph paper behind the tiles: one `<canvas class="plot-grid">` fixed to the window, above the bloom and under every tile, so it shows in the gutters and on the open page.
+
+- Every grid node (32px apart, 24px under 700px wide) rests as a small plus. Its arms extend until they meet their neighbours and close the squares.
+- What moves them is ripples: every so often one to three random points on or just off the window start a ring with its own speed, width and strength. A ring is a crest with a trough behind it, and a node's arm length is the sum of every ring over it, so crossing crests close the squares fully and a crest meeting a trough cancels back to a plus.
+- `loopSeconds` (**Grid loop (seconds)**, `motion.gridLoopSeconds`, 8, clamped 2 to 30) is how long a typical ring takes to cross the window; new rings start in proportion. At most six rings are live.
+- `pointer` (**Pen (mouse draws on the grid)**, `motion.gridPointer`, on when left out) is the pen, chosen by Riley on 2026-11-14 from five prototypes: the mouse snaps to the nearest grid node and etches one continuous line along the grid lines as it moves, a step at a time along whichever axis has further to go. Each step is stroked twice with a canvas shadow in `--accent` (a 4px soft pass under a 1.5px crisp one), which gives it a Tron-like glow, and a small dot marks the tip for a second after the last move. Mouse only; the line passes under the tiles like the rest of the grid.
+- `trailSeconds` (**Pen trail (seconds)**, `motion.gridTrailSeconds`, 4, clamped 0.5 to 30) is how long a step lasts before it has faded, so the line shortens from its tail. At most 600 steps are kept; a resize clears the line.
+- The line colour is `--accent` read from `.bp` (re-read when `data-theme` changes), at 0.15 alpha in light and 0.2 in dark.
+- One path and one stroke per frame. Under `prefers-reduced-motion` it draws still graph paper once; print hides it.
+
 ## `SmoothScroll.tsx`
 
 `"use client"`, mounted by the site layout when Site Settings → Motion → **Smooth scrolling** is on (`motion.smoothScroll`, on). It provides inertial wheel scrolling with no library and no transform on the page, so the native scrollbar, anchors and scroll-driven animations all keep working.

@@ -82,6 +82,8 @@ Its named rules, for quick reference:
 | `--shadow-sm` / `--shadow` / `--shadow-lg` | `0 1px 2px` ink 5% + `0 8px 24px -14px` ink 12% / `0 2px 6px` ink 6% + `0 18px 40px -14px` ink 16% / `0 10px 30px` ink 12% + `0 40px 90px` ink 18% | Resting tiles / hover and the condensed nav / the dialog |
 | `--lv0…--lv4` | from ink, accent-soft and accent-fill (dark mode uses three literal hexes) | The contribution calendar's five levels |
 
+Over the bloom and under every tile sits the animated graph paper, `.bp > .plot-grid` (a fixed full-window canvas at `z-index: 0`, hidden in print), drawn by `components/bench/PlotGrid.tsx` in `--accent`; see [[Bench Components (Home Page)]].
+
 The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, `--glow` at 74% 24%, `--tint` at 50% 0%) in a `min(1500px, 150vw)` × 82vh box above the page, at 0.85 opacity (0.6 in the dark), drifting on `bloom-drift` (22s, alternate). The hero tile carries a second, smaller glow of its own (`.tile-hero::before`).
 
 ## Layout & components (in `bench.css`)
@@ -114,7 +116,7 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 The breakpoints are **980px** (the bento goes to two columns with the hero and education full width, the project grid to two, the summary and education grids to one), **760px** (everything is one column, the nav drops its name, roles show their dates inline without the rail, and the dialog rises from the bottom edge as a sheet) and **640px** (the bento goes to one column). `projects/feature.css` and `walkthrough.css` keep their own 860px step.
 
 - A `@media print` block prints the home page as a document: ink on white, without the bloom, nav, actions, sheen, cursor mark, calendar, filters, tile arrows and floating controls, with tile shadows removed and roles and cards kept whole, and the Read more links hidden.
-- `prefers-reduced-motion: reduce` collapses every animation and transition under `.bp` to ~0ms (the bloom holds still), draws the monogram strokes complete, and shows the calendar cells. `SmoothScroll`, `CursorMark`, the morph and the nav's `layoutId` slide also branch on it in JS.
+- `prefers-reduced-motion: reduce` collapses every animation and transition under `.bp` to ~0ms (the bloom holds still), draws the monogram strokes complete, and shows the calendar cells. `SmoothScroll`, `CursorMark`, `PlotGrid` (which draws still graph paper), the morph and the nav's `layoutId` slide also branch on it in JS.
 
 ## Previously
 

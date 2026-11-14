@@ -48,7 +48,9 @@
   "motion": {
     "syncAnimations": true,
     "smoothScroll": true,
-    "cursorMark": true
+    "cursorMark": true,
+    "gridLoopSeconds": 8,
+    "gridTrailSeconds": 1
   },
   "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
   "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"

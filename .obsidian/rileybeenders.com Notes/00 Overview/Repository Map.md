@@ -41,7 +41,7 @@ app/
   apple-icon.tsx               # iOS home-screen icon, rendered via next/og ImageResponse
   opengraph-image.tsx          # 1200x630 OG/Twitter card, rendered via next/og + Satori (reads assets/fonts/InstrumentSerif)
   (site)/                      # route group: everything with the Clean Bench chrome
-    layout.tsx                 # 10 Google faces, the Studio palette + four font roles as a <style> override, ThemeProvider, <SiteNav>, .page, the [data-bench-portal] host, AnimationSync / SmoothScroll switches, dev-only StudioLink
+    layout.tsx                 # 10 Google faces, the Studio palette + four font roles as a <style> override, ThemeProvider, <SiteNav>, .page, the [data-bench-portal] host, PlotGrid / AnimationSync / SmoothScroll switches, dev-only StudioLink
     bench.css                  # the Clean Bench design system (1,119 lines), all scoped under .bp, in banner-commented sections (tiles, bento, bloom)
     bullet-link.css            # the resume bullets' Read more button variants (data-motion); also served to the Studio
     skill-pills.css            # skill pills and linked skills (data-border / data-reveal); also served to the Studio
@@ -75,6 +75,7 @@ components/
     ContactBlock.tsx           # the ways in beside ContactForm (home page foot and /contact)
     ContactForm.tsx            # "Send me a message": POST /api/contact, mailto: fallback on 503, honeypot field
     SiteFooter.tsx             # the monogram, footer note and the Site · Updated · Based in meta line, on every page
+    PlotGrid.tsx               # the animated graph paper behind the tiles (Site Settings → Motion → Animated grid, Grid loop, Pen, Pen trail)
     SmoothScroll.tsx           # inertial wheel scrolling (Site Settings → Motion → Smooth scrolling)
     BrandIcons.tsx             # GitHub and LinkedIn marks drawn to lucide's 24-box
   blueprint/                   # primitives kept from Blueprint Press
@@ -113,7 +114,7 @@ components/
       demos/ResumeDemo.tsx · StudioDemo.tsx · SkillsDemo.tsx   # the three live replicas
 
 data/
-  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout, motion (syncAnimations, smoothScroll, cursorMark), siteMode, resumePdfPath, resumeHtmlPath
+  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout, motion (syncAnimations, smoothScroll, cursorMark, grid, gridLoopSeconds, gridPointer, gridTrailSeconds), siteMode, resumePdfPath, resumeHtmlPath
   resumeData.ts                # merges header + home + projects JSON into one typed ResumeData (visible:false filter, order sort, visibility pruning)
   contact/contact.json         # contact meta, hero, details, and the message form's words (Studio: Contact)
   home/

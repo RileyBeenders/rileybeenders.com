@@ -32,7 +32,7 @@ tags: [overview, architecture]
   - Imports `app/(site)/bench.css` and then the kept component sheets (`bullet-link.css`, `skill-pills.css`, `projects/projects.css`, `projects/feature.css`, `projects/walkthrough.css`).
   - Resolves the Studio's palette (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark).
   - Wraps everything in `ThemeProvider` and `<div class="bp …" data-theme-id data-motion-sync?>`, which renders `<SiteNav>`, then `<div class="page">{children}</div>`, then the portal host `<div data-bench-portal>` (the project dialog renders into it, so the tokens scoped to `.bp` reach it).
-  - Mounts `AnimationSync` when `motion.syncAnimations` is on, `SmoothScroll` when `motion.smoothScroll` is on, and `<StudioLink>` in development only.
+  - Mounts `PlotGrid` (the animated graph paper behind the tiles) unless `motion.grid` is off, `AnimationSync` when `motion.syncAnimations` is on, `SmoothScroll` when `motion.smoothScroll` is on, and `<StudioLink>` in development only.
 
   Every page route lives in this `(site)` group.
 
@@ -113,7 +113,7 @@ See [[Project Catalog and Dialog]].
   - `lib/catalog.ts` reads `gantt.md` with Node's `fs` at build time (only while a tracker switch is on).
   - `SiteFooter` calls `lib/build-stamp.ts` (git / `VERCEL_GIT_COMMIT_SHA`) for the Updated line.
 - **Client components** (`"use client"`):
-  - In `components/bench/`: `SiteNav`, `HeroActions`, `CursorMark`, `GithubGraph`, `Experience`, `ProjectGrid`, `ProjectCard`, `ProjectDialog`, `ProjectBody`, `ContactForm`, `SmoothScroll`.
+  - In `components/bench/`: `SiteNav`, `HeroActions`, `CursorMark`, `GithubGraph`, `Experience`, `ProjectGrid`, `ProjectCard`, `ProjectDialog`, `ProjectBody`, `ContactForm`, `SmoothScroll`, `PlotGrid`.
   - In `components/blueprint/`, everything except `BpMark` and `BulletLink`.
   - Also `GanttChart` and the `components/projects/` tree (gallery, lightbox, PDF pages, compare, date box, status, `ProjectFeature` and its `feature/*` blocks and demos, the walkthrough).
 - **Server-renderable** (no directive): `Stack`, `Education`, `ContactBlock`, `SiteFooter`, `BrandIcons`, `BpMark`, `BulletLink`, `JobsTable`, `EmphasizedText`, `Paragraphs`, `CaseStudy`, `ThemedShot`, `PostCard`.

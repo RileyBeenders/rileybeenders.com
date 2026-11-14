@@ -20,6 +20,7 @@ import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
+import { PlotGrid } from "@/components/bench/PlotGrid";
 import "./bench.css";
 import "./bullet-link.css";
 import "./skill-pills.css";
@@ -166,6 +167,8 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
       >
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
+        {/* The animated graph paper behind the tiles. Site Settings → Motion sets its speed and whether the mouse pulls on it. */}
+        {motion.grid !== false && <PlotGrid loopSeconds={motion.gridLoopSeconds ?? 8} pointer={motion.gridPointer !== false} trailSeconds={motion.gridTrailSeconds ?? 4} />}
         <SiteNav name={resumeData.person.name} />
         <div className="page">{children}</div>
         {/* Dialogs portal here rather than to <body>, so the palette tokens scoped to .bp reach them. */}

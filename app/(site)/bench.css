@@ -109,6 +109,19 @@ html[data-lock] { overflow: hidden; }
 html[data-theme="dark"] .bp::before { opacity: 0.6; }
 .bp > * { position: relative; z-index: 1; }
 
+/* The animated graph paper (components/bench/PlotGrid.tsx): fixed to the
+   window, drawn over the bloom and under every tile, so it shows in the
+   gutters and on the open page. */
+.bp > .plot-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media print { .bp > .plot-grid { display: none; } }
+
 html[data-theme="dark"] .bp {
   --paper: #0f1115;
   --white: #181b22;

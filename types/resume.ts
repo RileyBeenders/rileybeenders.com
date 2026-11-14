@@ -472,6 +472,14 @@ export type MotionSettings = {
   smoothScroll?: boolean;
   /** The monogram chip that trails the pointer across the hero (components/bench/CursorMark.tsx). Off when left out. */
   cursorMark?: boolean;
+  /** The animated graph paper behind the tiles (components/bench/PlotGrid.tsx). On when left out. */
+  grid?: boolean;
+  /** Seconds a typical ripple takes to cross the window on that grid. 8 when left out. */
+  gridLoopSeconds?: number;
+  /** The pen: whether the mouse etches a glowing line along the grid lines. On when left out. */
+  gridPointer?: boolean;
+  /** Seconds before a piece of that line has faded away. 4 when left out. */
+  gridTrailSeconds?: number;
 };
 
 export type ResumeData = {
