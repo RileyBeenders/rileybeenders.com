@@ -1061,7 +1061,7 @@ html[data-theme="dark"] .bp {
 }
 .footer-mark { display: flex; align-items: center; gap: 16px; }
 .footer-mark .bp-mark { width: 44px; height: 44px; flex: none; }
-.footer-note { font-size: 15px; line-height: 1.55; color: var(--muted); max-width: 46ch; }
+.footer-note { font-size: 15px; line-height: 1.55; color: var(--muted); }
 .footer-meta {
   display: flex;
   flex-wrap: wrap;
