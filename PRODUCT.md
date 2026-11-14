@@ -64,7 +64,7 @@ Undecided: whether proofs ever surface publicly; whether the beta (this branch, 
 
 ## Brand Commitments
 
-- The name is Riley Beenders; the site is RileyBeenders.com. Title line: "R&D, Electromechanical and Automation Engineer".
+- The name is Riley Beenders; the site is RileyBeenders.com. Title line: "R&D, Electro-Mechanical and Automation Engineer".
 - Voice is first person, plain, and specific, in Riley's own words. Facts over adjectives. Copy that exists in `data/` is content, not placeholder, and is replaced only with Riley's agreement.
 - The "B" monogram (`components/blueprint/BpMark.tsx`, `app/icon.svg`, the apple icon and social card) is the site's mark and stays.
 - The visual system is "Clean Bench", documented in `DESIGN.md`: everything is a tile. White rounded tiles sit on a pale grey-blue ground under a floating glass nav, one cobalt accent carries links, fills and active states, a soft blue bloom sits behind the top of the page, Instrument Sans sets headings and body, and Azeret Mono sets dates, captions and other small labels. Riley chose it on 2026-11-09 from a board of six directions (Clean Bench, with a hint of Soft Bloom's bloom and glass nav and Signal Bench's monospace) after asking to drop the blueprint feel entirely. Its signature is a project tile that morphs into its dialog.
