@@ -496,17 +496,7 @@ a.tile { color: inherit; }
   pointer-events: none;
 }
 .tile-hero > * { position: relative; z-index: 1; }
-.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.hero-avatar {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 1px solid var(--line);
-}
-.hero-avatar .bp-mark { width: 46px; height: 46px; }
+.hero-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: clamp(14px, 1.8vw, 20px); }
 .hero-name {
   margin-top: clamp(18px, 2.4vw, 28px);
   font-size: clamp(38px, 5.4vw, 62px);
@@ -1080,8 +1070,6 @@ html[data-theme="dark"] .bp {
   .nav { padding-inline: 10px; }
   .nav-brand-name { display: none; }
   .nav-link { padding: 8px 11px; font-size: 13.5px; }
-  .hero-avatar { width: 60px; height: 60px; }
-  .hero-avatar .bp-mark { width: 38px; height: 38px; }
   .role { grid-template-columns: 1fr; gap: 8px; }
   .role-rail, .role-dot { display: none; }
   .role-when { padding-top: 0; }

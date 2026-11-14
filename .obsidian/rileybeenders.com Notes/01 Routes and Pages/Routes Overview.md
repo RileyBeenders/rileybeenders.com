@@ -47,7 +47,7 @@ All three are `permanent: false` (307), so a target can be repointed without fig
 An async server component. It reads `resumeData`, `data/home/page.json`, `getCatalog()`, `todayIso()`, and `await getContributions(githubUsername(person.github))`. Because that `fetch` carries `next: { revalidate: 3600 }`, the route is ISR. It renders, inside `<main>`:
 
 1. **The bento** (`section.shell.hero` → `.bento`), each tile numbered `--i` in order for the `tile-in` stagger:
-   - `.tile-hero`: the `.hero-avatar` (`BpMark` 46px, animated) and, when `openToRelocation` is on, a `.chip` "Open to relocation"; the `h1.hero-name` (`page.hero.lines` joined), the `p.hero-role` (the title), the `.hero-meta` line (location, and the current role "· `<company>`, since `<start>`" from `page.hero.currentRole`); `<HeroActions>`.
+   - `.tile-hero`: when `openToRelocation` is on, a `.hero-top` row with a `.chip` "Open to relocation"; the `h1.hero-name` (`page.hero.lines` joined), the `p.hero-role` (the title), the `.hero-meta` line (location, and the current role "· `<company>`, since `<start>`" from `page.hero.currentRole`); `<HeroActions>`.
    - `.tile-now` (`page.bento.now`, the current role → `#experience`), `.tile-where` (`page.bento.location`, the location), `.tile-edu` (the first degree → `#education`).
    - `.tile-activity`: `<GithubGraph title={headings.activity} data profileUrl />`, with "unavailable" copy when GitHub could not be read.
    - `.tile-site` (the site entry → `#project-rileybeenders-com`, which opens its dialog) and `.tile-contact` (→ `#contact`).

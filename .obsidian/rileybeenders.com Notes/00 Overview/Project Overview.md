@@ -29,7 +29,7 @@ Riley Beenders is an R&D and electromechanical engineer focused on product devel
 ## Core features
 
 1. **Home** (`/`): a one-page resume in tiles.
-   - **The bento:** the hero tile (the monogram avatar, the "Open to relocation" chip, the name, the title, a location and current-role line, and the Download PDF / Email / LinkedIn / GitHub row), then tiles for Now, Based in and Education, the GitHub calendar, This site and Say hello.
+   - **The bento:** the hero tile (the "Open to relocation" chip, the name, the title, a location and current-role line, and the Download PDF / Email / LinkedIn / GitHub row), then tiles for Now, Based in and Education, the GitHub calendar, This site and Say hello.
    - **The sections, in order:** "Who is Riley?" (the summary and fact tiles), Experience (one tile with a timeline rail), Projects (the catalog grid), Tech & hardware stack (four tiles of pills), Education, and Contact (the ways in plus a message form).
    - **The footer** is a quiet mono line: Site, Updated, Based in.
    - **Bullets** keep their accent-on-hover emphasis phrases. A bullet that backs a published project keeps its Read more link, which opens that project's dialog.

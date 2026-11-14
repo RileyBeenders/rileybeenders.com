@@ -27,7 +27,7 @@ Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `
 ### The hero tile
 
 - `.tile-hero` carries its own accent-soft glow top right (`::before`) so it reads as the brightest thing on the bench.
-- `.hero-top`: `.hero-avatar`, a 72px round disc on `--paper` holding `<BpMark id="hero" size={46} animated />` (60px with a 38px mark under 760px). When `visibility.openToRelocation` is on, the row also has a `.chip` with a pinging `.chip-dot` and `ui.openToRelocation`.
+- `.hero-top`: rendered only when `visibility.openToRelocation` is on; a row holding a `.chip` with a pinging `.chip-dot` and `ui.openToRelocation`, with a bottom margin that sets it off from the name. The tile carries no monogram.
 - `h1.hero-name`: `page.hero.lines` joined, `clamp(38px, 5.4vw, 62px)` at 600.
 - `p.hero-role`: `person.title` in the accent. (The Blue Sheet caret is gone.)
 - `.hero-meta`: lucide `MapPin` + the location, and `Briefcase` + `.hero-now-role` (the current role) "· `<company>`, since `<start>`" from `page.hero.currentRole`.

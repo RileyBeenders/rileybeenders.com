@@ -4,7 +4,6 @@ import resumeData from "@/data/resumeData";
 import homePageData from "@/data/home/page.json";
 import contactData from "@/data/contact/contact.json";
 import { Reveal } from "@/components/blueprint/Reveal";
-import { BpMark } from "@/components/blueprint/BpMark";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import { HeroActions } from "@/components/bench/HeroActions";
 import { GithubGraph } from "@/components/bench/GithubGraph";
@@ -71,17 +70,14 @@ export default async function HomePage() {
       <section className="shell hero" aria-label="Introduction">
         <div className="bento">
           <article className="card tile tile-hero" style={order()}>
-            <div className="hero-top">
-              <div className="hero-avatar" aria-hidden="true">
-                <BpMark id="hero" size={46} animated />
-              </div>
-              {data.visibility.openToRelocation && (
+            {data.visibility.openToRelocation && (
+              <div className="hero-top">
                 <span className="chip">
                   <span className="chip-dot" aria-hidden="true" />
                   {ui.openToRelocation}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
 
             <h1 className="hero-name">{page.hero.lines.join(" ")}</h1>
             <p className="hero-role">{data.person.title}</p>

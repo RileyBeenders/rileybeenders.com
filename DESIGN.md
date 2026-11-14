@@ -317,7 +317,7 @@ components:
 
 **Creative North Star: "Everything is a tile"**
 
-The site is a bench of rounded white tiles on a pale grey-blue ground. Under a floating glass nav, the home page opens on a bento: the hero tile (the monogram avatar, the relocation chip, the name, the title, location and current role, the actions), then small tiles for the current role, where Riley is based and the degree, the GitHub calendar across the full width, a tile for this site and one to say hello. A soft blue bloom drifts very slowly behind the top of the page. The tiles are lightly frosted glass: white at `--tile-fill` (72% by default, set in the Studio under Site Settings → Layout → Tile opacity) over a 1.5px backdrop blur, so the animated graph paper behind the bench and the pen's glow show through softly.
+The site is a bench of rounded white tiles on a pale grey-blue ground. Under a floating glass nav, the home page opens on a bento: the hero tile (the relocation chip, the name, the title, location and current role, the actions), then small tiles for the current role, where Riley is based and the degree, the GitHub calendar across the full width, a tile for this site and one to say hello. A soft blue bloom drifts very slowly behind the top of the page. The tiles are lightly frosted glass: white at `--tile-fill` (72% by default, set in the Studio under Site Settings → Layout → Tile opacity) over a 1.5px backdrop blur, so the animated graph paper behind the bench and the pen's glow show through softly.
 
 One cobalt accent carries every link, fill and active state. Headings and body share one grotesque, Instrument Sans, with headings at weight 600 and negative tracking. Dates, captions, eyebrows, counts and tags are set small in Azeret Mono.
 
@@ -456,7 +456,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 - **Rounded**: 10px inputs, contact rows and code blocks (`--r-sm`); 14px facts, certificates, tables and gallery frames (`--r`); 22px tiles, project tiles and the dialog (`--r-lg`). A project's cover sits 12px rounded inside its tile's 10px padding. `--r-xl` (28px) is defined but unused today.
 - **Pills**: every button, chip, filter, skill pill, nav link, tag, the Read more chip, the theme toggle, the floating controls.
-- **Circles**: the hero avatar, the tile arrow, the rail dots, the chip's dot, the toggle thumb.
+- **Circles**: the tile arrow, the rail dots, the chip's dot, the toggle thumb.
 - **Small radii**: 2px on the calendar's legend squares and the rule, 4px on focus rings. Nothing else goes below 10px.
 
 ### Named Rules
@@ -489,7 +489,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 ### Tiles
 
 - **Tile** (`.card` + `.tile`): frosted glass, `color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent)` with `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`, so the graph paper and the pen's glow show through softly; `--line` border, 22px radius, `--shadow-sm`. `--tile-fill` is Studio-set (`layout.tileOpacity`, 40 to 100, default 72); print resets the tile to solid white with no filter. `.card--hover` lifts and tints its border; `.bp-spot` adds a faint accent spotlight under the cursor. A linked tile carries a `.tile-label` (mono, with an accent icon), a `.tile-value`, a `.tile-sub` and a 30px `.tile-arrow` circle top right that nudges on hover.
-- **Hero tile** (`.tile-hero`): its own accent-soft glow top right; the 72px avatar circle with the monogram, the relocation chip, the name, the title, the meta line (location and current role) and the actions (`HeroActions`).
+- **Hero tile** (`.tile-hero`): its own accent-soft glow top right; the relocation chip, the name, the title, the meta line (location and current role) and the actions (`HeroActions`).
 - **Activity tile** (`.tile-activity`, `GithubGraph`): the calendar as an SVG with month and weekday labels in mono, a total and a legend. It scrolls sideways inside its tile below 720px.
 - **Fact** (`.fact`): a mono label over a value, 14px radius.
 - **Roles** (`.card.roles`): the whole experience list in one tile. Each `.role` has a dated column with a rail and a dot that fills on hover, bullets with reactive emphasis, and a "Show N more" pill.
@@ -520,7 +520,7 @@ Pill, mono label, frosted white, `--shadow`. Back to top sits bottom-left; Edit 
 
 ### Monogram (`BpMark`)
 
-Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to-blue gradient, the ring chases. It appears in the nav at 30px, the hero avatar at 46px, a typographic cover at 54px and the footer at 44px.
+Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to-blue gradient, the ring chases. It appears in the nav at 30px, a typographic cover at 54px and the footer at 44px.
 
 ### Named Rules
 
