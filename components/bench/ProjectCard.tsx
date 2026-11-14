@@ -86,8 +86,8 @@ export function ProjectCard({ entry, index, onOpen }: ProjectCardProps) {
               </div>
             )}
             <div className="project-card-tags">
-              <span className="project-card-type">{project.type}</span>
-              {isSite && <span className="project-card-type project-card-badge">{ui.projects.siteBadge}</span>}
+              {/* The site's own card wears its tag in the accent fill; it has no second "This site" tag. */}
+              <span className={`project-card-type${isSite ? " project-card-badge" : ""}`}>{project.type}</span>
             </div>
           </div>
 

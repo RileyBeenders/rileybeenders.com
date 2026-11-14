@@ -29,7 +29,7 @@ Until the Blue Sheet redesign of 2026-11-08 (whose structure Clean Bench kept) t
 The `CatalogEntry` adds:
 
 - `tagline: hero.tagline`;
-- `isSite: true` (the "This site" badge and the accent border on its card);
+- `isSite: true` (its type tag in the accent fill and the accent border on its card);
 - `feature: aboutSite.feature` (the deep dive below);
 - `tracker`, read by `tracker()` (below).
 

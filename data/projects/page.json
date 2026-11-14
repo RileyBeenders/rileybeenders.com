@@ -9,10 +9,10 @@
     "many": ""
   },
   "outro": {
-    "lead": "That's everything, for now.",
+    "lead": "",
     "body": {
       "one": "This project is linked from a line on the resume, and the case study goes a layer deeper: design decisions, root causes, and measured results.",
-      "many": "Every project above is linked from a line on the resume, and the case study goes a layer deeper: design decisions, root causes, and measured results."
+      "many": ""
     }
   },
   "comingSoon": {

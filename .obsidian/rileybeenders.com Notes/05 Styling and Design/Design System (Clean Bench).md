@@ -68,7 +68,7 @@ Its named rules, for quick reference:
 | `--ink` | `#111318` / `#eceef2` | Headings, primary text |
 | `--prose` / `--ink-soft` / `--pill-text` / `--muted` / `--faint` / `--rule` | `#282a2e` `#4a4c50` `#535559` `#636469` `#838488` `#d6d8db` / `#d6d8dc` `#b5b7bb` `#acaeb2` `#9c9ea2` `#7e8084` `#2c2e32` | The ramp |
 | `--accent` | `#2457e6` / `#6a93ff` | Text, icons, markers, focus rings |
-| `--accent-fill` | `#2457e6` / `#4a67b3` | Solid buttons, active filters, the toggle thumb, the "This site" badge, a hovered Read more chip |
+| `--accent-fill` | `#2457e6` / `#4a67b3` | Solid buttons, active filters, the toggle thumb, the site card's type tag, a hovered Read more chip |
 | `--tint` | `#edf2fd` / `#232c41` | Chips, the active nav link, table heads, the contact card's left column, the Read more chip |
 | `--accent-soft` | `#cfdafa` / `#313f64` | The bloom, the hero tile's glow, the calendar's first step |
 | `--glow` | `#d3dcf5` / `#232e48` | The bloom's second wash |

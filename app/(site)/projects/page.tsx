@@ -25,6 +25,9 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   const catalog = getCatalog();
   const projectCount = catalog.filter((entry) => !entry.isSite).length;
+  // The closing note: a line left blank in the Studio is skipped, and with both blank the tile is too.
+  const outroLead = page.outro.lead.trim();
+  const outroBody = counted(page.outro.body, projectCount).trim();
 
   return (
     <main>
@@ -45,12 +48,12 @@ export default function ProjectsPage() {
         )}
       </section>
 
-      {projectCount > 0 && (
+      {projectCount > 0 && (outroLead || outroBody) && (
         <section className="shell sec" aria-label="Closing note">
           <Reveal>
             <div className="card panel outro">
-              <p className="bp-outro-lead">{page.outro.lead}</p>
-              <p>{counted(page.outro.body, projectCount)}</p>
+              {outroLead && <p className="bp-outro-lead">{outroLead}</p>}
+              {outroBody && <p>{outroBody}</p>}
             </div>
           </Reveal>
         </section>

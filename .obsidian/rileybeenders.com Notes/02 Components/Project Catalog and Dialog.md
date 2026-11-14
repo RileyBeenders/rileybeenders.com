@@ -53,7 +53,7 @@ The same component runs on `/` and `/projects`, so `/#project-icarus-lite` opens
 The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can animate the corner through the morph. The whole tile is one `<button>` that calls `onOpen(id)`, aria-labelled "`<name>`: open".
 
 - **Cover** (16:10). The entry's `cover` as a `next/image` (`fill`, `sizes` tracking the grid, eager for the first three). It scales 1.04× on hover. A PDF whose first image is `fit: "contain"` is shown contained with padding. With no cover, `.project-card-typo` draws the animated monogram on a soft accent wash.
-- **Tags** over the cover: the `type`, plus "This site" (`ui.projects.siteBadge`, filled with `--accent-fill`) on the site entry. The site's card also gets an accent-tinted border (`.project-card--site`).
+- **Tags** over the cover: the `type`. On the site entry that one tag takes the accent fill with on-accent text (`.project-card-badge`); the separate "This site" tag was removed on 2026-11-14. The site's card also gets an accent-tinted border (`.project-card--site`).
 - **Body.** The `h3` name, the summary's first paragraph clamped to two lines, and a mono meta line: "Jun 2026 → Present" from `dates`, "· N photos" (photos only; PDFs and posts don't count), and an `ArrowUpRight` that nudges 3px on hover.
 - **Motion.** It enters on view (opacity, y 18 → 0, 0.6s on the site curve, a stagger of `min(index, 5) × 0.06`s) and keeps `layout` on (with `MORPH`), so filtering animates the reflow. Hover lifts the tile 3px and zooms the cover 1.04×. The `.bp-spot` cursor wash follows the pointer via `useSpotlight`. Under reduced motion it does neither.
 

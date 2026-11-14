@@ -59,7 +59,7 @@ Labels come from Studio: Navigation & labels → GitHub activity, and the headin
 
 ## The summary and fact tiles (in `page.tsx`)
 
-`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact tiles are labelled in mono from Studio copy: Experience (the current role · company), Education (the first degree · school), Based in (`footer.locationLabel`; the location, with "· Open to relocation" when on), and Site (`footer.siteLabel` → `footer.siteLink`). Under 980px the grid is one column. The heading and the grid share one `.card.panel` tile under a single `Reveal`; the fact tiles inside it use `--paper`.
+`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact tiles are labelled in mono from Studio copy: Experience (the current role · company), Education (the first degree · school), Based in (`bento.location` since 2026-11-14; the location, with "· Open to relocation" when on), and Site (`footer.siteLabel` → `footer.siteLink`). Under 980px the grid is one column. The heading and the grid share one `.card.panel` tile under a single `Reveal`; the fact tiles inside it use `--paper`.
 
 ## `Experience.tsx`
 
@@ -107,7 +107,7 @@ Server-safe, and on every page (home, projects, a project page, contact). `<foot
 
 - **Site** (`footer.siteLabel`): `footer.siteLink`;
 - **Updated** (`footer.updatedLabel`): the build date · short commit from `lib/build-stamp.ts`, omitted when no commit is known;
-- **Based in** (`footer.locationLabel`): the location.
+- **Actively loading in** (`footer.locationLabel`; "Based in" until 2026-11-14): the location. Footer only: the summary's location fact now reads its label from `bento.location`, like the location tile, so both still say "Based in".
 
 All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were `sheetLabel` / `sheetLink` / `revisionLabel` and the line was Blue Sheet's drawing title block.
 

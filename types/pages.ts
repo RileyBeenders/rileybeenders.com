@@ -139,7 +139,7 @@ export type InterfaceData = {
     all: string;
     /** The other filter chips: the label of each shared project category. */
     categories?: Partial<Record<ProjectCategory, string>>;
-    /** The tag on the card for the site's own case study. */
+    /** The label on the home page's bench tile for the site's own project. (Until 2026-11-14 also a second tag on its project card.) */
     siteBadge: string;
     /** On a card with photographs: "{count} photos". */
     photos: string;

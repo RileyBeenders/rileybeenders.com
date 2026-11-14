@@ -177,7 +177,7 @@ export default async function HomePage() {
                 </div>
               )}
               <div className="fact">
-                <dt className="fact-label">{page.footer.locationLabel}</dt>
+                <dt className="fact-label">{page.bento.location}</dt>
                 <dd className="fact-value">{data.person.location}{data.visibility.openToRelocation ? ` · ${ui.openToRelocation}` : ""}</dd>
               </div>
               <div className="fact">

@@ -506,10 +506,10 @@ export const SCHEMAS = {
         name: "outro",
         type: "group",
         label: "Closing note",
-        help: "At the foot of the page, after the last project.",
+        help: "At the foot of the page, after the last project. Leave a line blank to drop it; with both blank the tile goes too.",
         fields: [
-          { name: "lead", type: "text", label: "Lead", required: true },
-          { name: "body", type: "group", label: "Note", fields: COUNTED_FIELDS }
+          { name: "lead", type: "text", label: "Lead" },
+          { name: "body", type: "group", label: "Note", fields: COUNTED_FIELDS.map((field) => ({ ...field, required: false })) }
         ]
       },
       {
@@ -771,7 +771,7 @@ export const SCHEMAS = {
             ]
           },
           { name: "updatedLabel", type: "text", label: "Updated label", required: true, span: "third", help: "Beside the commit and date the page was built from." },
-          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "Beside Site Settings → Location." }
+          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "In the footer, beside Site Settings → Location. The location tile and the summary fact use Bench tiles → Location instead." }
         ]
       }
     ]
@@ -1055,7 +1055,7 @@ export const SCHEMAS = {
           { name: "close", type: "text", label: "Close", required: true, span: "third" },
           { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
           { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },
-          { name: "siteBadge", type: "text", label: "Tag on the site's own card", required: true, span: "third" },
+          { name: "siteBadge", type: "text", label: "Label on the home page's site tile", required: true, span: "third", help: "The small label on the bench tile that links to this site's project. The site's project card shows its own tag, in the accent fill." },
           {
             name: "categories",
             type: "group",
