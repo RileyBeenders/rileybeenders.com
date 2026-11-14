@@ -64,7 +64,12 @@ export default async function HomePage() {
   // the "see more" button. 5 when left out; 0 shows every role. If nothing is recent, show them all.
   const yearsSetting = data.layout?.experienceYears;
   const experienceYears = yearsSetting == null || !Number.isFinite(Number(yearsSetting)) ? 5 : Math.max(0, Number(yearsSetting));
-  const olderFlags = data.experience.map((role) => experienceYears > 0 && !endedWithinYears(role.end, experienceYears, today));
+  // A role's own setting (Experience → Home page) wins over the dates: "more" always waits, "always" never does.
+  const olderFlags = data.experience.map((role) =>
+    role.homeDisplay === "more" ? true
+      : role.homeDisplay === "always" ? false
+        : experienceYears > 0 && !endedWithinYears(role.end, experienceYears, today)
+  );
   const olderRoles = olderFlags.every(Boolean) ? [] : olderFlags;
   const degree = data.education.degrees[0];
   let tile = 0;

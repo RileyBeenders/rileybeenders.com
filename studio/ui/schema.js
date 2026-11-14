@@ -544,6 +544,18 @@ export const SCHEMAS = {
       { name: "start", type: "text", label: "Start", placeholder: "Jan 2024" },
       { name: "end", type: "text", label: "End", placeholder: "Present" },
       { name: "context", type: "textarea", label: "Context", rows: 3 },
+      {
+        name: "homeDisplay",
+        type: "choice",
+        label: "Home page",
+        default: "auto",
+        help: "Where this role sits in the home page's Experience section.",
+        options: [
+          { value: "auto", label: "By date", help: "Shown if it ended within Site Settings → Layout → Experience shown (years), or is still running." },
+          { value: "always", label: "Always shown", help: "Shown at rest whatever its dates." },
+          { value: "more", label: "Behind See more", help: "Kept behind the See more of my past button, even while it is current." }
+        ]
+      },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true }
     ]
   },

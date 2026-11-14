@@ -119,6 +119,13 @@ export type Experience = {
   start: string;
   end: string;
   context?: string;
+  /**
+   * Where the role sits on the home page's Experience section. "auto" (or left
+   * out) goes by its end date and Site Settings → Layout → Experience shown
+   * (years); "always" shows it at rest whatever its dates; "more" keeps it
+   * behind the "See more of my past" button even while it is current.
+   */
+  homeDisplay?: "auto" | "always" | "more";
   bullets: ResumeBullet[];
 };
 
