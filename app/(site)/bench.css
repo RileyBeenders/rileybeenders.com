@@ -510,8 +510,16 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
 .card--hover:hover .tile-arrow { transform: translate(2px, -2px); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: var(--tint); }
 a.tile { color: inherit; }
 
-.tile-hero { grid-column: span 4; grid-row: span 3; overflow: hidden; padding: clamp(22px, 3vw, 36px); gap: 0; }
+/* A column, so the name and title sit at the top and the meta line and the
+   actions are pushed to the bottom (.hero-meta's auto margin). The tile is as
+   tall as the three tiles beside it, and this fills that height instead of
+   leaving it all under the buttons. */
+.tile-hero { grid-column: span 4; grid-row: span 3; display: flex; flex-direction: column; overflow: hidden; padding: clamp(22px, 3vw, 36px); gap: 0; }
 .tile-now, .tile-where, .tile-edu { grid-column: span 2; }
+/* The three tiles beside the hero set its height, so they are kept compact
+   (tighter padding than a plain tile) while the hero's name and title are set
+   large: the two sides meet in the middle and the hero has no slack to fill. */
+.tile-now, .tile-where, .tile-edu { padding-block: 16px; }
 .tile-value--sm { font-size: clamp(16px, 1.4vw, 18px); }
 .tile-activity { grid-column: 1 / -1; }
 .tile-site, .tile-contact { grid-column: span 3; }
@@ -571,26 +579,28 @@ html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="ink"] { --flag-bg: va
 .hero-flag + .hero-name { margin-top: 30px; }
 .hero-name {
   margin-top: clamp(18px, 2.4vw, 28px);
-  font-size: clamp(38px, 5.4vw, 62px);
+  font-size: clamp(40px, 6vw, 72px);
   line-height: 1;
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
 .hero-role {
-  margin-top: 12px;
-  font-size: clamp(17px, 1.7vw, 21px);
+  margin-top: 14px;
+  font-size: clamp(17px, 1.9vw, 24px);
   line-height: 1.35;
   font-weight: 500;
   color: var(--accent);
-  text-wrap: balance;
-  max-width: 30ch;
+  /* One line where it fits, so it runs at least as wide as the name; it wraps only on a narrow tile. */
+  text-wrap: pretty;
 }
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 18px;
-  margin-top: 16px;
+  /* auto pins this and the actions to the bottom of the tile; the padding keeps a gap when the tile is no taller than its content. */
+  margin-top: auto;
+  padding-top: 20px;
   font-size: 14.5px;
   color: var(--muted);
 }
