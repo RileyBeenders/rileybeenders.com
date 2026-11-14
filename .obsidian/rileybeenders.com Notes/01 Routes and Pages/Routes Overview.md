@@ -9,7 +9,7 @@ There are four page routes, all App Router server components in the `app/(site)/
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
 | `/` | `app/(site)/page.tsx` (async) | The resume in tiles: the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Tech & hardware stack, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
-| `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with type filters. A tile morphs into its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
+| `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with category filters. A tile morphs into its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
 | `/projects/[id]` | `app/(site)/projects/[id]/page.tsx` | One entry's `ProjectBody` on its own page, a back link to Projects, and previous/next links. Ids come from `generateStaticParams()` over `getCatalog()`. `dynamicParams = false`, so an unknown id is a 404 | "`<project name>` \| Riley Beenders" (`generateMetadata`; the description is the tagline or the summary's first paragraph) |
 | `/projects/rileybeenders-com` | (the above) | The site's own entry: summary, gallery, case study, the deep dive (stats, timeline, pillars, demos), and the application tracker at `#tracker`. See [[Site Project (About this site)]] | "RileyBeenders.com \| Riley Beenders" (the entry's name is `caseStudy.title`; its type, "About this site", is `hero.title`) |
 | `/contact` | `app/(site)/contact/page.tsx` | The headline (`hero.title`, with `details.title` as the sub-line) + `<ContactBlock heading={false}>` (the ways in + the message form) + footer | `contact.json` `meta.title`, "Contact \| Riley Beenders" |
@@ -66,7 +66,7 @@ An async server component. It reads `resumeData`, `data/home/page.json`, `getCat
 Reads `data/projects/page.json` (`ProjectsPageData`) and `getCatalog()`.
 
 - **The head:** `h1` "Projects" with `counted(page.intro, projectCount)` as the sub-line. `projectCount` counts the catalog minus the site entry.
-- **The grid:** `<ProjectGrid entries today paletteId filters />`. The filter chips are "All" plus each distinct `type`, and they show only when there are at least two types.
+- **The grid:** `<ProjectGrid entries today paletteId filters />`. Since 2026-11-14 the filter chips are "All" plus each shared category that has a published project (see [[Project Catalog and Dialog]]); before that they were "All" plus each distinct `type`, and they show only when there are at least two types.
 - **The close:** an outro (`page.outro.lead` as `.bp-outro-lead`, `counted(page.outro.body, n)`), then `<SiteFooter>` and `<BackToTop>`.
 - **With an empty catalog**, it shows `page.comingSoon.heading` / `body` as a plain `.project-empty` block. `comingSoon.phases` and `queueLabel` are no longer rendered, because `BpComingSoon` is gone.
 

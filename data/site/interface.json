@@ -21,6 +21,12 @@
     "viewAll": "View all projects",
     "all": "All",
     "siteBadge": "This site",
+    "categories": {
+      "productDesign": "Product Design",
+      "software": "Software",
+      "automationControls": "Automation & Controls",
+      "networkInfrastructure": "Network Infrastructure"
+    },
     "photos": "{count} photos",
     "onePhoto": "1 photo"
   },

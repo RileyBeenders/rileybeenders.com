@@ -79,6 +79,7 @@ function siteProject(): Project {
     images: aboutSite.images,
     additionalInfo: aboutSite.caseStudy,
     dates: aboutSite.dates,
+    categories: aboutSite.categories,
     links: [{ label: aboutSite.feature.repoLabel ?? "GitHub", href: REPO_URL }]
   };
 }

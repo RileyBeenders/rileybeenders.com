@@ -20,7 +20,8 @@ Until the Blue Sheet redesign of 2026-11-08 (whose structure Clean Bench kept) t
 |---|---|
 | `id` | `SITE_PROJECT_ID`, `"rileybeenders-com"` |
 | `name` | `caseStudy.title` ("RileyBeenders.com"), else `hero.title` |
-| `type` | `hero.title` ("About this site"), which is the card's type tag and the filter chip |
+| `type` | `hero.title` ("About this site"), which is the card's type tag |
+| `categories` | `categories` (`{ software: true }`), which decides the filter chips the site's card shows under |
 | `summary`, `bullets`, `images`, `dates` | The same keys (`dates`: `2026-06-28`, `ongoing`, so the date box runs its progress bar) |
 | `additionalInfo` | `caseStudy`, which `buildProofView(site, [])` turns into the case study |
 | `links` | One button, `feature.repoLabel` ("GitHub") → `REPO_URL` (`lib/site.ts`) |

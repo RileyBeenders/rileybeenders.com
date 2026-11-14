@@ -11,6 +11,9 @@
     "start": "2026-06-28",
     "ongoing": true
   },
+  "categories": {
+    "software": true
+  },
   "storyHeading": "The site",
   "summary": "The site you are reading. A resume-shaped evidence layer built from scratch, then handed a set of AI agent skills that tailor resumes, keep its documentation honest, and now carry its motion language. It started on June 28, 2026 and has not stopped moving.",
   "bullets": [

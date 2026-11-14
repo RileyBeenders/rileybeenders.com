@@ -1,3 +1,4 @@
+import type { ProjectCategory } from "@/types/resume";
 /**
  * Page copy that used to be written into the page components, now edited in
  * the Studio. A `{count}`, `{company}` or `{start}` in a string is filled in
@@ -136,6 +137,8 @@ export type InterfaceData = {
     viewAll: string;
     /** The first filter chip on /projects. */
     all: string;
+    /** The other filter chips: the label of each shared project category. */
+    categories?: Partial<Record<ProjectCategory, string>>;
     /** The tag on the card for the site's own case study. */
     siteBadge: string;
     /** On a card with photographs: "{count} photos". */

@@ -326,10 +326,19 @@ export type ProjectWalkthrough = {
   samples?: WalkthroughSample[];
 };
 
+/** A shared project category: a filter chip on /projects. The list and its order live in lib/categories.ts. */
+export type ProjectCategory = "productDesign" | "software" | "automationControls" | "networkInfrastructure";
+
 export type Project = {
   id: string;
   name: string;
+  /** The specific tag on the card ("Windows Desktop App / TypeScript, Electron"). Free text; the filters do not read it. */
   type: string;
+  /**
+   * The shared categories the project sits in, which the filter chips on
+   * /projects sort by (lib/categories.ts). More than one can be on.
+   */
+  categories?: Partial<Record<ProjectCategory, boolean>>;
   summary: string;
   bullets: ResumeBullet[];
   order?: number;

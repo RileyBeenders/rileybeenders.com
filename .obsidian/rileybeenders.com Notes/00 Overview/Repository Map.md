@@ -46,7 +46,7 @@ app/
     bullet-link.css            # the resume bullets' Read more button variants (data-motion); also served to the Studio
     skill-pills.css            # skill pills and linked skills (data-border / data-reveal); also served to the Studio
     page.tsx                   # / (async server): the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Stack, Education, Contact, footer
-    projects/page.tsx          # /projects: the catalog grid with type filters (projects + the site entry), outro
+    projects/page.tsx          # /projects: the catalog grid with category filters (projects + the site entry), outro
     projects/[id]/page.tsx     # /projects/<id>: one entry's ProjectBody on its own page, prev/next; generateStaticParams over the catalog
     projects/projects.css      # .pj-*: gallery, lightbox, case study, date box, status, compare, post card, flow diagrams
     projects/feature.css       # .ft-* / .tl-* / .dm-*: the site entry's stats, timeline, pillars, demos
@@ -67,7 +67,7 @@ components/
     Experience.tsx             # roles on a timeline rail in one tile; emphasis phrases + Read more links; folds roles over 7 bullets after 6
     Stack.tsx                  # the four skill groups as tiles of pills (LinkedSkill for linked ones)
     Education.tsx              # the degree tile + a grid of certificate tiles
-    ProjectGrid.tsx            # the project tiles + the dialog; #project-<id>[-case-study] hash routing; type filters
+    ProjectGrid.tsx            # the project tiles + the dialog; #project-<id>[-case-study] hash routing; category filters (lib/categories.ts)
     ProjectCard.tsx            # one tile: cover (or monogram), type and "This site" tags, name, summary line, dates and photo count; exports MORPH + tileLayoutId
     ProjectDialog.tsx          # the dialog the tile morphs into: portal into [data-bench-portal], focus trap, Escape, data-lock scroll lock, Open full page
     ProjectBody.tsx            # everything an entry has: head, gallery, summary, status, bullets, links, case study, walkthrough, deep dive, tracker
@@ -138,6 +138,7 @@ data/
 
 lib/
   catalog.ts                   # getCatalog() / getEntry() / getFeatured() / getCatalogTypes(), SITE_PROJECT_ID, CatalogEntry, TrackerSection
+  categories.ts                # PROJECT_CATEGORIES (the four shared project categories, in chip order) and inCategory(); safe to import from client components
   github.ts                    # githubUsername(), parseContributions(), getContributions() (revalidate 3600, no token)
   projects.ts                  # buildProofView() / buildProjectViews(): the ProjectView shape
   applications.ts              # APPLICATION_COLUMNS, buildApplicationRows(): gantt.md rows + past applications, oldest first

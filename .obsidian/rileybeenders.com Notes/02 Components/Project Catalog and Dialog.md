@@ -7,7 +7,8 @@ tags: [component, routes]
 How projects reach the visitor since the Blue Sheet redesign (2026-11-08), kept by Clean Bench (2026-11-09):
 
 - `lib/catalog.ts` builds one list of entries: the published projects, then the site itself.
-- `ProjectGrid` shows them as tiles, on `/projects` with type filters and on the home page with "View all projects".
+- `ProjectGrid` shows them as tiles, on `/projects` with category filters and on the home page with "View all projects".
+- **Categories (2026-11-14).** The filters used to be each project's free-text `type`, so seven projects had six chips. Now a project carries `categories`, a map of switches over four shared categories defined once in `lib/categories.ts` (`PROJECT_CATEGORIES`, in chip order): `productDesign`, `software`, `automationControls`, `networkInfrastructure`. A project can sit in several (ExtrusionStudio is Software and Automation & Controls). `ProjectGrid` shows a chip only for a category at least one entry sits in, filters with `inCategory()`, and marks the active chip with `aria-pressed`. Chip labels are Studio copy (`data/site/interface.json` `projects.categories`; Navigation & labels → Project cards & dialog → Category filter chips). `type` stays as the specific tag over the card's cover. In the Studio the switches are Projects → **Categories** and About this site → **Categories** (`PROJECT_CATEGORY_FIELDS` in `studio/ui/schema.js` mirrors the list by hand); the site's own entry gets its categories from `about-site.json` `categories`.
 - A tile opens its project in `ProjectDialog` by **morphing** into it: the tile and the dialog share a framer-motion `layoutId`, so the tile grows into the dialog and collapses back into it on close.
 - Every entry also has its own page at `/projects/<id>`.
 - The dialog and the page render the same `ProjectBody`.
@@ -24,7 +25,7 @@ This note was **Projects Route (BpComingSoon)** before the redesign. The Bluepri
 | `getCatalog()` | Module-cached. `buildProjectViews(resumeData.projects, resumeData.proofs)` (published projects, by `order`), each given a `cover` (`coverFor()`: the first image with a `src` that isn't a captured post. A PDF gives its `<src>.png` first-page preview, an MP4 its `<src>.jpg` poster, and a GIF is `unoptimized`) and `tagline` (`additionalInfo.subtitle`). Then the site entry. With `visibility.projectsSection` off, the catalog is the site entry alone |
 | `getEntry(id)` | One entry, for `/projects/[id]` |
 | `getFeatured()` | Every entry (the home grid shows all of them) |
-| `getCatalogTypes()` | The distinct `type`s in catalog order |
+| `getCatalogTypes()` | The distinct `type`s in catalog order. Unused since the filters moved to categories (2026-11-14) |
 
 Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects, and the site entry, **RileyBeenders.com** (type "About this site").
 

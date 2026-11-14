@@ -8,6 +8,8 @@ import { ProjectCard } from "@/components/bench/ProjectCard";
 import { ProjectDialog } from "@/components/bench/ProjectDialog";
 import { ProjectBody } from "@/components/bench/ProjectBody";
 import { ui } from "@/lib/copy";
+import { PROJECT_CATEGORIES, inCategory } from "@/lib/categories";
+import type { ProjectCategory } from "@/types/resume";
 
 type ProjectGridProps = {
   entries: CatalogEntry[];
@@ -32,11 +34,15 @@ const HASH = /^#project-([a-z0-9-]+?)(-case-study)?$/i;
 export function ProjectGrid({ entries, today, paletteId, filters = false, viewAllHref }: ProjectGridProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [caseStudy, setCaseStudy] = useState(false);
-  const [type, setType] = useState<string | null>(null);
+  const [category, setCategory] = useState<ProjectCategory | null>(null);
 
   const byId = useMemo(() => new Map(entries.map((entry) => [entry.project.id, entry])), [entries]);
-  const types = useMemo(() => [...new Set(entries.map((entry) => entry.project.type).filter(Boolean))], [entries]);
-  const shown = type ? entries.filter((entry) => entry.project.type === type) : entries;
+  // The chips are the shared categories at least one entry sits in, in their fixed order.
+  const categories = useMemo(
+    () => PROJECT_CATEGORIES.filter((item) => entries.some((entry) => inCategory(entry.project, item))),
+    [entries]
+  );
+  const shown = category ? entries.filter((entry) => inCategory(entry.project, category)) : entries;
 
   const readHash = useCallback(() => {
     const match = HASH.exec(window.location.hash);
@@ -75,19 +81,20 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
 
   return (
     <>
-      {filters && types.length > 1 && (
-        <div className="filters" role="group" aria-label="Filter by type">
-          <button type="button" className={`filter${type === null ? " is-active" : ""}`} onClick={() => setType(null)}>
+      {filters && categories.length > 1 && (
+        <div className="filters" role="group" aria-label="Filter by category">
+          <button type="button" className={`filter${category === null ? " is-active" : ""}`} aria-pressed={category === null} onClick={() => setCategory(null)}>
             {ui.projects.all}
           </button>
-          {types.map((item) => (
+          {categories.map((item) => (
             <button
               key={item}
               type="button"
-              className={`filter${type === item ? " is-active" : ""}`}
-              onClick={() => setType(type === item ? null : item)}
+              className={`filter${category === item ? " is-active" : ""}`}
+              aria-pressed={category === item}
+              onClick={() => setCategory(category === item ? null : item)}
             >
-              {item}
+              {ui.projects.categories?.[item] || item}
             </button>
           ))}
         </div>

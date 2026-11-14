@@ -41,6 +41,14 @@ const COUNTED_FIELDS = [
 ];
 
 /** Repeatable bullet rows, shared by projects and experience. */
+/** One switch per shared project category. Mirrors PROJECT_CATEGORIES in lib/categories.ts: keep the two in step. */
+const PROJECT_CATEGORY_FIELDS = [
+  { name: "productDesign", type: "boolean", label: "Product Design", default: false, omitWhenDefault: true, span: "half" },
+  { name: "software", type: "boolean", label: "Software", default: false, omitWhenDefault: true, span: "half" },
+  { name: "automationControls", type: "boolean", label: "Automation & Controls", default: false, omitWhenDefault: true, span: "half" },
+  { name: "networkInfrastructure", type: "boolean", label: "Network Infrastructure", default: false, omitWhenDefault: true, span: "half" }
+];
+
 const BULLET_FIELDS = [
   {
     name: "text",
@@ -421,7 +429,7 @@ export const SCHEMAS = {
       { name: "name", type: "text", label: "Name", required: true, span: "half" },
       { name: "id", type: "slug", label: "ID", required: true, span: "half", help: "Used in links and to match a proof. Lowercase, no spaces." },
       { name: "order", type: "number", label: "Order", span: "third", help: "Low numbers come first on the projects page." },
-      { name: "type", type: "text", label: "Category", span: "half", placeholder: "Motion Control / Product Platform" },
+      { name: "type", type: "text", label: "Tag on the card", span: "half", placeholder: "Motion Control / Product Platform", help: "The specific tag over the card's cover. Free text; the filter chips use Categories below." },
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
       { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
@@ -445,6 +453,13 @@ export const SCHEMAS = {
           { name: "tools", type: "stringList", label: "Tools" },
           { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
         ]
+      },
+      {
+        name: "categories",
+        type: "group",
+        label: "Categories",
+        help: "The shared categories this project sits in. The filter chips on the projects page sort by these, and a project can be in more than one.",
+        fields: PROJECT_CATEGORY_FIELDS
       },
       {
         name: "dates",
@@ -916,6 +931,13 @@ export const SCHEMAS = {
         ]
       },
       {
+        name: "categories",
+        type: "group",
+        label: "Categories",
+        help: "The shared categories the site's own project card sits in, which the filter chips on the projects page sort by.",
+        fields: PROJECT_CATEGORY_FIELDS
+      },
+      {
         name: "dates",
         type: "group",
         label: "Dates",
@@ -1034,6 +1056,18 @@ export const SCHEMAS = {
           { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
           { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },
           { name: "siteBadge", type: "text", label: "Tag on the site's own card", required: true, span: "third" },
+          {
+            name: "categories",
+            type: "group",
+            label: "Category filter chips",
+            help: "The words on the filter chips on the projects page, one per shared category. A chip only shows while a published project sits in its category.",
+            fields: [
+              { name: "productDesign", type: "text", label: "Product Design", span: "half", placeholder: "Product Design" },
+              { name: "software", type: "text", label: "Software", span: "half", placeholder: "Software" },
+              { name: "automationControls", type: "text", label: "Automation & Controls", span: "half", placeholder: "Automation & Controls" },
+              { name: "networkInfrastructure", type: "text", label: "Network Infrastructure", span: "half", placeholder: "Network Infrastructure" }
+            ]
+          },
           { name: "photos", type: "text", label: "Photo count", required: true, span: "third", help: "{count} is the number of photographs." },
           { name: "onePhoto", type: "text", label: "…with one photo", required: true, span: "third" }
         ]

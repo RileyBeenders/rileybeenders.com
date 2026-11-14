@@ -483,7 +483,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 - **Chip** (`.chip`): tint, accent mono label, a pulsing dot for a live status. Not placed on any page at present; the relocation notice became the hero tile's corner tab, which reuses the dot.
 - **Pill** (`.bp-pill`, `app/(site)/skill-pills.css`): paper, pill-text, hairline; hover tints and lifts 2px. A linked pill keeps its Studio-chosen border and hover card.
-- **Filter** (`.filter`): white, muted; the active one is accent fill with on-accent text.
+- **Filter** (`.filter`): white, muted; the active one is accent fill with on-accent text. On `/projects` the chips are "All" plus the four shared project categories (Product Design, Software, Automation & Controls, Network Infrastructure), each shown only while a published project sits in it.
 - **Type tag** (`.project-card-type`): mono, uppercase, frosted white over the cover; the "This site" badge is accent fill.
 
 ### Tiles
