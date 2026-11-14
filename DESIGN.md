@@ -489,12 +489,14 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 ### Tiles
 
 - **Tile** (`.card` + `.tile`): frosted glass, `color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent)` with `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`, so the graph paper and the pen's glow show through softly; `--line` border, 22px radius, `--shadow-sm`. `--tile-fill` is Studio-set (`layout.tileOpacity`, 40 to 100, default 72); print resets the tile to solid white with no filter. `.card--hover` lifts and tints its border; `.bp-spot` adds a faint accent spotlight under the cursor. A linked tile carries a `.tile-label` (mono, with an accent icon), a `.tile-value`, a `.tile-sub` and a 30px `.tile-arrow` circle top right that nudges on hover.
+- **Section box** (`.sec-group`): the fainter box around a home page section with several tiles (Experience, Projects, Skills, Education). `--group-fill` (Studio-set `layout.groupOpacity`, 0 to 90, default 50), `--line` border, radius `--r-lg` + `--gap`, `--gap` padding, no shadow, no blur. The section heading is a band across the top of the box, edge to edge, reading at 95% by default (Studio-set `layout.headingOpacity`, 40 to 100; `--head-fill-grouped`), the most solid surface on the page. Tiles inside take `--tile-fill-grouped` so box and tile never add up: a tile reads at `--tile-fill` everywhere. The hero bento, the summary and Contact are never boxed.
 - **Hero tile** (`.tile-hero`): its own accent-soft glow top right; the relocation notice as a corner tab (`.hero-flag`) set into the top-right corner, the one element outside the palette (Studio-set `layout.relocationColor`: amber `#f5a524` in light and `#fbbf24` in dark, both with `#231500` text by default, or a green, coral, violet or ink pair; mono label at weight 400); the name, the title, the meta line (location and current role) and the actions (`HeroActions`).
 - **Activity tile** (`.tile-activity`, `GithubGraph`): the calendar as an SVG with month and weekday labels in mono, a total and a legend. It scrolls sideways inside its tile below 720px.
 - **Fact** (`.fact`): a mono label over a value, 14px radius.
 - **Roles** (`.card.roles`): the whole experience list in one tile. Each `.role` has a dated column with a rail and a dot that fills on hover, bullets with reactive emphasis, and a "Show N more" pill.
 - **Project tile** (`.project-card`): a 16:10 cover (photo, PDF page, video poster, or the monogram over an accent-soft wash), tags over it, name, two lines of summary, dates and photo count in mono, an arrow that nudges. The whole tile is a button; its id is the hash anchor.
 - **Stack, degree, certificate, contact**: `.stack-card`, `.degree`, `.cert` and `.contact-card` are tiles on the same surface.
+- **Section head and panel** (`.card.sec-head`, `.card.panel`): since 2026-11-14 nothing sits loose on the ground, because the graph paper and the pen run behind the whole page. A heading above a grid of tiles is a full-width tile of its own (14px by `clamp(18px, 2.4vw, 26px)` padding); a section that is one block of content (the summary, a project page body, the projects outro) is one `.panel` tile holding its heading and body (`clamp(20px, 2.8vw, 34px)` padding, facts inside it on `--paper`). The project page's `.page-back` is a glass pill and its `.page-nav` links are hover tiles.
 
 ### Dialog (`.dlg`)
 
@@ -512,7 +514,7 @@ Name and email side by side, message below, a solid Send. Inputs are 10px-radius
 
 ### Footer (`.footer`)
 
-The monogram and note, then a `.footer-meta` line in mono: Site, Updated (the commit the page was built from) and Based in.
+The monogram and note, then a `.footer-meta` line in mono: Site, Updated (the commit the page was built from) and Based in. It sits on a tile (`.card.footer-inner`) like everything else.
 
 ### Floating controls (`.bp-top`, `.bp-studio-link`)
 
@@ -547,7 +549,7 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 
 ### Do
 
-- Put every piece of content on a tile and every control in a pill; the ground stays empty apart from the bloom.
+- Put every piece of content on a tile and every control in a pill; the ground stays empty apart from the bloom. Headings included: a section heading is a `.card.sec-head` tile or sits inside its `.panel`.
 - Use `--accent-fill` for anything painted and `--accent` for anything drawn or written.
 - Set labels, dates, counts and tags small in the mono; names and sentences in Instrument Sans.
 - Keep the home page readable as the resume at rest.

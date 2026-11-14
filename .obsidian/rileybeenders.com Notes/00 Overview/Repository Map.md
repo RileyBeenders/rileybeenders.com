@@ -113,7 +113,7 @@ components/
       demos/ResumeDemo.tsx · StudioDemo.tsx · SkillsDemo.tsx   # the three live replicas
 
 data/
-  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout (introAlign, tileOpacity, relocationColor), motion (syncAnimations, smoothScroll, grid, gridLoopSeconds, gridPointer, gridTrailSeconds), siteMode, resumePdfPath, resumeHtmlPath
+  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout (introAlign, tileOpacity, groupOpacity, headingOpacity, relocationColor), motion (syncAnimations, smoothScroll, grid, gridLoopSeconds, gridPointer, gridTrailSeconds), siteMode, resumePdfPath, resumeHtmlPath
   resumeData.ts                # merges header + home + projects JSON into one typed ResumeData (visible:false filter, order sort, visibility pruning)
   contact/contact.json         # contact meta, hero, details, and the message form's words (Studio: Contact)
   home/

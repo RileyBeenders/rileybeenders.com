@@ -16,7 +16,7 @@ export function SiteFooter({ location }: { location: string }) {
   return (
     <footer className="footer">
       <div className="shell">
-        <div className="footer-inner">
+        <div className="card footer-inner">
           <div className="footer-mark">
             <BpMark id="footer" size={44} animated float />
             <p className="footer-note">{page.footer.note}</p>

@@ -32,6 +32,7 @@ tags: [overview, architecture]
   - Resolves the Studio's palette (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark).
   - Wraps everything in `ThemeProvider` and `<div class="bp …" data-theme-id data-motion-sync?>`, which renders `<SiteNav>`, then `<div class="page">{children}</div>`, then the portal host `<div data-bench-portal>` (the project dialog renders into it, so the tokens scoped to `.bp` reach it).
   - Writes `layout.tileOpacity` (clamped 40 to 100, 72 when left out) as `--tile-fill: <n>%` in the same override block, which sets how solid the glass tiles are.
+  - Writes `layout.groupOpacity` (clamped 0 to 90, 50 when left out) as `--group-fill`, the fill of the box around a home page section (`.sec-group`), and `--tile-fill-grouped`, the lower fill a tile takes inside that box so the two do not add up: `1 - (1 - tile) / (1 - group)`, 76% for an 88% tile in a 50% box. `--head-fill-grouped` is the same sum for the section heading band, which reads at `layout.headingOpacity` (clamped 40 to 100, 95 when left out).
   - Mounts `PlotGrid` (the animated graph paper behind the tiles, showing faintly through them) unless `motion.grid` is off, `AnimationSync` when `motion.syncAnimations` is on, `SmoothScroll` when `motion.smoothScroll` is on, and `<StudioLink>` in development only.
 
   Every page route lives in this `(site)` group.

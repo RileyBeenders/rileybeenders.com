@@ -189,7 +189,8 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
 .shell, .bp-shell { max-width: var(--shell); margin: 0 auto; padding-inline: var(--pad); }
 .page { position: relative; padding-bottom: clamp(32px, 5vw, 56px); }
 
-.sec { padding: clamp(40px, 6vw, 72px) 0 0; }
+/* Top padding only: the shorthand would wipe .shell's side gutter. */
+.sec { padding-top: clamp(40px, 6vw, 72px); }
 .sec--tight { padding-top: clamp(28px, 4vw, 44px); }
 .sec-head {
   display: flex;
@@ -205,8 +206,43 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
   letter-spacing: -0.025em;
   text-wrap: balance;
 }
+/* Nothing sits loose on the ground: the graph paper and the pen run behind the
+   whole page, so text needs a tile under it. A heading above a grid of tiles
+   is a tile of its own (.card.sec-head); a section that is one block of
+   content is a single tile holding its heading and body (.card.panel). */
+.card.sec-head { align-items: center; padding: 14px clamp(18px, 2.4vw, 26px); }
+.panel { padding: clamp(20px, 2.8vw, 34px); }
+.panel > .sec-head { margin-bottom: clamp(14px, 1.8vw, 20px); }
+.panel .fact { background: var(--paper); }
 .sec-sub { font-size: 15px; color: var(--muted); max-width: 52ch; }
 .sec-aside { display: flex; align-items: center; gap: 10px; }
+/* A section of several tiles sits in one fainter box, so its heading and its
+   tiles read as one group (the hero bento and the summary stay on their own).
+   The box is --group-fill solid (Site Settings → Layout → Section box opacity).
+   Fills must not add up: a tile inside it takes --tile-fill-grouped, the lower
+   fill that over the box comes out at --tile-fill (worked out in layout.tsx).
+   No backdrop blur here, so the tiles inside still blur the real ground. */
+.sec-group {
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) + var(--gap));
+  background: color-mix(in srgb, var(--white) var(--group-fill, 50%), transparent);
+}
+.sec-group .card, .sec-group .project-empty { background: color-mix(in srgb, var(--white) var(--tile-fill-grouped, 44%), transparent); }
+.sec-group > :last-child { margin-bottom: 0; }
+/* The heading is a band across the top of the box, edge to edge, and the most
+   solid surface on the page (95%) so the section names stand out. Like the
+   tiles, its own fill is lowered (--head-fill-grouped, from layout.tsx) so that
+   over the box it comes out at 95%, not more. Its side padding is the box's
+   plus a tile's, so the title lines up with the text in the tiles below. */
+.sec-group .sec-head {
+  align-items: center;
+  margin: calc(-1 * var(--gap)) calc(-1 * var(--gap)) var(--gap);
+  padding: clamp(14px, 1.8vw, 18px) calc(var(--gap) + clamp(18px, 2.4vw, 26px));
+  border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) + var(--gap) - 1px) calc(var(--r-lg) + var(--gap) - 1px) 0 0;
+  background: color-mix(in srgb, var(--white) var(--head-fill-grouped, 90%), transparent);
+}
 
 /* ---------------------------------------------------------------- nav --- */
 .nav {
@@ -808,7 +844,7 @@ html[data-theme="dark"] .bp {
 }
 .project-card-open { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); transition: transform 0.4s var(--ease); }
 .project-card:hover .project-card-open { transform: translateX(3px); }
-.project-empty { padding: 40px; text-align: center; color: var(--muted); border: 1px dashed var(--rule); border-radius: var(--r-lg); }
+.project-empty { padding: 40px; text-align: center; color: var(--muted); border: 1px dashed var(--rule); border-radius: var(--r-lg); background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent); backdrop-filter: blur(var(--tile-blur, 1.5px)); }
 .project-grid-foot { display: flex; justify-content: flex-end; margin-top: 18px; }
 
 /* ------------------------------------------------------------- dialog --- */
@@ -884,10 +920,15 @@ html[data-theme="dark"] .bp {
 .bp .dm-resume-flow-label { writing-mode: vertical-rl; transform: rotate(180deg); }
 .pbody-tracker h3 { font-size: 24px; }
 .pbody-tracker-note { font-size: 14px; color: var(--muted); }
-.page-back { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); margin-bottom: 18px; }
-.page-back:hover { color: var(--ink); }
-.page-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: clamp(32px, 5vw, 56px); padding-top: 24px; border-top: 1px solid var(--rule); }
-.page-nav a { display: grid; gap: 3px; max-width: 46%; }
+.page-back {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); margin-bottom: 14px;
+  padding: 7px 14px 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 84%, transparent); backdrop-filter: blur(10px);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.page-back:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.page-nav { display: flex; justify-content: space-between; gap: var(--gap); margin-top: var(--gap); }
+.page-nav a { display: grid; gap: 3px; max-width: calc(50% - var(--gap) / 2); padding: 14px 20px; }
 .page-nav a:last-child { text-align: right; }
 .page-nav small { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .page-nav b { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
@@ -976,8 +1017,7 @@ html[data-theme="dark"] .bp {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px 32px;
-  padding-top: 26px;
-  border-top: 1px solid var(--rule);
+  padding: clamp(18px, 2.4vw, 26px);
 }
 .footer-mark { display: flex; align-items: center; gap: 16px; }
 .footer-mark .bp-mark { width: 44px; height: 44px; flex: none; }
@@ -1127,6 +1167,9 @@ html[data-theme="dark"] .bp {
   .bp { background: #fff !important; color: #000 !important; }
   .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .activity, .filters, .tile-arrow { display: none !important; }
   .card { box-shadow: none; border-color: #bbb; background: var(--white); backdrop-filter: none; }
+  .sec-group { padding: 0; border: 0; background: none; }
+  .sec-group .card { background: var(--white); }
+  .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
   .role, .cert, .degree, .stack-card { break-inside: avoid; }
   .bp-bullet-link { display: none; }
 }

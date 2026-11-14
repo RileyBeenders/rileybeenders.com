@@ -65,6 +65,7 @@ At 980px the bento becomes two columns with the hero full width; at 640px, one c
 - **Entrances**: bento tiles rise with `tile-in` (0.8s, 70ms apart by `--i`). Project pages use `.page-in`, a one-shot entrance; the old `Reveal` wrapper never fired on a page taller than the viewport, so the body of a tall project page stayed hidden. That bug is fixed.
 - **Kept**: `SmoothScroll`, `CursorMark` (now across the bento), the nav's sliding tint, the monogram's draw loop, the calendar's cell pop-in. The Read more pill became a tinted mono chip.
 - **2026-11-14**: `CursorMark` was removed completely (Riley did not like the monogram chip trailing the pointer), and the tiles became frosted glass (`--tile-fill`, 72% by default, over a 1.5px blur; Site Settings → Layout → Tile opacity) so the graph paper shows through. See [[Design System (Clean Bench)]].
+- **2026-11-14**: section boxes. Experience, Projects, Skills and Education each sit in a `.sec-group` box at 50% fill (Site Settings → Layout → Section box opacity) so a heading and its tiles read together; tiles inside keep their 88% because the layout lowers their own fill to compensate.
 
 ## Files
 

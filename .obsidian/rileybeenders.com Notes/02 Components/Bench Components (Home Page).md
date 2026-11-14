@@ -6,7 +6,7 @@ tags: [component, client]
 
 This note covers the `components/bench/*` pieces the home page is built from, and the bento of tiles that opens it (everything except the nav, which is in [[Site Nav and Mark]], and the project grid and dialog, which are in [[Project Catalog and Dialog]]). It also covers the primitives kept from Blueprint Press in `components/blueprint/` and `components/content/`. The folder arrived as `components/sheet/` with the Blue Sheet redesign on 2026-11-08 (see [[Blue Sheet (2026-11-08, one day)]]) and was renamed `components/bench/` with Clean Bench on 2026-11-09 (see [[Clean Bench (2026-11 redesign)]]), when `HeroCover.tsx` was deleted. The Blueprint Press pieces it replaced (`BpActions`, `HeroRibbon`, `PageSpine`, `BpRelocationBadge`, `BpComingSoon`, `WordReveal`) are described in [[Blueprint Press (2026-08 to 2026-11)]].
 
-The home page itself (`app/(site)/page.tsx`) is an async server component; [[Routes Overview]] lists its sections in order. It opens with the bento, then each section is a `section.shell.sec` with a `.sec-head` (an `h2.sec-title`, plus an optional `.sec-sub`) inside a `Reveal`.
+The home page itself (`app/(site)/page.tsx`) is an async server component; [[Routes Overview]] lists its sections in order. It opens with the bento, then each section is a `section.shell.sec` with a `.sec-head` (an `h2.sec-title`, plus an optional `.sec-sub`) inside a `Reveal`. Since 2026-11-14 every heading is boxed: the Experience, Projects, Stack and Education heads are `.card.sec-head` tiles, and the summary is one `.card.panel`.
 
 ## The bento (in `page.tsx`)
 
@@ -59,7 +59,7 @@ Labels come from Studio: Navigation & labels → GitHub activity, and the headin
 
 ## The summary and fact tiles (in `page.tsx`)
 
-`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact tiles are labelled in mono from Studio copy: Experience (the current role · company), Education (the first degree · school), Based in (`footer.locationLabel`; the location, with "· Open to relocation" when on), and Site (`footer.siteLabel` → `footer.siteLink`). Under 980px the grid is one column.
+`#summary`, headed "Who is Riley?" (`page.headings.summary`). It is a `.summary-grid`: the summary paragraphs (`splitParagraphs`, with the `page.summaryLink.text` phrase turned into an external link) beside a 300px `<dl class="facts">`. The fact tiles are labelled in mono from Studio copy: Experience (the current role · company), Education (the first degree · school), Based in (`footer.locationLabel`; the location, with "· Open to relocation" when on), and Site (`footer.siteLabel` → `footer.siteLink`). Under 980px the grid is one column. The heading and the grid share one `.card.panel` tile under a single `Reveal`; the fact tiles inside it use `--paper`.
 
 ## `Experience.tsx`
 
@@ -109,6 +109,10 @@ Server-safe, and on every page (home, projects, a project page, contact). `<foot
 - **Based in** (`footer.locationLabel`): the location.
 
 All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were `sheetLabel` / `sheetLink` / `revisionLabel` and the line was Blue Sheet's drawing title block.
+
+## Section boxes (`.sec-group`)
+
+`app/(site)/page.tsx` wraps the contents of the Experience, Projects, Skills and Education sections in `<div class="sec-group">`, a fainter box (50% fill, `layout.groupOpacity`) that holds the heading and the tiles under it together; the heading is a `.sec-head` band across the top of the box at 95%, not a tile. The hero bento, the summary and Contact are not wrapped. See [[Design System (Clean Bench)]] for the fill maths.
 
 ## `PlotGrid.tsx`
 

@@ -53,7 +53,7 @@ An async server component. It reads `resumeData`, `data/home/page.json`, `getCat
    - `.tile-site` (the site entry → `#project-rileybeenders-com`, which opens its dialog) and `.tile-contact` (→ `#contact`).
 
    See [[Bench Components (Home Page)]].
-2. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact tiles: Experience (the current role), Education (the degree), Based in (the location, plus "Open to relocation"), and Site (the site link).
+2. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact tiles: Experience (the current role), Education (the degree), Based in (the location, plus "Open to relocation"), and Site (the site link). Heading, paragraphs and facts sit in one `.card.panel` tile (2026-11-14); every other section heading is a `.card.sec-head` tile.
 3. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
 4. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
 5. **`#skills`, "Tech & hardware stack"**: `<Stack data linkedSkills />`.
@@ -76,7 +76,7 @@ See [[Project Catalog and Dialog]].
 
 - `generateStaticParams()` returns every `getCatalog()` id. `dynamicParams = false`.
 - `generateMetadata()` titles the page "`<name>` | `<person.name>`".
-- The page finds the entry's index and wraps its body in one `.page-in` entrance (a CSS `tile-in`, no observer; the old `Reveal` wrappers never fired on a page taller than the viewport). It renders a `.page-back` link to `/projects` (labelled `ui.nav.projects`), then `<ProjectBody entry today paletteId mode="page" />` (which gives an `h1` title), then a `.page-nav` with the previous and next catalog entries (their type and name), the footer and `BackToTop`.
+- The page finds the entry's index and wraps its body in one `.page-in` entrance (a CSS `tile-in`, no observer; the old `Reveal` wrappers never fired on a page taller than the viewport). It renders a `.page-back` link to `/projects` (labelled `ui.nav.projects`), then `<ProjectBody entry today paletteId mode="page" />` (which gives an `h1` title), then a `.page-nav` with the previous and next catalog entries (their type and name), the footer and `BackToTop`. Since 2026-11-14 the body is wrapped in a `.card.panel` tile, the back link is a glass pill and the previous/next links are hover tiles.
 - The site entry is the last in the catalog, so `/projects/rileybeenders-com` has a previous link only.
 
 ## `/contact`: `app/(site)/contact/page.tsx`

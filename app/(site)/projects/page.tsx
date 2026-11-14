@@ -30,7 +30,7 @@ export default function ProjectsPage() {
     <main>
       <section className="shell sec sec--tight" aria-label={page.title}>
         <Reveal>
-          <div className="sec-head">
+          <div className="card sec-head">
             <h1 className="sec-title">{page.title}</h1>
             {projectCount > 0 && <p className="sec-sub">{counted(page.intro, projectCount)}</p>}
           </div>
@@ -48,7 +48,7 @@ export default function ProjectsPage() {
       {projectCount > 0 && (
         <section className="shell sec" aria-label="Closing note">
           <Reveal>
-            <div className="outro">
+            <div className="card panel outro">
               <p className="bp-outro-lead">{page.outro.lead}</p>
               <p>{counted(page.outro.body, projectCount)}</p>
             </div>

@@ -76,7 +76,6 @@ export default async function HomePage() {
                 {ui.openToRelocation}
               </span>
             )}
-
             <h1 className="hero-name">{page.hero.lines.join(" ")}</h1>
             <p className="hero-role">{data.person.title}</p>
 
@@ -146,14 +145,13 @@ export default async function HomePage() {
 
       {/* --------------------------------------------------------- summary */}
       <section className="shell sec" id="summary">
-        <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.summary}</h2></div></Reveal>
-        <div className="summary-grid">
-          <Reveal delay={0.06}>
+        <Reveal>
+          <div className="card panel">
+            <div className="sec-head"><h2 className="sec-title">{page.headings.summary}</h2></div>
+            <div className="summary-grid">
             <div>
               {summaryParagraphs.map((paragraph, index) => <SummaryParagraph key={index} text={paragraph} />)}
             </div>
-          </Reveal>
-          <Reveal delay={0.12}>
             <dl className="facts">
               {current && (
                 <div className="fact">
@@ -176,44 +174,53 @@ export default async function HomePage() {
                 <dd className="fact-value"><a href={page.footer.siteLink.href} suppressHydrationWarning>{page.footer.siteLink.text}</a></dd>
               </div>
             </dl>
-          </Reveal>
-        </div>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* ------------------------------------------------------ experience */}
       <section className="shell sec" id="experience">
-        <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.experience}</h2></div></Reveal>
-        <Experience
-          roles={data.experience}
-          projectNames={projectNames}
-          readMoreLabel={ui.bulletReadMore}
-          readMoreMotion={page.readMore?.animation || "sweep"}
-        />
+        <div className="sec-group">
+          <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.experience}</h2></div></Reveal>
+          <Experience
+            roles={data.experience}
+            projectNames={projectNames}
+            readMoreLabel={ui.bulletReadMore}
+            readMoreMotion={page.readMore?.animation || "sweep"}
+          />
+        </div>
       </section>
 
       {/* -------------------------------------------------------- projects */}
       {catalog.length > 0 && (
         <section className="shell sec" id="projects">
-          <Reveal>
-            <div className="sec-head">
-              <h2 className="sec-title">{page.headings.projects}</h2>
-              <p className="sec-sub">{catalog.length} {catalog.length === 1 ? "entry" : "entries"}</p>
-            </div>
-          </Reveal>
-          <ProjectGrid entries={catalog} today={today} paletteId={data.theme.paletteId} viewAllHref="/projects" />
+          <div className="sec-group">
+            <Reveal>
+              <div className="sec-head">
+                <h2 className="sec-title">{page.headings.projects}</h2>
+                <p className="sec-sub">{catalog.length} {catalog.length === 1 ? "entry" : "entries"}</p>
+              </div>
+            </Reveal>
+            <ProjectGrid entries={catalog} today={today} paletteId={data.theme.paletteId} viewAllHref="/projects" />
+          </div>
         </section>
       )}
 
       {/* ----------------------------------------------------------- stack */}
       <section className="shell sec" id="skills">
-        <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.skills}</h2></div></Reveal>
-        <Stack data={data} linkedSkills={page.linkedSkills} />
+        <div className="sec-group">
+          <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.skills}</h2></div></Reveal>
+          <Stack data={data} linkedSkills={page.linkedSkills} />
+        </div>
       </section>
 
       {/* ------------------------------------------------------- education */}
       <section className="shell sec" id="education">
-        <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.education}</h2></div></Reveal>
-        <Education education={data.education} />
+        <div className="sec-group">
+          <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.education}</h2></div></Reveal>
+          <Education education={data.education} />
+        </div>
       </section>
 
       {/* --------------------------------------------------------- contact */}

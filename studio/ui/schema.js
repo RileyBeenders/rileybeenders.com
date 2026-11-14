@@ -1211,6 +1211,24 @@ export const SCHEMAS = {
             help: "How solid the tiles are. 100 is a solid tile; lower turns them into frosted glass, so the animated grid and the pen's glow show through, softened. 40 to 100, and 72 when left blank."
           },
           {
+            name: "groupOpacity",
+            type: "number",
+            label: "Section box opacity (%)",
+            span: "half",
+            default: 50,
+            placeholder: "50",
+            help: "How solid the box around each home page section (Experience, Projects, Skills, Education) is. The tiles inside keep the tile opacity above: the two do not add up. 0 to 90, and 50 when left blank."
+          },
+          {
+            name: "headingOpacity",
+            type: "number",
+            label: "Section heading opacity (%)",
+            span: "half",
+            default: 95,
+            placeholder: "95",
+            help: "How solid the heading band across the top of each section box is. Higher than the tile opacity makes the section names stand out. 40 to 100, and 95 when left blank."
+          },
+          {
             name: "relocationColor",
             type: "choice",
             label: "Relocation tab colour",

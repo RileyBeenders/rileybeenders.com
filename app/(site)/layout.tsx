@@ -142,6 +142,15 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const motion = resumeData.motion ?? {};
   // Site Settings → Layout → Tile opacity: how solid the glass tiles are (.card in bench.css).
   const tileFill = Math.min(100, Math.max(40, Number(resumeData.layout?.tileOpacity) || 72));
+  // Site Settings → Layout → Section box opacity: the fainter box around a section's tiles (.sec-group).
+  const groupRaw = Number(resumeData.layout?.groupOpacity);
+  const groupFill = Math.min(90, Math.max(0, Number.isFinite(groupRaw) && resumeData.layout?.groupOpacity != null ? groupRaw : 50));
+  // A tile over the box must still come out at tileFill, not tileFill plus the box:
+  // 1 - (1 - a)(1 - g) = t, so a = 1 - (1 - t) / (1 - g).
+  const tileFillGrouped = Math.max(0, Math.round((1 - (1 - tileFill / 100) / (1 - groupFill / 100)) * 1000) / 10);
+  // Site Settings → Layout → Section heading opacity: the band across the top of the box; same compensation.
+  const headFill = Math.min(100, Math.max(40, Number(resumeData.layout?.headingOpacity) || 95));
+  const headFillGrouped = Math.max(0, Math.round((1 - (1 - headFill / 100) / (1 - groupFill / 100)) * 1000) / 10);
 
   const overrideCss = `
 .bp[data-theme-id] {
@@ -151,7 +160,10 @@ ${cssBlock({
   "--bp-font-subheader": fontVarExpression(resumeData.fonts.subheader),
   "--bp-font-body": fontVarExpression(resumeData.fonts.body),
   "--bp-font-mono": fontVarExpression(resumeData.fonts.mono),
-  "--tile-fill": `${tileFill}%`
+  "--tile-fill": `${tileFill}%`,
+  "--group-fill": `${groupFill}%`,
+  "--tile-fill-grouped": `${tileFillGrouped}%`,
+  "--head-fill-grouped": `${headFillGrouped}%`
 })}
 }
 html[data-theme="dark"] .bp[data-theme-id] {

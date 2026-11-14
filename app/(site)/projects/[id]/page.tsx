@@ -52,19 +52,21 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
             <span>{ui.nav.projects}</span>
           </Link>
-          <ProjectBody entry={entry} today={todayIso()} paletteId={resumeData.theme.paletteId} mode="page" />
+          <div className="card panel">
+            <ProjectBody entry={entry} today={todayIso()} paletteId={resumeData.theme.paletteId} mode="page" />
+          </div>
         </div>
 
         {(previous || next) && (
           <nav className="page-nav" aria-label="Other projects">
             {previous ? (
-              <Link href={`/projects/${previous.project.id}`} suppressHydrationWarning>
+              <Link className="card card--hover" href={`/projects/${previous.project.id}`} suppressHydrationWarning>
                 <small>← {previous.project.type}</small>
                 <b>{previous.project.name}</b>
               </Link>
             ) : <span />}
             {next ? (
-              <Link href={`/projects/${next.project.id}`} suppressHydrationWarning>
+              <Link className="card card--hover" href={`/projects/${next.project.id}`} suppressHydrationWarning>
                 <small>{next.project.type} →</small>
                 <b>{next.project.name}</b>
               </Link>

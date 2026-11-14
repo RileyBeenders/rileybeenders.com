@@ -95,7 +95,7 @@ The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can ani
 
 ## `/projects/[id]`, the entry's own page
 
-`app/(site)/projects/[id]/page.tsx` is a statically generated page for every catalog id (`generateStaticParams`, `dynamicParams = false`). It renders a `.page-back` link to `/projects`, `<ProjectBody mode="page">`, and a `.page-nav` of the previous and next entries (their type and name), then the footer and `BackToTop`. The metadata title is "`<name>` | Riley Beenders". See [[Routes Overview]].
+`app/(site)/projects/[id]/page.tsx` is a statically generated page for every catalog id (`generateStaticParams`, `dynamicParams = false`). It renders a `.page-back` link to `/projects`, `<ProjectBody mode="page">`, and a `.page-nav` of the previous and next entries (their type and name), then the footer and `BackToTop`. The metadata title is "`<name>` | Riley Beenders". See [[Routes Overview]]. Since 2026-11-14 the body sits in a `.card.panel` tile and the `.page-nav` links are `.card.card--hover` tiles; on `/projects` the heading is a `.card.sec-head` tile and the outro a `.card.panel`.
 
 ## Kept project media: `components/projects/`
 

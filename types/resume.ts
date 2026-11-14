@@ -466,6 +466,18 @@ export type LayoutSettings = {
    */
   tileOpacity?: number;
   /**
+   * How solid the box around a home page section's tiles is, as a percentage
+   * (0 to 90; .sec-group in bench.css, --group-fill). The tiles inside keep
+   * their own tileOpacity: the two fills do not add up. 50 when left out.
+   */
+  groupOpacity?: number;
+  /**
+   * How solid the heading band across the top of a section box reads, as a
+   * percentage (40 to 100; .sec-group .sec-head in bench.css,
+   * --head-fill-grouped). 95 when left out.
+   */
+  headingOpacity?: number;
+  /**
    * The colour of the "Open to relocation" corner tab on the home page's hero
    * tile (.hero-flag in bench.css, data-tone). Each tone has its own light and
    * dark pair, deliberately outside the palette. Amber when left out.

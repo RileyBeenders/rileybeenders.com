@@ -21,7 +21,7 @@ export default function ContactPage() {
     <main>
       <section className="shell sec sec--tight" aria-label={data.hero.title}>
         <Reveal>
-          <div className="sec-head">
+          <div className="card sec-head">
             <h1 className="sec-title">{data.hero.title}</h1>
             <p className="sec-sub">{data.details.title}</p>
           </div>
