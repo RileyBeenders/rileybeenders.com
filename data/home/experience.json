@@ -30,6 +30,28 @@
         "projectId": "extrusionstudio"
       },
       {
+        "text": "Use AI tools including Claude Code, Cursor, and local models in LM Studio to accelerate software, simulation, and design work. Integrated new hardware into the ICARUS-Pro to conform to EU and CE requirements by defining the I/O, wiring and testing each device, then using AI to help write the scripts that coordinate them, with all code tested locally before deployment.",
+        "emphasis": [
+          "Claude Code, Cursor, and local models in LM Studio",
+          "ICARUS-Pro",
+          "tested locally before deployment"
+        ]
+      },
+      {
+        "text": "Used AI to rework a solid part with an organic structure, reducing its material use by 16.2% and its quoted price per part by 21.29% on a 200-unit MJF order.",
+        "emphasis": [
+          "16.2%",
+          "21.29%"
+        ]
+      },
+      {
+        "text": "Optimizing the airflow of a high-pressure blower with AI-assisted CFD simulation in OpenFOAM and ParaView, iterating designs quickly to improve part cooling and raise print speeds.",
+        "emphasis": [
+          "AI-assisted CFD simulation",
+          "part cooling"
+        ]
+      },
+      {
         "text": "Serve as the technical subject-matter expert across the plant, from industrial electronics on the extrusion lines to low-voltage sensors, and the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error.",
         "emphasis": [
           "technical subject-matter expert",
