@@ -7,7 +7,6 @@ import { Reveal } from "@/components/blueprint/Reveal";
 import { BpMark } from "@/components/blueprint/BpMark";
 import { BackToTop } from "@/components/blueprint/BackToTop";
 import { HeroActions } from "@/components/bench/HeroActions";
-import { CursorMark } from "@/components/bench/CursorMark";
 import { GithubGraph } from "@/components/bench/GithubGraph";
 import { Experience } from "@/components/bench/Experience";
 import { ProjectGrid } from "@/components/bench/ProjectGrid";
@@ -62,7 +61,6 @@ export default async function HomePage() {
   const contributions = username ? await getContributions(username) : null;
   const projectNames = Object.fromEntries(catalog.map((entry) => [entry.project.id, entry.project.name]));
   const summaryParagraphs = splitParagraphs(data.summary);
-  const motion = data.motion ?? {};
   const degree = data.education.degrees[0];
   let tile = 0;
   const order = () => ({ "--i": tile++ } as React.CSSProperties);
@@ -71,7 +69,7 @@ export default async function HomePage() {
     <main>
       {/* ----------------------------------------------------------- bench */}
       <section className="shell hero" aria-label="Introduction">
-        <div className="bento" data-cursor-zone="">
+        <div className="bento">
           <article className="card tile tile-hero" style={order()}>
             <div className="hero-top">
               <div className="hero-avatar" aria-hidden="true">
@@ -149,7 +147,6 @@ export default async function HomePage() {
             <TileArrow />
           </Link>
 
-          {motion.cursorMark && <CursorMark />}
         </div>
       </section>
 

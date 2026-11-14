@@ -140,6 +140,8 @@ function cssBlock(vars: Record<string, string>): string {
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
   const motion = resumeData.motion ?? {};
+  // Site Settings → Layout → Tile opacity: how solid the glass tiles are (.card in bench.css).
+  const tileFill = Math.min(100, Math.max(40, Number(resumeData.layout?.tileOpacity) || 72));
 
   const overrideCss = `
 .bp[data-theme-id] {
@@ -148,7 +150,8 @@ ${cssBlock({
   "--bp-font-header": fontVarExpression(resumeData.fonts.header),
   "--bp-font-subheader": fontVarExpression(resumeData.fonts.subheader),
   "--bp-font-body": fontVarExpression(resumeData.fonts.body),
-  "--bp-font-mono": fontVarExpression(resumeData.fonts.mono)
+  "--bp-font-mono": fontVarExpression(resumeData.fonts.mono),
+  "--tile-fill": `${tileFill}%`
 })}
 }
 html[data-theme="dark"] .bp[data-theme-id] {

@@ -423,8 +423,7 @@
       "morph": "spring 380/36/0.8 (shared layoutId tile -> dialog); bar and body fade 0.32s after 0.18s; reduced motion: plain fade",
       "bloom": "bloom-drift 22s ease-in-out infinite alternate",
       "navActive": "spring 420/38/0.6",
-      "smoothScroll": "lerp 0.11 per frame, wheel only",
-      "cursorMark": "spring 260/26/0.5"
+      "smoothScroll": "lerp 0.11 per frame, wheel only"
     },
     "breakpoints": {
       "grid": "980px",

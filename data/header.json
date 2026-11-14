@@ -43,13 +43,13 @@
     "mono": "azeret-mono"
   },
   "layout": {
-    "introAlign": "full"
+    "introAlign": "full",
+    "tileOpacity": 88
   },
   "motion": {
     "syncAnimations": true,
     "smoothScroll": true,
-    "cursorMark": true,
-    "gridLoopSeconds": 8,
+    "gridLoopSeconds": 6,
     "gridTrailSeconds": 1
   },
   "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",

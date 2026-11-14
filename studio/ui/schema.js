@@ -1200,6 +1200,15 @@ export const SCHEMAS = {
               { value: "right", label: "Right", help: "Against the right edge." },
               { value: "full", label: "Full width", help: "Across the whole page." }
             ]
+          },
+          {
+            name: "tileOpacity",
+            type: "number",
+            label: "Tile opacity (%)",
+            span: "half",
+            default: 72,
+            placeholder: "72",
+            help: "How solid the tiles are. 100 is a solid tile; lower turns them into frosted glass, so the animated grid and the pen's glow show through, softened. 40 to 100, and 72 when left blank."
           }
         ]
       },
@@ -1225,14 +1234,6 @@ export const SCHEMAS = {
             default: false,
             omitWhenDefault: true,
             help: "On: mouse-wheel scrolling glides to a stop instead of stepping. Touch, keyboard and reduced-motion visitors always get the browser's own scrolling."
-          },
-          {
-            name: "cursorMark",
-            type: "boolean",
-            label: "Cursor mark",
-            default: false,
-            omitWhenDefault: true,
-            help: "On: a small monogram chip trails the pointer across the hero card. Pointer devices only."
           },
           {
             name: "grid",

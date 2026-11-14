@@ -57,7 +57,6 @@ Used by:
 | `SiteNav` brand | `id="nav"`, 30px, animated |
 | The hero tile's avatar | `id="hero"`, 46px, animated |
 | `ProjectCard` typographic cover, for an entry with no photo | `id="cover-<id>"`, 54px, animated |
-| `CursorMark` | `id="cursor"`, 24px |
 | `SiteFooter` | `id="footer"`, 44px, animated + float |
 
 ## Static icon variants

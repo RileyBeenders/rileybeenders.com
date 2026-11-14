@@ -10,7 +10,7 @@ The home page itself (`app/(site)/page.tsx`) is an async server component; [[Rou
 
 ## The bento (in `page.tsx`)
 
-`section.shell.hero` → `.bento[data-cursor-zone]`: a six-column grid of tiles at `--gap`. Every tile is a `.card` (`.card--hover` when it links somewhere) and enters once with the CSS `tile-in` (16px rise, 0.8s), staggered 70ms by `--i`. `page.tsx` numbers the tiles in order with a small counter (`order()`), so a new tile takes the next number. The bento has no observer: it is above the fold.
+`section.shell.hero` → `.bento`: a six-column grid of tiles at `--gap`. Every tile is a `.card` (`.card--hover` when it links somewhere), a frosted glass surface (`--white` at `--tile-fill`, 72% by default, over a 1.5px `backdrop-filter` blur) that lets the graph paper and the pen's glow show through softly, and enters once with the CSS `tile-in` (16px rise, 0.8s), staggered 70ms by `--i`. `page.tsx` numbers the tiles in order with a small counter (`order()`), so a new tile takes the next number. The bento has no observer: it is above the fold.
 
 | Tile | Span | Content | Links to |
 |---|---|---|---|
@@ -41,17 +41,6 @@ Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `
 - **Email / LinkedIn / GitHub.** Plain `.btn` anchors (`mailto:`, `person.linkedin`, `person.github`; the last two open with `target="_blank" rel="noreferrer"`). The icons are lucide `Mail` and the `BrandIcons` marks.
 
 See [[Resume PDF Pipeline]].
-
-### `CursorMark.tsx`
-
-`"use client"`. A monogram chip (`<BpMark id="cursor" size={24} />` on a small white disc, `.cursor-mark`) that trails the pointer inside the nearest `[data-cursor-zone]` (the whole bento).
-
-- It follows on a spring (`stiffness 260, damping 26, mass 0.5`), offset 18px from the pointer.
-- It leans into its direction of travel (`rotate` = the spring's lag × 0.18, clamped to ±14°).
-- It fades and scales in on `pointermove` and out on `pointerleave`.
-- It is enabled only for `(hover: hover) and (pointer: fine)`. It always renders (so the server and client trees match) and stays hidden under reduced motion.
-
-Gated by Site Settings → Motion → **Cursor mark** (`header.json` `motion.cursorMark`, on). Print hides it.
 
 ## `GithubGraph.tsx` + `lib/github.ts`
 
@@ -123,12 +112,12 @@ All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were 
 
 ## `PlotGrid.tsx`
 
-`"use client"`, mounted by the site layout on every page unless Site Settings → Motion → **Animated grid** is off (`motion.grid`, on when left out). It is the animated graph paper behind the tiles: one `<canvas class="plot-grid">` fixed to the window, above the bloom and under every tile, so it shows in the gutters and on the open page.
+`"use client"`, mounted by the site layout on every page unless Site Settings → Motion → **Animated grid** is off (`motion.grid`, on when left out). It is the animated graph paper behind the tiles: one `<canvas class="plot-grid">` fixed to the window, above the bloom and under every tile, so it shows in the gutters and on the open page. Since 2026-11-14 the tiles are frosted glass (`.card`: `--white` at `--tile-fill`, `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`), so the grid and the pen's etch glow also show faintly through every tile, softened. Site Settings → Layout → **Tile opacity (%)** (`layout.tileOpacity`, 72 when left out, clamped 40 to 100) sets how much; 100 is a solid tile.
 
 - Every grid node (32px apart, 24px under 700px wide) rests as a small plus. Its arms extend until they meet their neighbours and close the squares.
 - What moves them is ripples: every so often one to three random points on or just off the window start a ring with its own speed, width and strength. A ring is a crest with a trough behind it, and a node's arm length is the sum of every ring over it, so crossing crests close the squares fully and a crest meeting a trough cancels back to a plus.
 - `loopSeconds` (**Grid loop (seconds)**, `motion.gridLoopSeconds`, 8, clamped 2 to 30) is how long a typical ring takes to cross the window; new rings start in proportion. At most six rings are live.
-- `pointer` (**Pen (mouse draws on the grid)**, `motion.gridPointer`, on when left out) is the pen, chosen by Riley on 2026-11-14 from five prototypes: the mouse snaps to the nearest grid node and etches one continuous line along the grid lines as it moves, a step at a time along whichever axis has further to go. Each step is stroked twice with a canvas shadow in `--accent` (a 4px soft pass under a 1.5px crisp one), which gives it a Tron-like glow, and a small dot marks the tip for a second after the last move. Mouse only; the line passes under the tiles like the rest of the grid.
+- `pointer` (**Pen (mouse draws on the grid)**, `motion.gridPointer`, on when left out) is the pen, chosen by Riley on 2026-11-14 from five prototypes: the mouse snaps to the nearest grid node and etches one continuous line along the grid lines as it moves, a step at a time along whichever axis has further to go. Each step is stroked twice with a canvas shadow in `--accent` (a 4px soft pass under a 1.5px crisp one), which gives it a Tron-like glow, and a small dot marks the tip for a second after the last move. Mouse only; the line passes under the tiles like the rest of the grid, its glow showing softly through the glass.
 - `trailSeconds` (**Pen trail (seconds)**, `motion.gridTrailSeconds`, 4, clamped 0.5 to 30) is how long a step lasts before it has faded, so the line shortens from its tail. At most 600 steps are kept; a resize clears the line.
 - The line colour is `--accent` read from `.bp` (re-read when `data-theme` changes), at 0.15 alpha in light and 0.2 in dark.
 - One path and one stroke per frame. Under `prefers-reduced-motion` it draws still graph paper once; print hides it.

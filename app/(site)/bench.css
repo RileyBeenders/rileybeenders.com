@@ -229,7 +229,6 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
   border-radius: 999px;
   background: color-mix(in srgb, var(--white) 66%, transparent);
   backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.4s ease, background-color 0.4s ease, transform 0.4s var(--ease), border-color 0.4s ease;
 }
@@ -408,12 +407,15 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
 .bp-rule--hair { height: 1px; background: var(--rule); }
 
 /* --------------------------------------------------------------- tile --- */
-/* The one surface everything sits on. */
+/* The one surface everything sits on. Frosted glass: the tile is --tile-fill solid
+   (Site Settings → Layout → Tile opacity), and what shows through, the grid and
+   the pen's glow, is blurred so it never competes with the text. */
 .card {
   position: relative;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  background: var(--white);
+  background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent);
+  backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2);
   box-shadow: var(--shadow-sm);
   transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.4s ease;
 }
@@ -445,7 +447,6 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
   gap: var(--gap);
 }
 .bento > * { min-width: 0; animation: tile-in 0.8s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
-.bento > .cursor-mark { animation: none; }
 /* A whole page body arriving (project pages): one entrance, no observer, so a page taller than the viewport still shows. */
 .page-in { animation: tile-in 0.7s var(--ease) both; }
 .tile { display: grid; align-content: start; gap: 6px; padding: clamp(18px, 2.2vw, 24px); min-width: 0; }
@@ -534,23 +535,6 @@ a.tile { color: inherit; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(20px, 2.4vw, 28px); }
 .hero-error { color: var(--accent); font-size: 13px; align-self: center; }
 
-/* The monogram chip that trails the pointer across the bench. */
-.cursor-mark {
-  position: absolute;
-  top: 0; left: 0;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  pointer-events: none;
-  will-change: transform;
-}
-.cursor-mark .bp-mark { width: 24px; height: 24px; }
 
 /* ----------------------------------------------------------- activity --- */
 .activity { padding: 18px clamp(16px, 2.4vw, 24px) 16px; overflow: hidden; }
@@ -806,7 +790,6 @@ html[data-theme="dark"] .bp {
   z-index: 120;
   background: color-mix(in srgb, var(--ink) 45%, transparent);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 .dlg-wrap {
   position: fixed;
@@ -1115,8 +1098,8 @@ html[data-theme="dark"] .bp {
 /* The home page prints as the document it imitates: ink on paper, no chrome. */
 @media print {
   .bp { background: #fff !important; color: #000 !important; }
-  .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .cursor-mark, .activity, .filters, .tile-arrow { display: none !important; }
-  .card { box-shadow: none; border-color: #bbb; }
+  .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .activity, .filters, .tile-arrow { display: none !important; }
+  .card { box-shadow: none; border-color: #bbb; background: var(--white); backdrop-filter: none; }
   .role, .cert, .degree, .stack-card { break-inside: avoid; }
   .bp-bullet-link { display: none; }
 }

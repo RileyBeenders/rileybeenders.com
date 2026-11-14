@@ -459,6 +459,12 @@ export type IntroAlign = "left" | "center" | "right" | "full";
 
 export type LayoutSettings = {
   introAlign: IntroAlign;
+  /**
+   * How solid the tiles are, as a percentage (40 to 100). Below 100 they are
+   * frosted glass: the animated grid and the pen's glow show through, softened
+   * (.card in bench.css, --tile-fill). 72 when left out.
+   */
+  tileOpacity?: number;
 };
 
 /**
@@ -470,8 +476,6 @@ export type MotionSettings = {
   syncAnimations?: boolean;
   /** Wheel scrolling eases toward its target instead of jumping (components/bench/SmoothScroll.tsx). Off when left out. */
   smoothScroll?: boolean;
-  /** The monogram chip that trails the pointer across the hero (components/bench/CursorMark.tsx). Off when left out. */
-  cursorMark?: boolean;
   /** The animated graph paper behind the tiles (components/bench/PlotGrid.tsx). On when left out. */
   grid?: boolean;
   /** Seconds a typical ripple takes to cross the window on that grid. 8 when left out. */

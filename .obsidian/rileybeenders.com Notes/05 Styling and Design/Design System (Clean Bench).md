@@ -6,7 +6,7 @@ tags: [styling, design]
 
 The site's styling is plain global stylesheets: no CSS modules, CSS-in-JS or Tailwind. **Clean Bench** has been the system since 2026-11-09 (see [[Clean Bench (2026-11 redesign)]]). Everything is a tile:
 
-- white rounded tiles on a pale grey-blue ground, under a floating glass nav;
+- white rounded tiles on a pale grey-blue ground, under a floating glass nav (since 2026-11-14 the tiles are lightly frosted glass, so the animated graph paper shows through them);
 - one cobalt accent from a pale wash to a deep fill, and a soft blue bloom behind the top of the page;
 - Instrument Sans for headings and body, with Azeret Mono for small labels, dates and counts;
 - project tiles that morph into their dialog;
@@ -41,7 +41,7 @@ Its named rules, for quick reference:
 - **The Studio Roles Rule**: four Studio font roles (header, sub-header, body, small labels) among ten preloaded faces.
 - **The No-Eyebrow-Over-Sections Rule**: an eyebrow names a project's type only.
 - **The Lift Rule**: hover lifts of 1px (filters), 2px (buttons, pills) and 3px (tiles), never more.
-- **The Glass Rule**: anything floating is translucent white with a backdrop blur.
+- **The Glass Rule**: anything floating is translucent white with a backdrop blur. Write `backdrop-filter` only, never the `-webkit-` twin (see `.card` below).
 - **The Everything-Is-A-Tile Rule**: content is a tile or inside one, on the shared radius, border and shadow.
 - **The Morph-Not-Modal Rule**: a project grows out of the tile the visitor touched and collapses back into it.
 - **The Resume-At-Rest Rule**: with every tile closed, the home page is the resume in order.
@@ -64,7 +64,7 @@ Its named rules, for quick reference:
 | Variable | Light / dark | Use |
 |---|---|---|
 | `--paper` | `#f4f5f8` / `#0f1115` | The ground. Also painted on `html` so the overscroll gutter matches; the dialog's floor; skill pills; the tile arrow |
-| `--white` | `#ffffff` / `#181b22` | Every tile and control |
+| `--white` | `#ffffff` / `#181b22` | Every tile (at `--tile-fill`, 72% by default) and control |
 | `--ink` | `#111318` / `#eceef2` | Headings, primary text |
 | `--prose` / `--ink-soft` / `--pill-text` / `--muted` / `--faint` / `--rule` | `#282a2e` `#4a4c50` `#535559` `#636469` `#838488` `#d6d8db` / `#d6d8dc` `#b5b7bb` `#acaeb2` `#9c9ea2` `#7e8084` `#2c2e32` | The ramp |
 | `--accent` | `#2457e6` / `#6a93ff` | Text, icons, markers, focus rings |
@@ -93,9 +93,10 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 - **`.nav` / `.nav-pill`**: the floating glass pill. See [[Site Nav and Mark]].
 - **`.btn`** (`.bp-btn` is an alias): a 999px pill on white with a 2px hover lift. `--solid` is the `--accent-fill` button, with `.bp-sheen` looping on Download PDF; also `--ghost`, `--icon` and `--sm`. `.bp-link` is an inline link whose underline wipes in, with a diagonal arrow.
 - **`.chip`**: a tinted mono pill with a pinging `.chip-dot` (`bp-ring`), as in "Open to relocation".
-- **`.card` / `.card--hover`**: the tile surface. White, `--r-lg`, `--line` border, `--shadow-sm`; on hover it lifts 3px onto `--shadow` with an accent-tinted border. `.bp-spot` adds the cursor wash (`--sx/--sy` from `lib/useSpotlight.ts`, pointer devices only).
+- **`.card` / `.card--hover`**: the tile surface, frosted glass since 2026-11-14. `background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent)` with `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`, so the graph paper and the pen's etch glow show faintly through every tile, softened. `--tile-fill` comes from Site Settings → Layout → **Tile opacity (%)** (`layout.tileOpacity`, clamped 40 to 100, 72 when left out), written by `app/(site)/layout.tsx` in the `.bp[data-theme-id]` override block; `--tile-blur` has no setting. Print resets the tile to solid white with no filter. Otherwise `--r-lg`, `--line` border, `--shadow-sm`; on hover it lifts 3px onto `--shadow` with an accent-tinted border. `.bp-spot` adds the cursor wash (`--sx/--sy` from `lib/useSpotlight.ts`, pointer devices only).
+- **`backdrop-filter` is written unprefixed only.** `bench.css` has no `-webkit-backdrop-filter` lines (removed 2026-11-14): when both were written, the CSS build kept only the prefixed copy, which Chrome ignores, so the nav pill's and the scrim's blur had silently not rendered there. Given the unprefixed property alone, the build emits both.
 - **`.tile` / `.tile-label` / `.tile-value` / `.tile-sub` / `.tile-arrow`**: the anatomy of a bento tile. The label is mono with an accent icon; the arrow is a 30px circle that nudges on hover.
-- **`.bento`** and its tiles (`.tile-hero`, `.tile-now`, `.tile-where`, `.tile-edu`, `.tile-activity`, `.tile-site`, `.tile-contact`), **`.hero-*`** (avatar, name, role, meta, actions) and **`.cursor-mark`**. See [[Bench Components (Home Page)]].
+- **`.bento`** and its tiles (`.tile-hero`, `.tile-now`, `.tile-where`, `.tile-edu`, `.tile-activity`, `.tile-site`, `.tile-contact`), **`.hero-*`** (avatar, name, role, meta, actions). See [[Bench Components (Home Page)]].
 - **`.activity`**: the contribution calendar.
 - **`.summary-grid` / `.facts`**: the summary and its fact tiles.
 - **`.roles` / `.role`**: the experience list in one tile, with a dated rail. `.bp-bullet-emphasis` phrases take the accent plus a hairline text stroke when their `li` is hovered.
@@ -115,8 +116,8 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 
 The breakpoints are **980px** (the bento goes to two columns with the hero and education full width, the project grid to two, the summary and education grids to one), **760px** (everything is one column, the nav drops its name, roles show their dates inline without the rail, and the dialog rises from the bottom edge as a sheet) and **640px** (the bento goes to one column). `projects/feature.css` and `walkthrough.css` keep their own 860px step.
 
-- A `@media print` block prints the home page as a document: ink on white, without the bloom, nav, actions, sheen, cursor mark, calendar, filters, tile arrows and floating controls, with tile shadows removed and roles and cards kept whole, and the Read more links hidden.
-- `prefers-reduced-motion: reduce` collapses every animation and transition under `.bp` to ~0ms (the bloom holds still), draws the monogram strokes complete, and shows the calendar cells. `SmoothScroll`, `CursorMark`, `PlotGrid` (which draws still graph paper), the morph and the nav's `layoutId` slide also branch on it in JS.
+- A `@media print` block prints the home page as a document: ink on white, without the bloom, nav, actions, sheen, calendar, filters, tile arrows and floating controls, with tiles solid white (no glass), tile shadows removed and roles and cards kept whole, and the Read more links hidden.
+- `prefers-reduced-motion: reduce` collapses every animation and transition under `.bp` to ~0ms (the bloom holds still), draws the monogram strokes complete, and shows the calendar cells. `SmoothScroll`, `PlotGrid` (which draws still graph paper), the morph and the nav's `layoutId` slide also branch on it in JS.
 
 ## Previously
 

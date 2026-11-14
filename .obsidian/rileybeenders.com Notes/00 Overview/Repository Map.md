@@ -63,7 +63,6 @@ components/
   bench/                       # the Clean Bench components (components/sheet/ until 2026-11-09)
     SiteNav.tsx                # floating pill nav (Home · Projects · Contact), condenses at 28px, sliding active tint, theme toggle
     HeroActions.tsx            # Download PDF (opens resumeHtmlPath in a new tab, else downloads the PDF) / Email / LinkedIn / GitHub
-    CursorMark.tsx             # monogram chip trailing the pointer across the bento (Site Settings → Motion → Cursor mark)
     GithubGraph.tsx            # the contribution calendar drawn from lib/github.ts, cells popping in column by column
     Experience.tsx             # roles on a timeline rail in one tile; emphasis phrases + Read more links; folds roles over 7 bullets after 6
     Stack.tsx                  # the four skill groups as tiles of pills (LinkedSkill for linked ones)
@@ -114,7 +113,7 @@ components/
       demos/ResumeDemo.tsx · StudioDemo.tsx · SkillsDemo.tsx   # the three live replicas
 
 data/
-  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout, motion (syncAnimations, smoothScroll, cursorMark, grid, gridLoopSeconds, gridPointer, gridTrailSeconds), siteMode, resumePdfPath, resumeHtmlPath
+  header.json                  # person, 5 visibility switches, theme (paletteId "blue-sheet" + custom seeds), fonts, layout (introAlign, tileOpacity), motion (syncAnimations, smoothScroll, grid, gridLoopSeconds, gridPointer, gridTrailSeconds), siteMode, resumePdfPath, resumeHtmlPath
   resumeData.ts                # merges header + home + projects JSON into one typed ResumeData (visible:false filter, order sort, visibility pruning)
   contact/contact.json         # contact meta, hero, details, and the message form's words (Studio: Contact)
   home/
