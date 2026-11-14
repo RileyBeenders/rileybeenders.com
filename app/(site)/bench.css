@@ -338,6 +338,9 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
   box-shadow: 0 8px 22px -6px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 .btn--solid:hover, .bp-btn--solid:hover { background: color-mix(in srgb, var(--accent-fill) 88%, var(--ink)); border-color: transparent; color: var(--on-accent); box-shadow: 0 12px 28px -6px color-mix(in srgb, var(--accent) 50%, transparent); }
+/* The solid button's label is white in both themes. Scoped under .bp so it outranks `.bp a { color: inherit }`,
+   which was handing a linked solid button the page's ink. */
+.bp .btn--solid, .bp .btn--solid:hover { color: #fff; }
 .btn--solid:disabled { cursor: wait; opacity: 0.7; transform: none; }
 .btn--ghost { background: transparent; box-shadow: none; border-color: transparent; }
 .btn--ghost:hover { background: var(--tint); box-shadow: none; }

@@ -73,7 +73,7 @@ Its named rules, for quick reference:
 | `--accent-soft` | `#cfdafa` / `#313f64` | The bloom, the hero tile's glow, the calendar's first step |
 | `--glow` | `#d3dcf5` / `#232e48` | The bloom's second wash |
 | `--blue` | `#173ea8` / `#9db9ff` | Drawn geometry and data only |
-| `--on-accent` | `#f4f5f8` / `#eceef2` | Text on the fill |
+| `--on-accent` | `#f4f5f8` / `#eceef2` | Text on the fill. Solid buttons (`.bp .btn--solid`: Download PDF, Send message) are the exception since 2026-11-14: white in both themes, scoped under `.bp` to outrank `.bp a { color: inherit }` |
 | `--line` | ink at 9% / 11% | Tile and control borders |
 | `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` | Instrument Sans ×3 / Azeret Mono | Re-pointed by the layout from `header.json.fonts`; `--mono` reads the last |
 | `--ease` / `--ease-out` | `cubic-bezier(0.22, 0.9, 0.28, 1)` / `cubic-bezier(0.16, 1, 0.3, 1)` | Every transition; framer-motion uses the same curve as a tuple |

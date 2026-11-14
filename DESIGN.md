@@ -467,7 +467,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 ### Buttons
 
-- **Solid** (`.btn--solid`): accent fill, on-accent text, pill, 42px, an accent shadow and a slow sheen on the primary one (Download PDF, Send message). Hover darkens the fill 12% toward ink.
+- **Solid** (`.btn--solid`): accent fill, white text in both themes (`.bp .btn--solid`, scoped so it outranks `.bp a { color: inherit }`), pill, 42px, an accent shadow and a slow sheen on the primary one (Download PDF, Send message). Hover darkens the fill 12% toward ink.
 - **Outline** (`.btn`): white, ink text, an ink/12% border, `--shadow-sm`; hover lifts 2px and tints the border toward the accent.
 - **Ghost** (`.btn--ghost`): no fill or shadow; hover fills with tint. The dialog's close.
 - **Icon** (`.btn--icon`, 42px) and **Small** (`.btn--sm`, 36px, 13px type).
