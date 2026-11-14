@@ -32,7 +32,7 @@ export default function ProjectsPage() {
         <Reveal>
           <div className="card sec-head">
             <h1 className="sec-title">{page.title}</h1>
-            {projectCount > 0 && <p className="sec-sub">{counted(page.intro, projectCount)}</p>}
+            {projectCount > 0 && counted(page.intro, projectCount).trim() && <p className="sec-sub">{counted(page.intro, projectCount)}</p>}
           </div>
         </Reveal>
         {catalog.length > 0 ? (

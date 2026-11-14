@@ -501,7 +501,7 @@ export const SCHEMAS = {
     fields: [
       META_GROUP,
       { name: "title", type: "text", label: "Headline", required: true },
-      { name: "intro", type: "group", label: "Intro", help: "Under the headline.", fields: COUNTED_FIELDS },
+      { name: "intro", type: "group", label: "Intro", help: "Beside the headline. Leave one blank to show nothing for that count.", fields: COUNTED_FIELDS.map((field) => ({ ...field, required: false })) },
       {
         name: "outro",
         type: "group",
