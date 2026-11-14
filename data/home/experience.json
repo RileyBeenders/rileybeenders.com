@@ -8,16 +8,16 @@
     "context": "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer.",
     "bullets": [
       {
-        "text": "Led the design and development of the ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production with minimal customer setup. Owned its mechanical, electrical, and software design, including custom AC heaters.",
+        "text": "Led the design and development of the ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production with minimal customer setup. Owned its mechanical, electrical, and software design.",
         "emphasis": [
           "design and development"
         ],
         "projectId": "icarus-lite"
       },
       {
-        "text": "Owned the ICARUS-Lite through commercialization against unit goals of 60 in 2025 and 100 in 2026.",
+        "text": "Owned the ICARUS-Lite and ICARUS-Pro through commercialization. Remain the top point of contact for customer support on both machines, resolving the issues that go beyond what the support team can answer.",
         "emphasis": [
-          "unit goals of 60 in 2025 and 100 in 2026"
+          "top point of contact for customer support"
         ]
       },
       {
@@ -38,7 +38,7 @@
         ]
       },
       {
-        "text": "Used AI to rework a solid part with an organic structure, reducing its material use by 16.2% and its quoted price per part by 21.29% on a 200-unit MJF order.",
+        "text": "Used AI to rework a solid part with an organic structure, reducing its material use by 16.2% and its quoted price per part by 21.29%.",
         "emphasis": [
           "16.2%",
           "21.29%"
