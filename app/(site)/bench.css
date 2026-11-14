@@ -496,7 +496,43 @@ a.tile { color: inherit; }
   pointer-events: none;
 }
 .tile-hero > * { position: relative; z-index: 1; }
-.hero-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: clamp(14px, 1.8vw, 20px); }
+/* The relocation notice: a tab set into the tile's top-right corner (the tile
+   clips its outer corner). It is the one element on the page outside the
+   palette, so it carries its own two colours rather than the accent: one pair
+   per tone, picked in Site Settings → Layout → Relocation tab colour
+   (data-tone, amber when left out). */
+.tile-hero > .hero-flag {
+  --flag-bg: #f5a524;
+  --flag-ink: #231500;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px 11px 18px;
+  border-radius: 0 0 0 18px;
+  background: var(--flag-bg);
+  color: var(--flag-ink);
+  font-family: var(--bp-font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+html[data-theme="dark"] .tile-hero > .hero-flag { --flag-bg: #fbbf24; --flag-ink: #231500; }
+.tile-hero > .hero-flag[data-tone="green"] { --flag-bg: #15803d; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="green"] { --flag-bg: #34d399; --flag-ink: #052e1c; }
+.tile-hero > .hero-flag[data-tone="coral"] { --flag-bg: #e5484d; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="coral"] { --flag-bg: #ff8589; --flag-ink: #2b0507; }
+.tile-hero > .hero-flag[data-tone="violet"] { --flag-bg: #7c3aed; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="violet"] { --flag-bg: #b79cff; --flag-ink: #1c0b45; }
+.tile-hero > .hero-flag[data-tone="ink"] { --flag-bg: var(--ink); --flag-ink: var(--paper); }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="ink"] { --flag-bg: var(--ink); --flag-ink: var(--paper); }
+.hero-flag .chip-dot, .hero-flag .chip-dot::after { background: var(--flag-ink); }
+.hero-flag + .hero-name { margin-top: 30px; }
 .hero-name {
   margin-top: clamp(18px, 2.4vw, 28px);
   font-size: clamp(38px, 5.4vw, 62px);

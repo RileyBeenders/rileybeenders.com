@@ -44,7 +44,8 @@
   },
   "layout": {
     "introAlign": "full",
-    "tileOpacity": 88
+    "tileOpacity": 88,
+    "relocationColor": "amber"
   },
   "motion": {
     "syncAnimations": true,

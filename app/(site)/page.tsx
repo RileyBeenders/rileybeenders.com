@@ -71,12 +71,10 @@ export default async function HomePage() {
         <div className="bento">
           <article className="card tile tile-hero" style={order()}>
             {data.visibility.openToRelocation && (
-              <div className="hero-top">
-                <span className="chip">
-                  <span className="chip-dot" aria-hidden="true" />
-                  {ui.openToRelocation}
-                </span>
-              </div>
+              <span className="hero-flag" data-tone={data.layout?.relocationColor ?? "amber"}>
+                <span className="chip-dot" aria-hidden="true" />
+                {ui.openToRelocation}
+              </span>
             )}
 
             <h1 className="hero-name">{page.hero.lines.join(" ")}</h1>

@@ -1209,6 +1209,21 @@ export const SCHEMAS = {
             default: 72,
             placeholder: "72",
             help: "How solid the tiles are. 100 is a solid tile; lower turns them into frosted glass, so the animated grid and the pen's glow show through, softened. 40 to 100, and 72 when left blank."
+          },
+          {
+            name: "relocationColor",
+            type: "choice",
+            label: "Relocation tab colour",
+            default: "amber",
+            always: true,
+            help: "The \"Open to relocation\" tab in the corner of the home page's first tile. It sits outside the theme's palette on purpose, so it is the first thing a visitor sees. Shown while Visibility has the badge on.",
+            options: [
+              { value: "amber", label: "Amber", help: "Opposite the site's blue, the loudest." },
+              { value: "green", label: "Green", help: "The familiar available colour." },
+              { value: "coral", label: "Coral", help: "Warm and friendly." },
+              { value: "violet", label: "Violet", help: "A calm neighbour of the blue." },
+              { value: "ink", label: "Ink", help: "Black on light, white on dark." }
+            ]
           }
         ]
       },

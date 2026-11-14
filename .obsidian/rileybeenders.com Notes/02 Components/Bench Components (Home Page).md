@@ -27,7 +27,7 @@ Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `
 ### The hero tile
 
 - `.tile-hero` carries its own accent-soft glow top right (`::before`) so it reads as the brightest thing on the bench.
-- `.hero-top`: rendered only when `visibility.openToRelocation` is on; a row holding a `.chip` with a pinging `.chip-dot` and `ui.openToRelocation`, with a bottom margin that sets it off from the name. The tile carries no monogram.
+- `.hero-flag`: rendered only when `visibility.openToRelocation` is on. A corner tab holding a pinging `.chip-dot` and `ui.openToRelocation`, absolutely positioned at the tile's top right (`top: 0; right: 0`, only its bottom-left corner rounded at 18px; the tile's `overflow: hidden` clips the outer corner). It is the one element outside the palette: it carries its own `--flag-bg` / `--flag-ink` pair per tone so it reads as the first thing on the page. The tone comes from Site Settings → Layout → **Relocation tab colour** (`layout.relocationColor`, written as `data-tone`): `amber` (the default when left out; amber `#f5a524` in light and `#fbbf24` in dark, both with `#231500` text), `green`, `coral`, `violet` or `ink` (which uses `--ink` on `--paper`). The label is the mono font at 11.5px, weight 400. When it is present the name below takes a 30px top margin (`.hero-flag + .hero-name`) to clear it at phone width. The tile carries no monogram.
 - `h1.hero-name`: `page.hero.lines` joined, `clamp(38px, 5.4vw, 62px)` at 600.
 - `p.hero-role`: `person.title` in the accent. (The Blue Sheet caret is gone.)
 - `.hero-meta`: lucide `MapPin` + the location, and `Briefcase` + `.hero-now-role` (the current role) "· `<company>`, since `<start>`" from `page.hero.currentRole`.

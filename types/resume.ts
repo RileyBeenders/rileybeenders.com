@@ -465,7 +465,15 @@ export type LayoutSettings = {
    * (.card in bench.css, --tile-fill). 72 when left out.
    */
   tileOpacity?: number;
+  /**
+   * The colour of the "Open to relocation" corner tab on the home page's hero
+   * tile (.hero-flag in bench.css, data-tone). Each tone has its own light and
+   * dark pair, deliberately outside the palette. Amber when left out.
+   */
+  relocationColor?: RelocationColor;
 };
+
+export type RelocationColor = "amber" | "green" | "coral" | "violet" | "ink";
 
 /**
  * Site-wide motion. `syncAnimations` puts every repeating animation (the Read
