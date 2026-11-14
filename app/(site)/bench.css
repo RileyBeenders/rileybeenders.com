@@ -758,6 +758,36 @@ html[data-theme="dark"] .bp {
 .role-more:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
 .role-more svg { transition: transform 0.3s var(--ease); }
 .role-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+/* The older roles wait in .roles-rest until the button under the tile opens
+   them. The button is the one large control in the section: full width,
+   accent-tinted, well above the small "Show N more" pills inside the roles. */
+.bp .roles-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  width: 100%;
+  margin-top: var(--gap);
+  padding: clamp(16px, 2vw, 20px) 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--tint) 92%, transparent);
+  color: var(--accent);
+  font-family: var(--bp-font-subheader), system-ui, sans-serif;
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.4s ease, background-color 0.4s ease;
+}
+.roles-more:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--accent); background: var(--tint); }
+.roles-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.bp .roles-more-count { font-family: var(--mono), monospace; font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.roles-more svg { transition: transform 0.4s var(--ease); }
+.roles-more:hover svg { transform: translateY(2px); }
+.roles-more[aria-expanded="true"] svg, .roles-more[aria-expanded="true"]:hover svg { transform: rotate(180deg); }
 
 /* ----------------------------------------------------------- projects --- */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
@@ -1169,6 +1199,8 @@ html[data-theme="dark"] .bp {
   .card { box-shadow: none; border-color: #bbb; background: var(--white); backdrop-filter: none; }
   .sec-group { padding: 0; border: 0; background: none; }
   .sec-group .card { background: var(--white); }
+  .roles-rest[hidden] { display: block !important; }
+  .bp .roles-more { display: none; }
   .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
   .role, .cert, .degree, .stack-card { break-inside: avoid; }
   .bp-bullet-link { display: none; }

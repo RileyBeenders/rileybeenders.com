@@ -47,6 +47,7 @@
     "tileOpacity": 88,
     "groupOpacity": 50,
     "headingOpacity": 95,
+    "experienceYears": 5,
     "relocationColor": "amber"
   },
   "motion": {

@@ -678,6 +678,16 @@ export const SCHEMAS = {
         ]
       },
       {
+        name: "experience",
+        type: "group",
+        label: "Experience",
+        help: "The words on the large button at the bottom of the Experience box, which opens the older roles. How far back the section shows before it is Site Settings → Layout → Experience shown (years).",
+        fields: [
+          { name: "moreLabel", type: "text", label: "Button, older roles hidden", span: "half", placeholder: "See more of my past", help: "The count of earlier roles is added after it." },
+          { name: "lessLabel", type: "text", label: "Button, older roles shown", span: "half", placeholder: "Show less" }
+        ]
+      },
+      {
         name: "linkedSkills",
         type: "group",
         label: "Linked skills",
@@ -1227,6 +1237,15 @@ export const SCHEMAS = {
             default: 95,
             placeholder: "95",
             help: "How solid the heading band across the top of each section box is. Higher than the tile opacity makes the section names stand out. 40 to 100, and 95 when left blank."
+          },
+          {
+            name: "experienceYears",
+            type: "number",
+            label: "Experience shown (years)",
+            span: "half",
+            default: 5,
+            placeholder: "5",
+            help: "The home page shows roles from the last this-many years, by end date; a role you still hold always shows. Older roles wait behind the See more button at the bottom of the Experience box (its words are Home page → Experience). 5 when left blank, and 0 shows every role."
           },
           {
             name: "relocationColor",

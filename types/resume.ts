@@ -478,6 +478,12 @@ export type LayoutSettings = {
    */
   headingOpacity?: number;
   /**
+   * How many years of experience the home page shows at rest. A role that
+   * ended longer ago than this waits behind the "See more of my past" button;
+   * a role still running always shows. 5 when left out; 0 shows every role.
+   */
+  experienceYears?: number;
+  /**
    * The colour of the "Open to relocation" corner tab on the home page's hero
    * tile (.hero-flag in bench.css, data-tone). Each tone has its own light and
    * dark pair, deliberately outside the palette. Amber when left out.

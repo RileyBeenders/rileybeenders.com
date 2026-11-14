@@ -66,6 +66,14 @@ export type HomePageData = {
   readMore: {
     animation: ReadMoreAnimation;
   };
+  /**
+   * The words on the Experience section's "see more" button, which opens the
+   * roles older than Site Settings → Layout → Experience shown (years).
+   */
+  experience?: {
+    moreLabel?: string;
+    lessLabel?: string;
+  };
   /** Skills linked to a project or proof (Skills → Links to) in the Skills section. */
   linkedSkills: {
     border: LinkedSkillBorder;

@@ -30,6 +30,10 @@
   "readMore": {
     "animation": "glint"
   },
+  "experience": {
+    "moreLabel": "See more of my past",
+    "lessLabel": "Show less"
+  },
   "linkedSkills": {
     "border": "marks",
     "reveal": "tab",

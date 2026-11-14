@@ -16,7 +16,7 @@ import { SiteFooter } from "@/components/bench/SiteFooter";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { getCatalog, SITE_PROJECT_ID } from "@/lib/catalog";
 import { getContributions, githubUsername } from "@/lib/github";
-import { todayIso } from "@/lib/dates";
+import { endedWithinYears, todayIso } from "@/lib/dates";
 import { fill, ui } from "@/lib/copy";
 import type { HomePageData } from "@/types/pages";
 import type { ContactData } from "@/types/contact";
@@ -60,6 +60,12 @@ export default async function HomePage() {
   const contributions = username ? await getContributions(username) : null;
   const projectNames = Object.fromEntries(catalog.map((entry) => [entry.project.id, entry.project.name]));
   const summaryParagraphs = splitParagraphs(data.summary);
+  // Site Settings → Layout → Experience shown (years): roles that ended longer ago wait behind
+  // the "see more" button. 5 when left out; 0 shows every role. If nothing is recent, show them all.
+  const yearsSetting = data.layout?.experienceYears;
+  const experienceYears = yearsSetting == null || !Number.isFinite(Number(yearsSetting)) ? 5 : Math.max(0, Number(yearsSetting));
+  const olderFlags = data.experience.map((role) => experienceYears > 0 && !endedWithinYears(role.end, experienceYears, today));
+  const olderRoles = olderFlags.every(Boolean) ? [] : olderFlags;
   const degree = data.education.degrees[0];
   let tile = 0;
   const order = () => ({ "--i": tile++ } as React.CSSProperties);
@@ -188,6 +194,9 @@ export default async function HomePage() {
             projectNames={projectNames}
             readMoreLabel={ui.bulletReadMore}
             readMoreMotion={page.readMore?.animation || "sweep"}
+          older={olderRoles}
+          moreLabel={page.experience?.moreLabel}
+          lessLabel={page.experience?.lessLabel}
           />
         </div>
       </section>
