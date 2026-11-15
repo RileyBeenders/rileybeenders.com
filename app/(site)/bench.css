@@ -1003,6 +1003,7 @@ html[data-theme="dark"] .bp {
   --bar-muted: var(--muted);
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 4px 0;
   padding: 7px clamp(8px, 1.4vw, 14px);
   border-bottom: 1px solid var(--line);
@@ -1052,7 +1053,10 @@ html[data-theme="dark"] .bp {
   align-items: center;
   gap: 8px;
   margin: 0;
-  padding: 16px clamp(18px, 2.4vw, 26px);
+  justify-content: center;
+  text-align: center;
+  /* About two and a half lines of air above and below, so the closed section holds some room. */
+  padding: clamp(40px, 5vw, 52px) clamp(18px, 2.4vw, 26px);
   font-family: var(--mono), monospace;
   font-size: 12px;
   letter-spacing: 0.04em;
