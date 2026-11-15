@@ -426,8 +426,8 @@ A 1120px shell with `clamp(18px, 4vw, 40px)` side padding. The page wrapper is `
 - **Bento** (`.bento`): six columns. The hero tile spans 4 columns and 3 rows; Now, Based in and Education span 2 each; the activity tile spans the full width; This site and Say hello span 3 each. At 980px it becomes two columns with the hero and education full width; at 640px, one column.
 - **Summary**: prose beside a 300px column of fact tiles (one column below 980px).
 - **Experience**: every role in one `.card.roles` tile; each role has a 150px dated column with a rail and a dot beside it. One column below 760px, with the dates inline.
-- **Projects**: three columns of tiles, two below 980px, one below 760px; filters above on `/projects`.
-- **Stack**: two columns of tiles, one below 760px.
+- **Projects**: a centred, wrapping row of tiles a third wide (half below 980px, full below 760px), so a short row sits in the middle. On `/projects` the heading and the tile grid sit in one section box, the grid inside a tab-bar tile.
+- **Skills and Tools**: one tab-bar tile; the picked group is a left-aligned list in three columns that fill top to bottom (two below 860px, one below 560px), each row on a hairline with a 3px bar in its group hue.
 - **Education**: the degree tile beside a two-column grid of certificates (1.1fr : 2fr), one column below 980px.
 - **Contact**: one tile split 1 : 1.15 (the ways in on a tinted column, the form on white), stacked below 760px.
 - **Project dialog**: `min(1040px, 100%)` wide, `min(92vh, 100%)` tall, centred. On a phone it rises from the bottom edge with the top corners rounded.
@@ -483,7 +483,8 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 - **Chip** (`.chip`): tint, accent mono label, a pulsing dot for a live status. Not placed on any page at present; the relocation notice became the hero tile's corner tab, which reuses the dot.
 - **Pill** (`.bp-pill`, `app/(site)/skill-pills.css`): paper, pill-text, hairline; hover tints and lifts 2px. A linked pill keeps its Studio-chosen border and hover card.
-- **Filter** (`.filter`): white, muted; the active one is accent fill with on-accent text. On `/projects` the chips are "All" plus the four shared project categories (Product Design, Software, Automation & Controls, Network Infrastructure), each shown only while a published project sits in it.
+- **Tab bar** (`.skills-tabs` in a `.card.skills-box`, since 2026-11-15): the header of a tile, a solid band a step off the tile (`color-mix(in srgb, var(--ink) 7%, var(--white))`: darker in light mode, lighter in dark) of mono uppercase tabs, each a 7px dot in its group colour and a label in `--ink-soft`. The picked tab reads bold in full ink over a 2px line in its colour that slides between tabs (a `layoutId` spring); the tabs wrap and centre, never scroll. Skills and Tools uses it with nothing picked on load (a centred hint and a climbing double chevron under it, plus a wave across the dots, until a tab is picked) and All last; `/projects` uses it for the category filters at 13px with All first and picked. The old `.filter` chips are gone.
+- **Group hues** (`--grp-1` … `--grp-7`): seven colours for skill groups and project categories, by position (light `#0b7fb0 #b26a0a #7247d1 #0c8a7f #c94f22 #3f8a2a #b8367a`, dark `#5cc4f0 #f0b24f #b39bff #4fd1c5 #ff8d62 #86d46f #f27ab8`). They mark only the tab dots, the picked tab's line, and the bar before each skill row; never text or surfaces.
 - **Type tag** (`.project-card-type`): mono, uppercase, frosted white over the cover; on the site's own card the tag itself ("About this site") takes the accent fill with on-accent text (`.project-card-badge`), and there is no second tag.
 
 ### Tiles
@@ -496,7 +497,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 - **Roles** (`.card.roles`): the whole experience list in one tile. Each `.role` has a dated column with a rail and a dot that fills on hover, bullets with reactive emphasis, and a "Show N more" pill.
 - **See more of my past** (`.roles-more`): the one large control in the Experience box, a full-width button under the roles tile that opens the roles that ended more than `layout.experienceYears` years ago, plus any role set to sit behind it (`homeDisplay: "more"`) (`.roles-rest`; Studio-set, default 5). `--tint` fill, accent text at 16 to 18px in the subheader face at 600, an accent-mixed border, 22px radius, a mono count beside the label, a chevron that turns when open; hover lifts 2px. Deliberately bigger than the "Show N more" pills inside the roles. Hidden in print, where every role shows.
 - **Project tile** (`.project-card`): a 16:10 cover (photo, PDF page, video poster, or the monogram over an accent-soft wash), tags over it, name, two lines of summary, dates and photo count in mono, an arrow that nudges. The whole tile is a button; its id is the hash anchor.
-- **Stack, degree, certificate, contact**: `.stack-card`, `.degree`, `.cert` and `.contact-card` are tiles on the same surface.
+- **Degree, certificate, contact**: `.degree`, `.cert` and `.contact-card` are tiles on the same surface. (The four `.stack-card` skill tiles were replaced by the Skills and Tools tab-bar tile on 2026-11-15.)
 - **Section head and panel** (`.card.sec-head`, `.card.panel`): since 2026-11-14 nothing sits loose on the ground, because the graph paper and the pen run behind the whole page. A heading above a grid of tiles is a full-width tile of its own (14px by `clamp(18px, 2.4vw, 26px)` padding); a section that is one block of content (the summary, a project page body, the projects outro) is one `.panel` tile holding its heading and body (`clamp(20px, 2.8vw, 34px)` padding, facts inside it on `--paper`). The project page's `.page-back` is a glass pill and its `.page-nav` links are hover tiles.
 
 ### Dialog (`.dlg`)

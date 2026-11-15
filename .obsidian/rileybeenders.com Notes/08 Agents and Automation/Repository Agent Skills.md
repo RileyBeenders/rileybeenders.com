@@ -22,7 +22,7 @@ CLAUDE.md                      # routing index + Next.js agent-rules block (repo
       scripts/build-web-resume.mjs    # shared source → site-styled interactive HTML in 1.ApplicationsUsed/
       scripts/verify-web-resume.mjs   # light/dark/phone/no-JS checks; printed HTML must match the PDF page for page
       scripts/compare-pdf-text.py     # per-page text comparison used by the verifier (pymupdf)
-      assets/web-resume-template.html # screen styles, motion, skill highlight; print uses the source CSS
+      assets/web-resume-template.html # Clean Bench screen styles (since 2026-11-15), motion, skill highlight; print uses the source CSS
     grill-my-resume/SKILL.md   # name: grill-my-resume — step 2, the review (from MCP Market as grill-my-cv; not in skills-lock.json)
     fix-my-resume/SKILL.md     # name: fix-my-resume — step 3, applies a review to output/resume-html/*.html and reprints
     update-main-resume/        # name: update-main-resume — the untailored .DefaultResume HTML + PDF pair behind Download PDF
