@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { LayoutGroup } from "framer-motion";
+import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
+import type { CSSProperties, ReactNode } from "react";
 import type { CatalogEntry } from "@/lib/catalog";
 import { ProjectCard } from "@/components/bench/ProjectCard";
 import { ProjectDialog } from "@/components/bench/ProjectDialog";
@@ -32,10 +33,14 @@ const HASH = /^#project-([a-z0-9-]+?)(-case-study)?$/i;
  * and a shared link all land on the right project with the dialog up, and
  * the browser's back button closes it.
  */
+/** The picked tab's line slides like the Skills and Tools bar's. */
+const SLIDE = { type: "spring", stiffness: 420, damping: 38, mass: 0.7 } as const;
+
 export function ProjectGrid({ entries, today, paletteId, filters = false, viewAllHref }: ProjectGridProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [caseStudy, setCaseStudy] = useState(false);
   const [category, setCategory] = useState<ProjectCategory | null>(null);
+  const reduced = useReducedMotion();
 
   const byId = useMemo(() => new Map(entries.map((entry) => [entry.project.id, entry])), [entries]);
   // The chips are the shared categories at least one entry sits in, in their fixed order.
@@ -88,27 +93,43 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
   // buttons sit outside it and keep focus.
   const group = `projects-${category ?? "all"}`;
 
+  // On /projects the filters are the Skills and Tools bar: mono tabs with a
+  // dot in each category's colour (All first, picked on load) and a line
+  // under the picked one that slides between them; the grid sits in the tile
+  // under the bar. The home page's grid has no bar.
+  const bar = filters && categories.length > 1;
+  const tab = (value: ProjectCategory | null, label: string, tone: string, index: number) => {
+    const on = category === value;
+    return (
+      <button
+        key={value ?? "all"}
+        type="button"
+        className={`skills-tab${value === null ? " skills-tab--all" : ""}${on ? " is-active" : ""}`}
+        aria-pressed={on}
+        onClick={() => setCategory(on ? null : value)}
+        style={{ "--grp": tone, "--i": index } as CSSProperties}
+      >
+        {on && (reduced
+          ? <span className="skills-tab-mark" aria-hidden="true" />
+          : <motion.span layoutId="project-tab-mark" className="skills-tab-mark" transition={SLIDE} aria-hidden="true" />)}
+        <span className="skills-tab-dot" aria-hidden="true" />
+        <span className="skills-tab-label">{label}</span>
+      </button>
+    );
+  };
+  const frame = (children: ReactNode) => bar ? (
+    <div className="card skills-box project-box">
+      <div className="skills-tabs" role="group" aria-label="Filter by category">
+        {tab(null, ui.projects.all, "var(--accent)", 0)}
+        {categories.map((item, index) => tab(item, ui.projects.categories?.[item] || item, `var(--grp-${(index % 7) + 1})`, index + 1))}
+      </div>
+      <div className="skills-body">{children}</div>
+    </div>
+  ) : children;
+
   return (
     <>
-      {filters && categories.length > 1 && (
-        <div className="filters" role="group" aria-label="Filter by category">
-          <button type="button" className={`filter${category === null ? " is-active" : ""}`} aria-pressed={category === null} onClick={() => setCategory(null)}>
-            {ui.projects.all}
-          </button>
-          {categories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={`filter${category === item ? " is-active" : ""}`}
-              aria-pressed={category === item}
-              onClick={() => setCategory(category === item ? null : item)}
-            >
-              {ui.projects.categories?.[item] || item}
-            </button>
-          ))}
-        </div>
-      )}
-
+      {frame(
       <LayoutGroup id={group} key={group}>
       {shown.length > 0 ? (
         <div className="project-grid">
@@ -138,6 +159,7 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
         )}
       </ProjectDialog>
       </LayoutGroup>
+      )}
     </>
   );
 }

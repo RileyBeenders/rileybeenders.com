@@ -800,20 +800,6 @@ html[data-theme="dark"] .bp {
 .roles-more[aria-expanded="true"] svg, .roles-more[aria-expanded="true"]:hover svg { transform: rotate(180deg); }
 
 /* ----------------------------------------------------------- projects --- */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-.filter {
-  padding: 7px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease);
-}
-.filter:hover { color: var(--ink); transform: translateY(-1px); }
-.filter.is-active { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
 
 /* Tiles are a third of the row (half under 980px, full under 760px) in a
    centred, wrapping row, so a short last row, or a filter that leaves a
@@ -1411,7 +1397,7 @@ html[data-theme="dark"] .bp {
 /* The home page prints as the document it imitates: ink on paper, no chrome. */
 @media print {
   .bp { background: #fff !important; color: #000 !important; }
-  .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .activity, .filters, .tile-arrow { display: none !important; }
+  .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .activity, .tile-arrow { display: none !important; }
   .card { box-shadow: none; border-color: #bbb; background: var(--white); backdrop-filter: none; }
   .sec-group { padding: 0; border: 0; background: none; }
   .sec-group .card { background: var(--white); }
@@ -1419,7 +1405,8 @@ html[data-theme="dark"] .bp {
   .bp .roles-more { display: none; }
   .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
   .role, .cert, .degree { break-inside: avoid; }
-  .skills-box { display: none !important; }
+  .skills > .skills-box { display: none !important; }
+  .project-box .skills-tabs { display: none !important; }
   .skills-print { display: grid; }
   .skills-print > li { padding: 3px 0; }
   .bp-bullet-link { display: none; }

@@ -32,8 +32,9 @@ export default function ProjectsPage() {
   return (
     <main>
       <section className="shell sec sec--tight" aria-label={page.title}>
+        <div className="sec-group">
         <Reveal>
-          <div className="card sec-head">
+          <div className="sec-head">
             <h1 className="sec-title">{page.title}</h1>
             {projectCount > 0 && counted(page.intro, projectCount).trim() && <p className="sec-sub">{counted(page.intro, projectCount)}</p>}
           </div>
@@ -46,6 +47,7 @@ export default function ProjectsPage() {
             <p>{page.comingSoon.body}</p>
           </div>
         )}
+        </div>
       </section>
 
       {projectCount > 0 && (outroLead || outroBody) && (
