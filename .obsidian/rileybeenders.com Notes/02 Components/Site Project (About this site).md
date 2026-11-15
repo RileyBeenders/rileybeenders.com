@@ -88,7 +88,7 @@ Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `Themed
 
 `tracker()` in `lib/catalog.ts` (cached) reads `data/more-info/more-info.json` → `ganttSection`. With both `tableVisible` and `chartVisible` off it returns `null`, and the section is not rendered. Otherwise it reads `data/more-info/gantt.md` with `readFileSync(path.join(process.cwd(), …))` and parses it with `parseGanttFile()`. It returns `{ title, intro, tableNote, statusKey, columns: APPLICATION_COLUMNS, rows: buildApplicationRows(parsed, past-applications.json), chart (only when chartVisible), table: tableVisible }`. A read error also yields `null`.
 
-`ProjectBody` renders it as `section#tracker`: the `h3` title, the intro, `<GanttChart>` when the chart is on, and when the table is on, the `tableNote`, the 🟢 / 🟠 / 🔴 `.bp-table-key`, and `<JobsTable singleLine>` in a sideways-scrolling `data-native-scroll` wrapper. **Today the table is on and the chart is off.** Gray rows are the applications from before the site. Detail in [[GanttChart JobsTable and gantt.ts]] and [[More Info and Gantt Data]].
+`ProjectBody` renders it as `section#tracker`: the `h3` title, the intro, `<GanttChart>` when the chart is on, and when the table is on, the `tableNote`, the status filter (`TrackerTable`: All / 🟢 / 🟠 / 🔴 buttons with counts, opening on 🟢), and `<JobsTable singleLine>` with only the matching rows in a sideways-scrolling `data-native-scroll` wrapper. **Today the table is on and the chart is off.** Gray rows are the applications from before the site. Detail in [[GanttChart JobsTable and gantt.ts]] and [[More Info and Gantt Data]].
 
 ## Supporting pieces
 

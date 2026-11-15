@@ -25,6 +25,8 @@ export type ContactForm = {
   failed: string;
   /** When the inbox is not configured yet: the visitor's own mail app opens instead. */
   fallback: string;
+  /** When set, the form shows dimmed and switched off under this label (e.g. "Coming soon"). Empty or missing: the form works. */
+  comingSoon?: string;
 };
 
 export type ContactData = {

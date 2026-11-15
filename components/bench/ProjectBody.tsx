@@ -31,6 +31,58 @@ type ProjectBodyProps = {
   mode: "dialog" | "page";
 };
 
+type Tracker = NonNullable<CatalogEntry["tracker"]>;
+type StatusFilter = "all" | "received" | "interviewing" | "closed";
+
+/** The status circle each filter keeps; "all" keeps every row. */
+const STATUS_MARK: Record<Exclude<StatusFilter, "all">, string> = {
+  received: "🟢",
+  interviewing: "🟠",
+  closed: "🔴"
+};
+
+const STATUS_FILTERS: StatusFilter[] = ["all", "received", "interviewing", "closed"];
+
+/**
+ * The status key doubles as the table's filter: one pressed button at a time,
+ * opening on applications still received (🟢). Each button shows its count.
+ */
+function TrackerTable({ tracker }: { tracker: Tracker }) {
+  const [filter, setFilter] = useState<StatusFilter>("received");
+  const statusColumn = tracker.columns.indexOf("Status");
+  const statusOf = (row: Tracker["rows"][number]) => (statusColumn >= 0 ? row.cells[statusColumn]?.trim() ?? "" : "");
+  const matches = (row: Tracker["rows"][number], option: StatusFilter) =>
+    option === "all" || statusOf(row) === STATUS_MARK[option];
+  const rows = tracker.rows.filter((row) => matches(row, filter));
+
+  return (
+    <>
+      <div className="bp-table-key bp-table-filter" role="group" aria-label="Filter applications by status">
+        {STATUS_FILTERS.map((option) => (
+          <button
+            key={option}
+            type="button"
+            className="bp-table-filter-btn"
+            aria-pressed={filter === option}
+            onClick={() => setFilter(option)}
+          >
+            {option !== "all" && <span aria-hidden="true">{STATUS_MARK[option]}</span>}
+            {tracker.statusKey[option]}
+            <span className="bp-table-filter-count">{tracker.rows.filter((row) => matches(row, option)).length}</span>
+          </button>
+        ))}
+      </div>
+      <div data-native-scroll="">
+        {rows.length > 0 ? (
+          <JobsTable columns={tracker.columns} rows={rows} singleLine />
+        ) : (
+          <p className="pbody-tracker-note">No applications here right now.</p>
+        )}
+      </div>
+    </>
+  );
+}
+
 function isExternal(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
@@ -155,14 +207,7 @@ export function ProjectBody({ entry, today, paletteId, caseStudyOpen = false, mo
           {tracker.table && (
             <>
               <p className="pbody-tracker-note">{tracker.tableNote}</p>
-              <div className="bp-table-key" aria-label="Status key">
-                <span>🟢 {tracker.statusKey.received}</span>
-                <span>🟠 {tracker.statusKey.interviewing}</span>
-                <span>🔴 {tracker.statusKey.closed}</span>
-              </div>
-              <div data-native-scroll="">
-                <JobsTable columns={tracker.columns} rows={tracker.rows} singleLine />
-              </div>
+              <TrackerTable tracker={tracker} />
             </>
           )}
         </section>

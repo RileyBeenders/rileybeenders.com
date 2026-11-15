@@ -454,6 +454,8 @@ export type PaletteSeeds = {
 export type ThemeSetting = {
   /** One of the preset ids in lib/palettes.ts, or "custom" to use the seeds below. */
   paletteId: string;
+  /** Mode a first-time visitor sees before they use the toggle. "system" follows the device. Defaults to "dark". */
+  defaultMode?: "dark" | "light" | "system";
   custom: {
     light: PaletteSeeds;
     dark: PaletteSeeds;

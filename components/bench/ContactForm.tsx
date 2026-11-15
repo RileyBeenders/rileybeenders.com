@@ -59,8 +59,9 @@ export function ContactForm({ copy, fallbackEmail }: ContactFormProps) {
     }
   }
 
-  return (
-    <form className="form" onSubmit={onSubmit} noValidate={false}>
+  const comingSoon = copy.comingSoon?.trim();
+  const form = (
+    <form className="form" onSubmit={onSubmit} noValidate={false} inert={comingSoon ? true : undefined}>
       <h3>{copy.title}</h3>
       <div className="form-row">
         <div className="field">
@@ -91,5 +92,23 @@ export function ContactForm({ copy, fallbackEmail }: ContactFormProps) {
         </p>
       </div>
     </form>
+  );
+
+  if (!comingSoon) return form;
+
+  // Not live yet: the form stays visible but dimmed and inert (no focus, no
+  // submit), with the label laid over it and taking priority. The hairlines
+  // either side carry an indeterminate-progress sweep (bench.css .soon-line).
+  return (
+    <div className="form-soon">
+      {form}
+      <div className="form-soon-label" role="status">
+        <span className="soon">
+          <span className="soon-line" aria-hidden="true" />
+          <span className="soon-text">{comingSoon}</span>
+          <span className="soon-line" aria-hidden="true" />
+        </span>
+      </div>
+    </div>
   );
 }

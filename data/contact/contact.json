@@ -22,6 +22,7 @@
     "sending": "Sending…",
     "sent": "Sent. I’ll get back to you soon.",
     "failed": "That didn’t go through. Please try again, or email me directly.",
-    "fallback": "Opening your mail app with the message filled in."
+    "fallback": "Opening your mail app with the message filled in.",
+    "comingSoon": "Coming soon"
   }
 }

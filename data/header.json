@@ -19,6 +19,7 @@
   },
   "theme": {
     "paletteId": "clean-bench",
+    "defaultMode": "dark",
     "custom": {
       "light": {
         "paper": "#ffffff",

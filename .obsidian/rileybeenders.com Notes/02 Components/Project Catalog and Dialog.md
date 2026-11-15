@@ -90,7 +90,7 @@ The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can ani
 7. **The tracker**, `section#tracker.pbody-tracker`, when the entry has a `tracker` (the site entry only):
    - the `h3` title and optional intro;
    - `<GanttChart chart>`, when the chart switch is on;
-   - when the table switch is on: the `tableNote`, a `.bp-table-key` (🟢 / 🟠 / 🔴 with the `statusKey` words), and `<JobsTable columns rows singleLine>` in a `data-native-scroll` wrapper.
+   - when the table switch is on: the `tableNote`, then `TrackerTable`: a `.bp-table-key.bp-table-filter` segmented pill of `aria-pressed` buttons (All / 🟢 / 🟠 / 🔴 with the `statusKey` words and a row count each, default 🟢 received) and `<JobsTable columns rows singleLine>` of the rows whose Status cell matches, in a `data-native-scroll` wrapper (a "No applications here right now." note when none match).
 
    `/more-info` redirects to this anchor. See [[GanttChart JobsTable and gantt.ts]].
 

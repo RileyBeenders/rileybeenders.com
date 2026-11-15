@@ -35,7 +35,7 @@ There is no section-anchor nav and no scroll-spy. `/about-this-site` and `/more-
 
 ## `components/blueprint/BpThemeToggle.tsx` + `ThemeProvider.tsx`
 
-These are kept from Blueprint Press. `ThemeProvider` owns `data-theme` on `<html>` (the root layout's `beforeInteractive` script stamps it before first paint) and the `localStorage` preference; `useTheme()` returns `{ theme, toggleTheme }`. The toggle is a 48×28 switch (`.bp-theme-toggle` in `bench.css`'s theme-toggle section), sitting at the right end of the pill. Its thumb is painted with `--accent-fill`, so in dark mode it is the deeper blue.
+These are kept from Blueprint Press. `ThemeProvider` owns `data-theme` on `<html>` (the root layout's `beforeInteractive` script stamps it before first paint, using Site Settings' `theme.defaultMode` (dark) until the visitor toggles) and the `localStorage` preference; `useTheme()` returns `{ theme, toggleTheme }`. The toggle is a 48×28 switch (`.bp-theme-toggle` in `bench.css`'s theme-toggle section), sitting at the right end of the pill. Its thumb is painted with `--accent-fill`, so in dark mode it is the deeper blue.
 
 ## `components/blueprint/BpMark.tsx`
 

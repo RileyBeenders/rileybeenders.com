@@ -834,7 +834,8 @@ export const SCHEMAS = {
           { name: "sending", type: "text", label: "While sending", required: true, span: "half" },
           { name: "sent", type: "text", label: "After it sent", required: true },
           { name: "failed", type: "text", label: "When it failed", required: true },
-          { name: "fallback", type: "text", label: "When the mail app opens instead", required: true }
+          { name: "fallback", type: "text", label: "When the mail app opens instead", required: true },
+          { name: "comingSoon", type: "text", label: "Coming soon label", help: "While this has text, the form shows dimmed and switched off with this label over it. Clear it to turn the form on." }
         ]
       }
     ]
@@ -914,8 +915,9 @@ export const SCHEMAS = {
             name: "statusKey",
             type: "group",
             label: "Status key",
-            help: "The words beside each circle. The circles themselves match the rows in gantt.md.",
+            help: "The words on each filter button above the table. The circles themselves match the rows in gantt.md. The table opens filtered to 🟢.",
             fields: [
+              { name: "all", type: "text", label: "All", required: true },
               { name: "received", type: "text", label: "🟢", required: true, span: "third" },
               { name: "interviewing", type: "text", label: "🟠", required: true, span: "third" },
               { name: "closed", type: "text", label: "🔴", required: true, span: "third" }
@@ -1224,6 +1226,19 @@ export const SCHEMAS = {
         help: "Ten preset color palettes, each with its own light and dark mode, plus a Customization option for picking any colors you like.",
         fields: [
           { name: "paletteId", type: "palette", label: "Palette", options: PALETTE_OPTIONS, always: true },
+          {
+            name: "defaultMode",
+            type: "choice",
+            label: "Default mode for new visitors",
+            default: "dark",
+            always: true,
+            help: "What someone sees the first time they open the site. Once they use the light/dark toggle, their choice is remembered and wins.",
+            options: [
+              { value: "dark", label: "Dark", help: "Every first visit opens in dark mode." },
+              { value: "light", label: "Light", help: "Every first visit opens in light mode." },
+              { value: "system", label: "Match device", help: "Follows the visitor's operating system setting." }
+            ]
+          },
           {
             name: "custom",
             type: "group",

@@ -31,7 +31,7 @@ All three are `permanent: false` (307), so a target can be repointed without fig
 
 ## Root layout: `app/layout.tsx`
 
-- Shell only: `<html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>`, `<body suppressHydrationWarning>`, a `beforeInteractive` theme-init script that stamps `data-theme` before first paint, `{children}`, then `<SiteAnalytics />` (Vercel `<Analytics />` with an owner opt-out and a per-visit state/city event; see [[Site Analytics]]) and `<SpeedInsights />`. It imports `app/base.css`, a bare reset.
+- Shell only: `<html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>`, `<body suppressHydrationWarning>`, a `beforeInteractive` theme-init script that stamps `data-theme` before first paint (the visitor's saved `localStorage["theme"]` if any, else `header.json` `theme.defaultMode`, which defaults to dark; `"system"` follows `prefers-color-scheme`), `{children}`, then `<SiteAnalytics />` (Vercel `<Analytics />` with an owner opt-out and a per-visit state/city event; see [[Site Analytics]]) and `<SpeedInsights />`. It imports `app/base.css`, a bare reset.
 - `metadata` comes from `data/home/page.json` `meta` (`title`, `description`, `shareTitle` for Open Graph/Twitter), with `metadataBase: new URL("https://rileybeenders.com")` so the generated `opengraph-image` resolves to an absolute URL.
 
 ## Site layout: `app/(site)/layout.tsx`

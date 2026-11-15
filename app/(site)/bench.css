@@ -1126,6 +1126,43 @@ html[data-theme="dark"] .bp {
 .form-note { font-size: 13.5px; color: var(--muted); }
 .form-note[data-tone="ok"] { color: var(--accent); }
 .form-note[data-tone="error"] { color: #c0392b; }
+/* contact.json form.comingSoon: the form shows dimmed under a label. */
+.form-soon { position: relative; display: grid; }
+.form-soon > .form { opacity: 0.3; user-select: none; pointer-events: none; }
+.form-soon-label { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+.soon { --seg: 72px; display: flex; align-items: center; gap: 14px; width: min(78%, 360px); container-type: inline-size; }
+.soon-text { font: 500 12px var(--mono), monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+/* Each hairline is a track. Both segments move in the label's own coordinates
+   (cqw of .soon): the left one is anchored to the left edge, the right one to
+   the right edge, with identical timing, so one segment appears to travel the
+   whole width at one speed and simply pass behind the text. */
+.soon-line { position: relative; flex: 1; height: 1px; overflow: hidden; background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.soon-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--seg);
+  background: linear-gradient(90deg, transparent, var(--accent) 35%, var(--accent) 65%, transparent);
+  transform: translateX(calc(-1 * var(--seg)));
+  animation: soon-sweep-l 2.4s infinite;
+}
+.soon-line + .soon-text + .soon-line::after {
+  left: auto;
+  right: 0;
+  transform: translateX(-100cqw);
+  animation-name: soon-sweep-r;
+}
+@keyframes soon-sweep-l {
+  0% { transform: translateX(calc(-1 * var(--seg))); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  82%, 100% { transform: translateX(100cqw); }
+}
+@keyframes soon-sweep-r {
+  0% { transform: translateX(-100cqw); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  82%, 100% { transform: translateX(var(--seg)); }
+}
+.form-soon:hover .soon-line::after { animation-play-state: paused; }
 
 /* ------------------------------------------------------------- footer --- */
 .footer { margin-top: clamp(40px, 6vw, 72px); }
@@ -1195,7 +1232,27 @@ html[data-theme="dark"] .bp {
   font-size: 13px;
   color: var(--ink-soft);
 }
-.bp-table--single-line th, .bp-table--single-line td { white-space: nowrap; padding-inline: 12px; }
+/* The status key is also the table filter: a segmented pill, one pressed button. */
+.bp-table-filter { gap: 4px; padding: 4px; }
+.bp-table-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.bp-table-filter-btn:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); color: var(--ink); }
+.bp-table-filter-btn[aria-pressed="true"] { background: var(--tint); color: var(--accent); }
+.bp-table-filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bp-table-filter-count { font-family: var(--mono), monospace; font-size: 11px; color: var(--muted); }
+.bp-table-filter-btn[aria-pressed="true"] .bp-table-filter-count { color: inherit; }
+.bp-table--single-line th,.bp-table--single-line td { white-space: nowrap; padding-inline: 12px; }
 .bp-gantt-wrap { padding: 18px; border: 1px solid var(--line); border-radius: var(--r); background: var(--white); }
 .bp-gantt { height: 50vh; min-height: 220px; overflow: auto; scrollbar-gutter: stable; }
 .bp-gantt svg { display: block; }
@@ -1304,4 +1361,5 @@ html[data-theme="dark"] .bp {
   .bp-mark--animated [data-draw] { stroke-dashoffset: 0 !important; }
   .bp-mark--animated [data-chase] { stroke-dasharray: none !important; }
   .activity-cell { opacity: 1; transform: none; }
+  .soon-line::after { display: none; }
 }

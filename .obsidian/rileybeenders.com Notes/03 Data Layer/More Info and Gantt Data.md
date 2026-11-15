@@ -14,7 +14,7 @@ Typed by `MoreInfoData` (see [[Data Layer and Types]]). In the Studio it is now 
   - `title`: the tracker's `h3`.
   - `intro?`: absent in the data, rendered only if present.
   - `tableNote`: the "Gray rows were applied to before this site…" line above the table.
-  - `statusKey { received, interviewing, closed }`: the words beside the 🟢/🟠/🔴 key. The circles stay in code, matching `gantt.md`.
+  - `statusKey { all, received, interviewing, closed }`: the words on the tracker's filter buttons (All, then 🟢/🟠/🔴). The circles stay in code, matching `gantt.md`; the table opens filtered to `received`.
   - `chartVisible` / `tableVisible`: one switch per view, shown in the Studio as **Show Gantt chart on live site** and **Show tracker table on live site**. `chartVisible: false` drops the Mermaid timeline, and `tableVisible: false` drops the applications table. With both off, the site entry has no tracker section and `gantt.md` is not read. **Right now the table is on and the chart is off.**
 - `meta`, `aboutHeader`, `aboutMe`, `aboutSite` (with its `readMore` link): the retired page's tab title, hero, and About Me / About the Site copy. They are **kept but not shown**. The Studio schema says so in its description, and nothing in the site reads them.
 
