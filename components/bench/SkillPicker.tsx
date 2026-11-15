@@ -39,10 +39,15 @@ const SLIDE = { type: "spring", stiffness: 420, damping: 38, mass: 0.7 } as cons
 /**
  * The tab row and the panel under it. Nothing is open at first: the panel
  * holds a hint until a tab is picked, and picking the open tab again closes
- * it. The panel's height follows what's in it, and each group's pills rise in
+ * it. The panel's height follows what's in it, and each group's list rises in
  * on a short stagger. While the height moves the panel clips; once it settles
  * it doesn't, so a linked skill's hover card can reach past it.
  */
+/** Rows per column at three and at two columns, so the grid fills top to bottom. */
+function rowsFor(count: number) {
+  return { "--rows-3": Math.ceil(count / 3), "--rows-2": Math.ceil(count / 2) } as CSSProperties;
+}
+
 export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, hint, kindLabels, border, reveal, readMoreLabel }: SkillPickerProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<number | null>(null);
@@ -69,9 +74,9 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
   const group = active === null ? null : groups[active];
   let linkedIndex = 0;
 
-  const pill = (item: string) => {
+  const entry = (item: string) => {
     const target = targets[item];
-    if (!target) return <span className="bp-pill">{item}</span>;
+    if (!target) return <span className="skills-item">{item}</span>;
     return (
       <LinkedSkill
         name={item}
@@ -139,7 +144,7 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
             </motion.p>
           ) : (
             <div className="skills-body" key={group.label}>
-              <ul className="bp-pills skills-pills" aria-label={group.label}>
+              <ul className="skills-list" aria-label={group.label} style={rowsFor(group.items.length)}>
                 {group.items.map((item, index) => (
                   <motion.li
                     key={item}
@@ -148,7 +153,8 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.05, ease: EASE }}
                   >
-                    {pill(item)}
+                    <span className="skills-mark" aria-hidden="true" />
+                    {entry(item)}
                   </motion.li>
                 ))}
               </ul>
@@ -159,9 +165,9 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
       </div>
 
       {/* Print has no tabs: it lists every item once. */}
-      <div className="skills-print" aria-hidden="true">
-        {everything.map((item) => <span className="bp-pill" key={item}>{item}</span>)}
-      </div>
+      <ul className="skills-list skills-print" aria-hidden="true" style={rowsFor(everything.length)}>
+        {everything.map((item) => <li key={item}><span className="skills-item">{item}</span></li>)}
+      </ul>
     </div>
   );
 }

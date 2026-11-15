@@ -984,7 +984,7 @@ html[data-theme="dark"] .bp {
 /* -------------------------------------------------------------- stack --- */
 /* Skills and Tools (SkillPicker.tsx): one bar of mono tabs, each group with
    its own colour (--grp-1 … --grp-7, set per tab and per pill as --grp), the
-   picked tab tinted in it, and one tile of pills under it in the same colour.
+   picked tab underlined in it, and one tile of the group's list under it.
    Nothing is picked at first, so the panel holds a quiet hint instead. */
 .bp {
   --grp-1: #0b7fb0; --grp-2: #b26a0a; --grp-3: #7247d1; --grp-4: #0c8a7f;
@@ -1000,7 +1000,7 @@ html[data-theme="dark"] .bp {
 .skills-box { padding: 0; }
 .skills-tabs {
   --bar-ink: var(--ink);
-  --bar-muted: var(--muted);
+  --bar-muted: var(--ink-soft);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1030,24 +1030,74 @@ html[data-theme="dark"] .bp {
   transition: color 0.3s ease;
 }
 .bp .skills-tab:hover, .bp .skills-tab.is-active { color: var(--bar-ink); }
+.bp .skills-tab.is-active { font-weight: 600; }
 .skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
 .skills-tab > :not(.skills-tab-mark) { position: relative; }
 .skills-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grp); flex: none; }
 .skills-tab--all .skills-tab-dot { background: none; border: 1.5px solid currentColor; }
+/* The picked tab: its name in full ink (black in light mode, white in dark)
+   over a line in its group's colour, which slides between tabs. */
 .skills-tab-mark {
   position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--grp) 16%, var(--white));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--grp) 45%, transparent);
+  left: 9px;
+  right: 9px;
+  bottom: 1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grp);
 }
-.bp .skills-pills .bp-pill { border-color: color-mix(in srgb, var(--grp) 34%, var(--line)); background: color-mix(in srgb, var(--grp) 7%, var(--paper)); }
-.bp .skills-pills .bp-pill:is(:hover, :focus-within) { border-color: var(--grp); }
 .skills-panel { overflow: visible; }
 .skills-panel.is-moving { overflow: hidden; }
 .skills-body { padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px); }
-.skills-pills { list-style: none; margin: 0; padding: 0; }
-.skills-pills > li { display: flex; }
+/* The picked group as a plain list: three columns (two under 860px, one under
+   560px), every row left-aligned on a hairline, a short bar in the group's
+   colour before the name. A grid flowing by column (rows from SkillPicker's
+   --rows-3 / --rows-2) fills top to bottom; CSS multi-column was dropped
+   because Chrome stopped painting rows under an open hover card. */
+.skills-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows-3, 1), auto);
+  column-gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .skills-list { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(var(--rows-2, 1), auto); }
+}
+@media (max-width: 560px) {
+  .skills-list { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; }
+}
+.skills-list > li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.skills-mark { flex: none; width: 3px; height: 14px; border-radius: 2px; background: var(--grp); }
+.skills-item { font-size: 14px; line-height: 1.35; color: var(--ink-soft); }
+/* A linked skill keeps LinkedSkill (link icon, Read more, hover card) but
+   drops the pill: no border, fill, lift, or corner marks, just the name in ink. */
+.bp .skills-list .bp-pill--linked {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+  box-shadow: none;
+}
+.bp .skills-list .bp-pill--linked:is(:hover, :focus-within, [data-hover]) { transform: none; box-shadow: none; margin-right: 0; }
+.bp .skills-list .bp-pill--linked::after { display: none; }
+.bp .skills-list .bp-pill--linked { flex: 0 1 auto; min-width: 0; }
+.bp .skills-list .bp-pill-more { flex: none; }
 .skills-hint {
   display: flex;
   flex-direction: column;
@@ -1364,7 +1414,8 @@ html[data-theme="dark"] .bp {
   .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
   .role, .cert, .degree { break-inside: avoid; }
   .skills-box { display: none !important; }
-  .skills-print { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skills-print { display: grid; }
+  .skills-print > li { padding: 3px 0; }
   .bp-bullet-link { display: none; }
 }
 
