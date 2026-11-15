@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { LayoutGroup } from "framer-motion";
 import type { CatalogEntry } from "@/lib/catalog";
 import { ProjectCard } from "@/components/bench/ProjectCard";
 import { ProjectDialog } from "@/components/bench/ProjectDialog";
@@ -79,6 +80,14 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
 
   const openEntry = openId ? byId.get(openId) ?? null : null;
 
+  // Each filter is its own layout group, remounted (keyed) when the filter
+  // changes, so the tiles deal in again with the usual rise and stagger
+  // instead of the ones that stay springing across the grid to new spots.
+  // (LayoutGroup reads its id once, so the key is what changes it.) The
+  // dialog sits in the same group, so a tile still grows into it; the filter
+  // buttons sit outside it and keep focus.
+  const group = `projects-${category ?? "all"}`;
+
   return (
     <>
       {filters && categories.length > 1 && (
@@ -100,6 +109,7 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
         </div>
       )}
 
+      <LayoutGroup id={group} key={group}>
       {shown.length > 0 ? (
         <div className="project-grid">
           {shown.map((entry, index) => (
@@ -127,6 +137,7 @@ export function ProjectGrid({ entries, today, paletteId, filters = false, viewAl
           <ProjectBody key={openEntry.project.id} entry={openEntry} today={today} paletteId={paletteId} caseStudyOpen={caseStudy} mode="dialog" />
         )}
       </ProjectDialog>
+      </LayoutGroup>
     </>
   );
 }
