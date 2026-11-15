@@ -53,7 +53,7 @@ flowchart LR
   end
 
   H & HJ & PR & PF --> RD["data/resumeData.ts\n(visible:false filter, order sort, visibility pruning)"]
-  RD --> CAT["lib/catalog.ts getCatalog()\n(projects by order, then the site entry)"]
+  RD --> CAT["lib/catalog.ts getCatalog()\n(the site entry first, then projects by order)"]
   AS --> CAT
   MI -->|"ganttSection switches + copy"| CAT
   GMD[data/more-info/gantt.md] -->|"readFileSync, only while chartVisible or tableVisible"| CAT

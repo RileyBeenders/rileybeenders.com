@@ -16,8 +16,8 @@ import type { Project, ProjectFeature, ProjectImage } from "@/types/resume";
 
 /**
  * The catalog is every card on the projects page and in the home page's grid:
- * the published projects from data/projects/projects.json, then the site
- * itself (data/site/about-site.json) as one more entry. The About-this-site
+ * the site itself (data/site/about-site.json) first, then the published
+ * projects from data/projects/projects.json. The About-this-site
  * page used to be its own route with its own layout; in the redesign it is a
  * project like the others, with the deep dive (stats, timeline, pillars,
  * demos) and the application tracker as sections of that one entry.
@@ -111,7 +111,7 @@ function tracker(): TrackerSection | null {
 
 let catalogCache: CatalogEntry[] | undefined;
 
-/** Every published entry, in the order the projects page shows them: the projects by `order`, then the site. */
+/** Every published entry, in the order the projects page shows them: the site first (since 2026-11-15), then the projects by `order`. */
 export function getCatalog(): CatalogEntry[] {
   if (catalogCache) return catalogCache;
   const views = buildProjectViews(resumeData.projects, resumeData.proofs).map<CatalogEntry>((view) => ({
@@ -136,7 +136,7 @@ export function getCatalog(): CatalogEntry[] {
     outro: aboutSite.outro
   };
 
-  catalogCache = resumeData.visibility.projectsSection ? [...views, siteEntry] : [siteEntry];
+  catalogCache = resumeData.visibility.projectsSection ? [siteEntry, ...views] : [siteEntry];
   return catalogCache;
 }
 
@@ -144,7 +144,7 @@ export function getEntry(id: string): CatalogEntry | undefined {
   return getCatalog().find((entry) => entry.project.id === id);
 }
 
-/** The entries the home page's grid shows: every one, the site last. */
+/** The entries the home page's grid shows: every one, the site first. */
 export function getFeatured(): CatalogEntry[] {
   return getCatalog();
 }
