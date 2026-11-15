@@ -42,7 +42,7 @@ Matches `data/more-info/more-info.json`:
 - `MoreInfoAboutHeader`, `MoreInfoAboutMe` — `{ title, description: string[] }`.
 - `MoreInfoReadMore` — `{ label: string; href: string }`.
 - `MoreInfoAboutSite` — `{ title, description: string[], readMore?: MoreInfoReadMore }`. It rendered on `/more-info`, which the redesign retired; it is kept in the data but not shown.
-- `MoreInfoGanttSection` — `{ chartVisible, tableVisible, title, intro?, tableNote, statusKey { all, received, interviewing, closed } }`; the two flags switch the chart and the table, `tableNote` is the line above the table and `statusKey` the words on its All/🟢/🟠/🔴 filter buttons (the table opens on received) (the circles stay in code, matching `gantt.md`).
+- `MoreInfoGanttSection` — `{ chartVisible, tableVisible, title, intro?, tableNote?, statusKey { all, received, interviewing, closed } }`; the two flags switch the chart and the table, `tableNote` is an optional line above the table (currently unset) and `statusKey` the words on its All/🟢/🟠/🔴 filter buttons (the table opens on received) (the circles stay in code, matching `gantt.md`).
 - `MoreInfoData` — `meta` (`PageMeta`) plus the four blocks. Since the redesign only `ganttSection` is read, by `tracker()` in `lib/catalog.ts` (see [[More Info and Gantt Data]]).
 
 ## `types/contact.ts`
@@ -117,7 +117,7 @@ A **module-level constant**, evaluated once at import time (build time for stati
 
 ## The catalog shape — `lib/catalog.ts` (2026-11-08)
 
-Not a data file but the shape every project surface reads. `CatalogEntry` = `ProjectView` (`project`, `images`, `ownImages`, `proof`) + `cover` (`{ src, alt, unoptimized? } | null`), `tagline?`, `isSite`, and, on the site's own entry only, `feature?` (`ProjectFeature`) and `tracker?` (`TrackerSection { title, intro?, tableNote, statusKey, columns, rows: ApplicationRow[], chart?, table }`). `getCatalog()` builds it from `resumeData.projects` / `proofs` plus `about-site.json`, `more-info.json` `ganttSection`, `gantt.md` and `past-applications.json`; `SITE_PROJECT_ID` is `"rileybeenders-com"`. Detail in [[Project Catalog and Dialog]] and [[Site Project (About this site)]]. `lib/github.ts` adds `ContributionDay { date, level: 0–4, count }` and `Contributions { username, total, days }` for the home page's calendar.
+Not a data file but the shape every project surface reads. `CatalogEntry` = `ProjectView` (`project`, `images`, `ownImages`, `proof`) + `cover` (`{ src, alt, unoptimized? } | null`), `tagline?`, `isSite`, and, on the site's own entry only, `feature?` (`ProjectFeature`) and `tracker?` (`TrackerSection { title, intro?, tableNote?, statusKey, columns, rows: ApplicationRow[], chart?, table }`). `getCatalog()` builds it from `resumeData.projects` / `proofs` plus `about-site.json`, `more-info.json` `ganttSection`, `gantt.md` and `past-applications.json`; `SITE_PROJECT_ID` is `"rileybeenders-com"`. Detail in [[Project Catalog and Dialog]] and [[Site Project (About this site)]]. `lib/github.ts` adds `ContributionDay { date, level: 0–4, count }` and `Contributions { username, total, days }` for the home page's calendar.
 
 ## Related
 - [[Project Catalog and Dialog]]

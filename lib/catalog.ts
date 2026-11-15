@@ -32,7 +32,7 @@ const moreInfo = moreInfoData as MoreInfoData;
 export type TrackerSection = {
   title: string;
   intro?: string;
-  tableNote: string;
+  tableNote?: string;
   statusKey: MoreInfoData["ganttSection"]["statusKey"];
   columns: string[];
   rows: ApplicationRow[];

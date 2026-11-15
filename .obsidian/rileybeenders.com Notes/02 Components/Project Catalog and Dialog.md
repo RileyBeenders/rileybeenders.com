@@ -21,7 +21,7 @@ This note was **Projects Route (BpComingSoon)** before the redesign. The Bluepri
 |---|---|
 | `SITE_PROJECT_ID` | `"rileybeenders-com"`, the site entry's id and URL segment |
 | `CatalogEntry` | `ProjectView` (from `lib/projects.ts`: `project`, `images`, `ownImages`, `proof`) plus `cover` (`{ src, alt, unoptimized? }` or `null`), `tagline?`, `isSite`, `feature?` (`ProjectFeature`) and `tracker?` (`TrackerSection`) |
-| `TrackerSection` | `{ title, intro?, tableNote, statusKey, columns, rows, chart?, table }`, the application tracker carried by the site entry |
+| `TrackerSection` | `{ title, intro?, tableNote?, statusKey, columns, rows, chart?, table }`, the application tracker carried by the site entry |
 | `getCatalog()` | Module-cached. `buildProjectViews(resumeData.projects, resumeData.proofs)` (published projects, by `order`), each given a `cover` (`coverFor()`: the first image with a `src` that isn't a captured post. A PDF gives its `<src>.png` first-page preview, an MP4 its `<src>.jpg` poster, and a GIF is `unoptimized`) and `tagline` (`additionalInfo.subtitle`). Then the site entry. With `visibility.projectsSection` off, the catalog is the site entry alone |
 | `getEntry(id)` | One entry, for `/projects/[id]` |
 | `getFeatured()` | Every entry (the home grid shows all of them) |
@@ -90,7 +90,7 @@ The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can ani
 7. **The tracker**, `section#tracker.pbody-tracker`, when the entry has a `tracker` (the site entry only):
    - the `h3` title and optional intro;
    - `<GanttChart chart>`, when the chart switch is on;
-   - when the table switch is on: the `tableNote`, then `TrackerTable`: a `.bp-table-key.bp-table-filter` segmented pill of `aria-pressed` buttons (All / 🟢 / 🟠 / 🔴 with the `statusKey` words and a row count each, default 🟢 received) and `<JobsTable columns rows singleLine>` of the rows whose Status cell matches, in a `data-native-scroll` wrapper (a "No applications here right now." note when none match).
+   - when the table switch is on: the `tableNote` when set (currently unset), then `TrackerTable`: a `.bp-table-key.bp-table-filter` segmented pill of `aria-pressed` buttons (All / 🟢 / 🟠 / 🔴 with the `statusKey` words and a row count each, default 🟢 received) and `<JobsTable columns rows singleLine>` of the rows whose Status cell matches, in a `data-native-scroll` wrapper (a "No applications here right now." note when none match).
 
    `/more-info` redirects to this anchor. See [[GanttChart JobsTable and gantt.ts]].
 

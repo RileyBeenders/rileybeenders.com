@@ -206,7 +206,7 @@ export function ProjectBody({ entry, today, paletteId, caseStudyOpen = false, mo
           {tracker.chart && <GanttChart chart={tracker.chart} />}
           {tracker.table && (
             <>
-              <p className="pbody-tracker-note">{tracker.tableNote}</p>
+              {tracker.tableNote && <p className="pbody-tracker-note">{tracker.tableNote}</p>}
               <TrackerTable tracker={tracker} />
             </>
           )}

@@ -910,7 +910,7 @@ export const SCHEMAS = {
           },
           { name: "title", type: "text", label: "Section title", required: true },
           { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." },
-          { name: "tableNote", type: "text", label: "Table note", required: true, help: "Above the table: what the gray rows mean." },
+          { name: "tableNote", type: "text", label: "Table note", help: "Optional line above the table." },
           {
             name: "statusKey",
             type: "group",
