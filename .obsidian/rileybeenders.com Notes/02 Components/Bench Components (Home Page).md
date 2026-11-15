@@ -75,7 +75,11 @@ Labels come from Studio: Navigation & labels → GitHub activity, and the headin
 
 ## `Stack.tsx`
 
-Server-safe. The four skill groups as tiles (`.stack-grid`, two columns, one under 760px). Each `section.card.stack-card.bp-skill-group` has a header (the `h3` category and a mono `.stack-count`) and the group's items as `.bp-pill`s. `skillTargets(group, data)` (`lib/skill-links.ts`) resolves the group's `links`, and a linked item renders as `<LinkedSkill>` with `page.linkedSkills` `border` / `reveal` / `labels` (today `orbit` / `card`). The `--k` beat counts across groups. The section heading is "Tech & hardware stack". Pill styles stay in `app/(site)/skill-pills.css`.
+Server-safe. Since 2026-11-15 it builds the Skills and Tools picker: one entry per non-empty group in `skills.json`, each with a colour `var(--grp-n)` by position (seven hues in `bench.css`, light and dark, repeating past seven), plus an **All** entry (`page.skillPicker.allLabel`) that lists every item once in group order, each item wearing its first group's colour. `allSkillTargets(data)` (`lib/skill-links.ts`) merges every group's `links` by item, so a link set in one group follows the item into all of them. It hands everything to `SkillPicker.tsx` (client).
+
+## `SkillPicker.tsx`
+
+One `.card.skills-box`: a solid header bar (`.skills-tabs`, a solid `color-mix(var(--ink) 7%, var(--white))` fill: a step darker than the tile in light mode, a step lighter in dark) of mono tabs, each a colour dot and the group name, wrapping rather than scrolling so every group stays in sight; then the panel. Nothing is open on load: the panel shows `page.skillPicker.hint` with an up arrow that nudges twice. Picking a tab (`aria-pressed`, `aria-controls` the panel) tints it in its colour (`layoutId` slide), the panel's height follows its content (ResizeObserver, 0.5s on `--ease`, clipped only while moving so a linked skill's hover card can spill out), and the pills rise in (8px, stagger `min(i,6) × 0.05`); picking the open tab closes it. Pills take the group colour as border and tint; linked ones render as `<LinkedSkill>` with `page.linkedSkills`. Print hides the box and shows `.skills-print`, every item once. Pill styles stay in `app/(site)/skill-pills.css`; the bar and colours are in `bench.css` under `stack`.
 
 ## `Education.tsx`
 

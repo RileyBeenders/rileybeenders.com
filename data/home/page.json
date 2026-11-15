@@ -22,7 +22,7 @@
   "headings": {
     "summary": "Who is Riley?",
     "experience": "Experience",
-    "skills": "Tech & hardware stack",
+    "skills": "Skills and Tools",
     "education": "Education",
     "activity": "GitHub activity",
     "projects": "Projects"
@@ -33,6 +33,11 @@
   "experience": {
     "moreLabel": "See more of my past",
     "lessLabel": "Show less"
+  },
+  "skillPicker": {
+    "allLabel": "All",
+    "hint": "Pick a group above to see the skills and tools in it.",
+    "label": "Skill groups"
   },
   "linkedSkills": {
     "border": "marks",

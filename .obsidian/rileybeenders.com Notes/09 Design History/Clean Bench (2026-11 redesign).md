@@ -56,7 +56,7 @@ The home page opens on a six-column `.bento`:
 | `.tile-site` | 3 | About this site, opening the dialog via `#project-rileybeenders-com` |
 | `.tile-contact` | 3 | Say hello, linking to `#contact` |
 
-At 980px the bento becomes two columns with the hero full width; at 640px, one column. Below it the resume reads at rest: Who is Riley, Experience (every role in one tile on a dated rail), Projects, the Tech & hardware stack, Education, Contact, the footer.
+At 980px the bento becomes two columns with the hero full width; at 640px, one column. Below it the resume reads at rest: Who is Riley, Experience (every role in one tile on a dated rail), Projects, Skills and Tools, Education, Contact, the footer.
 
 ### Morph, bloom and motion
 

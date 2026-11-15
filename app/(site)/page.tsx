@@ -225,7 +225,7 @@ export default async function HomePage() {
       <section className="shell sec" id="skills">
         <div className="sec-group">
           <Reveal><div className="sec-head"><h2 className="sec-title">{page.headings.skills}</h2></div></Reveal>
-          <Stack data={data} linkedSkills={page.linkedSkills} />
+          <Stack data={data} linkedSkills={page.linkedSkills} picker={page.skillPicker} />
         </div>
       </section>
 

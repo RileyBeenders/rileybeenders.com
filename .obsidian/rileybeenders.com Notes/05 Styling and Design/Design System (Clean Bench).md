@@ -102,7 +102,7 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 - **`.summary-grid` / `.facts`**: the summary and its fact tiles. Both sit inside one `.card.panel` with the "Who is Riley?" heading.
 - **`.roles` / `.role`**: the experience list in one tile, with a dated rail. `.bp-bullet-emphasis` phrases take the accent plus a hairline text stroke when their `li` is hovered.
 - **`.filters` / `.project-grid` / `.project-card`** and **`.dlg-*`**: the project tiles and the dialog they morph into. **`.pbody-*`** is the project body; **`.page-back` / `.page-nav`** frame a project's own page. See [[Project Catalog and Dialog]]. On the project page the body sits in a `.card.panel`, `.page-back` is a glass pill and the `.page-nav` links are `.card.card--hover` tiles; the footer is a `.card.footer-inner` tile.
-- **`.stack-grid` / `.stack-card`**, **`.edu-grid` / `.degree` / `.certs` / `.cert`**, **`.contact-card` / `.contact-ways` / `.form`**, and **`.footer` / `.footer-meta`** (Site, Updated, Based in in mono).
+- **`.skills-box` / `.skills-tabs` / `.skills-tab` / `.skills-body`** (the Skills and Tools tile, with the group hues `--grp-1` … `--grp-7`), **`.edu-grid` / `.degree` / `.certs` / `.cert`**, **`.contact-card` / `.contact-ways` / `.form`**, and **`.footer` / `.footer-meta`** (Site, Updated, Based in in mono).
 - **`.bp-table` / `.bp-table-key` / `.bp-gantt`**: the tracker. `tr.is-before-site` cells use `--faint`.
 - **`.bp-top` / `.bp-studio-link`**: the floating bottom-left and bottom-right pills (frosted white, `blur(10px)`, mono 10.5px uppercase).
 - **`html[data-lock] { overflow: hidden }`**: the dialog's scroll lock.

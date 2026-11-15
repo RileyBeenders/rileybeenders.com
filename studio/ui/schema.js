@@ -590,7 +590,7 @@ export const SCHEMAS = {
         always: true,
         // Each row's link picker writes `links` beside `items`: [{ skill, projectId | proofId }].
         linksName: "links",
-        help: "Link a skill to the project or proof that shows it, and on the home page it gets a link icon, a marked border and a card that opens on hover (Home page → Linked skills). A draft target is kept but not shown until it's published."
+        help: "Each group is a tab in the home page's Skills and Tools section. An item can sit in more than one group: type it the same way in each. Link a skill to the project or proof that shows it, and on the home page it gets a link icon, a marked border and a card that opens on hover (Home page → Linked skills); a link set in one group follows the item into every group it's in. A draft target is kept but not shown until it's published."
       }
     ]
   },
@@ -678,7 +678,7 @@ export const SCHEMAS = {
         fields: [
           { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
-          { name: "skills", type: "text", label: "Stack", required: true, span: "half", help: "The four skill groups, as cards of pills." },
+          { name: "skills", type: "text", label: "Skills and Tools", required: true, span: "half", help: "The skill groups, as a row of tabs that each open their pills." },
           { name: "education", type: "text", label: "Education", required: true, span: "half" },
           { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The GitHub tile on the bench, read from the GitHub profile in Site Settings → Person." },
           { name: "projects", type: "text", label: "Projects", required: true, span: "half", help: "The project grid on the home page." }
@@ -712,6 +712,17 @@ export const SCHEMAS = {
         fields: [
           { name: "moreLabel", type: "text", label: "Button, older roles hidden", span: "half", placeholder: "See more of my past", help: "The count of earlier roles is added after it." },
           { name: "lessLabel", type: "text", label: "Button, older roles shown", span: "half", placeholder: "Show less" }
+        ]
+      },
+      {
+        name: "skillPicker",
+        type: "group",
+        label: "Skills and Tools tabs",
+        help: "The Skills section shows one tab per group in Skills, plus an All tab that lists every item once. Nothing is open when the page loads: the hint sits under the tabs until a visitor picks one, and picking the open tab again closes it. Print lists every item once instead.",
+        fields: [
+          { name: "allLabel", type: "text", label: "All tab", span: "third", placeholder: "All" },
+          { name: "label", type: "text", label: "Tab row name (screen readers)", span: "third", placeholder: "Skill groups" },
+          { name: "hint", type: "text", label: "Hint before a tab is picked", placeholder: "Pick a group above to see the skills and tools in it." }
         ]
       },
       {

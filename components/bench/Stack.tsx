@@ -1,56 +1,51 @@
 import type { ResumeData } from "@/types/resume";
 import type { HomePageData } from "@/types/pages";
-import { Reveal } from "@/components/blueprint/Reveal";
-import { LinkedSkill } from "@/components/blueprint/LinkedSkill";
-import { skillTargets } from "@/lib/skill-links";
+import { allSkillTargets } from "@/lib/skill-links";
 import { ui } from "@/lib/copy";
+import { SkillPicker, type PickerGroup } from "@/components/bench/SkillPicker";
+
+/** How many group colours bench.css defines (--grp-1 … --grp-7); past that they repeat. */
+const GROUP_TONES = 7;
 
 type StackProps = {
   data: ResumeData;
   linkedSkills: HomePageData["linkedSkills"];
+  picker?: HomePageData["skillPicker"];
 };
 
 /**
- * The four skill groups as four cards: a heading and a count, then the
- * group's items as pills. A skill linked to a project in the Studio keeps
- * its LinkedSkill treatment (the marked border, the hover card, the Read
- * more that opens out of it).
+ * Skills and Tools: the skill groups as one bar of colour-coded tabs with an All tab at
+ * the end, and nothing open until the visitor picks one (a hint sits where the
+ * items will be). An item can be listed in several groups; All lists each one
+ * once, in group order. A skill linked to a project or proof in the Studio
+ * keeps its LinkedSkill treatment in every group it appears in.
  */
-export function Stack({ data, linkedSkills }: StackProps) {
-  let linkedIndex = 0;
+export function Stack({ data, linkedSkills, picker }: StackProps) {
+  const targets = Object.fromEntries(allSkillTargets(data));
+  const groups: PickerGroup[] = data.skills
+    .filter((group) => group.items.length > 0)
+    .map((group, index) => ({ label: group.category, items: group.items, tone: `var(--grp-${(index % GROUP_TONES) + 1})` }));
+  const all = [...new Set(groups.flatMap((group) => group.items))];
+  // In All, each item wears the colour of the first group it's in.
+  const toneOf: Record<string, string> = {};
+  for (const group of groups) for (const item of group.items) toneOf[item] ??= group.tone;
+  if (groups.length > 1) groups.push({ label: picker?.allLabel || "All", items: all, tone: "var(--accent)", all: true });
+
   return (
-    <div className="stack-grid">
-      {data.skills.map((group, index) => {
-        const targets = skillTargets(group, data);
-        return (
-          <Reveal key={group.category} delay={Math.min(index, 3) * 0.06}>
-            <section className="card stack-card bp-skill-group" aria-label={group.category}>
-              <header className="stack-head">
-                <h3>{group.category}</h3>
-                <span className="stack-count">{group.items.length}</span>
-              </header>
-              <div className="bp-pills">
-                {group.items.map((item) => {
-                  const target = targets.get(item);
-                  if (!target) return <span className="bp-pill" key={item}>{item}</span>;
-                  return (
-                    <LinkedSkill
-                      key={item}
-                      name={item}
-                      target={target}
-                      kindLabel={linkedSkills?.labels?.[target.kind] || (target.kind === "project" ? "Project" : "Proof")}
-                      border={linkedSkills?.border || "orbit"}
-                      reveal={linkedSkills?.reveal || "card"}
-                      readMoreLabel={ui.bulletReadMore}
-                      index={linkedIndex++}
-                    />
-                  );
-                })}
-              </div>
-            </section>
-          </Reveal>
-        );
-      })}
-    </div>
+    <SkillPicker
+      groups={groups}
+      everything={all}
+      toneOf={toneOf}
+      targets={targets}
+      pickerLabel={picker?.label || "Skill groups"}
+      hint={picker?.hint || "Pick a group above to see the skills and tools in it."}
+      kindLabels={{
+        project: linkedSkills?.labels?.project || "Project",
+        proof: linkedSkills?.labels?.proof || "Proof"
+      }}
+      border={linkedSkills?.border || "orbit"}
+      reveal={linkedSkills?.reveal || "card"}
+      readMoreLabel={ui.bulletReadMore}
+    />
   );
 }

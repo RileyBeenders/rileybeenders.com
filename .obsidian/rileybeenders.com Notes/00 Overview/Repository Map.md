@@ -65,7 +65,8 @@ components/
     HeroActions.tsx            # Download PDF (opens resumeHtmlPath in a new tab, else downloads the PDF) / Email / LinkedIn / GitHub
     GithubGraph.tsx            # the contribution calendar drawn from lib/github.ts, cells popping in column by column
     Experience.tsx             # roles on a timeline rail in one tile; emphasis phrases + Read more links; folds roles over 7 bullets after 6
-    Stack.tsx                  # the four skill groups as tiles of pills (LinkedSkill for linked ones)
+    Stack.tsx                  # Skills and Tools: builds the groups + All for SkillPicker
+    SkillPicker.tsx            # client: colour-coded tab bar + one panel of pills, closed at first
     Education.tsx              # the degree tile + a grid of certificate tiles
     ProjectGrid.tsx            # the project tiles + the dialog; #project-<id>[-case-study] hash routing; category filters (lib/categories.ts)
     ProjectCard.tsx            # one tile: cover (or monogram), type and "This site" tags, name, summary line, dates and photo count; exports MORPH + tileLayoutId
@@ -120,7 +121,7 @@ data/
     page.json                  # home meta, hero lines, summary link, section headings (incl. activity, projects), Read more and linked-skill styles, footer
     education.json             # degrees + certificates
     experience.json            # employment history with bullets (`emphasis` phrases; `projectId` kept for Read more, `proofId` stripped at merge)
-    skills.json                # 4 skill categories with optional links
+    skills.json                # 7 skill groups (an item may sit in several) with optional links
     summary.json               # the professional summary
   images/IcarusLiteRender.png  # source image (also duplicated into public/project-images)
   more-info/

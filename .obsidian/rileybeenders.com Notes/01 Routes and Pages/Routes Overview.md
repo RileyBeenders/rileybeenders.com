@@ -8,7 +8,7 @@ There are four page routes, all App Router server components in the `app/(site)/
 
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
-| `/` | `app/(site)/page.tsx` (async) | The resume in tiles: the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Tech & hardware stack, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
+| `/` | `app/(site)/page.tsx` (async) | The resume in tiles: the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Skills and Tools, Education, Contact, footer. ISR, hourly, because of the GitHub calendar | `page.json` `meta.title` (root and site layouts) |
 | `/projects` | `app/(site)/projects/page.tsx` | The catalog: a `ProjectGrid` of every published project plus the site entry, with category filters. A tile morphs into its [[Project Catalog and Dialog\|dialog]]. An empty-state block shows when the catalog is empty | `data/projects/page.json` `meta.title`, "Projects \| Riley Beenders" |
 | `/projects/[id]` | `app/(site)/projects/[id]/page.tsx` | One entry's `ProjectBody` on its own page, a back link to Projects, and previous/next links. Ids come from `generateStaticParams()` over `getCatalog()`. `dynamicParams = false`, so an unknown id is a 404 | "`<project name>` \| Riley Beenders" (`generateMetadata`; the description is the tagline or the summary's first paragraph) |
 | `/projects/rileybeenders-com` | (the above) | The site's own entry: summary, gallery, case study, the deep dive (stats, timeline, pillars, demos), and the application tracker at `#tracker`. See [[Site Project (About this site)]] | "RileyBeenders.com \| Riley Beenders" (the entry's name is `caseStudy.title`; its type, "About this site", is `hero.title`) |
@@ -56,7 +56,7 @@ An async server component. It reads `resumeData`, `data/home/page.json`, `getCat
 2. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact tiles: Experience (the current role), Education (the degree), Based in (the location, plus "Open to relocation"), and Site (the site link). Heading, paragraphs and facts sit in one `.card.panel` tile (2026-11-14); every other section heading is a `.card.sec-head` tile.
 3. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
 4. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
-5. **`#skills`, "Tech & hardware stack"**: `<Stack data linkedSkills />`.
+5. **`#skills`, "Skills and Tools"**: `<Stack data linkedSkills picker />` (the tab bar of groups; see [[Bench Components (Home Page)]]).
 6. **`#education`**: `<Education />`.
 7. **`#contact`**: `<ContactBlock person relocation />`.
 8. `<SiteFooter location />` and `<BackToTop />`.

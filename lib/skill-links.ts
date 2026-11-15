@@ -56,3 +56,18 @@ export function skillTargets(group: SkillGroup, data: ResumeData): Map<string, S
 
   return targets;
 }
+
+/**
+ * Every group's links in one map, keyed by item. An item can sit in more than
+ * one group (Skills and Tools on the home page), so a link set on it in any
+ * group follows it into all of them; the first group to link it wins.
+ */
+export function allSkillTargets(data: ResumeData): Map<string, SkillTarget> {
+  const targets = new Map<string, SkillTarget>();
+  for (const group of data.skills) {
+    for (const [item, target] of skillTargets(group, data)) {
+      if (!targets.has(item)) targets.set(item, target);
+    }
+  }
+  return targets;
+}

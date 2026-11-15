@@ -75,6 +75,15 @@ export type HomePageData = {
     moreLabel?: string;
     lessLabel?: string;
   };
+  /**
+   * The Skills and Tools section's group tabs: the All tab's word, the hint
+   * shown before a group is picked, and the tab row's name for screen readers.
+   */
+  skillPicker?: {
+    allLabel?: string;
+    hint?: string;
+    label?: string;
+  };
   /** Skills linked to a project or proof (Skills → Links to) in the Skills section. */
   linkedSkills: {
     border: LinkedSkillBorder;

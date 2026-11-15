@@ -982,11 +982,85 @@ html[data-theme="dark"] .bp {
 .bp .ft-stat, .bp .ft-pillar, .bp .ft-backend-item, .bp .ft-shot, .bp .wt-main, .bp .wt-stop, .bp .pj-proof-assets figure, .bp .ft-demo { border-radius: var(--r); }
 
 /* -------------------------------------------------------------- stack --- */
-.stack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.stack-card { padding: 18px 20px 20px; }
-.stack-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-.stack-head h3 { font-size: 18px; letter-spacing: -0.015em; }
-.stack-count { font-family: var(--mono), monospace; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+/* Skills and Tools (SkillPicker.tsx): one bar of mono tabs, each group with
+   its own colour (--grp-1 … --grp-7, set per tab and per pill as --grp), the
+   picked tab tinted in it, and one tile of pills under it in the same colour.
+   Nothing is picked at first, so the panel holds a quiet hint instead. */
+.bp {
+  --grp-1: #0b7fb0; --grp-2: #b26a0a; --grp-3: #7247d1; --grp-4: #0c8a7f;
+  --grp-5: #c94f22; --grp-6: #3f8a2a; --grp-7: #b8367a;
+}
+html[data-theme="dark"] .bp {
+  --grp-1: #5cc4f0; --grp-2: #f0b24f; --grp-3: #b39bff; --grp-4: #4fd1c5;
+  --grp-5: #ff8d62; --grp-6: #86d46f; --grp-7: #f27ab8;
+}
+/* One tile: the solid header bar of tabs on top (a step darker than the tile
+   in light mode, a step lighter in dark), the pills or the hint under it. The
+   tabs wrap rather than scroll, so every group is always in sight. */
+.skills-box { padding: 0; }
+.skills-tabs {
+  --bar-ink: var(--ink);
+  --bar-muted: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  padding: 7px clamp(8px, 1.4vw, 14px);
+  border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) - 1px) calc(var(--r-lg) - 1px) 0 0;
+  background: color-mix(in srgb, var(--ink) 7%, var(--white));
+}
+.bp .skills-tab {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bar-muted);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.bp .skills-tab:hover, .bp .skills-tab.is-active { color: var(--bar-ink); }
+.skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
+.skills-tab > :not(.skills-tab-mark) { position: relative; }
+.skills-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grp); flex: none; }
+.skills-tab--all .skills-tab-dot { background: none; box-shadow: inset 0 0 0 1.5px currentColor; }
+.skills-tab-mark {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--grp) 16%, var(--white));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--grp) 45%, transparent);
+}
+.bp .skills-pills .bp-pill { border-color: color-mix(in srgb, var(--grp) 34%, var(--line)); background: color-mix(in srgb, var(--grp) 7%, var(--paper)); }
+.bp .skills-pills .bp-pill:is(:hover, :focus-within) { border-color: var(--grp); }
+.skills-panel { overflow: visible; }
+.skills-panel.is-moving { overflow: hidden; }
+.skills-body { padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px); }
+.skills-pills { list-style: none; margin: 0; padding: 0; }
+.skills-pills > li { display: flex; }
+.skills-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 16px clamp(18px, 2.4vw, 26px);
+  font-family: var(--mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.skills-hint svg { flex: none; color: var(--accent); animation: skills-nudge 2.4s var(--ease) 1s 2; }
+@keyframes skills-nudge { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-3px); } }
+.skills-print { display: none; }
 .bp-pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .bp .bp-pill {
   padding: 7px 13px;
@@ -1191,7 +1265,6 @@ html[data-theme="dark"] .bp {
   .role-when { padding-top: 0; }
   .role-dates b { display: inline; }
   .role-dates b::after { content: " · "; color: var(--muted); font-weight: 400; }
-  .stack-grid { grid-template-columns: 1fr; }
   .certs { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-copy { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -1212,7 +1285,9 @@ html[data-theme="dark"] .bp {
   .roles-rest[hidden] { display: block !important; }
   .bp .roles-more { display: none; }
   .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
-  .role, .cert, .degree, .stack-card { break-inside: avoid; }
+  .role, .cert, .degree { break-inside: avoid; }
+  .skills-box { display: none !important; }
+  .skills-print { display: flex; flex-wrap: wrap; gap: 6px; }
   .bp-bullet-link { display: none; }
 }
 
