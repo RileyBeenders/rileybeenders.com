@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Maximize2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { CatalogEntry } from "@/lib/catalog";
 import { BpMark } from "@/components/blueprint/BpMark";
@@ -106,6 +107,11 @@ export function ProjectCard({ entry, index, onOpen }: ProjectCardProps) {
             </div>
           </div>
         </button>
+        {/* A sibling of the tile's button (a link can't nest inside it), laid over the cover's top-right corner. */}
+        <Link className="project-card-full" href={`/projects/${project.id}`} suppressHydrationWarning>
+          <Maximize2 size={12} strokeWidth={2} aria-hidden="true" />
+          <span>{ui.projects.viewFullscreen}</span>
+        </Link>
       </motion.article>
     </motion.div>
   );

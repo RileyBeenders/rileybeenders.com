@@ -1065,6 +1065,7 @@ export const SCHEMAS = {
         help: "The grid of project cards and the box a card opens into.",
         fields: [
           { name: "openFull", type: "text", label: "Open full page", required: true, span: "third", help: "The dialog's link to the project's own page." },
+          { name: "viewFullscreen", type: "text", label: "View fullscreen", required: true, span: "third", help: "The button over a card's cover on hover; it opens the project's own page instead of the dialog." },
           { name: "close", type: "text", label: "Close", required: true, span: "third" },
           { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
           { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },

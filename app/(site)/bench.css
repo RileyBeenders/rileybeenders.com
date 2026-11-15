@@ -850,6 +850,37 @@ html[data-theme="dark"] .bp {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* "View Fullscreen": over the cover's bottom-right corner (clear of the type tag), shown on hover or keyboard
+   focus; always shown on touch. The tile is a size container so the link can find the 16:10 cover's foot. */
+.project-tile { position: relative; container-type: inline-size; }
+.project-card-full {
+  position: absolute;
+  top: calc(10px + 100cqw * 0.625 - 36px);
+  right: 20px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 84%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  font-family: var(--mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.project-tile:hover .project-card-full,
+.project-card-full:focus-visible { opacity: 1; transform: none; }
+.project-card-full:hover { background: var(--accent-fill); color: var(--on-accent); border-color: transparent; }
+@media (hover: none) { .project-card-full { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .project-card-full { transform: none; } }
 .project-card-badge { background: var(--accent-fill); color: var(--on-accent); border-color: transparent; }
 .project-card-body { display: grid; gap: 6px; padding: 14px 10px 8px; flex: 1; }
 .project-card h3 { font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; }

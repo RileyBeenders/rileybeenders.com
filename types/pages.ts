@@ -141,6 +141,8 @@ export type InterfaceData = {
   projects: {
     /** The link from the dialog to the project's own page. */
     openFull: string;
+    /** The button that appears over a project card's cover on hover and goes straight to the project's own page. */
+    viewFullscreen: string;
     close: string;
     /** From the home page's grid to /projects. */
     viewAll: string;
