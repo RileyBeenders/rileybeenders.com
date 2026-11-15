@@ -1155,7 +1155,7 @@ html[data-theme="dark"] .bp {
 .cert h4 { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-size: 16px; line-height: 1.25; letter-spacing: -0.01em; }
 .cert-issuer { font-size: 13.5px; color: var(--ink-soft); }
 .cert-date { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.cert .bp-link { margin-top: 6px; font-size: 13px; }
+.cert .bp-link { margin-top: 6px; font-size: 13px; justify-self: end; }
 
 /* ------------------------------------------------------------ contact --- */
 .contact-card { overflow: hidden; }

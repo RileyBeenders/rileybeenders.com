@@ -86,7 +86,7 @@ One `.card.skills-box`: a solid header bar (`.skills-tabs`, a solid `color-mix(v
 Server-safe. An `.edu-grid` (1.1fr : 2fr, one column under 980px):
 
 - **Degree.** The first `article.card.degree` has a lucide `GraduationCap` in the accent, the school, the degree and the graduation date.
-- **Certificates.** A `.certs` grid of `article.card.card--hover.cert` (name, issuer, date, and an optional `.bp-link` "Show credential" to `credentialUrl`), each in a `Reveal` staggered 0.05s, capped at five steps.
+- **Certificates.** A `.certs` grid of `article.card.card--hover.cert` (name, issuer, date, and an optional `.bp-link` "Show credential" to `credentialUrl`, right-aligned in the card with `justify-self: end`), each in a `Reveal` staggered 0.05s, capped at five steps.
 
 ## `ContactBlock.tsx` + `ContactForm.tsx`
 
