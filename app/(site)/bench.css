@@ -1033,7 +1033,7 @@ html[data-theme="dark"] .bp {
 .skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
 .skills-tab > :not(.skills-tab-mark) { position: relative; }
 .skills-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grp); flex: none; }
-.skills-tab--all .skills-tab-dot { background: none; box-shadow: inset 0 0 0 1.5px currentColor; }
+.skills-tab--all .skills-tab-dot { background: none; border: 1.5px solid currentColor; }
 .skills-tab-mark {
   position: absolute;
   inset: 0;
@@ -1050,8 +1050,9 @@ html[data-theme="dark"] .bp {
 .skills-pills > li { display: flex; }
 .skills-hint {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   justify-content: center;
   text-align: center;
@@ -1062,8 +1063,23 @@ html[data-theme="dark"] .bp {
   letter-spacing: 0.04em;
   color: var(--muted);
 }
-.skills-hint svg { flex: none; color: var(--accent); animation: skills-nudge 2.4s var(--ease) 1s 2; }
-@keyframes skills-nudge { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-3px); } }
+/* The "pick one" cue, on while .skills-box[data-cue] (nothing picked, on screen):
+   the double chevron climbs toward the bar, lower stroke then upper, and a
+   wave runs along the tab dots, each swelling in its own colour, then rests. */
+.skills-hint-arrow { flex: none; color: var(--accent); }
+.skills-hint-arrow path { opacity: 0.35; }
+.skills-box[data-cue] .skills-hint-arrow path { animation: skills-climb 2.2s var(--ease) infinite; }
+.skills-box[data-cue] .skills-hint-arrow path:first-child { animation-delay: 0.16s; }
+@keyframes skills-climb {
+  0% { opacity: 0.35; transform: translateY(3px); }
+  28% { opacity: 1; transform: translateY(-1px); }
+  60%, 100% { opacity: 0.35; transform: translateY(-3px); }
+}
+.skills-box[data-cue] .skills-tab-dot { animation: skills-dot 4.4s var(--ease) infinite; animation-delay: calc(0.5s + var(--i, 0) * 0.11s); }
+@keyframes skills-dot {
+  0%, 20%, 100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+  8% { transform: scale(1.6); box-shadow: 0 0 0 4px color-mix(in srgb, var(--grp) 22%, transparent); }
+}
 .skills-print { display: none; }
 .bp-pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .bp .bp-pill {
@@ -1362,4 +1378,5 @@ html[data-theme="dark"] .bp {
   .bp-mark--animated [data-chase] { stroke-dasharray: none !important; }
   .activity-cell { opacity: 1; transform: none; }
   .soon-line::after { display: none; }
+  .skills-hint-arrow path { opacity: 1; }
 }

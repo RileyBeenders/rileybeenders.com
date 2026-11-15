@@ -1,8 +1,7 @@
 "use client";
 
 import { useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUp } from "lucide-react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { LinkedSkill } from "@/components/blueprint/LinkedSkill";
 import type { SkillTarget } from "@/lib/skill-links";
 import type { LinkedSkillBorder, LinkedSkillReveal } from "@/types/pages";
@@ -51,6 +50,11 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
   const [moving, setMoving] = useState(false);
   const inner = useRef<HTMLDivElement>(null);
   const panelId = useId();
+  const box = useRef<HTMLDivElement>(null);
+  const inView = useInView(box, { amount: 0.35 });
+  // The "pick one" cue (the climbing arrow and the wave across the tab dots)
+  // only runs while nothing is picked and the section is on screen.
+  const cue = active === null && inView && !reduced;
 
   useLayoutEffect(() => {
     const node = inner.current;
@@ -83,7 +87,7 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
 
   return (
     <div className="skills">
-      <div className="card skills-box">
+      <div className="card skills-box" ref={box} data-cue={cue ? "" : undefined}>
       <div className="skills-tabs" role="group" aria-label={pickerLabel}>
         {groups.map((entry, index) => {
           const on = index === active;
@@ -97,7 +101,7 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
               onClick={() => {
                 setActive(on ? null : index);
               }}
-              style={{ "--grp": entry.tone } as CSSProperties}
+              style={{ "--grp": entry.tone, "--i": index } as CSSProperties}
             >
               {on && (reduced
                 ? <span className="skills-tab-mark" aria-hidden="true" />
@@ -127,7 +131,10 @@ export function SkillPicker({ groups, everything, toneOf, targets, pickerLabel, 
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, ease: EASE }}
             >
-              <ArrowUp size={14} strokeWidth={2} aria-hidden="true" />
+              <svg className="skills-hint-arrow" width="20" height="24" viewBox="0 0 20 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M4 10l6-6 6 6" />
+                <path d="M4 19l6-6 6 6" />
+              </svg>
               <span>{hint}</span>
             </motion.p>
           ) : (
