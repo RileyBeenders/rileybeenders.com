@@ -1025,6 +1025,10 @@ html[data-theme="dark"] .bp {
 .bp .skills-tab.is-active { font-weight: 600; }
 .skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
 .skills-tab > :not(.skills-tab-mark) { position: relative; }
+/* On /projects the bar has five tabs, not eight, so its words run larger. */
+.bp .project-box .skills-tab { font-size: 13px; gap: 8px; padding: 10px 12px; }
+.project-box .skills-tab-mark { left: 12px; right: 12px; }
+.project-box .skills-tab-dot { width: 8px; height: 8px; }
 .skills-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grp); flex: none; }
 .skills-tab--all .skills-tab-dot { background: none; border: 1.5px solid currentColor; }
 /* The picked tab: its name in full ink (black in light mode, white in dark)
