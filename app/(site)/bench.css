@@ -815,11 +815,17 @@ html[data-theme="dark"] .bp {
 .filter:hover { color: var(--ink); transform: translateY(-1px); }
 .filter.is-active { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
 
+/* Tiles are a third of the row (half under 980px, full under 760px) in a
+   centred, wrapping row, so a short last row, or a filter that leaves a
+   single project, sits in the middle under the heading instead of the left. */
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  --cols: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--gap);
 }
+.project-grid > * { flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols)); min-width: 0; }
 .project-tile { padding: 10px; }
 .project-card { display: flex; flex-direction: column; cursor: pointer; text-align: left; padding: 0; width: 100%; color: inherit; }
 .project-card--site { border-color: color-mix(in srgb, var(--accent) 34%, var(--line)); }
@@ -1374,7 +1380,7 @@ html[data-theme="dark"] .bp {
   .tile-hero { grid-column: 1 / -1; grid-row: auto; }
   .tile-now, .tile-where, .tile-edu, .tile-site, .tile-contact { grid-column: span 1; }
   .tile-edu { grid-column: 1 / -1; }
-  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-grid { --cols: 2; }
   .summary-grid { grid-template-columns: 1fr; }
   .facts { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
   .edu-grid { grid-template-columns: 1fr; }
@@ -1396,7 +1402,7 @@ html[data-theme="dark"] .bp {
   .contact-grid { grid-template-columns: 1fr; }
   .contact-copy { border-right: 0; border-bottom: 1px solid var(--line); }
   .form-row { grid-template-columns: 1fr; }
-  .project-grid { grid-template-columns: 1fr; }
+  .project-grid { --cols: 1; }
   .dlg-wrap { padding: 0; align-items: end; }
   .dlg { max-height: 96vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
   .footer-meta { flex-direction: column; gap: 6px; }

@@ -34,7 +34,7 @@ Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB
 `"use client"`. Props: `entries`, `today` (ISO, from the server), `paletteId`, `filters?` (the `/projects` chips), `viewAllHref?` (the home page's "View all projects" `.btn`).
 
 - **Filters.** "All" (`ui.projects.all`) plus one `.filter` chip per distinct `type`, shown only when there are two or more types. The active chip is filled with `--accent-fill`. Choosing the active chip again clears it.
-- **Grid.** `.project-grid` has three columns, two under 980px and one under 760px. It renders one `ProjectCard` per shown entry.
+- **Grid.** `.project-grid` is a centred, wrapping flex row of tiles a third wide (`--cols` 3, 2 under 980px, 1 under 760px), so since 2026-11-15 a short last row, or a filter that leaves one project, sits centred under the heading. It renders one `ProjectCard` per shown entry.
 - **Hash routing.** Which project is open lives in the URL hash: `#project-<id>`, plus `-case-study` to open the case study too (`/^#project-([a-z0-9-]+?)(-case-study)?$/i`).
   - It reads the hash on mount and on `hashchange` and `popstate`, so the resume's Read more links (`/projects#project-<id>`), linked skills (`#project-<id>-case-study` for a proof), a shared link, and the browser's back button all work.
   - Opening `pushState`s the hash. Closing `pushState`s the bare path.
