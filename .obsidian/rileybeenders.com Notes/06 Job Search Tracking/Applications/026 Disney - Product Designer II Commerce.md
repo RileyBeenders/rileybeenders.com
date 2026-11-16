@@ -4,7 +4,7 @@ Company: "Disney Entertainment and ESPN Product & Technology"
 Role: "Product Designer II (Commerce)"
 JobID: "026"
 Date Applied: 2026-11-07
-Status: "Application Received"
+Status: "No longer in consideration (Declined on the Disney careers site, seen Nov 15, 2026)"
 PDF Referenced: "https://github.com/RileyBeenders/rileybeenders.com/blob/applications/Nov7/2.JobsApplliedTo/026_Product%20Designer%20II%20(Commerce)%20in%20New%20York%2C%20New%20York%2C%20United%20States%20of%20America%20with%20The%20Walt%20Disney%20Company%20_%20Disney%20Careers.pdf"
 ---
 
@@ -64,9 +64,9 @@ Not stated in the posting.
 - **Gaps:** no professional product-design title or design portfolio of consumer UX at scale; no Figma; no A/B or multivariate testing, usability testing, or design research on the record; no WCAG audit; no commerce, subscription, or growth work; no living-room device design; no mentoring of designers. No design degree or certification (the B.S. is Electro-Mechanical Engineering). These were kept out of the resume, which frames the evidence as engineering-led product design.
 - **Fit:** a stretch; the "3+ years of product design" and Figma requirements are the likeliest screen-outs.
 
-### Now — Nov 7, 2026
+### Now — Nov 15, 2026
 
-Nothing has changed since the application.
+Marked "Declined" on the Disney careers site, seen Nov 15, 2026; the date Disney made the decision is not known. No interview took place.
 
 ---
 
