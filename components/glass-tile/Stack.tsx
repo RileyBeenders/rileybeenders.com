@@ -2,9 +2,9 @@ import type { ResumeData } from "@/types/resume";
 import type { HomePageData } from "@/types/pages";
 import { allSkillTargets } from "@/lib/skill-links";
 import { ui } from "@/lib/copy";
-import { SkillPicker, type PickerGroup } from "@/components/bench/SkillPicker";
+import { SkillPicker, type PickerGroup } from "@/components/glass-tile/SkillPicker";
 
-/** How many group colours bench.css defines (--grp-1 … --grp-7); past that they repeat. */
+/** How many group colours glass-tile.css defines (--grp-1 … --grp-7); past that they repeat. */
 const GROUP_TONES = 7;
 
 type StackProps = {

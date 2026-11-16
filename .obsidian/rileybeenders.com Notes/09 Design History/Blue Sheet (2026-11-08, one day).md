@@ -6,7 +6,7 @@ tags: [history, design, styling, architecture, redesign]
 
 **Blue Sheet** was the site's design for one day. On **2026-11-07** Riley asked for a complete fresh UI makeover that kept the same data, the same wording and the same site function. It was built overnight on **2026-11-08** on the branch `design/UI_Refresh` and replaced [[Blueprint Press (2026-08 to 2026-11)|Blueprint Press]], which had been the design since 2026-08-27.
 
-It was meant for the coming application season, to run first as **beta.rileybeenders.com** off this branch. It was committed as `8d75e07` ("Redesign the site as Blue Sheet with projects dialog and contact form"), where its `DESIGN.md` (name: Blue Sheet), `app/(site)/sheet.css` and `components/sheet/` can still be read. On **2026-11-09** it was replaced by [[Clean Bench (2026-11 redesign)|Clean Bench]] before it ever went live; see **Replaced the next day** at the end of this note. Everything below describes Blue Sheet as it was built; the current system is [[Design System (Clean Bench)]].
+It was meant for the coming application season, to run first as **beta.rileybeenders.com** off this branch. It was committed as `8d75e07` ("Redesign the site as Blue Sheet with projects dialog and contact form"), where its `DESIGN.md` (name: Blue Sheet), `app/(site)/sheet.css` and `components/sheet/` can still be read. On **2026-11-09** it was replaced by [[Glass Tile (2026-11 redesign)|Glass Tile]] before it ever went live; see **Replaced the next day** at the end of this note. Everything below describes Blue Sheet as it was built; the current system is [[Design System (Glass Tile)]].
 
 ## Why: the brief and the reference sites
 
@@ -29,7 +29,7 @@ The constraints from `PRODUCT.md` held throughout. The page reads as the resume 
 
 ### The look
 
-A cool blue-white drafting sheet (`#f4f7fd`) with a faint blueprint grid at the top that dissolves as the page scrolls. On screens 1000px and wider the content sits inside a dashed cut line with `+` registration marks (`.sheet-frame`). Everything sits in rounded cards (radii 10 / 16 / 24 / 30px) with quiet ink-tinted shadows. One blue does five jobs: `tint`, `accent-soft`, `accent`, `accent-fill` and `glow`. Headings are Instrument Serif, body text is **Inter** (it was Spectral), and dates, counts and tags are IBM Plex Mono. In dark mode the sheet goes near-black navy (`#070b15`) and the ink lifts to pale blue-white. The accent lightens for text (`#6a93ff`), but every fill cuts deeper (`--accent-fill`, the accent mixed 30% toward black: `#4a67b3`). Detail in [[Design System (Clean Bench)]].
+A cool blue-white drafting sheet (`#f4f7fd`) with a faint blueprint grid at the top that dissolves as the page scrolls. On screens 1000px and wider the content sits inside a dashed cut line with `+` registration marks (`.sheet-frame`). Everything sits in rounded cards (radii 10 / 16 / 24 / 30px) with quiet ink-tinted shadows. One blue does five jobs: `tint`, `accent-soft`, `accent`, `accent-fill` and `glow`. Headings are Instrument Serif, body text is **Inter** (it was Spectral), and dates, counts and tags are IBM Plex Mono. In dark mode the sheet goes near-black navy (`#070b15`) and the ink lifts to pale blue-white. The accent lightens for text (`#6a93ff`), but every fill cuts deeper (`--accent-fill`, the accent mixed 30% toward black: `#4a67b3`). Detail in [[Design System (Glass Tile)]].
 
 - `app/(site)/sheet.css` (1,120 lines) replaces `app/(site)/blueprint.css` (deleted). The token names are unchanged (`--paper --white --ink --ink-soft --muted --faint --rule --accent --blue --prose --pill-text --on-accent`), so `bullet-link.css`, `skill-pills.css` and `projects/*.css` follow the palette untouched. Four tokens are new: `--tint`, `--accent-soft`, `--accent-fill` and `--glow`.
 - `lib/palette.ts` gained `isDarkPalette()` and `deriveSheetTokens()`, and `derivePaletteTokens()` spreads the latter, so every preset and the custom palette carry the four new tokens. `lib/palettes.ts` gained the `blue-sheet` preset. Light seeds: paper `#f4f7fd`, white `#ffffff`, ink `#0d182c`, accent `#2457e6`, blue `#173ea8`. Dark seeds: `#070b15`, `#0e1627`, `#e8eefb`, `#6a93ff`, `#9db9ff`. The hand-tuned Default preset now runs its base through `deriveSheetTokens()` too. There are eleven presets: default, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose and slate.
@@ -62,7 +62,7 @@ In order, top to bottom:
 6. **Tech & hardware stack**: four skill-group cards of pills. `LinkedSkill` is kept.
 7. **Education**, then the contact block (the ways in, plus `ContactForm`), the `SiteFooter` title block, and `BackToTop`.
 
-The relocation badge, the hero ribbon and the page spine are gone. Components in [[Bench Components (Home Page)]].
+The relocation badge, the hero ribbon and the page spine are gone. Components in [[Glass Tile Components (Home Page)]].
 
 ### Projects
 
@@ -190,23 +190,23 @@ Pipeline detail in [[Resume PDF Pipeline]].
 
 On **2026-11-09** Riley reviewed Blue Sheet and asked to drop the blueprint feel entirely, for something new and refreshing. The drafting language (the grid, the dashed cut line with `+` marks, the drawn construction-line cover, the serif headings, the sheet / revision / drawn-in title block) read as one more blueprint after Blueprint Press, not as a fresh start.
 
-A direction board of six directions was built, and Riley chose **Clean Bench**: an Apple-style bento where everything is a tile, with a hint of **Soft Bloom** (a soft blue bloom behind the top of the page and a frosted glass nav) and the **Signal Bench** monospace, Azeret Mono, for small labels. The story continues in [[Clean Bench (2026-11 redesign)]].
+A direction board of six directions was built, and Riley chose **Glass Tile**: an Apple-style bento where everything is a tile, with a hint of **Soft Bloom** (a soft blue bloom behind the top of the page and a frosted glass nav) and the **Signal Bench** monospace, Azeret Mono, for small labels. The story continues in [[Glass Tile (2026-11 redesign)]].
 
 What Blue Sheet left behind:
 
-- **Kept by Clean Bench.** The structure it introduced: Home · Projects · Contact, the project catalog with the dialog and `/projects/[id]` pages addressed by `#project-<id>`, the site's own entry with the tracker, the GitHub calendar, the message form through Resend with the mailto fallback, `SmoothScroll`, `CursorMark`, the four accent-derived tokens (`--tint`, `--accent-soft`, `--accent-fill`, `--glow`) and the deeper-in-the-dark fills.
-- **Removed.** `app/(site)/sheet.css` became `app/(site)/bench.css` (fully rewritten), `components/sheet/` became `components/bench/`, `HeroCover.tsx` was deleted, `.sheet-frame` became `.page`, and `[data-sheet-portal]` became `[data-bench-portal]`. The footer's `sheetLabel` / `sheetLink` / `revisionLabel` keys became `siteLabel` / `siteLink` / `updatedLabel`.
-- **Still selectable.** The `blue-sheet` palette preset stays in `lib/palettes.ts` and the Studio, so the drafting-sheet colours can be put back on the bench at any time.
+- **Kept by Glass Tile.** The structure it introduced: Home · Projects · Contact, the project catalog with the dialog and `/projects/[id]` pages addressed by `#project-<id>`, the site's own entry with the tracker, the GitHub calendar, the message form through Resend with the mailto fallback, `SmoothScroll`, `CursorMark`, the four accent-derived tokens (`--tint`, `--accent-soft`, `--accent-fill`, `--glow`) and the deeper-in-the-dark fills.
+- **Removed.** `app/(site)/sheet.css` became `app/(site)/glass-tile.css` (fully rewritten), `components/sheet/` became `components/glass-tile/`, `HeroCover.tsx` was deleted, `.sheet-frame` became `.page`, and `[data-sheet-portal]` became `[data-glass-portal]`. The footer's `sheetLabel` / `sheetLink` / `revisionLabel` keys became `siteLabel` / `siteLink` / `updatedLabel`.
+- **Still selectable.** The `blue-sheet` palette preset stays in `lib/palettes.ts` and the Studio, so the drafting-sheet colours can be put back on the tiles at any time.
 - **On the timeline.** The About this site timeline keeps it as a past entry, "Blue Sheet: one day as a drafting sheet" (2026-11-08).
 
 ## Related
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Blueprint Press (2026-08 to 2026-11)]]
-- [[Design System (Clean Bench)]]
+- [[Design System (Glass Tile)]]
 - [[Routes Overview]]
 - [[Project Catalog and Dialog]]
 - [[Site Project (About this site)]]
-- [[Bench Components (Home Page)]]
+- [[Glass Tile Components (Home Page)]]
 - [[Resume PDF Pipeline]]
 - [[Impeccable Design Workflow]]
 - [[Home]]

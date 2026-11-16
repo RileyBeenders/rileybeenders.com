@@ -10,7 +10,7 @@ The site documents itself as one entry in its own project catalog. The entry is 
 - An agent procedure, `site-timeline-sync`, keeps its numbers and timeline current, automatically after every push to `main` through a GitHub Actions workflow (see [[Build Tooling and Config]]).
 - At its foot sits the **job-application tracker** (`#tracker`).
 
-Until the Blue Sheet redesign of 2026-11-08 (whose structure Clean Bench kept) this was the `/about-this-site` page (added 2026-09-17), with its own nav tab, layout and `AboutSiteStory` component, and the tracker was section 03 of `/more-info`. Both routes now redirect here (see [[Routes Overview]]). The old page is described in [[Blueprint Press (2026-08 to 2026-11)]]. This note was **About This Site Page** before the redesign.
+Until the Blue Sheet redesign of 2026-11-08 (whose structure Glass Tile kept) this was the `/about-this-site` page (added 2026-09-17), with its own nav tab, layout and `AboutSiteStory` component, and the tracker was section 03 of `/more-info`. Both routes now redirect here (see [[Routes Overview]]). The old page is described in [[Blueprint Press (2026-08 to 2026-11)]]. This note was **About This Site Page** before the redesign.
 
 ## How the entry is built: `lib/catalog.ts`
 
@@ -57,7 +57,7 @@ In the dialog both sit inside the scrolling `.dlg-body`. On `/projects/rileybeen
 | Pillars | `feature/FeaturePillars.tsx` | Three hairline cards (`title` as an `h3`, the first paragraph at rest, "Read more" opening the rest with an `AnimatePresence` height-auto). A 16:9 screenshot thumbnail on top opens the viewer. `.bp-spot` on hover, a 70ms stagger, one column under 860px. |
 | Behind the site | `feature/FeatureBackend.tsx` | One row per backend tool (`feature.backend.items`): a live replica on one side, the notes (an `h3`, paragraphs, a hairline list) on the other, sides alternating. Stacked under 860px. |
 
-`feature.css` keeps its own 860px breakpoint for these blocks; the Clean Bench shell breaks at 980/760/640.
+`feature.css` keeps its own 860px breakpoint for these blocks; the Glass Tile shell breaks at 980/760/640.
 
 ### The demos: `feature/demos/`
 
@@ -100,7 +100,7 @@ Every screenshot has a light capture (`src`) and a dark one (`srcDark`). `Themed
 | `lib/dates.ts` | `isIsoDate`, `parseIsoDate` (UTC), `formatDate`, `daysBetween`, `todayIso`. |
 | `lib/useInViewOnce.ts` / `lib/useSpotlight.ts` | The once-only in-view hook and the `--sx/--sy` cursor wash. |
 | `lib/site.ts` | `REPO_URL`, for commit links and the entry's GitHub button. |
-| `scripts/capture-site-screenshots.mjs` | Recaptures the entry's screenshots with `playwright-core` (the machine's Chrome/Edge) at 1440×900 @2x, each in **both** themes via the real toggles. The shots are the home hero, the full home page, `/projects` (scrolled to `.project-grid`), the timeline on `/projects/rileybeenders-com` (`.pbody .tl`), and the Studio with this entry open, written as `<name>-light.png` / `<name>-dark.png` into `public/project-images/rileybeenders-com/`. It needs `npm run site` (the Studio shots are skipped if :3001 is down), and it hides the dev badge and the Edit in Studio control. The 2026-11-09 run retook every capture, the `studio-*` pair included, for Clean Bench. |
+| `scripts/capture-site-screenshots.mjs` | Recaptures the entry's screenshots with `playwright-core` (the machine's Chrome/Edge) at 1440×900 @2x, each in **both** themes via the real toggles. The shots are the home hero, the full home page, `/projects` (scrolled to `.project-grid`), the timeline on `/projects/rileybeenders-com` (`.pbody .tl`), and the Studio with this entry open, written as `<name>-light.png` / `<name>-dark.png` into `public/project-images/rileybeenders-com/`. It needs `npm run site` (the Studio shots are skipped if :3001 is down), and it hides the dev badge and the Edit in Studio control. The 2026-11-09 run retook every capture, the `studio-*` pair included, for Glass Tile. |
 | `scripts/site-stats.mjs` | Computes the six stats from git and the repo, and lists commits since the last hashed timeline entry with key-commit candidates. `--write` refreshes the stats in the data file. |
 | `scripts/check-about-site.mjs` | Validates the data file (dates in order, known eras, at most one `present`, real hashes, resolvable connectors and `screenshotId`s, the six stats). It exits 1 with a list on failure. It runs before committing, and in the workflow. |
 
@@ -110,20 +110,29 @@ The shape is `types/about-site.ts` → `AboutSiteData`: `meta`, `hero { title, t
 
 As of 2026-11-09:
 
-- **The timeline** holds 27 entries: 25 past (the last, "Blue Sheet: one day as a drafting sheet", 2026-11-08), 1 present ("Clean Bench: everything is a tile", 2026-11-09), and 1 planned ("contact@ inbox and the beta cut-over", 2026-12-01).
+- **The timeline** holds 27 entries: 25 past (the last, "Blue Sheet: one day as a drafting sheet", 2026-11-08), 1 present ("Glass Tile: everything is a tile", 2026-11-09), and 1 planned ("contact@ inbox and the beta cut-over", 2026-12-01).
 - **The six stats** read Commits 196 · Days in motion 134 · Agent skills 48 · Vault notes 53 · Applications tracked 27 · Projects queued 6.
-- **The first pillar** is titled "Three designs on one data set" and ends with a paragraph on Clean Bench; the hero captions say "Home · Clean Bench · light" (and dark).
+- **The first pillar** is titled "Three designs on one data set" and ends with a paragraph on Glass Tile; the hero captions say "Home · Glass Tile · light" (and dark).
 
 It is edited in the Studio under **About this site**. The rail group is "About this site" → `/projects/rileybeenders-com`, holding the `aboutSite` and `moreInfo` keys, the latter relabelled **Application tracker**. `StudioLink` on this page opens `#aboutSite`. It is refreshed by the `site-timeline-sync` procedure, locally on request and unattended after every push to `main` by `.github/workflows/site-timeline-sync.yml` (see [[Repository Agent Skills]]).
 
 ## Related
 - [[Project Catalog and Dialog]]
-- [[Bench Components (Home Page)]]
+- [[Glass Tile Components (Home Page)]]
 - [[More Info and Gantt Data]]
 - [[Data Layer and Types]]
-- [[Design System (Clean Bench)]]
+- [[Design System (Glass Tile)]]
 - [[Repository Agent Skills]]
 - [[Routes Overview]]
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]
+
+
+## Versions (2026-11-15)
+
+The deep dive has a **Versions** block right under the stats (`#versions`), from `feature.versionsTitle`, `feature.versionsNote` and `feature.versions` (`SiteVersion[]` in `types/resume.ts`; Studio: About this site → Deep-dive → Versions). `components/projects/feature/FeatureVersions.tsx` puts the live design first and largest (a "Live now" chip, its two captures side by side), then each older design as a tile with its home capture, dates, summary, what it brought, and an **Open this version** button; every capture opens the shared Lightbox. Styles: `.ver-*` in `app/(site)/projects/feature.css`.
+
+The versions are **Glass Tile** (live, from 2026-11-08; Blue Sheet is counted as its start, not a design of its own), **Blueprint Press** (2026-08-27 to 2026-11-07, commit `d1360bb`) and **Original** (2026-06-28 to 2026-08-27, commit `29bf164`). Captures are light-theme JPEGs in `public/project-images/rileybeenders-com/versions/`.
+
+Each older version has a **frozen snapshot** in `public/versions/<slug>/` (`index.html`, `projects.html`, … and `assets/`), browsable at `/versions/<slug>/index.html`. `scripts/snapshot-version.mjs <base-url> <slug> "<name>" "<dates>" [--dry]` makes one from a running build of the old commit (built in a detached worktree under `.claude/worktrees/ver-<slug>` with `next build --webpack`, since Turbopack refuses the linked node_modules): every page as it rendered, scripts removed, entrance styles settled and the monogram drawn, `noindex`, and a fixed banner linking back to `/projects/rileybeenders-com#versions`. Media whose source is byte-identical to today's `public/` file is not copied (it keeps its live URL), which brought the snapshots from about 74 MB to about 10 MB; if such a photo is later replaced or removed, the snapshot shows the new one or a gap.

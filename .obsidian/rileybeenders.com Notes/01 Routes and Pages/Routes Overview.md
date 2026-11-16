@@ -4,7 +4,7 @@ tags: [routes, pages]
 
 # Routes Overview
 
-There are four page routes, all App Router server components in the `app/(site)/` route group, which supplies the Clean Bench chrome (since 2026-11-09; see [[Clean Bench (2026-11 redesign)]]). Since the 2026-11-08 Blue Sheet redesign (see [[Blue Sheet (2026-11-08, one day)]]), one route has a dynamic segment, `/projects/[id]`, and it is statically generated for every catalog entry. `/about-this-site` and `/more-info` are gone as pages and redirect to the site's own project entry.
+There are four page routes, all App Router server components in the `app/(site)/` route group, which supplies the Glass Tile chrome (since 2026-11-09; see [[Glass Tile (2026-11 redesign)]]). Since the 2026-11-08 Blue Sheet redesign (see [[Blue Sheet (2026-11-08, one day)]]), one route has a dynamic segment, `/projects/[id]`, and it is statically generated for every catalog entry. `/about-this-site` and `/more-info` are gone as pages and redirect to the site's own project entry.
 
 | Route | File | Renders | Metadata title |
 |---|---|---|---|
@@ -36,10 +36,10 @@ All three are `permanent: false` (307), so a target can be repointed without fig
 
 ## Site layout: `app/(site)/layout.tsx`
 
-- **Fonts.** Preloads **ten** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-instrument-sans`, `--font-azeret-mono`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). `header.json.fonts` picks the faces for `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` via `fontVarExpression()`. Today they are Instrument Sans for the first three and Azeret Mono for small labels; `bench.css` sets `--mono` from the last.
-- **Palette.** `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (today `clean-bench`) or the `custom` seeds. The layout writes them as an inline `<style>`: `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `bench.css`'s own `.bp` block is only the no-override fallback.
-- **Stylesheets.** Imports `./bench.css`, `./bullet-link.css`, `./skill-pills.css`, `./projects/projects.css`, `./projects/feature.css` and `./projects/walkthrough.css`, in that order.
-- **Chrome.** Renders `<ThemeProvider>` → `<div class="bp {font vars}" data-theme-id={paletteId} data-motion-sync?>`. Inside that: the style override, `<SiteNav name={person.name} />` (see [[Site Nav and Mark]]), `<div class="page">{children}</div>`, the portal host `<div data-bench-portal />`, `<AnimationSync />` (when `motion.syncAnimations` is on), `<SmoothScroll />` (when `motion.smoothScroll` is on), and the dev-only `<StudioLink />` (a `next/dynamic` import that exists only when `NODE_ENV === "development"`). It also mounts `<PlotGrid>` (`components/bench/PlotGrid.tsx`, the animated graph paper behind the tiles) first inside `.bp` unless `motion.grid` is off.
+- **Fonts.** Preloads **ten** Google faces via `next/font/google`, each as a CSS variable (`--font-instrument-serif`, `--font-instrument-sans`, `--font-azeret-mono`, `--font-spectral`, `--font-playfair-display`, `--font-fraunces`, `--font-source-serif-4`, `--font-inter`, `--font-space-grotesk`, `--font-ibm-plex-mono`). `header.json.fonts` picks the faces for `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` via `fontVarExpression()`. Today they are Instrument Sans for the first three and Azeret Mono for small labels; `glass-tile.css` sets `--mono` from the last.
+- **Palette.** `resolveThemeTokens(resumeData.theme)` (`lib/theme.ts`) returns light and dark `PaletteTokens` for the chosen preset (today `glass-tile`) or the `custom` seeds. The layout writes them as an inline `<style>`: `.bp[data-theme-id] { … }` for light, `html[data-theme="dark"] .bp[data-theme-id] { … }` for dark, plus `html[lang]` backgrounds so the overscroll gutter matches. `glass-tile.css`'s own `.bp` block is only the no-override fallback.
+- **Stylesheets.** Imports `./glass-tile.css`, `./bullet-link.css`, `./skill-pills.css`, `./projects/projects.css`, `./projects/feature.css` and `./projects/walkthrough.css`, in that order.
+- **Chrome.** Renders `<ThemeProvider>` → `<div class="bp {font vars}" data-theme-id={paletteId} data-motion-sync?>`. Inside that: the style override, `<SiteNav name={person.name} />` (see [[Site Nav and Mark]]), `<div class="page">{children}</div>`, the portal host `<div data-glass-portal />`, `<AnimationSync />` (when `motion.syncAnimations` is on), `<SmoothScroll />` (when `motion.smoothScroll` is on), and the dev-only `<StudioLink />` (a `next/dynamic` import that exists only when `NODE_ENV === "development"`). It also mounts `<PlotGrid>` (`components/glass-tile/PlotGrid.tsx`, the animated graph paper behind the tiles) first inside `.bp` unless `motion.grid` is off.
 - **Metadata.** Sets `title` / `description` from `page.json` `meta`. The projects, project and contact pages override them.
 
 ## `/`: `app/(site)/page.tsx`
@@ -52,11 +52,11 @@ An async server component. It reads `resumeData`, `data/home/page.json`, `getCat
    - `.tile-activity`: `<GithubGraph title={headings.activity} data profileUrl />`, with "unavailable" copy when GitHub could not be read.
    - `.tile-site` (the site entry → `#project-rileybeenders-com`, which opens its dialog) and `.tile-contact` (→ `#contact`).
 
-   See [[Bench Components (Home Page)]].
+   See [[Glass Tile Components (Home Page)]].
 2. **`#summary`, "Who is Riley?"**: the summary paragraphs (the `page.summaryLink` phrase turns into a link), beside a `<dl class="facts">` of four fact tiles: Experience (the current role), Education (the degree), Based in (the location, plus "Open to relocation"), and Site (the site link). Heading, paragraphs and facts sit in one `.card.panel` tile (2026-11-14); every other section heading is a `.card.sec-head` tile.
 3. **`#experience`**: `<Experience roles projectNames readMoreLabel readMoreMotion />`. Read more links go to `/projects#project-<id>`, which opens that project's dialog.
 4. **`#projects`** (when the catalog is non-empty): the title, a count ("7 entries"), and `<ProjectGrid entries={catalog} viewAllHref="/projects">`. A hash such as `/#project-icarus-lite` opens a dialog here too.
-5. **`#skills`, "Skills and Tools"**: `<Stack data linkedSkills picker />` (the tab bar of groups; see [[Bench Components (Home Page)]]).
+5. **`#skills`, "Skills and Tools"**: `<Stack data linkedSkills picker />` (the tab bar of groups; see [[Glass Tile Components (Home Page)]]).
 6. **`#education`**: `<Education />`.
 7. **`#contact`**: `<ContactBlock person relocation />`.
 8. `<SiteFooter location />` and `<BackToTop />`.
@@ -115,7 +115,7 @@ The main resume itself is described in [[Resume PDF Pipeline]].
 - [[Project Catalog and Dialog]]
 - [[Site Project (About this site)]]
 - [[Site Nav and Mark]]
-- [[Bench Components (Home Page)]]
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile Components (Home Page)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

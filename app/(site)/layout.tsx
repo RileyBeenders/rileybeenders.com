@@ -13,15 +13,15 @@ import {
 } from "next/font/google";
 import dynamic from "next/dynamic";
 import resumeData from "@/data/resumeData";
-import { SiteNav } from "@/components/bench/SiteNav";
-import { SmoothScroll } from "@/components/bench/SmoothScroll";
+import { SiteNav } from "@/components/glass-tile/SiteNav";
+import { SmoothScroll } from "@/components/glass-tile/SmoothScroll";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
-import { PlotGrid } from "@/components/bench/PlotGrid";
-import "./bench.css";
+import { PlotGrid } from "@/components/glass-tile/PlotGrid";
+import "./glass-tile.css";
 import "./bullet-link.css";
 import "./skill-pills.css";
 import "./projects/projects.css";
@@ -140,7 +140,7 @@ function cssBlock(vars: Record<string, string>): string {
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
   const motion = resumeData.motion ?? {};
-  // Site Settings → Layout → Tile opacity: how solid the glass tiles are (.card in bench.css).
+  // Site Settings → Layout → Tile opacity: how solid the glass tiles are (.card in glass-tile.css).
   const tileFill = Math.min(100, Math.max(40, Number(resumeData.layout?.tileOpacity) || 72));
   // Site Settings → Layout → Section box opacity: the fainter box around a section's tiles (.sec-group).
   const groupRaw = Number(resumeData.layout?.groupOpacity);
@@ -187,7 +187,7 @@ html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
         <SiteNav name={resumeData.person.name} />
         <div className="page">{children}</div>
         {/* Dialogs portal here rather than to <body>, so the palette tokens scoped to .bp reach them. */}
-        <div data-bench-portal="" />
+        <div data-glass-portal="" />
         {motion.syncAnimations && <AnimationSync />}
         {motion.smoothScroll && <SmoothScroll />}
         <StudioLink />

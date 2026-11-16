@@ -56,8 +56,8 @@ export const PRESET_PALETTES: Palette[] = [
     modes: { light: DEFAULT_LIGHT, dark: DEFAULT_DARK }
   },
   {
-    id: "clean-bench",
-    name: "Clean Bench",
+    id: "glass-tile",
+    name: "Glass Tile",
     description:
       "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
     modes: fromSeeds(
@@ -159,8 +159,15 @@ export const PRESET_PALETTES: Palette[] = [
   }
 ];
 
+/** Old preset ids still found in saved settings and Studio backups, and the preset each now means. */
+const RENAMED_PRESETS: Record<string, string> = {
+  // The design was called Clean Bench until 2026-11-15.
+  "clean-bench": "glass-tile"
+};
+
 export function getPreset(id: string): Palette | undefined {
-  return PRESET_PALETTES.find((palette) => palette.id === id);
+  const current = RENAMED_PRESETS[id] ?? id;
+  return PRESET_PALETTES.find((palette) => palette.id === current);
 }
 
 export const DEFAULT_PALETTE = PRESET_PALETTES[0];

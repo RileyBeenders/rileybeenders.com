@@ -39,14 +39,14 @@ const FONT_OPTIONS: FontOption[] = [
     label: "Instrument Sans",
     cssVar: "--font-instrument-sans",
     fallback: "system-ui, sans-serif",
-    mood: "Clean grotesque, sibling of Instrument Serif — the Clean Bench display and body face"
+    mood: "Clean grotesque, sibling of Instrument Serif — the Glass Tile display and body face"
   },
   {
     id: "azeret-mono",
     label: "Azeret Mono",
     cssVar: "--font-azeret-mono",
     fallback: '"SF Mono", Menlo, monospace',
-    mood: "Wide, characterful monospace — the Clean Bench label face for dates, captions and small notes"
+    mood: "Wide, characterful monospace — the Glass Tile label face for dates, captions and small notes"
   },
   {
     id: "spectral",

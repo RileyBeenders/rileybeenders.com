@@ -11,7 +11,7 @@ export type ContactDetails = {
   description: string[];
 };
 
-/** The words on the "Send me a message" form (components/bench/ContactForm.tsx). */
+/** The words on the "Send me a message" form (components/glass-tile/ContactForm.tsx). */
 export type ContactForm = {
   title: string;
   nameLabel: string;

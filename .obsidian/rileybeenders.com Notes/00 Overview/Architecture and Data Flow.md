@@ -14,12 +14,12 @@ tags: [overview, architecture]
   - the project tiles' entrance and `layout`, the tile-to-dialog morph (a shared `layoutId`) and `AnimatePresence`, the case-study height animation;
   - `CountUp` / `ScrollWords`, the gallery wipes, and the site entry's timeline and demos.
 
-  See [[Bench Components (Home Page)]], [[Project Catalog and Dialog]] and [[Site Project (About this site)]].
-- **lucide-react**: UI icons (`MapPin`, `Briefcase`, `Download`, `Mail`, `ArrowUpRight`, `Maximize2`, `X`, `ChevronDown`, `Send`, `GraduationCap`, `ExternalLink`, …). The GitHub and LinkedIn marks are `components/bench/BrandIcons.tsx`, because lucide dropped its brand icons.
+  See [[Glass Tile Components (Home Page)]], [[Project Catalog and Dialog]] and [[Site Project (About this site)]].
+- **lucide-react**: UI icons (`MapPin`, `Briefcase`, `Download`, `Mail`, `ArrowUpRight`, `Maximize2`, `X`, `ChevronDown`, `Send`, `GraduationCap`, `ExternalLink`, …). The GitHub and LinkedIn marks are `components/glass-tile/BrandIcons.tsx`, because lucide dropped its brand icons.
 - **mermaid**: renders the job-tracker Gantt chart client-side when its switch is on ([[GanttChart JobsTable and gantt.ts]]).
 - **jsPDF**: the former per-request resume generator, kept in `ResumeBuilder/` but imported by no route ([[Resume PDF Pipeline]]).
 - **@vercel/analytics** + **@vercel/speed-insights**: mounted in the root `app/layout.tsx`. Analytics goes through the `SiteAnalytics` client wrapper, which adds the owner opt-out and a per-visit state/city event ([[Site Analytics]]).
-- **next/font/google**: ten faces preloaded as CSS variables in `app/(site)/layout.tsx` (Instrument Serif, Instrument Sans, Azeret Mono, Spectral, Playfair Display, Fraunces, Source Serif 4, Inter, Space Grotesk, IBM Plex Mono). `header.json.fonts` picks which one fills `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` (today Instrument Sans ×3 and Azeret Mono); `bench.css` reads the last as `--mono`, the small-label face. **next/og** + a bundled TTF render the OG image and apple icon.
+- **next/font/google**: ten faces preloaded as CSS variables in `app/(site)/layout.tsx` (Instrument Serif, Instrument Sans, Azeret Mono, Spectral, Playfair Display, Fraunces, Source Serif 4, Inter, Space Grotesk, IBM Plex Mono). `header.json.fonts` picks which one fills `--bp-font-header` / `--bp-font-subheader` / `--bp-font-body` / `--bp-font-mono` (today Instrument Sans ×3 and Azeret Mono); `glass-tile.css` reads the last as `--mono`, the small-label face. **next/og** + a bundled TTF render the OG image and apple icon.
 - **Resend** (REST, no SDK): the message form's delivery, from `app/api/contact/route.ts`, only when `RESEND_API_KEY` is set.
 - **playwright-core** (dev only): drives the machine's own Chrome/Edge for `scripts/capture-site-screenshots.mjs` and `scripts/check-anchor-hydration.mjs`. It is never part of the site bundle.
 
@@ -28,9 +28,9 @@ tags: [overview, architecture]
 - **`app/layout.tsx`** (root): the shell only. `<html>`/`<body>`, the `app/base.css` reset, `SiteAnalytics` + SpeedInsights, and static `metadata`. No chrome, no fonts.
 - **`app/(site)/layout.tsx`**: the visible site.
   - Loads the ten Google faces as CSS variables.
-  - Imports `app/(site)/bench.css` and then the kept component sheets (`bullet-link.css`, `skill-pills.css`, `projects/projects.css`, `projects/feature.css`, `projects/walkthrough.css`).
+  - Imports `app/(site)/glass-tile.css` and then the kept component sheets (`bullet-link.css`, `skill-pills.css`, `projects/projects.css`, `projects/feature.css`, `projects/walkthrough.css`).
   - Resolves the Studio's palette (`lib/theme.ts` → `resolveThemeTokens(resumeData.theme)`) and font roles into a `<style>` override on `.bp[data-theme-id]` (light) and `html[data-theme="dark"] .bp[data-theme-id]` (dark).
-  - Wraps everything in `ThemeProvider` and `<div class="bp …" data-theme-id data-motion-sync?>`, which renders `<SiteNav>`, then `<div class="page">{children}</div>`, then the portal host `<div data-bench-portal>` (the project dialog renders into it, so the tokens scoped to `.bp` reach it).
+  - Wraps everything in `ThemeProvider` and `<div class="bp …" data-theme-id data-motion-sync?>`, which renders `<SiteNav>`, then `<div class="page">{children}</div>`, then the portal host `<div data-glass-portal>` (the project dialog renders into it, so the tokens scoped to `.bp` reach it).
   - Writes `layout.tileOpacity` (clamped 40 to 100, 72 when left out) as `--tile-fill: <n>%` in the same override block, which sets how solid the glass tiles are.
   - Writes `layout.groupOpacity` (clamped 0 to 90, 50 when left out) as `--group-fill`, the fill of the box around a home page section (`.sec-group`), and `--tile-fill-grouped`, the lower fill a tile takes inside that box so the two do not add up: `1 - (1 - tile) / (1 - group)`, 76% for an 88% tile in a 50% box. `--head-fill-grouped` is the same sum for the section heading band, which reads at `layout.headingOpacity` (clamped 40 to 100, 95 when left out).
   - Mounts `PlotGrid` (the animated graph paper behind the tiles, showing faintly through them) unless `motion.grid` is off, `AnimationSync` when `motion.syncAnimations` is on, `SmoothScroll` when `motion.smoothScroll` is on, and `<StudioLink>` in development only.
@@ -114,7 +114,7 @@ See [[Project Catalog and Dialog]].
   - `lib/catalog.ts` reads `gantt.md` with Node's `fs` at build time (only while a tracker switch is on).
   - `SiteFooter` calls `lib/build-stamp.ts` (git / `VERCEL_GIT_COMMIT_SHA`) for the Updated line.
 - **Client components** (`"use client"`):
-  - In `components/bench/`: `SiteNav`, `HeroActions`, `GithubGraph`, `Experience`, `ProjectGrid`, `ProjectCard`, `ProjectDialog`, `ProjectBody`, `ContactForm`, `SmoothScroll`, `PlotGrid`.
+  - In `components/glass-tile/`: `SiteNav`, `HeroActions`, `GithubGraph`, `Experience`, `ProjectGrid`, `ProjectCard`, `ProjectDialog`, `ProjectBody`, `ContactForm`, `SmoothScroll`, `PlotGrid`.
   - In `components/blueprint/`, everything except `BpMark` and `BulletLink`.
   - Also `GanttChart` and the `components/projects/` tree (gallery, lightbox, PDF pages, compare, date box, status, `ProjectFeature` and its `feature/*` blocks and demos, the walkthrough).
 - **Server-renderable** (no directive): `Stack`, `Education`, `ContactBlock`, `SiteFooter`, `BrandIcons`, `BpMark`, `BulletLink`, `JobsTable`, `EmphasizedText`, `Paragraphs`, `CaseStudy`, `ThemedShot`, `PostCard`.

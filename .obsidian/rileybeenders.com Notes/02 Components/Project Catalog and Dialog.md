@@ -4,7 +4,7 @@ tags: [component, routes]
 
 # Project Catalog and Dialog
 
-How projects reach the visitor since the Blue Sheet redesign (2026-11-08), kept by Clean Bench (2026-11-09):
+How projects reach the visitor since the Blue Sheet redesign (2026-11-08), kept by Glass Tile (2026-11-09):
 
 - `lib/catalog.ts` builds one list of entries: the site itself first (since 2026-11-15; it was last before), then the published projects by `order`. The grids and the project pages' previous / next follow this order.
 - `ProjectGrid` shows them as tiles, on `/projects` with category filters and on the home page with "View all projects".
@@ -29,11 +29,11 @@ This note was **Projects Route (BpComingSoon)** before the redesign. The Bluepri
 
 Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects, and the site entry, **RileyBeenders.com** (type "About this site").
 
-## `components/bench/ProjectGrid.tsx`
+## `components/glass-tile/ProjectGrid.tsx`
 
 `"use client"`. Props: `entries`, `today` (ISO, from the server), `paletteId`, `filters?` (the `/projects` chips), `viewAllHref?` (the home page's "View all projects" `.btn`).
 
-- **Filters.** "All" (`ui.projects.all`, picked on load) plus one tab per shared category with a published project, shown only when there are two or more. Since 2026-11-15 they reuse the Skills and Tools bar (see [[Bench Components (Home Page)]]): a `.card.skills-box.project-box` with the solid `.skills-tabs` header of mono `.skills-tab`s, each with a dot in its colour (All a ring; categories `--grp-1` … by position), the picked one in bold ink over a line in its colour that slides between tabs (`layoutId="project-tab-mark"`, outside the keyed LayoutGroup), and the grid in the `.skills-body` under it. With five tabs instead of eight, its words run larger than the skills bar (13px, padding 10px 12px, 8px dots; `.project-box` overrides in `bench.css`). Choosing the picked category again goes back to All. Without `filters` (the home page) the grid renders bare. The old `.filters` / `.filter` chip CSS is gone.
+- **Filters.** "All" (`ui.projects.all`, picked on load) plus one tab per shared category with a published project, shown only when there are two or more. Since 2026-11-15 they reuse the Skills and Tools bar (see [[Glass Tile Components (Home Page)]]): a `.card.skills-box.project-box` with the solid `.skills-tabs` header of mono `.skills-tab`s, each with a dot in its colour (All a ring; categories `--grp-1` … by position), the picked one in bold ink over a line in its colour that slides between tabs (`layoutId="project-tab-mark"`, outside the keyed LayoutGroup), and the grid in the `.skills-body` under it. With five tabs instead of eight, its words run larger than the skills bar (13px, padding 10px 12px, 8px dots; `.project-box` overrides in `glass-tile.css`). Choosing the picked category again goes back to All. Without `filters` (the home page) the grid renders bare. The old `.filters` / `.filter` chip CSS is gone.
 - **Grid.** `.project-grid` is a centred, wrapping flex row of tiles a third wide (`--cols` 3, 2 under 980px, 1 under 760px), so since 2026-11-15 a short last row, or a filter that leaves one project, sits centred under the heading. It renders one `ProjectCard` per shown entry.
 - **Hash routing.** Which project is open lives in the URL hash: `#project-<id>`, plus `-case-study` to open the case study too (`/^#project-([a-z0-9-]+?)(-case-study)?$/i`).
   - It reads the hash on mount and on `hashchange` and `popstate`, so the resume's Read more links (`/projects#project-<id>`), linked skills (`#project-<id>-case-study` for a proof), a shared link, and the browser's back button all work.
@@ -43,7 +43,7 @@ Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB
 
 The same component runs on `/` and `/projects`, so `/#project-icarus-lite` opens the dialog over the home page.
 
-## `components/bench/ProjectCard.tsx`
+## `components/glass-tile/ProjectCard.tsx`
 
 `"use client"`. One tile: a `motion.div` that handles the entrance, wrapping `motion.article#project-<id>.card.card--hover.project-tile.bp-spot` (the id is the anchor the resume's links point at). It also exports the two pieces the morph is built from:
 
@@ -58,11 +58,11 @@ The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can ani
 - **Body.** The `h3` name, the summary's first paragraph clamped to two lines, and a mono meta line: "Jun 2026 → Present" from `dates`, "· N photos" (photos only; PDFs and posts don't count), and an `ArrowUpRight` that nudges 3px on hover.
 - **Motion.** It enters on view (opacity, y 18 → 0, 0.6s on the site curve, a stagger of `min(index, 5) × 0.06`s) and keeps `layout` on (with `MORPH`). Since 2026-11-15 filtering does not spring tiles across the grid: `ProjectGrid` wraps the grid, footer and dialog in a `LayoutGroup` keyed by the filter (`projects-<category|all>`; LayoutGroup reads its id only once, so the key is what changes it), so each filter remounts the tiles and they deal in with the entrance rise and stagger. The filter buttons sit outside it and keep focus; the dialog shares the group, so the tile-to-dialog morph still works. Hover lifts the tile 3px and zooms the cover 1.04×. The `.bp-spot` cursor wash follows the pointer via `useSpotlight`. Under reduced motion it does neither.
 
-## `components/bench/ProjectDialog.tsx`
+## `components/glass-tile/ProjectDialog.tsx`
 
 `"use client"`. The box a tile opens into, and grows out of.
 
-- **Portal.** It renders through `createPortal` into **`[data-bench-portal]`**, the empty div the site layout puts *inside* `.bp` (beside `.page`), so every palette token resolves in the dialog. Portalling to `<body>` would leave `var(--ink)` undefined (the Portal Rule in `DESIGN.md`). It falls back to `document.body` only if the host is missing.
+- **Portal.** It renders through `createPortal` into **`[data-glass-portal]`**, the empty div the site layout puts *inside* `.bp` (beside `.page`), so every palette token resolves in the dialog. Portalling to `<body>` would leave `var(--ink)` undefined (the Portal Rule in `DESIGN.md`). It falls back to `document.body` only if the host is missing.
 - **Markup.**
   - A `.dlg-scrim` (ink at 45% with a 6px blur, fades 0.3s, a click closes).
   - A `.dlg-wrap` holding `motion.div.dlg[role=dialog][aria-modal][aria-labelledby]`, `min(1040px, 100%)` wide and centred. **The morph:** the panel carries the same `tileLayoutId(id)` as the tile that opened it, with `transition={{ layout: MORPH }}`, so it grows out of the tile's box and shrinks back into it on close. The bar and the body fade in (0.32s on the site curve) after a 0.18s delay, once the box has mostly settled. Under reduced motion there is no `layoutId`: the panel, bar and body simply fade (0.2s).
@@ -78,7 +78,7 @@ The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can ani
 
 `ui.projects.position` ("Project {index} of {count}") is a Studio field that the dialog does not render yet.
 
-## `components/bench/ProjectBody.tsx`
+## `components/glass-tile/ProjectBody.tsx`
 
 `"use client"`. Everything an entry has, top to bottom. It is the same in the dialog (`mode="dialog"`, `h2` title) and on the page (`mode="page"`, `h1` title):
 
@@ -118,7 +118,7 @@ Unchanged by the redesign. `ProjectBody` composes them.
 | `walkthrough/PanelWalkthrough.tsx` | The guided tour of a program's screens. See [[Panel Walkthrough]]. |
 | `ProjectFeature.tsx` + `feature/*` | The deep dive, carried only by the site entry. See [[Site Project (About this site)]]. |
 
-The styles are in `app/(site)/projects/projects.css` (`.pj-*`, `.cmp-*`, `.pj-flow-*`, the lightbox), `projects/walkthrough.css` (`.wt-*`, `.pj-links`) and `projects/feature.css`. The site layout imports all three after `bench.css`, and the tile, dialog and body classes (`.project-*`, `.dlg-*`, `.pbody-*`) live in `bench.css`'s projects, dialog and project-body sections.
+The styles are in `app/(site)/projects/projects.css` (`.pj-*`, `.cmp-*`, `.pj-flow-*`, the lightbox), `projects/walkthrough.css` (`.wt-*`, `.pj-links`) and `projects/feature.css`. The site layout imports all three after `glass-tile.css`, and the tile, dialog and body classes (`.project-*`, `.dlg-*`, `.pbody-*`) live in `glass-tile.css`'s projects, dialog and project-body sections.
 
 `lib/projects.ts` (`buildProofView`, `buildProjectViews`) assembles the `ProjectView` each entry starts from. `ownImages` is true when `images` is the project's own list rather than diagrams standing in.
 
@@ -138,8 +138,8 @@ The other six projects are `visible: false` drafts. All 17 proofs are also `visi
 ## Related
 - [[Site Project (About this site)]]
 - [[Panel Walkthrough]]
-- [[Bench Components (Home Page)]]
+- [[Glass Tile Components (Home Page)]]
 - [[Career Content]]
 - [[Routes Overview]]
-- [[Design System (Clean Bench)]]
+- [[Design System (Glass Tile)]]
 - [[Home]]

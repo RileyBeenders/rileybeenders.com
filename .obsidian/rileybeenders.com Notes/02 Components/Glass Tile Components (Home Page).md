@@ -2,9 +2,9 @@
 tags: [component, client]
 ---
 
-# Bench Components (Home Page)
+# Glass Tile Components (Home Page)
 
-This note covers the `components/bench/*` pieces the home page is built from, and the bento of tiles that opens it (everything except the nav, which is in [[Site Nav and Mark]], and the project grid and dialog, which are in [[Project Catalog and Dialog]]). It also covers the primitives kept from Blueprint Press in `components/blueprint/` and `components/content/`. The folder arrived as `components/sheet/` with the Blue Sheet redesign on 2026-11-08 (see [[Blue Sheet (2026-11-08, one day)]]) and was renamed `components/bench/` with Clean Bench on 2026-11-09 (see [[Clean Bench (2026-11 redesign)]]), when `HeroCover.tsx` was deleted. The Blueprint Press pieces it replaced (`BpActions`, `HeroRibbon`, `PageSpine`, `BpRelocationBadge`, `BpComingSoon`, `WordReveal`) are described in [[Blueprint Press (2026-08 to 2026-11)]].
+This note covers the `components/glass-tile/*` pieces the home page is built from, and the bento of tiles that opens it (everything except the nav, which is in [[Site Nav and Mark]], and the project grid and dialog, which are in [[Project Catalog and Dialog]]). It also covers the primitives kept from Blueprint Press in `components/blueprint/` and `components/content/`. The folder arrived as `components/sheet/` with the Blue Sheet redesign on 2026-11-08 (see [[Blue Sheet (2026-11-08, one day)]]) and was renamed `components/glass-tile/` with Glass Tile on 2026-11-09 (see [[Glass Tile (2026-11 redesign)]]), when `HeroCover.tsx` was deleted. The Blueprint Press pieces it replaced (`BpActions`, `HeroRibbon`, `PageSpine`, `BpRelocationBadge`, `BpComingSoon`, `WordReveal`) are described in [[Blueprint Press (2026-08 to 2026-11)]].
 
 The home page itself (`app/(site)/page.tsx`) is an async server component; [[Routes Overview]] lists its sections in order. It opens with the bento, then each section is a `section.shell.sec` with a `.sec-head` (an `h2.sec-title`, plus an optional `.sec-sub`) inside a `Reveal`. Since 2026-11-14 every heading is boxed: the Experience, Projects, Stack and Education heads are `.card.sec-head` tiles, and the summary is one `.card.panel`.
 
@@ -22,11 +22,11 @@ The home page itself (`app/(site)/page.tsx`) is an async server component; [[Rou
 | `.tile-site` | 3 | `ui.projects.siteBadge` ("This site"), the site entry's name and tagline | `#project-rileybeenders-com` (opens the dialog) |
 | `.tile-contact` | 3 | `contact.hero.title`, `contact.form.title`, the contact tagline | `#contact` |
 
-Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `MapPin`, `GraduationCap`, `Monitor`, `MessageSquare`), a `.tile-value`, a `.tile-sub`, and, when it links, a `.tile-arrow` (`ArrowUpRight` in a 30px circle) that nudges on hover. At 980px the bento is two columns (the hero and education full width); at 640px, one. The bento labels are Studio copy (Home page → Bench tiles).
+Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `MapPin`, `GraduationCap`, `Monitor`, `MessageSquare`), a `.tile-value`, a `.tile-sub`, and, when it links, a `.tile-arrow` (`ArrowUpRight` in a 30px circle) that nudges on hover. At 980px the bento is two columns (the hero and education full width); at 640px, one. The bento labels are Studio copy (Home page → Bento tiles).
 
 ### The hero tile
 
-- `.tile-hero` carries its own accent-soft glow top right (`::before`) so it reads as the brightest thing on the bench.
+- `.tile-hero` carries its own accent-soft glow top right (`::before`) so it reads as the brightest thing on the page.
 - `.tile-hero` is a flex column (2026-11-14): the name and the title sit at the top, the title on one line where it fits (`.hero-role` lost its `30ch` cap, so it runs at least as wide as the name and wraps only on a narrow tile), and `.hero-meta { margin-top: auto }` pins the meta line and `HeroActions` to the bottom. The tile is as tall as the three tiles beside it, so this balances it against them instead of leaving the spare height under the buttons. The two sides are scaled toward each other: the name is `clamp(40px, 6vw, 72px)` and the title `clamp(17px, 1.9vw, 24px)`, while the three tiles beside the hero (`.tile-now`, `.tile-where`, `.tile-edu`) take 16px of block padding instead of a tile's usual 18 to 24px, since their stack sets the hero's height.
 - `.hero-flag`: rendered only when `visibility.openToRelocation` is on. A corner tab holding a pinging `.chip-dot` and `ui.openToRelocation`, absolutely positioned at the tile's top right (`top: 0; right: 0`, only its bottom-left corner rounded at 18px; the tile's `overflow: hidden` clips the outer corner). It is the one element outside the palette: it carries its own `--flag-bg` / `--flag-ink` pair per tone so it reads as the first thing on the page. The tone comes from Site Settings → Layout → **Relocation tab colour** (`layout.relocationColor`, written as `data-tone`): `amber` (the default when left out; amber `#f5a524` in light and `#fbbf24` in dark, both with `#231500` text), `green`, `coral`, `violet` or `ink` (which uses `--ink` on `--paper`). The label is the mono font at 11.5px, weight 400. When it is present the name below takes a 30px top margin (`.hero-flag + .hero-name`) to clear it at phone width. The tile carries no monogram.
 - `h1.hero-name`: `page.hero.lines` joined, `clamp(38px, 5.4vw, 62px)` at 600.
@@ -36,7 +36,7 @@ Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `
 
 ### `HeroActions.tsx`
 
-`"use client"`. This is the button row at the foot of the hero tile (it replaced `BpActions` in Blue Sheet and is unchanged by Clean Bench).
+`"use client"`. This is the button row at the foot of the hero tile (it replaced `BpActions` in Blue Sheet and is unchanged by Glass Tile).
 
 - **Download PDF.** When `resumeHtmlPath` is set (today `"/resume/RileyBeenders_Resume_26319.html"`), it is a `.btn.btn--solid` anchor with `target="_blank" rel="noopener"` that opens the interactive HTML resume in a new tab, where its Print / PDF button saves the file. Without it, the button runs a three-state machine (`idle | loading | error`): it dynamically imports `ResumeBuilder/downloadPublishedResume` and calls `downloadPublishedResumePdf(resumePdfPath)`. A failure renders `.hero-error` with `role="alert"`. The solid button carries the looping `.bp-sheen` while idle.
 - **Email / LinkedIn / GitHub.** Plain `.btn` anchors (`mailto:`, `person.linkedin`, `person.github`; the last two open with `target="_blank" rel="noreferrer"`). The icons are lucide `Mail` and the `BrandIcons` marks.
@@ -50,7 +50,7 @@ See [[Resume PDF Pipeline]].
 **`GithubGraph.tsx`** (`"use client"`) draws the calendar as one SVG:
 
 - **Layout.** One column per week, Sunday at the top. The cells are 12px with 3px gaps (`rx 2.5`). Month labels sit over the first week of each month (skipping a label that would collide). Mon / Wed / Fri labels run down the left.
-- **Colour.** The fill is GitHub's own five levels mapped to `--lv0…--lv4` in `bench.css`'s activity section. In light mode they come from `--ink` / `--white` / `--accent-soft` / `--accent-fill`. In dark mode `--lv1`, `--lv2` and `--lv4` are literal hexes (`#1d2a4d`, `#27408f`, `#6a93ff`).
+- **Colour.** The fill is GitHub's own five levels mapped to `--lv0…--lv4` in `glass-tile.css`'s activity section. In light mode they come from `--ink` / `--white` / `--accent-soft` / `--accent-fill`. In dark mode `--lv1`, `--lv2` and `--lv4` are literal hexes (`#1d2a4d`, `#27408f`, `#6a93ff`).
 - **Text.** Each cell has a `<title>` ("3 contributions on November 7, 2026"). The header shows `ui.activity.total` ("{count} contributions in the last year"), and the foot has a "View on GitHub" `.bp-link` and the Less → More legend.
 - **Motion.** The first time 25% of the tile is in view (`useInViewOnce`), the cells pop in column by column: `activity-in`, 0.5s, `--i` × 11ms per week.
 - **Overflow.** The SVG has a `min-width` of 720px, so on a phone the calendar scrolls sideways inside `.activity-scroll` (marked `data-native-scroll`).
@@ -75,11 +75,11 @@ Labels come from Studio: Navigation & labels → GitHub activity, and the headin
 
 ## `Stack.tsx`
 
-Server-safe. Since 2026-11-15 it builds the Skills and Tools picker: one entry per non-empty group in `skills.json`, each with a colour `var(--grp-n)` by position (seven hues in `bench.css`, light and dark, repeating past seven), plus an **All** entry (`page.skillPicker.allLabel`) that lists every item once in group order, each item wearing its first group's colour. `allSkillTargets(data)` (`lib/skill-links.ts`) merges every group's `links` by item, so a link set in one group follows the item into all of them. It hands everything to `SkillPicker.tsx` (client).
+Server-safe. Since 2026-11-15 it builds the Skills and Tools picker: one entry per non-empty group in `skills.json`, each with a colour `var(--grp-n)` by position (seven hues in `glass-tile.css`, light and dark, repeating past seven), plus an **All** entry (`page.skillPicker.allLabel`) that lists every item once in group order, each item wearing its first group's colour. `allSkillTargets(data)` (`lib/skill-links.ts`) merges every group's `links` by item, so a link set in one group follows the item into all of them. It hands everything to `SkillPicker.tsx` (client).
 
 ## `SkillPicker.tsx`
 
-One `.card.skills-box`: a solid header bar (`.skills-tabs`, a solid `color-mix(var(--ink) 7%, var(--white))` fill: a step darker than the tile in light mode, a step lighter in dark) of mono tabs, each a colour dot and the group name, centred, wrapping rather than scrolling so every group stays in sight; then the panel. Nothing is open on load: the panel shows `page.skillPicker.hint`, centred with about two and a half lines of space above and below, under a double chevron. While nothing is picked and the tile is in view (`useInView`, 35%), `.skills-box[data-cue]` runs the "pick one" cue: the chevrons climb toward the bar (lower then upper, 2.2s loop) and a wave runs along the tab dots, each swelling 1.6× with a ring in its own colour (4.4s loop, 0.11s per tab). Picking a tab stops it; reduced motion shows a still arrow. Picking a tab (`aria-pressed`, `aria-controls` the panel) sets its name in full ink, bold, over a 2px line in its colour that slides between tabs (`layoutId`; the other tabs are `--ink-soft`), the panel's height follows its content (ResizeObserver, 0.5s on `--ease`, clipped only while moving so a linked skill's hover card can spill out), and the rows rise in (8px, stagger `min(i,6) × 0.05`); picking the open tab closes it. Since 2026-11-15 the group is a plain list, not pills: `ul.skills-list`, a grid flowing by column (three columns, two under 860px, one under 560px; rows from `--rows-3` / `--rows-2`, set by `rowsFor`), each row left-aligned on a hairline with a 3px bar in the group colour (`.skills-mark`) before the name (`.skills-item`). Linked ones still render as `<LinkedSkill>` with `page.linkedSkills` (link icon, Read more, hover card) but lose the pill chrome (border, fill, lift, corner marks) and read in ink. Print hides the box and shows `.skills-print`, every item once in the same column list. Pill styles stay in `app/(site)/skill-pills.css`; the bar and colours are in `bench.css` under `stack`.
+One `.card.skills-box`: a solid header bar (`.skills-tabs`, a solid `color-mix(var(--ink) 7%, var(--white))` fill: a step darker than the tile in light mode, a step lighter in dark) of mono tabs, each a colour dot and the group name, centred, wrapping rather than scrolling so every group stays in sight; then the panel. Nothing is open on load: the panel shows `page.skillPicker.hint`, centred with about two and a half lines of space above and below, under a double chevron. While nothing is picked and the tile is in view (`useInView`, 35%), `.skills-box[data-cue]` runs the "pick one" cue: the chevrons climb toward the bar (lower then upper, 2.2s loop) and a wave runs along the tab dots, each swelling 1.6× with a ring in its own colour (4.4s loop, 0.11s per tab). Picking a tab stops it; reduced motion shows a still arrow. Picking a tab (`aria-pressed`, `aria-controls` the panel) sets its name in full ink, bold, over a 2px line in its colour that slides between tabs (`layoutId`; the other tabs are `--ink-soft`), the panel's height follows its content (ResizeObserver, 0.5s on `--ease`, clipped only while moving so a linked skill's hover card can spill out), and the rows rise in (8px, stagger `min(i,6) × 0.05`); picking the open tab closes it. Since 2026-11-15 the group is a plain list, not pills: `ul.skills-list`, a grid flowing by column (three columns, two under 860px, one under 560px; rows from `--rows-3` / `--rows-2`, set by `rowsFor`), each row left-aligned on a hairline with a 3px bar in the group colour (`.skills-mark`) before the name (`.skills-item`). Linked ones still render as `<LinkedSkill>` with `page.linkedSkills` (link icon, Read more, hover card) but lose the pill chrome (border, fill, lift, corner marks) and read in ink. Print hides the box and shows `.skills-print`, every item once in the same column list. Pill styles stay in `app/(site)/skill-pills.css`; the bar and colours are in `glass-tile.css` under `stack`.
 
 ## `Education.tsx`
 
@@ -119,7 +119,7 @@ All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were 
 
 ## Section boxes (`.sec-group`)
 
-`app/(site)/page.tsx` wraps the contents of the Experience, Projects, Skills and Education sections in `<div class="sec-group">`, a fainter box (50% fill, `layout.groupOpacity`) that holds the heading and the tiles under it together; the heading is a `.sec-head` band across the top of the box at 95%, not a tile. The hero bento, the summary and Contact are not wrapped. See [[Design System (Clean Bench)]] for the fill maths.
+`app/(site)/page.tsx` wraps the contents of the Experience, Projects, Skills and Education sections in `<div class="sec-group">`, a fainter box (50% fill, `layout.groupOpacity`) that holds the heading and the tiles under it together; the heading is a `.sec-head` band across the top of the box at 95%, not a tile. The hero bento, the summary and Contact are not wrapped. See [[Design System (Glass Tile)]] for the fill maths.
 
 ## `PlotGrid.tsx`
 
@@ -155,11 +155,11 @@ All of it is Studio copy (Home page → Footer). Until 2026-11-09 the keys were 
 - Under `useReducedMotion()` it renders a plain `<div>`.
 - `rise` is opacity 0 → 1 with y 22 → 0.
 - It uses `whileInView` with `viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}`. An element taller than the viewport can never reach that, so a whole project page uses the CSS `.page-in` entrance instead.
-- The curve is `[0.22, 0.9, 0.28, 1]`, the same as `--ease` in `bench.css`. Durations: rise 0.82s, rule 0.9s, fade 0.7s, slide 0.72s.
+- The curve is `[0.22, 0.9, 0.28, 1]`, the same as `--ease` in `glass-tile.css`. Durations: rise 0.82s, rule 0.9s, fade 0.7s, slide 0.72s.
 
 ### `components/blueprint/BackToTop.tsx`
 
-`"use client"`. The bottom-left "Back to Top" pill (`.bp-top`, styled in `bench.css`'s floating-controls section: frosted white, `blur(10px)`, `--shadow`, mono 10.5px uppercase). It shows (`is-shown`) once `scrollY` passes 80% of the viewport and smooth-scrolls to the top. It is on `/`, `/projects` and every project page. `next.config.mjs` moves the Next dev overlay to the bottom-right so it doesn't cover the button.
+`"use client"`. The bottom-left "Back to Top" pill (`.bp-top`, styled in `glass-tile.css`'s floating-controls section: frosted white, `blur(10px)`, `--shadow`, mono 10.5px uppercase). It shows (`is-shown`) once `scrollY` passes 80% of the viewport and smooth-scrolls to the top. It is on `/`, `/projects` and every project page. `next.config.mjs` moves the Next dev overlay to the bottom-right so it doesn't cover the button.
 
 ### `components/blueprint/StudioLink.tsx`
 
@@ -203,10 +203,10 @@ Both live in `components/blueprint/` and are used by the site entry's deep dive 
 Both render static markup under reduced motion. `WordReveal` was deleted in the redesign (it had no call site since 2026-09-18).
 
 ## Related
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Routes Overview]]
 - [[Site Nav and Mark]]
 - [[Project Catalog and Dialog]]
 - [[Resume PDF Pipeline]]
-- [[Design System (Clean Bench)]]
+- [[Design System (Glass Tile)]]
 - [[Home]]

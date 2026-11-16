@@ -1,19 +1,19 @@
 /* ==========================================================================
-   Clean Bench — the site design (2026-11-09 redesign)
+   Glass Tile — the site design (2026-11-09 redesign)
 
    Everything is a tile. White, rounded tiles sit on a pale grey-blue ground
    under a floating glass nav; one cobalt accent carries links, fills and the
    active states; a soft blue bloom sits behind the top of the page. Headings
    and body share one grotesque (Instrument Sans by default); dates, captions,
    eyebrows and other small notes are set in a wide monospace (Azeret Mono).
-   Dark mode is the same bench with the lights down: graphite tiles on
+   Dark mode is the same tiles with the lights down: graphite tiles on
    near-black, a lighter blue for text, and every blue FILL cut deeper rather
    than brighter (lib/palette.ts derives --accent-fill that way).
 
    Everything is scoped under .bp, which the kept component stylesheets
    (bullet-link.css, skill-pills.css, projects/*.css) also key off. Token
    names are unchanged from the earlier designs so those files follow the
-   palette untouched; the fallback values here are the Clean Bench preset,
+   palette untouched; the fallback values here are the Glass Tile preset,
    overwritten at render by whichever palette the Studio has chosen
    (app/(site)/layout.tsx).
    ========================================================================== */
@@ -83,7 +83,7 @@ html[data-lock] { overflow: hidden; }
 }
 
 /* The bloom: two soft blue washes behind the top of the page, drifting
-   very slowly. The hint of warmth the bench takes from the Soft Bloom
+   very slowly. The hint of warmth the tiles take from the Soft Bloom
    direction; reduced motion holds it still. */
 .bp::before {
   content: "";
@@ -109,7 +109,7 @@ html[data-lock] { overflow: hidden; }
 html[data-theme="dark"] .bp::before { opacity: 0.6; }
 .bp > * { position: relative; z-index: 1; }
 
-/* The animated graph paper (components/bench/PlotGrid.tsx): fixed to the
+/* The animated graph paper (components/glass-tile/PlotGrid.tsx): fixed to the
    window, drawn over the bloom and under every tile, so it shows in the
    gutters and on the open page. */
 .bp > .plot-grid {
@@ -475,7 +475,7 @@ p[data-para] + p[data-para] { margin-top: 0.85em; }
 }
 @media (hover: hover) and (pointer: fine) { .bp-spot:hover::before { opacity: 1; } }
 
-/* -------------------------------------------------------------- bench --- */
+/* -------------------------------------------------------------- bento --- */
 /* The bento under the nav: the hero tile and the small tiles beside it. */
 .hero { padding-top: clamp(18px, 3vw, 32px); }
 @keyframes tile-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
@@ -525,7 +525,7 @@ a.tile { color: inherit; }
 .tile-site, .tile-contact { grid-column: span 3; }
 .tile-site { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); }
 
-/* The hero's own bloom, top right, so the tile reads as the brightest thing on the bench. */
+/* The hero's own bloom, top right, so the tile reads as the brightest thing on the page. */
 .tile-hero::before {
   content: "";
   position: absolute;
@@ -737,7 +737,7 @@ html[data-theme="dark"] .bp {
   -webkit-text-stroke-color: var(--accent);
   -webkit-text-stroke-width: var(--bullet-accent-stroke);
 }
-/* The Read more pill at the end of a bullet (bullet-link.css): a tinted chip on the bench, not a solid block. */
+/* The Read more pill at the end of a bullet (bullet-link.css): a tinted chip on the tiles, not a solid block. */
 .bp .bp-bullet-link {
   border-radius: 999px;
   border-color: color-mix(in srgb, var(--accent) 28%, transparent);
@@ -996,7 +996,7 @@ html[data-theme="dark"] .bp {
 .page-nav small { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .page-nav b { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
 
-/* Softening the kept project stylesheets to the bench's radii. */
+/* Softening the kept project stylesheets to the tiles' radii. */
 .bp .pj-shot-btn, .bp .pj-shot, .bp .pj-shot-compare, .bp .pj-post-btn, .bp .pj-shot-btn img { border-radius: var(--r); }
 .bp .pj-case-study { border-radius: var(--r-lg); }
 .bp .pj-toggle { border-radius: 999px; }

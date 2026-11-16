@@ -127,7 +127,7 @@ const PALETTE_OPTIONS = [
     swatchDark: { paper: "#0d1b2a", white: "#142a3d", ink: "#eef3f7", accent: "#ff6b62", blue: "#5aa9e6" }
   },
   {
-    id: "clean-bench", name: "Clean Bench",
+    id: "glass-tile", name: "Glass Tile",
     description: "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
     swatch: { paper: "#f4f5f8", white: "#ffffff", ink: "#111318", accent: "#2457e6", blue: "#173ea8" },
     swatchDark: { paper: "#0f1115", white: "#181b22", ink: "#eceef2", accent: "#6a93ff", blue: "#9db9ff" }
@@ -291,7 +291,7 @@ const SKILL_REVEALS = [
 
 /** Every option next/font/google preloads in app/(site)/layout.tsx — see lib/fonts.ts. */
 const FONT_OPTIONS = [
-  { value: "instrument-sans", label: "Instrument Sans — clean grotesque, the Clean Bench face" },
+  { value: "instrument-sans", label: "Instrument Sans — clean grotesque, the Glass Tile face" },
   { value: "azeret-mono", label: "Azeret Mono — wide monospace for small labels" },
   { value: "instrument-serif", label: "Instrument Serif — editorial display serif" },
   { value: "spectral", label: "Spectral — warm reading serif" },
@@ -668,7 +668,7 @@ export const SCHEMAS = {
       {
         name: "bento",
         type: "group",
-        label: "Bench tiles",
+        label: "Bento tiles",
         help: "The small labels on the tiles beside the hero. The other tiles take their labels from Section headings, Navigation & labels (This site) and the Contact page.",
         fields: [
           { name: "now", type: "text", label: "Current role tile", required: true, span: "half", help: "Over the first Experience entry." },
@@ -689,13 +689,13 @@ export const SCHEMAS = {
         name: "headings",
         type: "group",
         label: "Section headings",
-        help: "The home page's sections, top to bottom after the bench: summary, experience, projects, stack, education. Activity names the GitHub tile on the bench.",
+        help: "The home page's sections, top to bottom after the bento: summary, experience, projects, stack, education. Activity names the GitHub tile in the bento.",
         fields: [
           { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
           { name: "skills", type: "text", label: "Skills and Tools", required: true, span: "half", help: "The skill groups, as a row of tabs that each open their pills." },
           { name: "education", type: "text", label: "Education", required: true, span: "half" },
-          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The GitHub tile on the bench, read from the GitHub profile in Site Settings → Person." },
+          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The GitHub tile in the bento, read from the GitHub profile in Site Settings → Person." },
           { name: "projects", type: "text", label: "Projects", required: true, span: "half", help: "The project grid on the home page." }
         ]
       },
@@ -797,7 +797,7 @@ export const SCHEMAS = {
             ]
           },
           { name: "updatedLabel", type: "text", label: "Updated label", required: true, span: "third", help: "Beside the commit and date the page was built from." },
-          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "In the footer, beside Site Settings → Location. The location tile and the summary fact use Bench tiles → Location instead." }
+          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "In the footer, beside Site Settings → Location. The location tile and the summary fact use Bento tiles → Location instead." }
         ]
       }
     ]
@@ -1087,7 +1087,7 @@ export const SCHEMAS = {
           { name: "close", type: "text", label: "Close", required: true, span: "third" },
           { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
           { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },
-          { name: "siteBadge", type: "text", label: "Label on the home page's site tile", required: true, span: "third", help: "The small label on the bench tile that links to this site's project. The site's project card shows its own tag, in the accent fill." },
+          { name: "siteBadge", type: "text", label: "Label on the home page's site tile", required: true, span: "third", help: "The small label on the tiles tile that links to this site's project. The site's project card shows its own tag, in the accent fill." },
           {
             name: "categories",
             type: "group",

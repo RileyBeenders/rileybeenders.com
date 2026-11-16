@@ -27,7 +27,7 @@ import { useEffect, useRef } from "react";
  * the node count (about 2,000 on a desktop window) and does not grow with the
  * page. It is fixed to the window, above the bloom and under every tile,
  * pauses with the tab, draws still graph paper under prefers-reduced-motion,
- * and is hidden in print (.plot-grid in bench.css).
+ * and is hidden in print (.plot-grid in glass-tile.css).
  */
 
 type Ripple = { x: number; y: number; speed: number; width: number; amp: number; reach: number; born: number };

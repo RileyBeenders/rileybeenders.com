@@ -10,7 +10,7 @@ export type PaletteTokens = PaletteSeeds & {
   /** Text set on the accent fill (the solid button, the bullet's project link). */
   onAccent: string;
   /**
-   * The Clean Bench surfaces built from the accent (introduced with Blue Sheet). `tint` is the faint accent
+   * The Glass Tile surfaces built from the accent (introduced with Blue Sheet). `tint` is the faint accent
    * wash a chip or active control sits on; `accentSoft` is a stronger wash
    * for hovered chips and the contribution graph's lightest step; `accentFill`
    * is what solid controls are painted with: the accent itself on a light

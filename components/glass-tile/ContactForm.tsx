@@ -98,7 +98,7 @@ export function ContactForm({ copy, fallbackEmail }: ContactFormProps) {
 
   // Not live yet: the form stays visible but dimmed and inert (no focus, no
   // submit), with the label laid over it and taking priority. The hairlines
-  // either side carry an indeterminate-progress sweep (bench.css .soon-line).
+  // either side carry an indeterminate-progress sweep (glass-tile.css .soon-line).
   return (
     <div className="form-soon">
       {form}

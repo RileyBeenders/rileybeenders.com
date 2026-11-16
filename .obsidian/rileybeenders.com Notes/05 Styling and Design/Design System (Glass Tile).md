@@ -2,9 +2,9 @@
 tags: [styling, design]
 ---
 
-# Design System (Clean Bench)
+# Design System (Glass Tile)
 
-The site's styling is plain global stylesheets: no CSS modules, CSS-in-JS or Tailwind. **Clean Bench** has been the system since 2026-11-09 (see [[Clean Bench (2026-11 redesign)]]). Everything is a tile:
+The site's styling is plain global stylesheets: no CSS modules, CSS-in-JS or Tailwind. **Glass Tile** has been the system since 2026-11-09 (see [[Glass Tile (2026-11 redesign)]]). Everything is a tile:
 
 - white rounded tiles on a pale grey-blue ground, under a floating glass nav (since 2026-11-14 the tiles are lightly frosted glass, so the animated graph paper shows through them);
 - one cobalt accent from a pale wash to a deep fill, and a soft blue bloom behind the top of the page;
@@ -15,18 +15,18 @@ The site's styling is plain global stylesheets: no CSS modules, CSS-in-JS or Tai
 | File | Imported by | Scope |
 |---|---|---|
 | `app/base.css` | the root `app/layout.tsx` | A bare reset only: `* { box-sizing }`, `body { margin: 0; min-height: 100vh }`, `img`, `button/input { font: inherit }`, `a`, `.sr-only`. Nothing visual. |
-| `app/(site)/bench.css` | `app/(site)/layout.tsx`, first | The site design system (1,119 lines), everything scoped under `.bp`, in banner-commented sections: layout, nav, theme toggle, buttons, tile, bench, activity, summary, experience, projects, dialog, project body, stack, education, contact, footer, tables, marks, floating controls, responsive. Then print and reduced motion. It replaced `app/(site)/sheet.css` (Blue Sheet), which had replaced `blueprint.css`. |
-| `app/(site)/bullet-link.css` | the site layout, after `bench.css` (also served to the Studio) | The resume bullets' Read more link and its `data-motion` variants. `bench.css` restyles it on the site as a tinted mono chip (`.bp .bp-bullet-link`). |
+| `app/(site)/glass-tile.css` | `app/(site)/layout.tsx`, first | The site design system (1,119 lines), everything scoped under `.bp`, in banner-commented sections: layout, nav, theme toggle, buttons, tile, bento, activity, summary, experience, projects, dialog, project body, stack, education, contact, footer, tables, marks, floating controls, responsive. Then print and reduced motion. It replaced `app/(site)/sheet.css` (Blue Sheet), which had replaced `blueprint.css`. |
+| `app/(site)/bullet-link.css` | the site layout, after `glass-tile.css` (also served to the Studio) | The resume bullets' Read more link and its `data-motion` variants. `glass-tile.css` restyles it on the site as a tinted mono chip (`.bp .bp-bullet-link`). |
 | `app/(site)/skill-pills.css` | the site layout (also served to the Studio) | `.bp-pill`, linked skills, their `data-border` loops and `data-reveal` cards. |
-| `app/(site)/projects/projects.css`, `projects/feature.css`, `projects/walkthrough.css` | the site layout | `.pj-*` (gallery, lightbox, case study, date box, status, compare, post card, flow diagrams), `.ft-*` / `.tl-*` / `.dm-*` (the site entry's deep dive), `.wt-*` / `.pj-links`. `bench.css` softens their radii to the bench's (`--r`, `--r-lg`, pills). |
+| `app/(site)/projects/projects.css`, `projects/feature.css`, `projects/walkthrough.css` | the site layout | `.pj-*` (gallery, lightbox, case study, date box, status, compare, post card, flow diagrams), `.ft-*` / `.tl-*` / `.dm-*` (the site entry's deep dive), `.wt-*` / `.pj-links`. `glass-tile.css` softens their radii to the tiles' (`--r`, `--r-lg`, pills). |
 
-Token **names did not change** from Blueprint Press or Blue Sheet (`--paper --white --ink --ink-soft --muted --faint --rule --accent --blue --prose --pill-text --on-accent --tint --accent-soft --accent-fill --glow`, `--ease`). That is why the kept component sheets follow the palette without edits. New on the bench: `--mono` (from `--bp-font-mono`), `--gap`, and new values for the radii and shadows.
+Token **names did not change** from Blueprint Press or Blue Sheet (`--paper --white --ink --ink-soft --muted --faint --rule --accent --blue --prose --pill-text --on-accent --tint --accent-soft --accent-fill --glow`, `--ease`). That is why the kept component sheets follow the palette without edits. New on the tiles: `--mono` (from `--bp-font-mono`), `--gap`, and new values for the radii and shadows.
 
-`design/` holds the Claude Design canvases the Blueprint Press direction was chosen from; they are history. The Clean Bench direction contract is `.impeccable/surfaces/app-site-page-tsx.md`. The reference token systems in `.claude/skills/design-guidelines/` (Tesla light, Bugatti dark) are what the Electric preset was seeded from, not the live system (see [[Repository Agent Skills]]).
+`design/` holds the Claude Design canvases the Blueprint Press direction was chosen from; they are history. The Glass Tile direction contract is `.impeccable/surfaces/app-site-page-tsx.md`. The reference token systems in `.claude/skills/design-guidelines/` (Tesla light, Bugatti dark) are what the Electric preset was seeded from, not the live system (see [[Repository Agent Skills]]).
 
 ## The machine-readable spec: `DESIGN.md`
 
-The repo-root **`DESIGN.md`** (Google Stitch `DESIGN.md` format; `name: Clean Bench`) is the normative token list, including every font size and radius `bench.css` sets. Its sidecar is `.impeccable/design.json`. Both were rewritten for Clean Bench. The `impeccable` detector compares literal CSS values against them (see [[Impeccable Design Workflow]]). This note is the narrative and the file map. When a token changes, regenerate or hand-edit `DESIGN.md` in the same session.
+The repo-root **`DESIGN.md`** (Google Stitch `DESIGN.md` format; `name: Glass Tile`) is the normative token list, including every font size and radius `glass-tile.css` sets. Its sidecar is `.impeccable/design.json`. Both were rewritten for Glass Tile. The `impeccable` detector compares literal CSS values against them (see [[Impeccable Design Workflow]]). This note is the narrative and the file map. When a token changes, regenerate or hand-edit `DESIGN.md` in the same session.
 
 Its named rules, for quick reference:
 
@@ -34,7 +34,7 @@ Its named rules, for quick reference:
 - **The Bloom-Stays-Blue Rule**: the bloom is built only from `--accent-soft`, `--glow` and `--tint` at low opacity, drifts over 22s, and holds still under reduced motion.
 - **The Deeper-in-the-Dark Rule**: dark mode lightens the accent for text and darkens the fill for surfaces. Any new fill uses `--accent-fill`, never `--accent`.
 - **The Ramp Rule**: never hand-pick a gray or a wash.
-- **The Portal Rule**: a portal lands inside `.bp` (`[data-bench-portal]`, used by the project dialog) or carries literal colours (the lightbox).
+- **The Portal Rule**: a portal lands inside `.bp` (`[data-glass-portal]`, used by the project dialog) or carries literal colours (the lightbox).
 - **The Hard-Copy Rule**: `components/GanttChart.tsx`, `app/icon.svg`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` carry literal copies of the active preset, now ink `#111318` and accent `#2457e6`.
 - **The Mono-For-Small-Notes Rule**: Azeret Mono only for labels, dates, counts, tags and captions, never above 12px and never for a sentence.
 - **The Weight Rule**: headings at 600 with negative tracking, emphasis at 500, nothing at 700.
@@ -48,7 +48,7 @@ Its named rules, for quick reference:
 
 ## Palette presets and derivation
 
-`lib/palettes.ts` holds **twelve** presets: default, **clean-bench**, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose and slate. Each has five seeds per mode (`paper`, `white`, `ink`, `accent`, `blue`), run through `derivePaletteTokens()` in `lib/palette.ts`. The Studio's Site Settings picks one (`data/header.json` `theme.paletteId`), and `app/(site)/layout.tsx` injects the resolved tokens as a CSS override at render time. `bench.css`'s own `.bp { … }` and `html[data-theme="dark"] .bp { … }` blocks are the no-override fallback, and they match what `derivePaletteTokens()` produces for the Clean Bench seeds exactly.
+`lib/palettes.ts` holds **twelve** presets: default, **glass-tile**, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose and slate. Each has five seeds per mode (`paper`, `white`, `ink`, `accent`, `blue`), run through `derivePaletteTokens()` in `lib/palette.ts`. The Studio's Site Settings picks one (`data/header.json` `theme.paletteId`), and `app/(site)/layout.tsx` injects the resolved tokens as a CSS override at render time. `glass-tile.css`'s own `.bp { … }` and `html[data-theme="dark"] .bp { … }` blocks are the no-override fallback, and they match what `derivePaletteTokens()` produces for the Glass Tile seeds exactly.
 
 - **The ramp** (from ink toward paper): prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87. `muted` is the floor for text, and `faint` is for lines and dots.
 - **`deriveSheetTokens(seeds)`** (the name is kept from Blue Sheet):
@@ -57,9 +57,9 @@ Its named rules, for quick reference:
   - `tint` is the accent mixed toward white (0.92 light, 0.86 dark), and `accentSoft` likewise (0.78 / 0.70).
   - `glow` is the accent mixed toward the paper (0.84 / 0.78).
   - `onAccent` is whichever of paper or ink reads better on the fill.
-- **Currently active: `clean-bench`.** Light seeds: paper `#f4f5f8`, white `#ffffff`, ink `#111318`, accent `#2457e6`, blue `#173ea8`. Dark seeds: paper `#0f1115`, white `#181b22`, ink `#eceef2`, accent `#6a93ff`, blue `#9db9ff`.
+- **Currently active: `glass-tile`.** Light seeds: paper `#f4f5f8`, white `#ffffff`, ink `#111318`, accent `#2457e6`, blue `#173ea8`. Dark seeds: paper `#0f1115`, white `#181b22`, ink `#eceef2`, accent `#6a93ff`, blue `#9db9ff`.
 
-## Tokens (the Clean Bench preset)
+## Tokens (the Glass Tile preset)
 
 | Variable | Light / dark | Use |
 |---|---|---|
@@ -82,11 +82,11 @@ Its named rules, for quick reference:
 | `--shadow-sm` / `--shadow` / `--shadow-lg` | `0 1px 2px` ink 5% + `0 8px 24px -14px` ink 12% / `0 2px 6px` ink 6% + `0 18px 40px -14px` ink 16% / `0 10px 30px` ink 12% + `0 40px 90px` ink 18% | Resting tiles / hover and the condensed nav / the dialog |
 | `--lv0…--lv4` | from ink, accent-soft and accent-fill (dark mode uses three literal hexes) | The contribution calendar's five levels |
 
-Over the bloom and under every tile sits the animated graph paper, `.bp > .plot-grid` (a fixed full-window canvas at `z-index: 0`, hidden in print), drawn by `components/bench/PlotGrid.tsx` in `--accent`; see [[Bench Components (Home Page)]].
+Over the bloom and under every tile sits the animated graph paper, `.bp > .plot-grid` (a fixed full-window canvas at `z-index: 0`, hidden in print), drawn by `components/glass-tile/PlotGrid.tsx` in `--accent`; see [[Glass Tile Components (Home Page)]].
 
 The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, `--glow` at 74% 24%, `--tint` at 50% 0%) in a `min(1500px, 150vw)` × 82vh box above the page, at 0.85 opacity (0.6 in the dark), drifting on `bloom-drift` (22s, alternate). The hero tile carries a second, smaller glow of its own (`.tile-hero::before`).
 
-## Layout & components (in `bench.css`)
+## Layout & components (in `glass-tile.css`)
 
 - **`.page`**: every page's wrapper (bottom padding only). The dashed `.sheet-frame` is gone.
 - **`.sec` / `.sec--tight` / `.sec-head` / `.sec-title` / `.sec-sub`**: a section is `clamp(40px, 6vw, 72px)` of space, then a title row (Instrument Sans 600 at `clamp(28px, 3.2vw, 38px)`, no rule under it, an optional muted aside), then the content. Since 2026-11-14 nothing sits loose on the ground (the animated grid runs behind the page): a standalone heading row is `.card.sec-head` (a full-width tile), and a single-block section is `.card.panel` (heading and body in one tile; `.panel .fact` drops to `--paper`). `.sec` sets only `padding-top`, so it keeps `.shell`'s side gutter; the old shorthand wiped it, which ran sections edge to edge on phones and 80px wider than the hero and footer on desktop.
@@ -95,9 +95,9 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 - **`.chip`**: a tinted mono pill with a pinging `.chip-dot` (`bp-ring`), as in "Open to relocation".
 - **`.card` / `.card--hover`**: the tile surface, frosted glass since 2026-11-14. `background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent)` with `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`, so the graph paper and the pen's etch glow show faintly through every tile, softened. `--tile-fill` comes from Site Settings → Layout → **Tile opacity (%)** (`layout.tileOpacity`, clamped 40 to 100, 72 when left out), written by `app/(site)/layout.tsx` in the `.bp[data-theme-id]` override block; `--tile-blur` has no setting. Print resets the tile to solid white with no filter. Otherwise `--r-lg`, `--line` border, `--shadow-sm`; on hover it lifts 3px onto `--shadow` with an accent-tinted border. `.bp-spot` adds the cursor wash (`--sx/--sy` from `lib/useSpotlight.ts`, pointer devices only).
 - **`.sec-group`** (2026-11-14): the fainter box around a home page section that has several tiles (Experience, Projects, Skills, Education), so the heading and the tiles under it read as one group. The heading (`.sec-group .sec-head`) is a band across the top of the box, edge to edge with a hairline under it, reading at 95% by default (`layout.headingOpacity`, 40 to 100; Site Settings → Layout → **Section heading opacity**), the most solid surface on the page; its own fill is `--head-fill-grouped` (90% in a 50% box), compensated the same way as the tiles. The hero bento, the summary and Contact stay on their own. `--gap` of padding, `--line` border, radius `--r-lg` + `--gap`, fill `--group-fill` (50% by default, `layout.groupOpacity`), no shadow and no backdrop blur. Fills never add up: `.sec-group .card` uses `--tile-fill-grouped`, which the site layout works out so a tile over the box still comes out at `--tile-fill`. Print drops the box.
-- **`backdrop-filter` is written unprefixed only.** `bench.css` has no `-webkit-backdrop-filter` lines (removed 2026-11-14): when both were written, the CSS build kept only the prefixed copy, which Chrome ignores, so the nav pill's and the scrim's blur had silently not rendered there. Given the unprefixed property alone, the build emits both.
+- **`backdrop-filter` is written unprefixed only.** `glass-tile.css` has no `-webkit-backdrop-filter` lines (removed 2026-11-14): when both were written, the CSS build kept only the prefixed copy, which Chrome ignores, so the nav pill's and the scrim's blur had silently not rendered there. Given the unprefixed property alone, the build emits both.
 - **`.tile` / `.tile-label` / `.tile-value` / `.tile-sub` / `.tile-arrow`**: the anatomy of a bento tile. The label is mono with an accent icon; the arrow is a 30px circle that nudges on hover.
-- **`.bento`** and its tiles (`.tile-hero`, `.tile-now`, `.tile-where`, `.tile-edu`, `.tile-activity`, `.tile-site`, `.tile-contact`), **`.hero-*`** (top row, name, role, meta, actions). See [[Bench Components (Home Page)]].
+- **`.bento`** and its tiles (`.tile-hero`, `.tile-now`, `.tile-where`, `.tile-edu`, `.tile-activity`, `.tile-site`, `.tile-contact`), **`.hero-*`** (top row, name, role, meta, actions). See [[Glass Tile Components (Home Page)]].
 - **`.activity`**: the contribution calendar.
 - **`.summary-grid` / `.facts`**: the summary and its fact tiles. Both sit inside one `.card.panel` with the "Who is Riley?" heading.
 - **`.roles` / `.role`**: the experience list in one tile, with a dated rail. `.bp-bullet-emphasis` phrases take the accent plus a hairline text stroke when their `li` is hovered.
@@ -110,7 +110,7 @@ The bloom is `.bp::before`: three radial gradients (`--accent-soft` at 28% 32%, 
 
 ### The kept component sheets
 
-- **`bullet-link.css`**: `.bp-bullet-link`, the Read more link at the end of a resume bullet, keyed on `data-motion` (`sweep`, `roll`, `launch`, `offset`, `trace`, `glint`, `still`). Every hover rule also matches `:focus-visible` and `[data-hover]` (how the Studio plays a card), and every colour is a token. On the site, `bench.css` sets its shape: a 999px tinted chip in the mono at 10.5px.
+- **`bullet-link.css`**: `.bp-bullet-link`, the Read more link at the end of a resume bullet, keyed on `data-motion` (`sweep`, `roll`, `launch`, `offset`, `trace`, `glint`, `still`). Every hover rule also matches `:focus-visible` and `[data-hover]` (how the Studio plays a card), and every colour is a token. On the site, `glass-tile.css` sets its shape: a 999px tinted chip in the mono at 10.5px.
 - **`skill-pills.css`**: `.bp-pill` and `.bp-pill--linked`, with a `::after` border loop keyed on `data-border` (`orbit` today, `march`, `pulse`, `marks`, `signal`, `steady`), offset by `--k`, and a `.bp-skill-card` keyed on `data-reveal` (`card` today, `tab`, `callout`). `AnimationSync` zeroes the per-item offsets under `[data-motion-sync]`.
 
 ## Responsive
@@ -126,11 +126,11 @@ The breakpoints are **980px** (the bento goes to two columns with the hero and e
 - **Blueprint Press** (2026-08-27 to 2026-11-08), in `app/(site)/blueprint.css`: square corners, hairlines over a fixed blueprint ruling, Instrument Serif + Spectral, the Electric preset. See [[Blueprint Press (2026-08 to 2026-11)]]; the stylesheet is in git (`git show d1360bb:"app/(site)/blueprint.css"`). Default and Electric remain selectable presets.
 
 ## Related
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Blue Sheet (2026-11-08, one day)]]
 - [[Blueprint Press (2026-08 to 2026-11)]]
 - [[Site Nav and Mark]]
-- [[Bench Components (Home Page)]]
+- [[Glass Tile Components (Home Page)]]
 - [[Project Catalog and Dialog]]
 - [[Routes Overview]]
 - [[Impeccable Design Workflow]]

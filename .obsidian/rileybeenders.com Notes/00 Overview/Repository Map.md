@@ -4,7 +4,7 @@ tags: [overview, reference]
 
 # Repository Map
 
-This is the full annotated tree of `rileybeenders.com` on the **`design/UI_Refresh`** branch, after the Clean Bench redesign of 2026-11-09, which followed the one-day Blue Sheet redesign of 2026-11-08 (Version 3.1). Paths are relative to the repo root (`C:\Users\riley\Documents\GitHub_Repos\rileybeenders.com`). The files the redesigns deleted are listed in [[Blue Sheet (2026-11-08, one day)]] and [[Clean Bench (2026-11 redesign)]], and the tree they belonged to is described in [[Blueprint Press (2026-08 to 2026-11)]].
+This is the full annotated tree of `rileybeenders.com` on the **`design/UI_Refresh`** branch, after the Glass Tile redesign of 2026-11-09, which followed the one-day Blue Sheet redesign of 2026-11-08 (Version 3.1). Paths are relative to the repo root (`C:\Users\riley\Documents\GitHub_Repos\rileybeenders.com`). The files the redesigns deleted are listed in [[Blue Sheet (2026-11-08, one day)]] and [[Glass Tile (2026-11 redesign)]], and the tree they belonged to is described in [[Blueprint Press (2026-08 to 2026-11)]].
 
 ```text
 CLAUDE.md                      # routing index for the agent skills + the Next.js agent-rules block, kept current by hand
@@ -40,9 +40,9 @@ app/
   icon.svg                     # static favicon, the hand-drawn static form of the BpMark monogram
   apple-icon.tsx               # iOS home-screen icon, rendered via next/og ImageResponse
   opengraph-image.tsx          # 1200x630 OG/Twitter card, rendered via next/og + Satori (reads assets/fonts/InstrumentSerif)
-  (site)/                      # route group: everything with the Clean Bench chrome
-    layout.tsx                 # 10 Google faces, the Studio palette + four font roles as a <style> override, ThemeProvider, <SiteNav>, .page, the [data-bench-portal] host, PlotGrid / AnimationSync / SmoothScroll switches, dev-only StudioLink
-    bench.css                  # the Clean Bench design system (1,119 lines), all scoped under .bp, in banner-commented sections (tiles, bento, bloom)
+  (site)/                      # route group: everything with the Glass Tile chrome
+    layout.tsx                 # 10 Google faces, the Studio palette + four font roles as a <style> override, ThemeProvider, <SiteNav>, .page, the [data-glass-portal] host, PlotGrid / AnimationSync / SmoothScroll switches, dev-only StudioLink
+    glass-tile.css                  # the Glass Tile design system (1,119 lines), all scoped under .bp, in banner-commented sections (tiles, bento, bloom)
     bullet-link.css            # the resume bullets' Read more button variants (data-motion); also served to the Studio
     skill-pills.css            # skill pills and linked skills (data-border / data-reveal); also served to the Studio
     page.tsx                   # / (async server): the bento (hero, Now, Based in, Education, GitHub activity, This site, Say hello), Who is Riley?, Experience, Projects grid, Stack, Education, Contact, footer
@@ -60,7 +60,7 @@ components/
   GanttChart.tsx               # client-side mermaid Gantt renderer for the job tracker
   JobsTable.tsx                # renders the merged job-tracker rows
   SiteAnalytics.tsx            # client wrapper for Vercel <Analytics>: va-disable opt-out, ?analytics=off/on, per-session "Visit" event
-  bench/                       # the Clean Bench components (components/sheet/ until 2026-11-09)
+  glass-tile/                       # the Glass Tile components (components/sheet/ until 2026-11-09)
     SiteNav.tsx                # floating pill nav (Home · Projects · Contact), condenses at 28px, sliding active tint, theme toggle
     HeroActions.tsx            # Download PDF (opens resumeHtmlPath in a new tab, else downloads the PDF) / Email / LinkedIn / GitHub
     GithubGraph.tsx            # the contribution calendar drawn from lib/github.ts, cells popping in column by column
@@ -70,7 +70,7 @@ components/
     Education.tsx              # the degree tile + a grid of certificate tiles
     ProjectGrid.tsx            # the project tiles + the dialog; #project-<id>[-case-study] hash routing; category filters (lib/categories.ts)
     ProjectCard.tsx            # one tile: cover (or monogram), type and "This site" tags, name, summary line, dates and photo count; exports MORPH + tileLayoutId
-    ProjectDialog.tsx          # the dialog the tile morphs into: portal into [data-bench-portal], focus trap, Escape, data-lock scroll lock, Open full page
+    ProjectDialog.tsx          # the dialog the tile morphs into: portal into [data-glass-portal], focus trap, Escape, data-lock scroll lock, Open full page
     ProjectBody.tsx            # everything an entry has: head, gallery, summary, status, bullets, links, case study, walkthrough, deep dive, tracker
     ContactBlock.tsx           # the ways in beside ContactForm (home page foot and /contact)
     ContactForm.tsx            # "Send me a message": POST /api/contact, mailto: fallback on 503, honeypot field
@@ -152,7 +152,7 @@ lib/
   dates.ts                     # isIsoDate, parseIsoDate (UTC), formatDate, daysBetween, todayIso
   build-stamp.ts               # short commit + build date for the footer's Updated line; server-only
   palette.ts                   # PaletteTokens: the ramp, onAccent and the accent surfaces (deriveSheetTokens, isDarkPalette); tokensToCssVars()
-  palettes.ts                  # the 12 presets (default, clean-bench, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose, slate)
+  palettes.ts                  # the 12 presets (default, glass-tile, blue-sheet, electric, forest, twilight, terracotta, ocean, graphite, amber, rose, slate)
   theme.ts                     # resolveThemeTokens(header.theme) → light + dark token sets
   fonts.ts                     # the ten font options; fontVarExpression()
   useInViewOnce.ts             # once-only IntersectionObserver hook for CSS-stagger reveals (GithubGraph, stats)
@@ -168,6 +168,7 @@ types/
 
 scripts/
   capture-site-screenshots.mjs # playwright-core recapture of the site entry's screenshots in both themes: home hero, full home, /projects .project-grid, the timeline on /projects/rileybeenders-com, the Studio
+  snapshot-version.mjs         # freeze a running old build into public/versions/<slug>/ (the Versions block's snapshots)
   site-stats.mjs               # git-derived stats + key-commit candidates for the site entry; --write refreshes the data file
   check-anchor-hydration.mjs   # replays the anchor-stamping browser extension over /, /projects, /projects/rileybeenders-com, /projects/icarus-lite, /contact
   check-about-site.mjs         # validates data/site/about-site.json, run locally and by the workflow
@@ -212,9 +213,9 @@ references/                    # dated snapshot resumes (Apr 2022, Sept 2025, Ja
 
 README.md                      # project description + duplicate Gantt/tracker table + Past Disney Applications + local-dev and Studio instructions
 README_TODO.md                 # open content tasks
-PRODUCT.md                     # product truth for the impeccable skill (interviewed 2026-09-18, updated for Blue Sheet 2026-11-08 and Clean Bench 2026-11-09)
-DESIGN.md                      # the Clean Bench token spec in Stitch DESIGN.md format
-.impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); surfaces/ holds the Clean Bench direction contract; critique/ is git-ignored run output
+PRODUCT.md                     # product truth for the impeccable skill (interviewed 2026-09-18, updated for Blue Sheet 2026-11-08 and Glass Tile 2026-11-09)
+DESIGN.md                      # the Glass Tile token spec in Stitch DESIGN.md format
+.impeccable/design.json        # DESIGN.md's sidecar (ramps, shadows, motion, component snippets); surfaces/ holds the Glass Tile direction contract; critique/ is git-ignored run output
 skills-lock.json               # source repo + path + content hash for each vendored skill
 .markdownlint.jsonc            # markdownlint exceptions
 package.json / package-lock.json   # rileybeenders.com 3.1.0, pinned ranges; `site`, `dev`, `build`, `start`, `typecheck`, `studio` scripts
@@ -235,6 +236,6 @@ next-env.d.ts                  # Next-generated; git-ignored
 ## Related
 - [[Project Overview]]
 - [[Architecture and Data Flow]]
-- [[Clean Bench (2026-11 redesign)]]
+- [[Glass Tile (2026-11 redesign)]]
 - [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

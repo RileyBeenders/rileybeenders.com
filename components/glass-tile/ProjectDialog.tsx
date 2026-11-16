@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Maximize2, X } from "lucide-react";
-import { MORPH, tileLayoutId } from "@/components/bench/ProjectCard";
+import { MORPH, tileLayoutId } from "@/components/glass-tile/ProjectCard";
 import { ui } from "@/lib/copy";
 
 const EASE = [0.22, 0.9, 0.28, 1] as const;
@@ -24,7 +24,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [ta
  * a layoutId, so the morph is one continuous surface), the page dims behind
  * it, and the body fades in once the box has settled. A bar carries the name
  * and the way out to the project's full page; the body scrolls on its own.
- * Rendered through a portal into [data-bench-portal] (inside .bp, so the
+ * Rendered through a portal into [data-glass-portal] (inside .bp, so the
  * palette tokens resolve) so it covers the page whichever grid opened it;
  * the full-screen viewer (Lightbox) stacks above it.
  */
@@ -35,7 +35,7 @@ export function ProjectDialog({ open, onClose, children }: ProjectDialogProps) {
   const restoreTo = useRef<Element | null>(null);
 
   // The portal target sits inside .bp (app/(site)/layout.tsx) so every palette token resolves; <body> is outside that scope.
-  useEffect(() => setHost(document.querySelector<HTMLElement>("[data-bench-portal]") ?? document.body), []);
+  useEffect(() => setHost(document.querySelector<HTMLElement>("[data-glass-portal]") ?? document.body), []);
 
   // Lock the page, trap focus, close on Escape; put focus back where it was.
   useEffect(() => {

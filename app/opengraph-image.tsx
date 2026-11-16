@@ -21,7 +21,7 @@ const TILE = "#ffffff";
 const LINE = "rgba(17, 19, 24, 0.09)";
 
 /**
- * The bench's bloom: two soft blue washes behind the tile, as a data URI.
+ * The site's bloom: two soft blue washes behind the tile, as a data URI.
  * Satori's gradient support is partial, so the bloom is an SVG.
  */
 const bloom = `data:image/svg+xml;base64,${Buffer.from(
@@ -71,7 +71,7 @@ export default async function OpengraphImage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={bloom} width={1200} height={630} alt="" style={{ position: "absolute", top: 0, left: 0 }} />
 
-        {/* The tile: the share card is one bench tile. */}
+        {/* The tile: the share card is one glass tile. */}
         <div
           style={{
             display: "flex",

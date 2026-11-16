@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-11-09T03:00:08.148621+00:00",
-  "title": "Design System: Clean Bench",
+  "title": "Design System: Glass Tile",
   "extensions": {
     "colorMeta": {
       "accent": {
         "role": "primary",
-        "displayName": "Bench Cobalt (active preset)",
+        "displayName": "Glass Tile Cobalt (active preset)",
         "canonical": "#2457e6",
         "tonalRamp": [
           "#0e235c",
@@ -18,7 +18,7 @@
           "#cfdafa",
           "#f0f3fd"
         ],
-        "note": "Clean Bench preset (lib/palettes.ts 'clean-bench', 2026-11-09). Fills use accent-fill, which cuts 30% toward black on a dark palette; text keeps the lighter dark accent #6a93ff. Ramp: the canonical mixed toward black (0.4/0.6/0.8 of its value) and toward white (0.30/0.55/0.78/0.93)."
+        "note": "Glass Tile preset (lib/palettes.ts 'glass-tile', 2026-11-09). Fills use accent-fill, which cuts 30% toward black on a dark palette; text keeps the lighter dark accent #6a93ff. Ramp: the canonical mixed toward black (0.4/0.6/0.8 of its value) and toward white (0.30/0.55/0.78/0.93)."
       },
       "blue": {
         "role": "primary",
@@ -434,7 +434,7 @@
       {
         "name": "bloom",
         "value": "three radial washes (accent-soft, glow, tint) behind the top of the page at 0.85 opacity (0.6 dark), drifting over 22s",
-        "purpose": "The hint of Soft Bloom: a soft blue light behind the bench, never a second hue."
+        "purpose": "The hint of Soft Bloom: a soft blue light behind the tiles, never a second hue."
       },
       {
         "name": "glass",
@@ -452,7 +452,7 @@
       "xl": "28px (defined, unused)",
       "pill": "999px"
     },
-    "note": "Narrative, components and token roles: see DESIGN.md (Clean Bench). The live markup is in components/bench/ and app/(site)/bench.css; the direction contract is .impeccable/surfaces/app-site-page-tsx.md."
+    "note": "Narrative, components and token roles: see DESIGN.md (Glass Tile). The live markup is in components/glass-tile/ and app/(site)/glass-tile.css; the direction contract is .impeccable/surfaces/app-site-page-tsx.md."
   },
   "components": [
     {
@@ -546,7 +546,7 @@
   ],
   "narrative": {
     "northStar": "Everything is a tile",
-    "overview": "A bench of rounded white tiles on a pale grey-blue ground under a floating glass nav. The home page opens on a bento (the hero, the current role, where Riley is based, the degree, the GitHub calendar, this site, say hello), then reads as the resume at rest below it. One cobalt accent carries links, fills and active states; a soft blue bloom drifts behind the top of the page. Instrument Sans sets headings and body; Azeret Mono sets small labels. A project tile morphs into its dialog. Dark mode is the same bench with the lights down, where every fill cuts deeper.",
+    "overview": "A grid of rounded white tiles on a pale grey-blue ground under a floating glass nav. The home page opens on a bento (the hero, the current role, where Riley is based, the degree, the GitHub calendar, this site, say hello), then reads as the resume at rest below it. One cobalt accent carries links, fills and active states; a soft blue bloom drifts behind the top of the page. Instrument Sans sets headings and body; Azeret Mono sets small labels. A project tile morphs into its dialog. Dark mode is the same tiles with the lights down, where every fill cuts deeper.",
     "keyCharacteristics": [
       "Everything sits on a tile: white, 22px radius, an ink hairline, a small shadow.",
       "One blue in five jobs: tint, accent-soft, accent, accent-fill, glow.",
@@ -578,7 +578,7 @@
       },
       {
         "name": "The Portal Rule",
-        "body": "Tokens are scoped to .bp; portals land in [data-bench-portal] or carry literal colours.",
+        "body": "Tokens are scoped to .bp; portals land in [data-glass-portal] or carry literal colours.",
         "section": "colors"
       },
       {
@@ -624,7 +624,7 @@
       "Do keep the home page readable as the resume at rest.",
       "Do open a project by morphing its tile and keep #project-<id> as its address.",
       "Do lift 1 to 3px on hover with the one easing curve.",
-      "Do render portals inside [data-bench-portal].",
+      "Do render portals inside [data-glass-portal].",
       "Do derive new colours from the seeds in lib/palette.ts.",
       "Do add new copy as a Studio field."
     ],

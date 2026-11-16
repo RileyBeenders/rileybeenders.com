@@ -24,7 +24,7 @@ const GANTT_LAYOUT = {
 /**
  * Mermaid bakes colors into the SVG it returns rather than consuming CSS
  * variables, so the light/dark palettes are duplicated here to match the
- * `--ink`/`--paper`/etc. tokens in bench.css (Blue Sheet, 2026-11-08).
+ * `--ink`/`--paper`/etc. tokens in glass-tile.css (Blue Sheet, 2026-11-08).
  *
  * The site's accent and secondary-blue tokens are the same electric blue now
  * (see lib/palettes.ts "electric"), so it alone can't separate the chart's two

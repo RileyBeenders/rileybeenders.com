@@ -31,7 +31,7 @@ type SkillPickerProps = {
   readMoreLabel: string;
 };
 
-/** The site's one curve (--ease in bench.css, EASE in Reveal). */
+/** The site's one curve (--ease in glass-tile.css, EASE in Reveal). */
 const EASE = [0.22, 0.9, 0.28, 1] as const;
 /** The picked tab's tint slides like the nav's. */
 const SLIDE = { type: "spring", stiffness: 420, damping: 38, mass: 0.7 } as const;

@@ -18,7 +18,7 @@
     "openToRelocation": true
   },
   "theme": {
-    "paletteId": "clean-bench",
+    "paletteId": "glass-tile",
     "defaultMode": "dark",
     "custom": {
       "light": {

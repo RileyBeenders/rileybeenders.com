@@ -5,14 +5,14 @@ import homePageData from "@/data/home/page.json";
 import contactData from "@/data/contact/contact.json";
 import { Reveal } from "@/components/blueprint/Reveal";
 import { BackToTop } from "@/components/blueprint/BackToTop";
-import { HeroActions } from "@/components/bench/HeroActions";
-import { GithubGraph } from "@/components/bench/GithubGraph";
-import { Experience } from "@/components/bench/Experience";
-import { ProjectGrid } from "@/components/bench/ProjectGrid";
-import { Stack } from "@/components/bench/Stack";
-import { Education } from "@/components/bench/Education";
-import { ContactBlock } from "@/components/bench/ContactBlock";
-import { SiteFooter } from "@/components/bench/SiteFooter";
+import { HeroActions } from "@/components/glass-tile/HeroActions";
+import { GithubGraph } from "@/components/glass-tile/GithubGraph";
+import { Experience } from "@/components/glass-tile/Experience";
+import { ProjectGrid } from "@/components/glass-tile/ProjectGrid";
+import { Stack } from "@/components/glass-tile/Stack";
+import { Education } from "@/components/glass-tile/Education";
+import { ContactBlock } from "@/components/glass-tile/ContactBlock";
+import { SiteFooter } from "@/components/glass-tile/SiteFooter";
 import { splitParagraphs } from "@/components/content/Paragraphs";
 import { getCatalog, SITE_PROJECT_ID } from "@/lib/catalog";
 import { getContributions, githubUsername } from "@/lib/github";
@@ -77,7 +77,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* ----------------------------------------------------------- bench */}
+      {/* ----------------------------------------------------------- bento */}
       <section className="shell hero" aria-label="Introduction">
         <div className="bento">
           <article className="card tile tile-hero" style={order()}>

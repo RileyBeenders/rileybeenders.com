@@ -42,12 +42,12 @@
   "images": [
     {
       "src": "/project-images/rileybeenders-com/home-hero-light.png",
-      "alt": "The home page bench in light mode: the hero tile with the monogram, name, title and actions, the Now, Based in and Education tiles beside it, and the GitHub calendar below.",
-      "caption": "Home · Clean Bench · light"
+      "alt": "The home page bento in light mode: the hero tile with the monogram, name, title and actions, the Now, Based in and Education tiles beside it, and the GitHub calendar below.",
+      "caption": "Home · Glass Tile · light"
     },
     {
       "src": "/project-images/rileybeenders-com/home-hero-dark.png",
-      "alt": "The same bench in dark mode: graphite tiles on near-black, a lighter blue for the accent, and every fill turned down.",
+      "alt": "The same bento in dark mode: graphite tiles on near-black, a lighter blue for the accent, and every fill turned down.",
       "caption": "Home · dark mode"
     }
   ],
@@ -134,7 +134,7 @@
     "versionsNote": "The site as it looks today, then every design before it. Each older version opens as a frozen snapshot: it reads the way it did, but nothing in it runs.",
     "versions": [
       {
-        "name": "Clean Bench",
+        "name": "Glass Tile",
         "dates": "Nov 8, 2026 to today",
         "current": true,
         "summary": "Everything is a tile: a bento of rounded glass tiles over a soft blue bloom and a plotted grid, with a floating pill nav.",
@@ -145,12 +145,12 @@
         ],
         "images": [
           {
-            "src": "/project-images/rileybeenders-com/versions/clean-bench-home.jpg",
-            "alt": "Clean Bench: the home page"
+            "src": "/project-images/rileybeenders-com/versions/glass-tile-home.jpg",
+            "alt": "Glass Tile: the home page"
           },
           {
-            "src": "/project-images/rileybeenders-com/versions/clean-bench-projects.jpg",
-            "alt": "Clean Bench: the projects page"
+            "src": "/project-images/rileybeenders-com/versions/glass-tile-projects.jpg",
+            "alt": "Glass Tile: the projects page"
           }
         ]
       },
@@ -525,7 +525,7 @@
       {
         "date": "2026-11-09",
         "era": "present",
-        "title": "Clean Bench: everything is a tile",
+        "title": "Glass Tile: everything is a tile",
         "summary": "The blueprint feel goes. White rounded tiles on a pale ground under a glass nav: the hero beside Now, Based in and Education tiles, the GitHub calendar, This site and Say hello, then the resume at rest. Project tiles grow into their dialogs; one grotesque for everything with a wide monospace for the small notes; a soft blue bloom at the top; dark mode turns the fills down.",
         "tags": [
           "design",
@@ -552,7 +552,7 @@
           "Dark mode swaps in the palette's own dark paper and ink and changes nothing else. Ten palettes plus custom colors, and three font roles, are all Studio settings, so the whole system re-tunes without a code change.",
           "The projects page deliberately has no pinning or scroll-jacking. Depth comes from a media column drifting against the text, a spine that fills as you read, and photos that uncover bottom-to-top.",
           "On November 8, 2026 the same data was re-set as Blue Sheet: a cool blue-white sheet inside a dashed cut line, rounded cards, a serif over a sans, one blue from pale washes to a deep fill, and a dark mode where the fills cut deeper instead of brighter. It lasted a day.",
-          "On November 9 the sheet gave way to Clean Bench: white rounded tiles on a pale grey-blue ground under a floating glass nav, one grotesque (Instrument Sans) for headings and body with a wide monospace (Azeret Mono) for dates and small notes, a soft blue bloom behind the top of the page, and project tiles that grow into their dialogs. Every earlier look survives as a Studio palette preset; the Studio still re-inks the whole site from a form."
+          "On November 9 the sheet gave way to Glass Tile: white rounded tiles on a pale grey-blue ground under a floating glass nav, one grotesque (Instrument Sans) for headings and body with a wide monospace (Azeret Mono) for dates and small notes, a soft blue bloom behind the top of the page, and project tiles that grow into their dialogs. Every earlier look survives as a Studio palette preset; the Studio still re-inks the whole site from a form."
         ],
         "screenshotId": "home-full"
       },

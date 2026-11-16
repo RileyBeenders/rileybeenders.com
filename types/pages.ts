@@ -44,7 +44,7 @@ export type HomePageData = {
     /** Under the tagline: "{company}, since {start}" for the current role. */
     currentRole: string;
   };
-  /** The small labels on the bench tiles beside the hero. */
+  /** The small labels on the tiles tiles beside the hero. */
   bento: {
     /** Over the current role. */
     now: string;
@@ -150,7 +150,7 @@ export type InterfaceData = {
     all: string;
     /** The other filter chips: the label of each shared project category. */
     categories?: Partial<Record<ProjectCategory, string>>;
-    /** The label on the home page's bench tile for the site's own project. (Until 2026-11-14 also a second tag on its project card.) */
+    /** The label on the home page's bento tile for the site's own project. (Until 2026-11-14 also a second tag on its project card.) */
     siteBadge: string;
     /** On a card with photographs: "{count} photos". */
     photos: string;

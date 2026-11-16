@@ -506,18 +506,18 @@ export type LayoutSettings = {
   /**
    * How solid the tiles are, as a percentage (40 to 100). Below 100 they are
    * frosted glass: the animated grid and the pen's glow show through, softened
-   * (.card in bench.css, --tile-fill). 72 when left out.
+   * (.card in glass-tile.css, --tile-fill). 72 when left out.
    */
   tileOpacity?: number;
   /**
    * How solid the box around a home page section's tiles is, as a percentage
-   * (0 to 90; .sec-group in bench.css, --group-fill). The tiles inside keep
+   * (0 to 90; .sec-group in glass-tile.css, --group-fill). The tiles inside keep
    * their own tileOpacity: the two fills do not add up. 50 when left out.
    */
   groupOpacity?: number;
   /**
    * How solid the heading band across the top of a section box reads, as a
-   * percentage (40 to 100; .sec-group .sec-head in bench.css,
+   * percentage (40 to 100; .sec-group .sec-head in glass-tile.css,
    * --head-fill-grouped). 95 when left out.
    */
   headingOpacity?: number;
@@ -529,7 +529,7 @@ export type LayoutSettings = {
   experienceYears?: number;
   /**
    * The colour of the "Open to relocation" corner tab on the home page's hero
-   * tile (.hero-flag in bench.css, data-tone). Each tone has its own light and
+   * tile (.hero-flag in glass-tile.css, data-tone). Each tone has its own light and
    * dark pair, deliberately outside the palette. Amber when left out.
    */
   relocationColor?: RelocationColor;
@@ -544,9 +544,9 @@ export type RelocationColor = "amber" | "green" | "coral" | "violet" | "ink";
  */
 export type MotionSettings = {
   syncAnimations?: boolean;
-  /** Wheel scrolling eases toward its target instead of jumping (components/bench/SmoothScroll.tsx). Off when left out. */
+  /** Wheel scrolling eases toward its target instead of jumping (components/glass-tile/SmoothScroll.tsx). Off when left out. */
   smoothScroll?: boolean;
-  /** The animated graph paper behind the tiles (components/bench/PlotGrid.tsx). On when left out. */
+  /** The animated graph paper behind the tiles (components/glass-tile/PlotGrid.tsx). On when left out. */
   grid?: boolean;
   /** Seconds a typical ripple takes to cross the window on that grid. 8 when left out. */
   gridLoopSeconds?: number;

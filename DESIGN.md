@@ -1,12 +1,12 @@
 ---
-name: Clean Bench
-description: Everything is a tile. White rounded tiles on a pale grey-blue ground under a floating glass nav, one cobalt accent for links, fills and active states, a soft blue bloom behind the top of the page, one grotesque for headings and body with a wide monospace for small labels, and a project tile that morphs into its dialog. Dark mode is the same bench with the lights down, where every blue fill cuts deeper rather than brighter.
+name: Glass Tile
+description: Everything is a tile. White rounded tiles on a pale grey-blue ground under a floating glass nav, one cobalt accent for links, fills and active states, a soft blue bloom behind the top of the page, one grotesque for headings and body with a wide monospace for small labels, and a project tile that morphs into its dialog. Dark mode is the same tiles with the lights down, where every blue fill cuts deeper rather than brighter.
 colors:
   # The live palette is a Studio-selected preset (data/header.json → theme.paletteId, seeds in lib/palettes.ts).
   # Sixteen roles per mode: six secondary tones are a fixed tint ramp from ink toward paper (lib/palette.ts:
   # prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87); four surfaces come from the
   # accent (tint, accent-soft, accent-fill, glow); on-accent is whichever of paper or ink reads better on the fill.
-  # Values below are the ACTIVE preset, "Clean Bench" (added 2026-11-09), as the fallbacks in app/(site)/bench.css.
+  # Values below are the ACTIVE preset, "Glass Tile" (added 2026-11-09), as the fallbacks in app/(site)/glass-tile.css.
   paper: "#f4f5f8"
   white: "#ffffff"
   ink: "#111318"
@@ -40,7 +40,7 @@ colors:
   glow-dark: "#232e48"
   on-accent-dark: "#eceef2"
   # Tile and control borders use --line: ink at 9% (light) / 11% (dark), so they read on both paper and white.
-  # The contribution calendar's five steps, from no activity to the most (bench.css --lv0…--lv4, sRGB mixes).
+  # The contribution calendar's five steps, from no activity to the most (glass-tile.css --lv0…--lv4, sRGB mixes).
   level-0: "#f1f1f1"
   level-1: "#cfdafa"
   level-2: "#7192ef"
@@ -145,11 +145,11 @@ typography:
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "0.04em"
-  # Every font-size app/(site)/bench.css sets, in px (fixed values and clamp endpoints):
+  # Every font-size app/(site)/glass-tile.css sets, in px (fixed values and clamp endpoints):
   # 9, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 18, 19, 20, 21, 22, 24, 26, 28,
   # 32, 38, 40, 52, 62.
 rounded:
-  # Every border-radius app/(site)/bench.css sets: 2px (calendar legend squares, the rule), 4px (focus rings),
+  # Every border-radius app/(site)/glass-tile.css sets: 2px (calendar legend squares, the rule), 4px (focus rings),
   # 10px (--r-sm), 12px (a project cover inside its tile: --r-lg minus the tile's 10px padding), 14px (--r),
   # 22px (--r-lg), 50% and 999px. --r-xl (28px) is defined for larger tiles and unused today.
   xs: "2px"
@@ -311,17 +311,17 @@ components:
     height: "28px"
 ---
 
-# Design System: Clean Bench
+# Design System: Glass Tile
 
 ## Overview
 
 **Creative North Star: "Everything is a tile"**
 
-The site is a bench of rounded white tiles on a pale grey-blue ground. Under a floating glass nav, the home page opens on a bento: the hero tile (the relocation corner tab, the name, the title, location and current role, the actions), then small tiles for the current role, where Riley is based and the degree, the GitHub calendar across the full width, a tile for this site and one to say hello. A soft blue bloom drifts very slowly behind the top of the page. The tiles are lightly frosted glass: white at `--tile-fill` (72% by default, set in the Studio under Site Settings → Layout → Tile opacity) over a 1.5px backdrop blur, so the animated graph paper behind the bench and the pen's glow show through softly.
+The site is a grid of rounded white tiles on a pale grey-blue ground. Under a floating glass nav, the home page opens on a bento: the hero tile (the relocation corner tab, the name, the title, location and current role, the actions), then small tiles for the current role, where Riley is based and the degree, the GitHub calendar across the full width, a tile for this site and one to say hello. A soft blue bloom drifts very slowly behind the top of the page. The tiles are lightly frosted glass: white at `--tile-fill` (72% by default, set in the Studio under Site Settings → Layout → Tile opacity) over a 1.5px backdrop blur, so the animated graph paper behind the tiles and the pen's glow show through softly.
 
 One cobalt accent carries every link, fill and active state. Headings and body share one grotesque, Instrument Sans, with headings at weight 600 and negative tracking. Dates, captions, eyebrows, counts and tags are set small in Azeret Mono.
 
-The voice is still a document at rest. Below the bento the resume reads top to bottom (who, experience, projects, stack, education, contact), and the depth opens on request: a project tile morphs into its dialog, with the full page behind it at `/projects/<id>`. Clean Bench replaced Blue Sheet on 2026-11-09 on the same data, the same wording and the same Studio-driven token system, so every palette preset still re-inks the whole bench.
+The voice is still a document at rest. Below the bento the resume reads top to bottom (who, experience, projects, stack, education, contact), and the depth opens on request: a project tile morphs into its dialog, with the full page behind it at `/projects/<id>`. Glass Tile replaced Blue Sheet on 2026-11-09 on the same data, the same wording and the same Studio-driven token system, so every palette preset still re-inks the whole site.
 
 Every CSS transition uses one easing curve, `cubic-bezier(0.22, 0.9, 0.28, 1)`. Tiles rise 16px into place once, 70ms apart; tiles lift 3px on hover; the nav's active tint slides between links on a spring; the calendar's cells pop in; a project tile grows into its dialog on a spring. Wheel scrolling glides.
 
@@ -382,7 +382,7 @@ Paper and ink with one accent, where every secondary tone is a fixed mix of the 
 
 **The Ramp Rule.** Never hand-pick a gray or a wash. Secondary tones come from the ramp (prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87) and surfaces from the accent, so every preset and any custom palette shares one rhythm. Muted is the floor for text; faint is for lines and dots.
 
-**The Portal Rule.** Tokens are scoped to `.bp`. Anything rendered through a portal must land inside it (`[data-bench-portal]` in the site layout, which the project dialog uses) or carry literal colours (the lightbox, which portals to `<body>`).
+**The Portal Rule.** Tokens are scoped to `.bp`. Anything rendered through a portal must land inside it (`[data-glass-portal]` in the site layout, which the project dialog uses) or carry literal colours (the lightbox, which portals to `<body>`).
 
 **The Hard-Copy Rule.** Four places cannot read CSS variables and carry literal copies of the active preset (ink `#111318`, accent `#2457e6`): `components/GanttChart.tsx` (mermaid theme variables), `app/icon.svg`, `app/apple-icon.tsx` and `app/opengraph-image.tsx`. A palette change must reach them by hand.
 
@@ -391,7 +391,7 @@ Paper and ink with one accent, where every secondary tone is a fixed mix of the 
 **Display and Body Font:** Instrument Sans (with system-ui, sans-serif), loaded at 400, 500, 600 and 700.
 **Label Font:** Azeret Mono (with SF Mono, Menlo, monospace), loaded at 400 and 500; uppercase and tracked for labels, plain with tabular figures for data.
 
-**Character:** One clean grotesque does both jobs. Headings are weight 600 with tracking from -0.01em to -0.035em, so the name and the section titles read tight and confident; body text is weight 400 at a generous size and line height. Azeret Mono is wide and a little characterful, which is why it stays small: it marks the bench's notes (a tile's label, a date, a photo count) without competing with the words.
+**Character:** One clean grotesque does both jobs. Headings are weight 600 with tracking from -0.01em to -0.035em, so the name and the section titles read tight and confident; body text is weight 400 at a generous size and line height. Azeret Mono is wide and a little characterful, which is why it stays small: it marks the tiles' notes (a tile's label, a date, a photo count) without competing with the words.
 
 ### Hierarchy
 
@@ -413,9 +413,9 @@ Paper and ink with one accent, where every secondary tone is a fixed mix of the 
 
 **The Mono-For-Small-Notes Rule.** Azeret Mono is for small things only: labels, dates, counts, tags and captions, never above 12px and never for a sentence a visitor has to read. Names and sentences are Instrument Sans.
 
-**The Weight Rule.** Headings are 600 with negative tracking; emphasis inside a sentence is 500. Nothing on the bench is set at 700, although the weight is loaded.
+**The Weight Rule.** Headings are 600 with negative tracking; emphasis inside a sentence is 500. Nothing on the tiles is set at 700, although the weight is loaded.
 
-**The Studio Roles Rule.** Four faces are Studio choices (Site Settings → Typography: header, sub-header, body, small labels) among the ten preloaded in `app/(site)/layout.tsx`, written as `--bp-font-header`, `--bp-font-subheader`, `--bp-font-body` and `--bp-font-mono`. Clean Bench ships with Instrument Sans for the first three and Azeret Mono for small labels.
+**The Studio Roles Rule.** Four faces are Studio choices (Site Settings → Typography: header, sub-header, body, small labels) among the ten preloaded in `app/(site)/layout.tsx`, written as `--bp-font-header`, `--bp-font-subheader`, `--bp-font-body` and `--bp-font-mono`. Glass Tile ships with Instrument Sans for the first three and Azeret Mono for small labels.
 
 **The No-Eyebrow-Over-Sections Rule.** Section titles stand alone. Eyebrows (mono, accent) appear only where they name a category: a project's type over its name.
 
@@ -477,7 +477,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 - **Inline** (`.bp-link`): accent text, 500, an underline that grows from the left on hover; the arrow nudges.
 - **Prose links** (`.prose a`): accent with a 45% underline that fills on hover.
-- **Read more** (`.bp-bullet-link`, overridden in bench.css over `app/(site)/bullet-link.css`): a tinted mono chip at the end of a resume bullet that fills with the accent on hover.
+- **Read more** (`.bp-bullet-link`, overridden in glass-tile.css over `app/(site)/bullet-link.css`): a tinted mono chip at the end of a resume bullet that fills with the accent on hover.
 
 ### Chips and pills
 
@@ -502,7 +502,7 @@ Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hove
 
 ### Dialog (`.dlg`)
 
-The signature interaction. A project tile's `motion.article` and the dialog panel share a framer-motion `layoutId` (`tileLayoutId(id)` in `components/bench/ProjectCard.tsx`), so the tile grows into the dialog on one spring (`MORPH`: stiffness 380, damping 36, mass 0.8) while the page dims behind an ink/45% scrim with a 6px blur. The bar (name, type, Open full page, close) and the body fade in 0.18s after the morph starts.
+The signature interaction. A project tile's `motion.article` and the dialog panel share a framer-motion `layoutId` (`tileLayoutId(id)` in `components/glass-tile/ProjectCard.tsx`), so the tile grows into the dialog on one spring (`MORPH`: stiffness 380, damping 36, mass 0.8) while the page dims behind an ink/45% scrim with a 6px blur. The bar (name, type, Open full page, close) and the body fade in 0.18s after the morph starts.
 
 It opens with `#project-<id>` in the URL (`-case-study` to expand the case study) and closes on Escape, the scrim or the back button, collapsing home into its tile. Focus is trapped and restored, and the page is locked beneath it. Under reduced motion it is a plain fade.
 
@@ -528,7 +528,7 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 
 ### Named Rules
 
-**The Morph-Not-Modal Rule.** A project never appears from nowhere. It grows out of the tile the visitor touched and collapses back into it, so the dialog reads as the tile opened up. New expandable content on the bench follows the same shared-layout pattern, with a plain fade as the reduced-motion fallback.
+**The Morph-Not-Modal Rule.** A project never appears from nowhere. It grows out of the tile the visitor touched and collapses back into it, so the dialog reads as the tile opened up. New expandable content on the tiles follows the same shared-layout pattern, with a plain fade as the reduced-motion fallback.
 
 **The Resume-At-Rest Rule.** With every tile closed, the home page is the resume: the bento, then who, experience, projects, stack, education and contact, in that order. Nothing on the surface depends on a hover, a click or an animation to be read.
 
@@ -545,7 +545,8 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 ## History
 
 - **Blueprint Press** (2026-08 to 2026-11): a resume printed on paper over a fixed drafting grid; it lives on as the "Default" palette.
-- **Blue Sheet** (2026-11-08, one day): a drafting sheet inside a dashed cut line with a drawn construction-line hero; it lives on as the `blue-sheet` palette preset.
+- **Blue Sheet** (2026-11-08, one day): a drafting sheet inside a dashed cut line with a drawn construction-line hero; it lives on as the `blue-sheet` palette preset. The site's Versions block counts it as the start of Glass Tile, not a design of its own.
+- **Glass Tile** (2026-11-09 to today): this design. It was named **Clean Bench** until 2026-11-15, when it was renamed everywhere: `bench.css` became `glass-tile.css`, `components/bench/` became `components/glass-tile/`, the `clean-bench` preset became `glass-tile` (`lib/palettes.ts` still accepts the old id), and `data-bench-portal` became `data-glass-portal`.
 
 ## Do's and Don'ts
 
@@ -557,7 +558,7 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 - Keep the home page readable as the resume at rest.
 - Open a project by morphing its tile, offer the page behind it (Open full page), and keep `#project-<id>` as the address of a project.
 - Lift 1 to 3px on hover, grow the shadow one step, and use the one easing curve.
-- Render portals inside `[data-bench-portal]` so tokens resolve.
+- Render portals inside `[data-glass-portal]` so tokens resolve.
 - Derive new colours from the seeds in `lib/palette.ts`; add new copy as a Studio field, never a string in a component.
 
 ### Don't
