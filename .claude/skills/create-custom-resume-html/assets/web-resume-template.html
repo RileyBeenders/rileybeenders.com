@@ -13,7 +13,7 @@
        the source's own stylesheet, so printing this page reproduces the PDF layout. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Azeret+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Azeret+Mono:wght@400;500&display=swap">
   <style>
 @media print {
 {{PRINT_CSS}}
@@ -345,6 +345,21 @@
   /* A long URL in a stack line would set the flex item's min-content width and push the page sideways on a phone. */
   .role-line > .stack, .role-line > .context { min-width: 0; overflow-wrap: anywhere; }
   .project .role-line { color: var(--muted); font: 400 11.5px/1.6 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  /* Projects: shown in --o order (full write-ups, then the small ones), the one-line description in
+     italics, and the stack as a tag list under the bullets instead of a caps line under the title. */
+  main > section > .project { order: var(--o, 0); }
+  main > section > .project.p-first { margin-top: 0; }
+  main > section > .project:not(.p-first)[style] { margin-top: 36px; }
+  .project .job-head .location { font-style: italic; font-size: 15px; color: var(--ink-soft); }
+  .project .role-line.moved-stack, .project .stack-paren { display: none; }
+  .project-stack { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
+  .project-stack-label { margin-bottom: 8px; font: 500 10.5px/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  main ul.project-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  main ul.project-tags > li { padding: 4px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
+    font-size: 13px; line-height: 1.35; color: var(--pill-text); }
+  main ul.project-tags > li:hover { color: var(--pill-text); transform: none; }
+  .project-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 13.5px; min-width: 0; overflow-wrap: anywhere; }
+  .project-links a { color: var(--accent); }
   .problem { margin-top: 12px; color: var(--prose); }
   .problem strong { font-weight: 600; color: var(--ink); }
 
@@ -377,7 +392,7 @@
   .closing .btn--site { margin-top: 18px; }
 
   /* Highlight filter: bullets that mention the chosen skill stay, everything else steps back. */
-  .js body.filtering main ul:not(.skills-list) li:not(.hit), .js body.filtering .compact-role:not(.hit), .js body.filtering .problem:not(.hit) { opacity: 0.28; }
+  .js body.filtering main ul:not(.skills-list):not(.project-tags) li:not(.hit), .js body.filtering .compact-role:not(.hit), .js body.filtering .problem:not(.hit) { opacity: 0.28; }
   .js body.filtering .job:not(.has-hit), .js body.filtering .project:not(.has-hit) { opacity: 0.55; }
   .js body.filtering main ul.cert-list li { opacity: 1; }
 
@@ -686,6 +701,48 @@
       }
     }
 
+    // ---- projects: full write-ups first, then the small ones (screen order only, via --o; print keeps the
+    // source order); each project's stack line moves under its bullets as a list of tags, with any links
+    // from that line kept beside it. The source's .role-line stays (hidden on screen) for print. ----
+    document.querySelectorAll("main > section").forEach(function (sec) {
+      var projects = Array.prototype.slice.call(sec.querySelectorAll(":scope > .project"));
+      if (!projects.length) return;
+      projects.slice().sort(function (a, b) { return a.classList.contains("small") - b.classList.contains("small"); })
+        .forEach(function (p, i) { p.style.setProperty("--o", i); p.classList.toggle("p-first", i === 0); });
+      projects.forEach(function (p) {
+        var stack = p.querySelector(".role-line .stack"), links = [], text = "";
+        if (stack) {
+          links = Array.prototype.slice.call(stack.querySelectorAll("a"));
+          stack.childNodes.forEach(function (n) { if (n.nodeType === 3) text += n.nodeValue; });
+          text = text.split("|")[0];
+        } else {
+          // A small project names its stack in a closing parenthesis of the one-liner: "… (PowerShell, WinGet)".
+          // Wrap it so the screen can hide it there; on paper the span is plain text.
+          var loc = p.querySelector(".job-head .location"), last = loc && loc.lastChild;
+          var m = last && last.nodeType === 3 && last.nodeValue.match(/\s*\(([^()]+)\)\s*$/);
+          if (!m) return;
+          last.splitText(m.index);
+          var paren = document.createElement("span"); paren.className = "stack-paren"; paren.textContent = last.nextSibling.nodeValue;
+          loc.replaceChild(paren, last.nextSibling);
+          text = m[1];
+        }
+        var items = text.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+        if (!items.length && !links.length) return;
+        var foot = document.createElement("div"); foot.className = "project-stack web-only";
+        var label = document.createElement("p"); label.className = "project-stack-label"; label.textContent = "Built with"; foot.appendChild(label);
+        var ul = document.createElement("ul"); ul.className = "project-tags";
+        items.forEach(function (s) { var li = document.createElement("li"); li.textContent = s; ul.appendChild(li); });
+        foot.appendChild(ul);
+        if (links.length) {
+          var lp = document.createElement("p"); lp.className = "project-links";
+          links.forEach(function (a) { var c = a.cloneNode(true); c.target = "_blank"; c.rel = "noopener"; lp.appendChild(c); });
+          foot.appendChild(lp);
+        }
+        p.appendChild(foot);
+        if (stack) stack.closest(".role-line").classList.add("moved-stack");
+      });
+    });
+
     // ---- section jumps in the top bar, with the section in view underlined ----
     var bar = document.querySelector(".bar"), nav = document.querySelector(".bar-nav");
     function barHeight() { root.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
@@ -740,7 +797,7 @@
     if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact, .cta-row"), function (el, i) {
       el.classList.add("rv"); el.style.setProperty("--d", (0.3 + i * 0.09).toFixed(2) + "s");
     });
-    var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, .skills-box, main ul:not(.cert-list):not(.skills-list) > li");
+    var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, .skills-box, main ul:not(.cert-list):not(.skills-list):not(.project-tags) > li, .project-stack");
     Array.prototype.forEach.call(targets, function (el) {
       el.classList.add("rv");
       if (el.tagName === "LI") el.style.setProperty("--d", (Math.min(Array.prototype.indexOf.call(el.parentNode.children, el), 5) * 0.06).toFixed(2) + "s");
