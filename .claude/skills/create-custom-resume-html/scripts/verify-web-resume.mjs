@@ -87,7 +87,15 @@ async function open(opts) {
   check(links.length >= 2, "the top bar has section jump links");
   for (const name of [...links].reverse()) {
     await page.locator(".bar-nav a", { hasText: name }).click();
-    await page.waitForTimeout(1300);
+    // Smooth scrolling a long page can outlast a fixed wait, so wait until the scroll position holds still.
+    await page.evaluate(() => new Promise((done) => {
+      let last = scrollY, still = 0, n = 0;
+      const t = setInterval(() => {
+        still = scrollY === last ? still + 1 : 0; last = scrollY;
+        if (still >= 4 || ++n > 60) { clearInterval(t); done(); }
+      }, 100);
+    }));
+    await page.waitForTimeout(200);
     const r = await page.evaluate((n) => {
       const a = [...document.querySelectorAll(".bar-nav a")].find((x) => x.textContent === n);
       const sec = document.querySelector(a.getAttribute("href"));
@@ -154,6 +162,9 @@ async function open(opts) {
 // Print: must reproduce the delivered PDF.
 {
   const { ctx, page } = await open({ viewport: { width: 1280, height: 900 } });
+  // Let the entrance transitions finish first: a line caught mid-transition paints on its own layer,
+  // which changes the PDF's text order (not its look) and fails the comparison.
+  await page.waitForTimeout(1500);
   await page.emulateMedia({ media: "print" });
   const printed = path.join(shots, "printed.pdf");
   await page.pdf({ path: printed, preferCSSPageSize: true, printBackground: true });
