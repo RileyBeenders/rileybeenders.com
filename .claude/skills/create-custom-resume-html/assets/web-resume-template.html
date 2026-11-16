@@ -247,11 +247,52 @@
   .summary { font-size: clamp(17px, 1.45vw, 19.5px); line-height: 1.66; color: var(--prose); max-width: 70ch; text-wrap: pretty; }
   .lede, .intro { color: var(--muted); margin-bottom: 18px; }
 
-  /* Core expertise: each line becomes a labelled row of pills. */
+  /* Core expertise without the script: each line a labelled row. */
   .skill-line { padding: 14px 0; border-top: 1px solid var(--line); }
   .skill-line:first-of-type { border-top: 0; padding-top: 0; }
   .skill-line > strong { display: block; margin-bottom: 10px; font: 500 11px/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
   .sep, .print-only { display: none; }
+  /* With the script: the site's Skills and Tools picker (bench.css "stack"), shown after every other
+     tile (order only; print keeps the source order), its own group tones --grp-1 … --grp-7. */
+  :root { --grp-1: #0b7fb0; --grp-2: #b26a0a; --grp-3: #7247d1; --grp-4: #0c8a7f; --grp-5: #c94f22; --grp-6: #3f8a2a; --grp-7: #b8367a; }
+  :root[data-theme="dark"] { --grp-1: #5cc4f0; --grp-2: #f0b24f; --grp-3: #b39bff; --grp-4: #4fd1c5; --grp-5: #ff8d62; --grp-6: #86d46f; --grp-7: #f27ab8; }
+  main > section.skills-sec { order: 99; }
+  .skills-sec > .skill-line { display: none; }
+  main > section > h2[data-n]::before { content: attr(data-n); }
+  .skills-box { border: 1px solid var(--line); border-radius: 18px; background: var(--white); overflow: hidden; }
+  .skills-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 0; padding: 7px 10px;
+    border-bottom: 1px solid var(--line); background: rgba(17, 19, 24, 0.045); }
+  :root[data-theme="dark"] .skills-tabs { background: rgba(236, 238, 242, 0.05); }
+  .skills-tab { position: relative; flex: none; display: inline-flex; align-items: center; gap: 7px; padding: 9px 11px;
+    border: 0; border-radius: 999px; background: none; cursor: pointer; white-space: nowrap;
+    font: 400 11.5px/1.2 var(--mono); letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-soft); transition: color 0.3s ease; }
+  .skills-tab:hover, .skills-tab.is-active { color: var(--ink); }
+  .skills-tab.is-active { font-weight: 600; }
+  .skills-tab::after { content: ""; position: absolute; left: 11px; right: 11px; bottom: 1px; height: 2px; border-radius: 2px;
+    background: var(--grp); transform: scaleX(0); transition: transform 0.42s var(--ease); }
+  .skills-tab.is-active::after { transform: scaleX(1); }
+  .skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
+  .skills-tab-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--grp); }
+  .skills-tab--all .skills-tab-dot { background: none; border: 1.5px solid currentColor; }
+  .skills-body { padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px); }
+  .skills-body .pill-hint { margin-bottom: 8px; }
+  /* Three columns (two under 1080px, one under 560px), flowing top to bottom on hairline rows. */
+  main ul.skills-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 clamp(20px, 3vw, 40px);
+    grid-auto-flow: column; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(var(--rows-3, 1), auto); align-items: start; }
+  main ul.skills-list > li { display: flex; align-items: center; gap: 12px; height: 100%; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  main ul.skills-list > li:hover { transform: none; }
+  .skills-mark { flex: none; width: 3px; height: 14px; border-radius: 2px; background: var(--grp); }
+  .skills-item { all: unset; flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; color: var(--ink-soft); }
+  button.skills-item { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; cursor: pointer; color: var(--ink);
+    transition: color 0.28s var(--ease); }
+  button.skills-item:hover { color: var(--accent); }
+  button.skills-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .skills-count { flex: none; min-width: 20px; padding: 1px 6px; border-radius: 999px; background: var(--tint);
+    font: 500 10.5px/1.5 var(--mono); text-align: center; color: var(--accent); transition: background-color 0.28s var(--ease), color 0.28s var(--ease); }
+  button.skills-item[aria-pressed="true"] { color: var(--accent); font-weight: 600; }
+  button.skills-item[aria-pressed="true"] .skills-count { background: var(--accent-fill); color: #fff; }
+  @media (max-width: 1080px) { main ul.skills-list { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(var(--rows-2, 1), auto); } }
+  @media (max-width: 560px) { main ul.skills-list { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; } }
 
   /* Screen-only bullet detail: <details class="web-only more"><summary>Details</summary><p>…</p></details>
      inside an <li>. Opens with a height transition where the browser supports it. */
@@ -336,7 +377,7 @@
   .closing .btn--site { margin-top: 18px; }
 
   /* Highlight filter: bullets that mention the chosen skill stay, everything else steps back. */
-  .js body.filtering main ul li:not(.hit), .js body.filtering .compact-role:not(.hit), .js body.filtering .problem:not(.hit) { opacity: 0.28; }
+  .js body.filtering main ul:not(.skills-list) li:not(.hit), .js body.filtering .compact-role:not(.hit), .js body.filtering .problem:not(.hit) { opacity: 0.28; }
   .js body.filtering .job:not(.has-hit), .js body.filtering .project:not(.has-hit) { opacity: 0.55; }
   .js body.filtering main ul.cert-list li { opacity: 1; }
 
@@ -478,12 +519,15 @@
     function patternFor(list) {
       return new RegExp("(^|[^\\w])(" + list.map(function (v) { return v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")(?![\\w])", "i");
     }
-    var anyPill = false;
+    // On screen the lines become the site's Skills and Tools picker (components/bench/SkillPicker.tsx):
+    // one bar of colour-coded group tabs with All at the end, and the picked group as a column-flowing
+    // list. The source's .skill-line paragraphs stay untouched (hidden on screen) so print matches the PDF.
+    var groups = [], seen = {};
     document.querySelectorAll(".skill-line").forEach(function (line) {
       var label = line.querySelector("strong");
       if (!label) return;
       var rest = "", node = label.nextSibling;
-      while (node) { rest += node.textContent; var nx = node.nextSibling; line.removeChild(node); node = nx; }
+      while (node) { rest += node.textContent; node = node.nextSibling; }
       // split on semicolons that are not inside parentheses
       var parts = [], depth = 0, cur = "";
       for (var i = 0; i < rest.length; i++) {
@@ -492,27 +536,71 @@
         if (c === ";" && depth === 0) { parts.push(cur); cur = ""; } else cur += c;
       }
       parts.push(cur);
-      line.appendChild(document.createTextNode(" "));
-      parts.map(function (p) { return p.trim(); }).filter(Boolean).forEach(function (term, idx, arr) {
+      var tone = "var(--grp-" + ((groups.length % 7) + 1) + ")";
+      var group = { label: label.textContent.replace(/:\s*$/, "").trim(), tone: tone, items: [] };
+      parts.map(function (p) { return p.trim().replace(/\.$/, ""); }).filter(Boolean).forEach(function (term) {
+        var key = term.toLowerCase();
+        if (seen[key]) { group.items.push(seen[key]); return; }   // listed in two groups: one row, first group's colour
         var re = patternFor(variants(term));
         var hits = bulletEls.filter(function (el) { return re.test(el.textContent); });
-        var pill = document.createElement(hits.length ? "button" : "span");
-        pill.className = "pill"; pill.textContent = term;
+        var li = document.createElement("li"); li.style.setProperty("--grp", tone);
+        var mark = document.createElement("span"); mark.className = "skills-mark"; mark.setAttribute("aria-hidden", "true");
+        var item = document.createElement(hits.length ? "button" : "span");
+        item.className = "skills-item"; item.textContent = term.charAt(0).toUpperCase() + term.slice(1);
         if (hits.length) {
-          anyPill = true;
-          pill.type = "button"; pill.setAttribute("aria-pressed", "false");
-          pill.title = "Highlight " + hits.length + " line" + (hits.length > 1 ? "s" : "") + " that mention this";
-          pill.addEventListener("click", function () { toggleFilter(pill, term, re, hits); });
+          item.type = "button"; item.setAttribute("aria-pressed", "false");
+          item.title = "Highlight " + hits.length + " line" + (hits.length > 1 ? "s" : "") + " that mention this";
+          item.addEventListener("click", function () { toggleFilter(item, term, re, hits); });
+          var count = document.createElement("span"); count.className = "skills-count"; count.setAttribute("aria-hidden", "true");
+          count.textContent = hits.length; item.appendChild(count);
         }
-        line.appendChild(pill);
-        if (idx < arr.length - 1) { var sep = document.createElement("span"); sep.className = "sep"; sep.textContent = "; "; line.appendChild(sep); }
+        li.appendChild(mark); li.appendChild(item);
+        seen[key] = li; group.items.push(li);
       });
+      if (group.items.length) groups.push(group);
     });
-    var firstLine = document.querySelector(".skill-line");
-    if (anyPill && firstLine) {
-      var hint = document.createElement("p"); hint.className = "pill-hint web-only";
-      hint.textContent = "Select an outlined skill to highlight where it shows up in the work below.";
-      firstLine.parentNode.insertBefore(hint, firstLine);
+    var skillsSec = document.querySelector(".skill-line") && document.querySelector(".skill-line").closest("main > section");
+    if (skillsSec && groups.length) {
+      var all = []; groups.forEach(function (g) { g.items.forEach(function (li) { if (all.indexOf(li) < 0) all.push(li); }); });
+      if (groups.length > 1) groups.push({ label: "All", tone: "var(--accent)", items: all, all: true });
+      var box = document.createElement("div"); box.className = "skills-box web-only";
+      var tabs = document.createElement("div"); tabs.className = "skills-tabs"; tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Skill groups");
+      var panel = document.createElement("div"); panel.className = "skills-body"; panel.setAttribute("role", "tabpanel"); panel.id = "skills-panel";
+      var list = document.createElement("ul"); list.className = "skills-list";
+      var hint = document.createElement("p"); hint.className = "pill-hint";
+      hint.textContent = "Select a skill to highlight where it shows up in the experience above. The number is how many lines mention it.";
+      groups.forEach(function (g, i) {
+        var t = document.createElement("button"); t.type = "button"; t.className = "skills-tab" + (g.all ? " skills-tab--all" : "");
+        t.setAttribute("role", "tab"); t.setAttribute("aria-controls", "skills-panel"); t.style.setProperty("--grp", g.tone);
+        t.innerHTML = '<span class="skills-tab-dot" aria-hidden="true"></span>';
+        t.appendChild(document.createTextNode(g.label));
+        t.addEventListener("click", function () { pick(i, false); });
+        t.addEventListener("keydown", function (e) {
+          var step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (step) { e.preventDefault(); pick((i + step + groups.length) % groups.length, true); }
+        });
+        g.tab = t; tabs.appendChild(t);
+      });
+      function pick(i, focus) {
+        groups.forEach(function (g, j) {
+          g.tab.classList.toggle("is-active", i === j); g.tab.setAttribute("aria-selected", i === j ? "true" : "false");
+          g.tab.tabIndex = i === j ? 0 : -1;
+        });
+        var items = groups[i].items;
+        list.innerHTML = ""; items.forEach(function (li) { list.appendChild(li); });
+        list.style.setProperty("--rows-3", Math.ceil(items.length / 3)); list.style.setProperty("--rows-2", Math.ceil(items.length / 2));
+        panel.setAttribute("aria-label", groups[i].label);
+        if (focus) groups[i].tab.focus();
+      }
+      panel.appendChild(hint); panel.appendChild(list);
+      box.appendChild(tabs); box.appendChild(panel);
+      skillsSec.appendChild(box);
+      skillsSec.classList.add("skills-sec");
+      pick(groups.length - 1, false);   // open on All, so every skill is in sight
+      // Number the section tiles in their on-screen order (the skills tile now sits last).
+      Array.prototype.slice.call(document.querySelectorAll("main > section"))
+        .sort(function (a, b) { return (a === skillsSec) - (b === skillsSec); })
+        .forEach(function (sec, i) { var h = sec.querySelector(":scope > h2"); if (h) h.setAttribute("data-n", (i < 9 ? "0" : "") + (i + 1)); });
     }
 
     // ---- highlight filter ----
@@ -616,6 +704,8 @@
         }
       }
     });
+    // The skills tile shows last on screen, so its jump comes last too (after Projects).
+    found.sort(function (a, b) { return (a.sec === skillsSec) - (b.sec === skillsSec); });
     if (found.length >= 2) {
       found.forEach(function (f) {
         var a = document.createElement("a"); a.href = "#" + f.sec.id; a.textContent = f.name; f.link = a; nav.appendChild(a);
@@ -650,7 +740,7 @@
     if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact, .cta-row"), function (el, i) {
       el.classList.add("rv"); el.style.setProperty("--d", (0.3 + i * 0.09).toFixed(2) + "s");
     });
-    var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .pill-hint, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, main ul:not(.cert-list) > li");
+    var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, .skills-box, main ul:not(.cert-list):not(.skills-list) > li");
     Array.prototype.forEach.call(targets, function (el) {
       el.classList.add("rv");
       if (el.tagName === "LI") el.style.setProperty("--d", (Math.min(Array.prototype.indexOf.call(el.parentNode.children, el), 5) * 0.06).toFixed(2) + "s");
