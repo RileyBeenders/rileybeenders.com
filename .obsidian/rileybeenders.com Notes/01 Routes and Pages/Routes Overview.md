@@ -98,7 +98,7 @@ Copy comes from `data/contact/contact.json` (typed `ContactData`, `types/contact
 ## `/api/resume-pdf`: `app/api/resume-pdf/route.ts`
 
 - `runtime = "nodejs"`, `dynamic = "force-dynamic"`, `revalidate = 0`.
-- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/RileyBeenders_Resume_26311.pdf`) and `Cache-Control: no-store`. It is relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
+- `GET()` returns `307` with a **relative** `Location: <header.json resumePdfPath>` (today `/resume/RileyBeenders_Resume_26319.pdf`) and `Cache-Control: no-store`. It is relative so that, behind the local gate that proxies `next dev` on another port, the redirect stays on the visitor's host.
 - The Download PDF button does not call this route. It opens `resumeHtmlPath` in a new tab (or fetches `resumePdfPath` directly when that is unset). The route only keeps older `/api/resume-pdf` links working.
 
 The main resume itself is described in [[Resume PDF Pipeline]].

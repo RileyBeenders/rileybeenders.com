@@ -76,8 +76,8 @@ The existing page files gained `meta` (Contact, More Info, About this site) and 
   "fonts": { "header": "instrument-sans", "subheader": "instrument-sans", "body": "instrument-sans", "mono": "azeret-mono" },
   "layout": { "introAlign": "full" },
   "motion": { "syncAnimations": true, "smoothScroll": true, "gridLoopSeconds": 8, "gridTrailSeconds": 4 },
-  "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
-  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"
+  "resumePdfPath": "/resume/RileyBeenders_Resume_26319.pdf",
+  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26319.html"
 }
 ```
 

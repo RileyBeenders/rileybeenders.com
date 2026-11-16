@@ -38,7 +38,7 @@ Each small tile has a mono `.tile-label` with a 13px lucide icon (`Briefcase`, `
 
 `"use client"`. This is the button row at the foot of the hero tile (it replaced `BpActions` in Blue Sheet and is unchanged by Clean Bench).
 
-- **Download PDF.** When `resumeHtmlPath` is set (today `"/resume/RileyBeenders_Resume_26311.html"`), it is a `.btn.btn--solid` anchor with `target="_blank" rel="noopener"` that opens the interactive HTML resume in a new tab, where its Print / PDF button saves the file. Without it, the button runs a three-state machine (`idle | loading | error`): it dynamically imports `ResumeBuilder/downloadPublishedResume` and calls `downloadPublishedResumePdf(resumePdfPath)`. A failure renders `.hero-error` with `role="alert"`. The solid button carries the looping `.bp-sheen` while idle.
+- **Download PDF.** When `resumeHtmlPath` is set (today `"/resume/RileyBeenders_Resume_26319.html"`), it is a `.btn.btn--solid` anchor with `target="_blank" rel="noopener"` that opens the interactive HTML resume in a new tab, where its Print / PDF button saves the file. Without it, the button runs a three-state machine (`idle | loading | error`): it dynamically imports `ResumeBuilder/downloadPublishedResume` and calls `downloadPublishedResumePdf(resumePdfPath)`. A failure renders `.hero-error` with `role="alert"`. The solid button carries the looping `.bp-sheen` while idle.
 - **Email / LinkedIn / GitHub.** Plain `.btn` anchors (`mailto:`, `person.linkedin`, `person.github`; the last two open with `target="_blank" rel="noreferrer"`). The icons are lucide `Mail` and the `BrandIcons` marks.
 
 See [[Resume PDF Pipeline]].

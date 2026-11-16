@@ -25,7 +25,7 @@ CLAUDE.md                      # routing index for the agent skills + the Next.j
     skill-router/              # registry.json + scripts/route.mjs (--check)
     impeccable/ + the rest     # vendored: the design entry point, the taste-skill set, web-design-guidelines, the added generic skills
 
-.DefaultResume/                # Riley's working copy of the main resume pair, RileyBeenders_Resume_26311.html|.pdf (copied to public/resume/)
+.DefaultResume/                # Riley's working copy of the main resume pair, RileyBeenders_Resume_26319.html|.pdf (copied to public/resume/)
 .github/
   workflows/site-timeline-sync.yml   # after every push to main: Claude Code runs site-timeline-sync, the workflow validates + commits the result
 
@@ -199,7 +199,7 @@ public/
   project-artifacts/           # diagram SVGs: gallery fallbacks, flowcharts, the UniFi topologies
   project-images/<Project>/    # each published project's photos, picked via the Studio's image picker
   project-images/rileybeenders-com/   # the site entry's captures, <name>-light.png + <name>-dark.png (home-hero, home-full, projects, feature-timeline, studio)
-  resume/RileyBeenders_Resume_26311.html|.pdf   # the main resume: Download PDF opens the .html (resumeHtmlPath); /api/resume-pdf serves the .pdf
+  resume/RileyBeenders_Resume_26319.html|.pdf   # the main resume: Download PDF opens the .html (resumeHtmlPath); /api/resume-pdf serves the .pdf
   README.md                    # how the Download PDF file is published and named
 
 2.JobsApplliedTo/              # original job-posting PDFs, one per application (001–027). Note the double-l spelling.
