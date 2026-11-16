@@ -16,94 +16,94 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Azeret+Mono:wght@400;500&display=swap">
   <style>
 @media print {
-  
-      /* Main (default) resume: the PDF behind the home page's Download PDF button.
-         Started 2026-11-07 as a copy of output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html
-         with the posting-specific relocation cities removed.
-         Pages 1-2: the resume. Page 3: Selected Projects (forced page break).
-         Maintained by the update-main-resume skill, which prints it to public/resume/ and records the
-         file in manifest.json beside this file. --m scales every gap. */
-      :root { --m: 1; }
-      @page { size: Letter portrait; margin: 0.46in 0.50in 0.42in; }
-      * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; background: #ffffff; }
-      body {
-        color: #171717;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 9.55pt;
-        line-height: 1.19;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      a {
-        color: #0b57d0;
-        text-decoration: underline;
-        text-decoration-thickness: 0.6pt;
-        text-underline-offset: 1.1pt;
-      }
-      header { margin: 0 0 calc(8.5pt * var(--m)); }
-      h1 { margin: 0; color: #102a43; font-size: 24pt; line-height: 1; letter-spacing: 0.15pt; }
-      .tagline {
-        margin-top: 3.5pt; color: #334e68; font-size: 10pt; font-weight: 700;
-        letter-spacing: 0.4pt; text-transform: uppercase;
-      }
-      .contact {
-        display: flex; flex-wrap: wrap; gap: 2pt 3.5pt; margin-top: 5pt;
-        color: #3f4852; font-size: 7.9pt; line-height: 1.1;
-      }
-      .contact + .contact { margin-top: 2pt; }
-      .contact span:not(:last-child)::after { content: "|"; margin-left: 3.5pt; color: #9aa5b1; }
-      h2 {
-        margin: calc(8.7pt * var(--m)) 0 calc(4.2pt * var(--m));
-        padding-bottom: 2pt;
-        border-bottom: 0.65pt solid #8ea3b5;
-        color: #102a43; font-size: 10pt; line-height: 1; letter-spacing: 0.5pt;
-        text-transform: uppercase;
-        break-after: avoid;
-      }
-      .page-break { break-before: page; }
-      .page-break h2 { margin-top: 0; }
-      p { margin: 0; }
-      .summary { line-height: 1.22; }
-      .skill-line { margin: calc(2.2pt * var(--m)) 0; line-height: 1.19; }
-      .skill-line strong { color: #243b53; }
-      .prior-job {
-        margin-top: calc(6pt * var(--m));
-        padding-top: calc(5pt * var(--m));
-        border-top: 0.5pt solid #d3dde5;
-      }
-      .job-head {
-        display: flex; align-items: baseline; justify-content: space-between; gap: 12pt;
-        color: #111111; font-size: 9.85pt; line-height: 1.08;
-        break-after: avoid;
-      }
-      .job-head .company { font-weight: 700; }
-      .job-head .location { color: #52606d; font-weight: 400; }
-      .job-head .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
-      .role-line {
-        display: flex; justify-content: space-between; gap: 12pt;
-        margin-top: calc(2.2pt * var(--m));
-        color: #334e68; font-size: 8.9pt; font-style: italic; line-height: 1.14;
-        break-after: avoid;
-      }
-      .role-line .dates { color: #52606d; font-style: normal; font-size: 8.85pt; white-space: nowrap; }
-      .role-line.sub { margin-top: calc(4pt * var(--m)); }
-      .context { margin-top: calc(1.5pt * var(--m)); color: #52606d; font-size: 8.6pt; line-height: 1.14; }
-      ul { margin: calc(4pt * var(--m)) 0 0 14pt; padding: 0; }
-      li { margin: 0 0 calc(2.8pt * var(--m)) 0; padding-left: 1.2pt; line-height: 1.17; break-inside: avoid; }
-      .project + .project { margin-top: calc(6pt * var(--m)); padding-top: calc(5pt * var(--m)); border-top: 0.5pt solid #d3dde5; }
-      .project .head { break-inside: avoid; }
-      .project .stack { color: #52606d; font-size: 8.6pt; }
-      .project.small ul { margin-top: calc(2.5pt * var(--m)); }
-      .compact-role { margin: 0 0 calc(3pt * var(--m)); font-size: 9.1pt; line-height: 1.19; break-inside: avoid; }
-      .compact-role strong { color: #1f2933; }
-      .compact-role .dates { color: #52606d; white-space: nowrap; }
-      .education-row { display: flex; justify-content: space-between; gap: 12pt; line-height: 1.16; }
-      .education-row .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
-      .cert-list { margin: calc(3pt * var(--m)) 0 0 0; padding: 0; list-style: none; }
-      .cert-list li { display: flex; justify-content: space-between; gap: 12pt; margin: 0 0 calc(1.6pt * var(--m)); padding: 0; font-size: 9pt; line-height: 1.18; }
-      .cert-list .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
-      .keep { break-inside: avoid; }
+    
+      /* Main (default) resume: the PDF behind the home page's Download PDF button.  
+         Started 2026-11-07 as a copy of output/resume-html/RileyBeenders_Disney_Imagineering_Ride_Controls.html  
+         with the posting-specific relocation cities removed.  
+         Pages 1-2: the resume. Page 3: Selected Projects (forced page break).  
+         Maintained by the update-main-resume skill, which prints it to public/resume/ and records the  
+         file in manifest.json beside this file. --m scales every gap. */  
+      :root { --m: 1; }  
+      @page { size: Letter portrait; margin: 0.46in 0.50in 0.42in; }  
+      * { box-sizing: border-box; }  
+      html, body { margin: 0; padding: 0; background: #ffffff; }  
+      body {  
+        color: #171717;  
+        font-family: Arial, Helvetica, sans-serif;  
+        font-size: 9.55pt;  
+        line-height: 1.19;  
+        -webkit-print-color-adjust: exact;  
+        print-color-adjust: exact;  
+      }  
+      a {  
+        color: #0b57d0;  
+        text-decoration: underline;  
+        text-decoration-thickness: 0.6pt;  
+        text-underline-offset: 1.1pt;  
+      }  
+      header { margin: 0 0 calc(8.5pt * var(--m)); }  
+      h1 { margin: 0; color: #102a43; font-size: 24pt; line-height: 1; letter-spacing: 0.15pt; }  
+      .tagline {  
+        margin-top: 3.5pt; color: #334e68; font-size: 10pt; font-weight: 700;  
+        letter-spacing: 0.4pt; text-transform: uppercase;  
+      }  
+      .contact {  
+        display: flex; flex-wrap: wrap; gap: 2pt 3.5pt; margin-top: 5pt;  
+        color: #3f4852; font-size: 7.9pt; line-height: 1.1;  
+      }  
+      .contact + .contact { margin-top: 2pt; }  
+      .contact span:not(:last-child)::after { content: "|"; margin-left: 3.5pt; color: #9aa5b1; }  
+      h2 {  
+        margin: calc(8.7pt * var(--m)) 0 calc(4.2pt * var(--m));  
+        padding-bottom: 2pt;  
+        border-bottom: 0.65pt solid #8ea3b5;  
+        color: #102a43; font-size: 10pt; line-height: 1; letter-spacing: 0.5pt;  
+        text-transform: uppercase;  
+        break-after: avoid;  
+      }  
+      .page-break { break-before: page; }  
+      .page-break h2 { margin-top: 0; }  
+      p { margin: 0; }  
+      .summary { line-height: 1.22; }  
+      .skill-line { margin: calc(2.2pt * var(--m)) 0; line-height: 1.19; }  
+      .skill-line strong { color: #243b53; }  
+      .prior-job {  
+        margin-top: calc(6pt * var(--m));  
+        padding-top: calc(5pt * var(--m));  
+        border-top: 0.5pt solid #d3dde5;  
+      }  
+      .job-head {  
+        display: flex; align-items: baseline; justify-content: space-between; gap: 12pt;  
+        color: #111111; font-size: 9.85pt; line-height: 1.08;  
+        break-after: avoid;  
+      }  
+      .job-head .company { font-weight: 700; }  
+      .job-head .location { color: #52606d; font-weight: 400; }  
+      .job-head .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }  
+      .role-line {  
+        display: flex; justify-content: space-between; gap: 12pt;  
+        margin-top: calc(2.2pt * var(--m));  
+        color: #334e68; font-size: 8.9pt; font-style: italic; line-height: 1.14;  
+        break-after: avoid;  
+      }  
+      .role-line .dates { color: #52606d; font-style: normal; font-size: 8.85pt; white-space: nowrap; }  
+      .role-line.sub { margin-top: calc(4pt * var(--m)); }  
+      .context { margin-top: calc(1.5pt * var(--m)); color: #52606d; font-size: 8.6pt; line-height: 1.14; }  
+      ul { margin: calc(4pt * var(--m)) 0 0 14pt; padding: 0; }  
+      li { margin: 0 0 calc(2.8pt * var(--m)) 0; padding-left: 1.2pt; line-height: 1.17; break-inside: avoid; }  
+      .project + .project { margin-top: calc(6pt * var(--m)); padding-top: calc(5pt * var(--m)); border-top: 0.5pt solid #d3dde5; }  
+      .project .head { break-inside: avoid; }  
+      .project .stack { color: #52606d; font-size: 8.6pt; }  
+      .project.small ul { margin-top: calc(2.5pt * var(--m)); }  
+      .compact-role { margin: 0 0 calc(3pt * var(--m)); font-size: 9.1pt; line-height: 1.19; break-inside: avoid; }  
+      .compact-role strong { color: #1f2933; }  
+      .compact-role .dates { color: #52606d; white-space: nowrap; }  
+      .education-row { display: flex; justify-content: space-between; gap: 12pt; line-height: 1.16; }  
+      .education-row .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }  
+      .cert-list { margin: calc(3pt * var(--m)) 0 0 0; padding: 0; list-style: none; }  
+      .cert-list li { display: flex; justify-content: space-between; gap: 12pt; margin: 0 0 calc(1.6pt * var(--m)); padding: 0; font-size: 9pt; line-height: 1.18; }  
+      .cert-list .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }  
+      .keep { break-inside: avoid; }  
     
   .web-only { display: none !important; }
   /* The script turns Core Expertise terms into pills; on paper they are plain inline text again. */
@@ -263,8 +263,8 @@
   .btn--print:focus-visible .sheen { opacity: 0; }
 
   /* ---- the website as a call to action (the plain contact link stays for print) ---- */
-  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 26px; }
-  .cta-row p { color: var(--muted); font-size: 14px; }
+  /* Box Action Rule: a button inside a box sits at its bottom right. */
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 18px; margin-top: 26px; }
   a.btn--cta { min-height: 46px; padding: 13px 22px; border-color: var(--accent-fill); background: var(--accent-fill); color: #fff;
     font-size: 14.5px; text-decoration: none; box-shadow: 0 8px 22px -6px rgba(36, 87, 230, 0.45); }
   .btn--cta .arrow { display: inline-block; transition: transform 0.4s var(--ease); }
@@ -272,6 +272,17 @@
   .contact + .contact { margin-top: 6px; }
   .contact .screen-hide { display: none; }
   .contact .no-sep::after { content: none !important; }
+  /* Screen only: ends the first line of a contact row (where Riley is) before the ways to reach him. */
+  .contact .row-break { flex-basis: 100%; height: 0; }
+  .contact .row-break::after { content: none !important; }
+  /* Several contact rows flow as one run of text inside .contact-lines (added by the script). */
+  .contact-lines { margin-top: 20px; }
+  .contact-lines .contact.inline { display: inline; margin-top: 0; line-height: 2.1; }
+  .contact-lines .contact.inline span:not(.screen-hide) { display: inline-block; }
+  .contact-lines .contact.inline span.row-break:not(.screen-hide) { display: block; }
+  .contact-lines .contact.inline span.sep::after { content: "|"; color: var(--faint); }
+  /* Inline spans keep the source's space between them, so the separator's right margin is shorter. */
+  .contact-lines .contact.inline span::after { margin: 0 4px 0 11px; }
   /* The website buttons share the print button's slow sheen. On hover a glint sweeps left to
      right with the tile colour wiping in behind it (accent border and text), and the label
      crossfades to the address it opens. */
@@ -317,7 +328,7 @@
   h1 .w { display: inline-block; }
   .tagline { margin-top: 16px; max-width: 40ch; font: 500 clamp(18px, 2vw, 23px)/1.35 var(--sans); letter-spacing: -0.012em; color: var(--ink-soft); text-wrap: balance; }
   .contact { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 20px; font: 400 12px/1.6 var(--mono); letter-spacing: 0.02em; color: var(--muted); }
-  .contact span:not(:last-child)::after { content: "/"; margin: 0 11px; color: var(--faint); }
+  .contact span:not(:last-child)::after { content: "|"; margin: 0 11px; color: var(--faint); }
 
   main { counter-reset: sec; display: grid; gap: var(--gap); margin-top: var(--gap); padding-bottom: 0; }
   main > section {
@@ -543,7 +554,7 @@
 
 <header>
     <h1>Riley Beenders</h1>
-    <div class="tagline">R&amp;D Engineer | Industrial Motion Control, Electrical Design, and Control Software</div>
+    <div class="tagline">R&amp;D, Electro-Mechanical and Automation Engineer</div>
     <div class="contact" aria-label="Contact information">
       <span>Bethlehem, PA</span>
       <span>Open to relocation</span>
@@ -946,9 +957,7 @@
     }
     if (site && contact) {
       var row = document.createElement("div"); row.className = "cta-row web-only";
-      row.appendChild(siteButton("Explore more of my projects on my website", "Visit rileybeenders.com", site.href));
-      var cap = document.createElement("p"); cap.textContent = "Projects, photos, and the longer write-ups.";
-      row.appendChild(cap);
+      row.appendChild(siteButton("Explore all of my projects", "Visit rileybeenders.com", site.href));
       contact.insertAdjacentElement("afterend", row);
       // The plain link would repeat the button on screen; it stays in the contact row on paper.
       var holder = site.closest("span");
@@ -965,6 +974,34 @@
         main.insertAdjacentElement("afterend", end);
       }
     }
+    // On screen a contact row reads as two lines: where Riley is (location, relocation), then the
+    // ways to reach him (phone, email, LinkedIn). A screen-only break goes before the first link;
+    // print keeps the source's single row, so it still matches the PDF.
+    // A source with several contact rows (the main resume) has them flow as one run of text inside
+    // a plain wrapper, so the links of every row share that second line.
+    (function () {
+      if (!contacts.length) return;
+      var rows = Array.prototype.slice.call(contacts);
+      var visible = function (rowEl) {
+        return Array.prototype.filter.call(rowEl.children, function (s) { return !s.classList.contains("screen-hide"); });
+      };
+      if (rows.length > 1) {
+        var wrap = document.createElement("div"); wrap.className = "contact-lines";
+        rows[0].parentNode.insertBefore(wrap, rows[0]);
+        rows.forEach(function (rowEl, k) {
+          wrap.appendChild(rowEl); rowEl.classList.add("inline");
+          var own = visible(rowEl);
+          if (k < rows.length - 1 && own.length) own[own.length - 1].classList.add("sep");
+        });
+      }
+      var spans = []; rows.forEach(function (rowEl) { spans = spans.concat(visible(rowEl)); });
+      var firstLink = -1;
+      for (var i = 0; i < spans.length; i++) if (spans[i].querySelector("a")) { firstLink = i; break; }
+      if (firstLink < 1) return;
+      var br = document.createElement("span"); br.className = "row-break web-only"; br.setAttribute("aria-hidden", "true");
+      spans[firstLink - 1].classList.add("no-sep");
+      spans[firstLink].parentNode.insertBefore(br, spans[firstLink]);
+    })();
 
     // ---- projects: full write-ups first, then the small ones (screen order only, via --o; print keeps the
     // source order); each project's stack line moves under its bullets as a list of tags, with any links
@@ -1059,7 +1096,7 @@
       }).join(" ");
     }
     var header = document.querySelector("body > header");
-    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact, .cta-row"), function (el, i) {
+    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact-lines, .contact:not(.inline), .cta-row"), function (el, i) {
       el.classList.add("rv"); el.style.setProperty("--d", (0.3 + i * 0.09).toFixed(2) + "s");
     });
     var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, .skills-box, main ul:not(.cert-list):not(.skills-list):not(.project-tags) > li, .project-stack");
