@@ -175,8 +175,8 @@
   .btn--print:focus-visible .sheen { opacity: 0; }
 
   /* ---- the website as a call to action (the plain contact link stays for print) ---- */
-  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 26px; }
-  .cta-row p { color: var(--muted); font-size: 14px; }
+  /* Box Action Rule: a button inside a box sits at its bottom right. */
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 18px; margin-top: 26px; }
   a.btn--cta { min-height: 46px; padding: 13px 22px; border-color: var(--accent-fill); background: var(--accent-fill); color: #fff;
     font-size: 14.5px; text-decoration: none; box-shadow: 0 8px 22px -6px rgba(36, 87, 230, 0.45); }
   .btn--cta .arrow { display: inline-block; transition: transform 0.4s var(--ease); }
@@ -184,6 +184,17 @@
   .contact + .contact { margin-top: 6px; }
   .contact .screen-hide { display: none; }
   .contact .no-sep::after { content: none !important; }
+  /* Screen only: ends the first line of a contact row (where Riley is) before the ways to reach him. */
+  .contact .row-break { flex-basis: 100%; height: 0; }
+  .contact .row-break::after { content: none !important; }
+  /* Several contact rows flow as one run of text inside .contact-lines (added by the script). */
+  .contact-lines { margin-top: 20px; }
+  .contact-lines .contact.inline { display: inline; margin-top: 0; line-height: 2.1; }
+  .contact-lines .contact.inline span:not(.screen-hide) { display: inline-block; }
+  .contact-lines .contact.inline span.row-break:not(.screen-hide) { display: block; }
+  .contact-lines .contact.inline span.sep::after { content: "|"; color: var(--faint); }
+  /* Inline spans keep the source's space between them, so the separator's right margin is shorter. */
+  .contact-lines .contact.inline span::after { margin: 0 4px 0 11px; }
   /* The website buttons share the print button's slow sheen. On hover a glint sweeps left to
      right with the tile colour wiping in behind it (accent border and text), and the label
      crossfades to the address it opens. */
@@ -229,7 +240,7 @@
   h1 .w { display: inline-block; }
   .tagline { margin-top: 16px; max-width: 40ch; font: 500 clamp(18px, 2vw, 23px)/1.35 var(--sans); letter-spacing: -0.012em; color: var(--ink-soft); text-wrap: balance; }
   .contact { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 20px; font: 400 12px/1.6 var(--mono); letter-spacing: 0.02em; color: var(--muted); }
-  .contact span:not(:last-child)::after { content: "/"; margin: 0 11px; color: var(--faint); }
+  .contact span:not(:last-child)::after { content: "|"; margin: 0 11px; color: var(--faint); }
 
   main { counter-reset: sec; display: grid; gap: var(--gap); margin-top: var(--gap); padding-bottom: 0; }
   main > section {
@@ -681,9 +692,7 @@
     }
     if (site && contact) {
       var row = document.createElement("div"); row.className = "cta-row web-only";
-      row.appendChild(siteButton("Explore more of my projects on my website", "Visit rileybeenders.com", site.href));
-      var cap = document.createElement("p"); cap.textContent = "Projects, photos, and the longer write-ups.";
-      row.appendChild(cap);
+      row.appendChild(siteButton("Explore all of my projects", "Visit rileybeenders.com", site.href));
       contact.insertAdjacentElement("afterend", row);
       // The plain link would repeat the button on screen; it stays in the contact row on paper.
       var holder = site.closest("span");
@@ -700,6 +709,34 @@
         main.insertAdjacentElement("afterend", end);
       }
     }
+    // On screen a contact row reads as two lines: where Riley is (location, relocation), then the
+    // ways to reach him (phone, email, LinkedIn). A screen-only break goes before the first link;
+    // print keeps the source's single row, so it still matches the PDF.
+    // A source with several contact rows (the main resume) has them flow as one run of text inside
+    // a plain wrapper, so the links of every row share that second line.
+    (function () {
+      if (!contacts.length) return;
+      var rows = Array.prototype.slice.call(contacts);
+      var visible = function (rowEl) {
+        return Array.prototype.filter.call(rowEl.children, function (s) { return !s.classList.contains("screen-hide"); });
+      };
+      if (rows.length > 1) {
+        var wrap = document.createElement("div"); wrap.className = "contact-lines";
+        rows[0].parentNode.insertBefore(wrap, rows[0]);
+        rows.forEach(function (rowEl, k) {
+          wrap.appendChild(rowEl); rowEl.classList.add("inline");
+          var own = visible(rowEl);
+          if (k < rows.length - 1 && own.length) own[own.length - 1].classList.add("sep");
+        });
+      }
+      var spans = []; rows.forEach(function (rowEl) { spans = spans.concat(visible(rowEl)); });
+      var firstLink = -1;
+      for (var i = 0; i < spans.length; i++) if (spans[i].querySelector("a")) { firstLink = i; break; }
+      if (firstLink < 1) return;
+      var br = document.createElement("span"); br.className = "row-break web-only"; br.setAttribute("aria-hidden", "true");
+      spans[firstLink - 1].classList.add("no-sep");
+      spans[firstLink].parentNode.insertBefore(br, spans[firstLink]);
+    })();
 
     // ---- projects: full write-ups first, then the small ones (screen order only, via --o; print keeps the
     // source order); each project's stack line moves under its bullets as a list of tags, with any links
@@ -794,7 +831,7 @@
       }).join(" ");
     }
     var header = document.querySelector("body > header");
-    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact, .cta-row"), function (el, i) {
+    if (header) Array.prototype.forEach.call(header.querySelectorAll(".tagline, .contact-lines, .contact:not(.inline), .cta-row"), function (el, i) {
       el.classList.add("rv"); el.style.setProperty("--d", (0.3 + i * 0.09).toFixed(2) + "s");
     });
     var targets = document.querySelectorAll("main > section > h2, .summary, .skill-line, .job-head, .role-line, .context, .stack, .problem, .compact-role, .education-row, .cert-list, .lede, .intro, .skills-box, main ul:not(.cert-list):not(.skills-list):not(.project-tags) > li, .project-stack");
