@@ -968,13 +968,15 @@ html[data-theme="dark"] .bp {
 .pbody-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 4px; }
 .pbody-meta .pj-dates { margin-top: 0; }
 .pbody-count { font-family: var(--mono), monospace; font-size: 11.5px; letter-spacing: 0.04em; color: var(--muted); }
-.pbody-text { display: grid; gap: 16px; max-width: 76ch; }
+/* The prose keeps its 76ch measure; the links row runs the full width so it can sit right (Box Action Rule). */
+.pbody-text { display: grid; gap: 16px; }
+.pbody-text > :not(.pbody-links) { max-width: 76ch; }
 .pbody-summary { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--prose); }
 .pbody-bullets { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 15.5px; line-height: 1.62; color: var(--ink-soft); }
 .pbody-bullets li::marker { color: var(--accent); }
 .pbody-bullets li { transition: color 0.28s var(--ease); }
 .pbody-bullets li:hover { color: var(--ink); }
-.pbody-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.pbody-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .pbody-link-note { font-family: var(--mono), monospace; font-size: 11px; color: var(--muted); }
 .pbody-section { padding-top: 8px; }
 .pbody-tracker { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
