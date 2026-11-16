@@ -311,6 +311,21 @@ const SCREENSHOT_FIELDS = [
   { name: "caption", type: "text", label: "Caption" }
 ];
 
+/** One design of the site (about-site.json feature.versions). Mirrors SiteVersion in types/resume.ts. */
+const VERSION_FIELDS = [
+  { name: "name", type: "text", label: "Name", required: true, span: "half" },
+  { name: "dates", type: "text", label: "Dates", required: true, span: "half", placeholder: "Aug 27 to Nov 7, 2026" },
+  { name: "current", type: "boolean", label: "Live now", default: false, omitWhenDefault: true, help: "The design the site wears today: shown first and largest, with no snapshot link. Only one should be on." },
+  { name: "summary", type: "textarea", label: "Summary", rows: 2, required: true },
+  { name: "changes", type: "stringList", label: "What it brought", help: "One short line each." },
+  { name: "images", type: "objectList", label: "Captures", itemLabel: "Capture", fields: [
+    { name: "src", type: "image", label: "Capture", required: true },
+    { name: "alt", type: "text", label: "Alt text", required: true }
+  ], help: "Light theme, home first. The live design shows two; an older one shows the first." },
+  { name: "snapshotHref", type: "text", label: "Snapshot link", placeholder: "/versions/blueprint-press/index.html", help: "The frozen copy made by scripts/snapshot-version.mjs. Blank on the live design." },
+  { name: "commit", type: "text", label: "Commit", span: "third", help: "The commit the snapshot was built from." }
+];
+
 const BACKEND_MATCH_FIELDS = [
   { name: "keyword", type: "text", label: "Posting keyword", required: true, span: "third" },
   { name: "line", type: "text", label: "Resume line it matches", required: true }
@@ -994,6 +1009,9 @@ export const SCHEMAS = {
           { name: "intro", type: "textarea", label: "Intro", rows: 3 },
           { name: "repoLabel", type: "text", label: "Repository button", span: "half", placeholder: "GitHub", help: "Beside the intro." },
           { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
+          { name: "versionsTitle", type: "text", label: "Versions heading", span: "half", help: "Blank hides the heading." },
+          { name: "versionsNote", type: "textarea", label: "Versions note", rows: 2, help: "Under the heading." },
+          { name: "versions", type: "objectList", label: "Versions", itemLabel: "Version", fields: VERSION_FIELDS, help: "Every design the site has had. The one marked Live now shows first; the rest follow in this order, each linking to its snapshot." },
           { name: "timelineTitle", type: "text", label: "Timeline heading", span: "half", help: "Blank hides the heading." },
           { name: "timelineNote", type: "textarea", label: "Timeline note", rows: 2, help: "How to use the timeline, under its heading." },
           { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },

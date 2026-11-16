@@ -1,0 +1,22 @@
+ExtrusionLineStudio filament,
+software_version,2.0.0
+spool_sn,DSSN
+spool_id,006
+line_id,line1
+line_name,Extrusion Line #1
+material,PLA
+color,Natural
+batch_number,PLA2610A
+start_time,2026-11-06T15:42:00-05:00
+end_time,2026-11-06T15:43:30-05:00
+csv_file,line1_20261106_154200.csv
+
+settings_at_start,
+production_settings,none recorded,
+
+notes_at_start,none recorded
+
+settings_at_end,
+production_settings,none recorded,
+
+notes_at_end,none recorded

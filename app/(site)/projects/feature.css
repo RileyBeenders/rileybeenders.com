@@ -1067,3 +1067,46 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
   .dm-checks li { opacity: 1; transform: none; animation: none; }
   .dm-skills-progress { display: none; }
 }
+
+/* ------------------------------------------------------------- versions --- */
+/* FeatureVersions.tsx: the live design first as one wide tile (text beside its
+   home and projects captures), then each older design as a tile with its
+   capture on the left and a button to its frozen snapshot. */
+.ver { display: grid; gap: var(--gap, 16px); margin-top: 20px; }
+.ver h3 { font-size: clamp(20px, 2vw, 24px); letter-spacing: -0.02em; line-height: 1.2; }
+.ver-dates { margin-top: 4px; font-family: var(--mono), monospace; font-size: 11.5px; letter-spacing: 0.04em; color: var(--muted); }
+.ver-summary { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.ver-changes { margin: 10px 0 0; padding-left: 18px; list-style: disc; display: grid; gap: 4px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.ver-changes li::marker { color: var(--accent); }
+
+.ver-current { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: clamp(18px, 2.6vw, 30px); padding: clamp(18px, 2.4vw, 26px); }
+.ver-live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 5px 11px; border-radius: 999px; background: var(--tint); color: var(--accent); font-family: var(--mono), monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.ver-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); animation: ver-live 2.4s var(--ease) infinite; }
+@keyframes ver-live { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); } 70%, 100% { box-shadow: 0 0 0 7px transparent; } }
+.ver-current-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+
+.ver-shot {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  cursor: zoom-in;
+  transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.4s ease;
+}
+.ver-shot img { object-fit: cover; object-position: top center; }
+.ver-shot:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); }
+.ver-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.ver-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap, 16px); }
+.ver-item { display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: clamp(16px, 2.4vw, 26px); align-items: start; padding: clamp(14px, 2vw, 18px); }
+.ver-open { margin-top: 14px; }
+
+@media (max-width: 860px) {
+  .ver-current, .ver-item { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .ver-live-dot { animation: none; } }

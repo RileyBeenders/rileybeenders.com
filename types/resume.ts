@@ -252,8 +252,34 @@ export type FeaturePillar = {
   screenshotId?: string;
 };
 
+/**
+ * One version of the site's design, for the Versions block of the site's own
+ * project. The current one comes first; an older one links to its frozen
+ * snapshot under /versions/<slug>/ (scripts/snapshot-version.mjs).
+ */
+export type SiteVersion = {
+  name: string;
+  /** e.g. "Aug 27 to Nov 7, 2026". */
+  dates: string;
+  /** The design live today. Shown first and largest; it has no snapshot. */
+  current?: boolean;
+  summary: string;
+  /** What this version brought, one line each. */
+  changes?: string[];
+  /** Captures of the version, light theme: home first. */
+  images?: { src: string; alt: string }[];
+  /** The frozen snapshot, e.g. "/versions/blueprint-press/index.html". */
+  snapshotHref?: string;
+  /** The commit the snapshot was built from. */
+  commit?: string;
+};
+
 /** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
 export type ProjectFeature = {
+  /** Every design the site has had, current first. */
+  versionsTitle?: string;
+  versionsNote?: string;
+  versions?: SiteVersion[];
   intro?: string;
   /** The repository button beside the intro. */
   repoLabel?: string;

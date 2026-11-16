@@ -130,6 +130,74 @@
         "note": "written, hidden, waiting"
       }
     ],
+    "versionsTitle": "Versions",
+    "versionsNote": "The site as it looks today, then every design before it. Each older version opens as a frozen snapshot: it reads the way it did, but nothing in it runs.",
+    "versions": [
+      {
+        "name": "Clean Bench",
+        "dates": "Nov 8, 2026 to today",
+        "current": true,
+        "summary": "Everything is a tile: a bento of rounded glass tiles over a soft blue bloom and a plotted grid, with a floating pill nav.",
+        "changes": [
+          "Project tiles that grow into their own dialog, and a working contact form",
+          "Skills and Tools as colour-coded tabs, and the same tab bar on the projects page",
+          "A Studio palette and font switcher on top of the same data"
+        ],
+        "images": [
+          {
+            "src": "/project-images/rileybeenders-com/versions/clean-bench-home.jpg",
+            "alt": "Clean Bench: the home page"
+          },
+          {
+            "src": "/project-images/rileybeenders-com/versions/clean-bench-projects.jpg",
+            "alt": "Clean Bench: the projects page"
+          }
+        ]
+      },
+      {
+        "name": "Blueprint Press",
+        "dates": "Aug 27 to Nov 7, 2026",
+        "summary": "An editorial resume on graph paper: tall serif type, numbered sections and a drawn RB monogram.",
+        "changes": [
+          "Dark mode and the Electric palette",
+          "The About this site page with its timeline and stats",
+          "Projects with photo galleries and scroll motion"
+        ],
+        "images": [
+          {
+            "src": "/project-images/rileybeenders-com/versions/blueprint-press-home.jpg",
+            "alt": "Blueprint Press: the home page"
+          },
+          {
+            "src": "/project-images/rileybeenders-com/versions/blueprint-press-projects.jpg",
+            "alt": "Blueprint Press: the projects page"
+          }
+        ],
+        "snapshotHref": "/versions/blueprint-press/index.html",
+        "commit": "d1360bb"
+      },
+      {
+        "name": "Original",
+        "dates": "Jun 28 to Aug 27, 2026",
+        "summary": "The first launch: a dark interactive resume with a serif name, warm orange accents and a sticky section bar.",
+        "changes": [
+          "The resume, a Download PDF button and a contact page",
+          "A projects page that promised case studies to come"
+        ],
+        "images": [
+          {
+            "src": "/project-images/rileybeenders-com/versions/original-home.jpg",
+            "alt": "Original: the home page"
+          },
+          {
+            "src": "/project-images/rileybeenders-com/versions/original-projects.jpg",
+            "alt": "Original: the projects page"
+          }
+        ],
+        "snapshotHref": "/versions/original/index.html",
+        "commit": "29bf164"
+      }
+    ],
     "timelineTitle": "Timeline",
     "timelineNote": "Key commits, placed by date, playing through in order. Click a dot, or use the arrow keys, to take over.",
     "timeline": [
