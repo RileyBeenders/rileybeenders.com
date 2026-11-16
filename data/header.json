@@ -2,7 +2,7 @@
   "siteMode": "resume",
   "person": {
     "name": "Riley Beenders",
-    "title": "R&D, Electromechanical and Automation Engineer",
+    "title": "R&D, Electro-Mechanical and Automation Engineer",
     "location": "Bethlehem, PA",
     "email": "rileybeenders@gmail.com",
     "phone": "(484)-523-4431",
@@ -18,7 +18,8 @@
     "openToRelocation": true
   },
   "theme": {
-    "paletteId": "electric",
+    "paletteId": "glass-tile",
+    "defaultMode": "dark",
     "custom": {
       "light": {
         "paper": "#ffffff",
@@ -37,16 +38,25 @@
     }
   },
   "fonts": {
-    "header": "instrument-serif",
-    "subheader": "instrument-serif",
-    "body": "spectral"
+    "header": "instrument-sans",
+    "subheader": "instrument-sans",
+    "body": "instrument-sans",
+    "mono": "azeret-mono"
   },
   "layout": {
-    "introAlign": "full"
+    "introAlign": "full",
+    "tileOpacity": 88,
+    "groupOpacity": 50,
+    "headingOpacity": 95,
+    "experienceYears": 5,
+    "relocationColor": "amber"
   },
   "motion": {
-    "syncAnimations": true
+    "syncAnimations": true,
+    "smoothScroll": true,
+    "gridLoopSeconds": 6,
+    "gridTrailSeconds": 1
   },
-  "resumePdfPath": "/resume/RileyBeenders_Resume_26311.pdf",
-  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26311.html"
+  "resumePdfPath": "/resume/RileyBeenders_Resume_26319.pdf",
+  "resumeHtmlPath": "/resume/RileyBeenders_Resume_26319.html"
 }

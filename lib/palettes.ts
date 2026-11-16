@@ -1,4 +1,4 @@
-import { derivePaletteTokens, type PaletteTokens } from "@/lib/palette";
+import { derivePaletteTokens, deriveSheetTokens, type PaletteTokens } from "@/lib/palette";
 import type { PaletteSeeds } from "@/types/resume";
 
 export type Palette = {
@@ -16,7 +16,7 @@ function fromSeeds(light: PaletteSeeds, dark: PaletteSeeds) {
 // rather than running through the derived ramp like the generated presets below.
 // muted and faint were re-derived at the 2026-09-18 ramp weights (0.36 / 0.50) so
 // small text on this preset clears 4.5:1 too; every other value is untouched.
-const DEFAULT_LIGHT: PaletteTokens = {
+const DEFAULT_LIGHT_BASE = {
   paper: "#fbfbf9",
   white: "#ffffff",
   ink: "#0b1a2b",
@@ -30,8 +30,9 @@ const DEFAULT_LIGHT: PaletteTokens = {
   pillText: "#4a5c6b",
   onAccent: "#fbfbf9"
 };
+const DEFAULT_LIGHT: PaletteTokens = { ...DEFAULT_LIGHT_BASE, ...deriveSheetTokens(DEFAULT_LIGHT_BASE), onAccent: DEFAULT_LIGHT_BASE.onAccent };
 
-const DEFAULT_DARK: PaletteTokens = {
+const DEFAULT_DARK_BASE = {
   paper: "#0d1b2a",
   white: "#142a3d",
   ink: "#eef3f7",
@@ -45,6 +46,7 @@ const DEFAULT_DARK: PaletteTokens = {
   pillText: "#a9b8c5",
   onAccent: "#0d1b2a"
 };
+const DEFAULT_DARK: PaletteTokens = { ...DEFAULT_DARK_BASE, ...deriveSheetTokens(DEFAULT_DARK_BASE), onAccent: DEFAULT_DARK_BASE.onAccent };
 
 export const PRESET_PALETTES: Palette[] = [
   {
@@ -52,6 +54,26 @@ export const PRESET_PALETTES: Palette[] = [
     name: "Default",
     description: "The site's original paper-and-ink palette with a red accent.",
     modes: { light: DEFAULT_LIGHT, dark: DEFAULT_DARK }
+  },
+  {
+    id: "glass-tile",
+    name: "Glass Tile",
+    description:
+      "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    modes: fromSeeds(
+      { paper: "#f4f5f8", white: "#ffffff", ink: "#111318", accent: "#2457e6", blue: "#173ea8" },
+      { paper: "#0f1115", white: "#181b22", ink: "#eceef2", accent: "#6a93ff", blue: "#9db9ff" }
+    )
+  },
+  {
+    id: "blue-sheet",
+    name: "Blue Sheet",
+    description:
+      "The 2026-11-08 drafting-sheet look's palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark.",
+    modes: fromSeeds(
+      { paper: "#f4f7fd", white: "#ffffff", ink: "#0d182c", accent: "#2457e6", blue: "#173ea8" },
+      { paper: "#070b15", white: "#0e1627", ink: "#e8eefb", accent: "#6a93ff", blue: "#9db9ff" }
+    )
   },
   {
     id: "electric",
@@ -137,8 +159,15 @@ export const PRESET_PALETTES: Palette[] = [
   }
 ];
 
+/** Old preset ids still found in saved settings and Studio backups, and the preset each now means. */
+const RENAMED_PRESETS: Record<string, string> = {
+  // The design was called Clean Bench until 2026-11-15.
+  "clean-bench": "glass-tile"
+};
+
 export function getPreset(id: string): Palette | undefined {
-  return PRESET_PALETTES.find((palette) => palette.id === id);
+  const current = RENAMED_PRESETS[id] ?? id;
+  return PRESET_PALETTES.find((palette) => palette.id === current);
 }
 
 export const DEFAULT_PALETTE = PRESET_PALETTES[0];

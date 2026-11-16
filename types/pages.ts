@@ -1,3 +1,4 @@
+import type { ProjectCategory } from "@/types/resume";
 /**
  * Page copy that used to be written into the page components, now edited in
  * the Studio. A `{count}`, `{company}` or `{start}` in a string is filled in
@@ -43,6 +44,13 @@ export type HomePageData = {
     /** Under the tagline: "{company}, since {start}" for the current role. */
     currentRole: string;
   };
+  /** The small labels on the tiles tiles beside the hero. */
+  bento: {
+    /** Over the current role. */
+    now: string;
+    /** Over the location. */
+    location: string;
+  };
   /** A phrase in the summary that becomes a link wherever it appears. */
   summaryLink: LinkText;
   headings: {
@@ -50,10 +58,31 @@ export type HomePageData = {
     experience: string;
     skills: string;
     education: string;
+    /** The GitHub contribution calendar under the hero. */
+    activity: string;
+    /** The project grid on the home page. */
+    projects: string;
   };
   /** The "Read more" button at the end of a resume bullet that links to its project. */
   readMore: {
     animation: ReadMoreAnimation;
+  };
+  /**
+   * The words on the Experience section's "see more" button, which opens the
+   * roles older than Site Settings → Layout → Experience shown (years).
+   */
+  experience?: {
+    moreLabel?: string;
+    lessLabel?: string;
+  };
+  /**
+   * The Skills and Tools section's group tabs: the All tab's word, the hint
+   * shown before a group is picked, and the tab row's name for screen readers.
+   */
+  skillPicker?: {
+    allLabel?: string;
+    hint?: string;
+    label?: string;
   };
   /** Skills linked to a project or proof (Skills → Links to) in the Skills section. */
   linkedSkills: {
@@ -67,9 +96,11 @@ export type HomePageData = {
   };
   footer: {
     note: string;
-    sheetLabel: string;
-    sheetLink: LinkText;
-    revisionLabel: string;
+    /** Beside the site's own link. */
+    siteLabel: string;
+    siteLink: LinkText;
+    /** Beside the commit and date the page was built from. */
+    updatedLabel: string;
     locationLabel: string;
   };
 };
@@ -105,8 +136,36 @@ export type InterfaceData = {
     home: string;
     projects: string;
     contact: string;
-    moreInfo: string;
-    aboutSite: string;
+  };
+  /** The project grid and the dialog a card opens into. */
+  projects: {
+    /** The link from the dialog to the project's own page. */
+    openFull: string;
+    /** The button that appears over a project card's cover on hover and goes straight to the project's own page. */
+    viewFullscreen: string;
+    close: string;
+    /** From the home page's grid to /projects. */
+    viewAll: string;
+    /** The first filter chip on /projects. */
+    all: string;
+    /** The other filter chips: the label of each shared project category. */
+    categories?: Partial<Record<ProjectCategory, string>>;
+    /** The label on the home page's bento tile for the site's own project. (Until 2026-11-14 also a second tag on its project card.) */
+    siteBadge: string;
+    /** On a card with photographs: "{count} photos". */
+    photos: string;
+    onePhoto: string;
+  };
+  /** The GitHub contribution calendar. */
+  activity: {
+    /** "{count} contributions in the last year" */
+    total: string;
+    less: string;
+    more: string;
+    /** When GitHub could not be reached at build time. */
+    unavailable: string;
+    /** The link to the profile beside the calendar. */
+    profile: string;
   };
   actions: {
     downloadPdf: string;

@@ -1,0 +1,145 @@
+---
+tags: [component, routes]
+---
+
+# Project Catalog and Dialog
+
+How projects reach the visitor since the Blue Sheet redesign (2026-11-08), kept by Glass Tile (2026-11-09):
+
+- `lib/catalog.ts` builds one list of entries: the site itself first (since 2026-11-15; it was last before), then the published projects by `order`. The grids and the project pages' previous / next follow this order.
+- `ProjectGrid` shows them as tiles, on `/projects` with category filters and on the home page with "View all projects".
+- **Categories (2026-11-14).** The filters used to be each project's free-text `type`, so seven projects had six chips. Now a project carries `categories`, a map of switches over four shared categories defined once in `lib/categories.ts` (`PROJECT_CATEGORIES`, in chip order): `productDesign`, `software`, `automationControls`, `networkInfrastructure`. A project can sit in several (ExtrusionStudio is Software and Automation & Controls). `ProjectGrid` shows a chip only for a category at least one entry sits in, filters with `inCategory()`, and marks the active chip with `aria-pressed`. Chip labels are Studio copy (`data/site/interface.json` `projects.categories`; Navigation & labels → Project cards & dialog → Category filter chips). `type` stays as the specific tag over the card's cover. In the Studio the switches are Projects → **Categories** and About this site → **Categories** (`PROJECT_CATEGORY_FIELDS` in `studio/ui/schema.js` mirrors the list by hand); the site's own entry gets its categories from `about-site.json` `categories`.
+- A tile opens its project in `ProjectDialog` by **morphing** into it: the tile and the dialog share a framer-motion `layoutId`, so the tile grows into the dialog and collapses back into it on close.
+- Every entry also has its own page at `/projects/<id>`.
+- The dialog and the page render the same `ProjectBody`.
+
+This note was **Projects Route (BpComingSoon)** before the redesign. The Blueprint Press projects page it described (one full-height `ProjectEntry` per project with media parallax, `ProjectListSpine`, Photo Mode, the `BpComingSoon` fallback) is recorded in [[Blueprint Press (2026-08 to 2026-11)]]. The site's own entry and its deep dive are in [[Site Project (About this site)]].
+
+## `lib/catalog.ts`
+
+| Export | What it does |
+|---|---|
+| `SITE_PROJECT_ID` | `"rileybeenders-com"`, the site entry's id and URL segment |
+| `CatalogEntry` | `ProjectView` (from `lib/projects.ts`: `project`, `images`, `ownImages`, `proof`) plus `cover` (`{ src, alt, unoptimized? }` or `null`), `tagline?`, `isSite`, `feature?` (`ProjectFeature`) and `tracker?` (`TrackerSection`) |
+| `TrackerSection` | `{ title, intro?, tableNote?, statusKey, columns, rows, chart?, table }`, the application tracker carried by the site entry |
+| `getCatalog()` | Module-cached. `buildProjectViews(resumeData.projects, resumeData.proofs)` (published projects, by `order`), each given a `cover` (`coverFor()`: the first image with a `src` that isn't a captured post. A PDF gives its `<src>.png` first-page preview, an MP4 its `<src>.jpg` poster, and a GIF is `unoptimized`) and `tagline` (`additionalInfo.subtitle`). Then the site entry. With `visibility.projectsSection` off, the catalog is the site entry alone |
+| `getEntry(id)` | One entry, for `/projects/[id]` |
+| `getFeatured()` | Every entry (the home grid shows all of them) |
+| `getCatalogTypes()` | The distinct `type`s in catalog order. Unused since the filters moved to categories (2026-11-14) |
+
+Today the catalog holds seven entries: ICARUS-Lite, ExtrusionStudio, BulkSSH, RB's Auto App Updater, Unified Ubiquiti Network, Filament Innovations Projects, and the site entry, **RileyBeenders.com** (type "About this site").
+
+## `components/glass-tile/ProjectGrid.tsx`
+
+`"use client"`. Props: `entries`, `today` (ISO, from the server), `paletteId`, `filters?` (the `/projects` chips), `viewAllHref?` (the home page's "View all projects" `.btn`).
+
+- **Filters.** "All" (`ui.projects.all`, picked on load) plus one tab per shared category with a published project, shown only when there are two or more. Since 2026-11-15 they reuse the Skills and Tools bar (see [[Glass Tile Components (Home Page)]]): a `.card.skills-box.project-box` with the solid `.skills-tabs` header of mono `.skills-tab`s, each with a dot in its colour (All a ring; categories `--grp-1` … by position), the picked one in bold ink over a line in its colour that slides between tabs (`layoutId="project-tab-mark"`, outside the keyed LayoutGroup), and the grid in the `.skills-body` under it. With five tabs instead of eight, its words run larger than the skills bar (13px, padding 10px 12px, 8px dots; `.project-box` overrides in `glass-tile.css`). Choosing the picked category again goes back to All. Without `filters` (the home page) the grid renders bare. The old `.filters` / `.filter` chip CSS is gone.
+- **Grid.** `.project-grid` is a centred, wrapping flex row of tiles a third wide (`--cols` 3, 2 under 980px, 1 under 760px), so since 2026-11-15 a short last row, or a filter that leaves one project, sits centred under the heading. It renders one `ProjectCard` per shown entry.
+- **Hash routing.** Which project is open lives in the URL hash: `#project-<id>`, plus `-case-study` to open the case study too (`/^#project-([a-z0-9-]+?)(-case-study)?$/i`).
+  - It reads the hash on mount and on `hashchange` and `popstate`, so the resume's Read more links (`/projects#project-<id>`), linked skills (`#project-<id>-case-study` for a proof), a shared link, and the browser's back button all work.
+  - Opening `pushState`s the hash. Closing `pushState`s the bare path.
+  - An unknown id leaves the dialog closed.
+- **The dialog.** It renders `<ProjectDialog open={{ id, name, type }} onClose>` with `<ProjectBody key={id} … caseStudyOpen mode="dialog" />` inside.
+
+The same component runs on `/` and `/projects`, so `/#project-icarus-lite` opens the dialog over the home page.
+
+## `components/glass-tile/ProjectCard.tsx`
+
+`"use client"`. One tile: a `motion.div` that handles the entrance, wrapping `motion.article#project-<id>.card.card--hover.project-tile.bp-spot` (the id is the anchor the resume's links point at). It also exports the two pieces the morph is built from:
+
+- `MORPH`: the spring, `{ type: "spring", stiffness: 380, damping: 36, mass: 0.8 }`.
+- `tileLayoutId(id)`: `project-tile-<id>`, the `layoutId` the article carries (dropped under reduced motion) and the dialog panel reuses.
+
+The article keeps `style={{ borderRadius: 22 }}` inline so framer-motion can animate the corner through the morph. The whole tile is one `<button>` that calls `onOpen(id)`, aria-labelled "`<name>`: open".
+
+- **Cover** (16:10). The entry's `cover` as a `next/image` (`fill`, `sizes` tracking the grid, eager for the first three). It scales 1.04× on hover. A PDF whose first image is `fit: "contain"` is shown contained with padding. With no cover, `.project-card-typo` draws the animated monogram on a soft accent wash.
+- **Tags** over the cover: the `type`. On the site entry that one tag takes the accent fill with on-accent text (`.project-card-badge`); the separate "This site" tag was removed on 2026-11-14. The site's card also gets an accent-tinted border (`.project-card--site`).
+- **View Fullscreen** (since 2026-11-15). A `next/link` `.project-card-full` pill (`Maximize2` icon + `ui.projects.viewFullscreen`) to `/projects/<id>`, so a visitor can open the project on its own page instead of in the dialog. It is a sibling of the tile's button (a link can't nest in a button), positioned over the cover's bottom-right corner; the article is a `container-type: inline-size` container so `top: calc(10px + 100cqw * 0.625 - 36px)` finds the 16:10 cover's foot. Hidden until the tile is hovered or the link has keyboard focus (fade + 4px rise), always shown on `hover: none` devices, and it takes the accent fill when hovered itself.
+- **Body.** The `h3` name, the summary's first paragraph clamped to two lines, and a mono meta line: "Jun 2026 → Present" from `dates`, "· N photos" (photos only; PDFs and posts don't count), and an `ArrowUpRight` that nudges 3px on hover.
+- **Motion.** It enters on view (opacity, y 18 → 0, 0.6s on the site curve, a stagger of `min(index, 5) × 0.06`s) and keeps `layout` on (with `MORPH`). Since 2026-11-15 filtering does not spring tiles across the grid: `ProjectGrid` wraps the grid, footer and dialog in a `LayoutGroup` keyed by the filter (`projects-<category|all>`; LayoutGroup reads its id only once, so the key is what changes it), so each filter remounts the tiles and they deal in with the entrance rise and stagger. The filter buttons sit outside it and keep focus; the dialog shares the group, so the tile-to-dialog morph still works. Hover lifts the tile 3px and zooms the cover 1.04×. The `.bp-spot` cursor wash follows the pointer via `useSpotlight`. Under reduced motion it does neither.
+
+## `components/glass-tile/ProjectDialog.tsx`
+
+`"use client"`. The box a tile opens into, and grows out of.
+
+- **Portal.** It renders through `createPortal` into **`[data-glass-portal]`**, the empty div the site layout puts *inside* `.bp` (beside `.page`), so every palette token resolves in the dialog. Portalling to `<body>` would leave `var(--ink)` undefined (the Portal Rule in `DESIGN.md`). It falls back to `document.body` only if the host is missing.
+- **Markup.**
+  - A `.dlg-scrim` (ink at 45% with a 6px blur, fades 0.3s, a click closes).
+  - A `.dlg-wrap` holding `motion.div.dlg[role=dialog][aria-modal][aria-labelledby]`, `min(1040px, 100%)` wide and centred. **The morph:** the panel carries the same `tileLayoutId(id)` as the tile that opened it, with `transition={{ layout: MORPH }}`, so it grows out of the tile's box and shrinks back into it on close. The bar and the body fade in (0.32s on the site curve) after a 0.18s delay, once the box has mostly settled. Under reduced motion there is no `layoutId`: the panel, bar and body simply fade (0.2s).
+  - A sticky translucent `.dlg-bar`: the name (sub-header face, 600) and type (mono), an **Open full page** `.btn.btn--sm` (`ui.projects.openFull`, a `next/link` to `/projects/<id>`), and a close `X` button (`ui.projects.close`).
+  - The `.dlg-body`, which scrolls on its own (`overscroll-behavior: contain`) and is marked `data-native-scroll` so `SmoothScroll` leaves it alone.
+- **Behaviour while open:**
+  - sets `data-lock` on `<html>` (`html[data-lock] { overflow: hidden }`, which also pauses `SmoothScroll`);
+  - focuses the panel after 30ms;
+  - traps Tab and Shift+Tab within the visible focusables;
+  - closes on **Escape**, unless the Lightbox (`.pj-lightbox`) is up, since it handles its own Escape;
+  - on close, removes the lock and puts focus back where it was.
+- **Phone.** Under 760px the dialog rises from the bottom edge (`max-height: 96vh`, only the top corners rounded).
+
+`ui.projects.position` ("Project {index} of {count}") is a Studio field that the dialog does not render yet.
+
+## `components/glass-tile/ProjectBody.tsx`
+
+`"use client"`. Everything an entry has, top to bottom. It is the same in the dialog (`mode="dialog"`, `h2` title) and on the page (`mode="page"`, `h1` title):
+
+1. **Head** (`.pbody-head`): the `type` as an `.eyebrow` (the one place eyebrows remain, naming a category), the title, the `tagline`, and a meta row with `<ProjectDateBox position="inline">` when `dates.start` is set, plus the photo count.
+2. **`<ProjectGallery images projectName />`** when there are images. Every image goes in the gallery; a stored `place` is ignored now that Photo Mode is gone.
+3. **Text** (`.pbody-text`, max 76ch): `<Paragraphs className="pbody-summary">`, `<ProjectStatus>` when `status` is set, the bullets (`EmphasizedText` with `.pj-bullet-emphasis`, accented on hover like the resume's), and `project.links` as `.btn.btn--sm` buttons (with an optional mono `note`; an external `href` opens in a new tab with an `ExternalLink` icon).
+4. **Case study**, when `proof` exists: a `.pj-toggle` button (`id="project-<id>-case-study"`, "View the full case study" / "Hide the case study" from `ui.caseStudy`, a rotating chevron, `aria-expanded`/`aria-controls`) that opens `<CaseStudy proof>` with `AnimatePresence` height `0 → auto` over 0.5s. `caseStudyOpen` (from the hash) opens it on first render. Under reduced motion it shows and hides without animation.
+5. **`<PanelWalkthrough>`** when `project.walkthrough` is set (ExtrusionStudio). See [[Panel Walkthrough]].
+6. **`<ProjectFeature feature projectName today paletteId>`** when the entry has a `feature` (the site entry only). See [[Site Project (About this site)]].
+7. **The tracker**, `section#tracker.pbody-tracker`, when the entry has a `tracker` (the site entry only):
+   - the `h3` title and optional intro;
+   - `<GanttChart chart>`, when the chart switch is on;
+   - when the table switch is on: the `tableNote` when set (currently unset), then `TrackerTable`: a `.bp-table-key.bp-table-filter` segmented pill of `aria-pressed` buttons (All / 🟢 / 🟠 / 🔴 with the `statusKey` words and a row count each, default 🟢 received) and `<JobsTable columns rows singleLine>` of the rows whose Status cell matches, in a `data-native-scroll` wrapper (a "No applications here right now." note when none match).
+
+   `/more-info` redirects to this anchor. See [[GanttChart JobsTable and gantt.ts]].
+
+## `/projects/[id]`, the entry's own page
+
+`app/(site)/projects/[id]/page.tsx` is a statically generated page for every catalog id (`generateStaticParams`, `dynamicParams = false`). It renders a `.page-back` link to `/projects`, `<ProjectBody mode="page">`, and a `.page-nav` of the previous and next entries (their type and name), then the footer and `BackToTop`. The metadata title is "`<name>` | Riley Beenders". See [[Routes Overview]]. Since 2026-11-14 the body sits in a `.card.panel` tile and the `.page-nav` links are `.card.card--hover` tiles; on `/projects` the heading is a `.card.sec-head` tile and the outro a `.card.panel`.
+
+## Kept project media: `components/projects/`
+
+Unchanged by the redesign. `ProjectBody` composes them.
+
+| File | Role |
+|---|---|
+| `ProjectGallery.tsx` | Client. A responsive photo grid (`align-items: start`). Each cell is a fixed-aspect `next/image` frame: 4:3 unless the image's `aspect` picks another ratio, or "original" (uncropped). It uncovers with a `clip-path` wipe (`staggerChildren 0.1`) and opens the `Lightbox`. A `.gif` is `unoptimized`, so it plays at the speed baked into the file. Diagrams from `additionalInfo.assets` stand in when a project has no photos (except `THEMED_SVGS` drawings, which stay in the case study). `display: "compare"` renders a `CompareImage`. A `post` renders a `PostButton`. An MP4 shows its poster with a play mark. An empty `src` is filtered out before render. It still accepts the Photo Mode-era `items` / `onOpen` / `editing` props and imports `ShownImage` / `canFloat` from `lib/photo-place.ts`; nothing passes `editing` any more. |
+| `Lightbox.tsx` | Client. The full-screen viewer for the untouched original, with keyboard navigation and a loading state. A PDF opens as `PdfPages` (with a "Page N of M" caption and an optional download), a post as a `PostCard`, a comparison as a large `CompareImage`, an MP4 as `<video controls>`. It portals to **`<body>`**, outside `.bp`, so all of its CSS (and `PostCard`'s) uses literal colours. Its Escape closes it before the dialog's does. |
+| `PdfPages.tsx` | Client. Every page of a PDF in one scrolling column, drawn by pdf.js behind a dynamic `import("pdfjs-dist")`, so only a visitor who opens a PDF fetches it. Pages rasterise as they come near; the column is drawn on white whatever the theme. |
+| `PostCard.tsx` | Server. `PostButton` (the grid card for a captured LinkedIn post) and `PostCard` (the record in the viewer: the words, the hashtags set apart, "Redirect to LinkedIn", the capture date). |
+| `CompareImage.tsx` | Client. A before/after slider in the image's frame: drag the bar, or use the transparent range input that carries the keyboard and screen-reader path. Each photo is placed by its Studio-set `ImageFrame`. |
+| `ProjectDateBox.tsx` | Client. The date range from `project.dates`. With `ongoing` the end reads "→ Present" and its underline runs a progress bar (fill to 92% on view, then a chase sweep). `ProjectBody` always uses `position="inline"`; the corner positions belonged to `ProjectEntry`'s rule. |
+| `ProjectStatus.tsx` | Client. A project's `status` line. A ` ``` `-fenced part renders as a code block with a copy button (the Auto App Updater's install command). |
+| `CaseStudy.tsx` | Server-safe. The expanded case study (`ProofView`: title, subtitle, summary, sections, tags, diagrams). A diagram in `FLOW_DIAGRAMS` renders as `<FlowDiagram>`, and one in `THEMED_SVGS` as `<ThemedSvg>`. |
+| `diagrams/flows.ts` + `FlowDiagram.tsx` | Flowcharts drawn inline in the palette, with boxes rising in turn and a dot running every arrow (the Auto App Updater's install and run flows). |
+| `diagrams/themed.ts` + `ThemedSvg.tsx` | Hand-drawn SVGs whose colours are `var(--token, fallback)`, fetched and inlined so they follow the palette and `data-theme` (the two UniFi topologies). |
+| `walkthrough/PanelWalkthrough.tsx` | The guided tour of a program's screens. See [[Panel Walkthrough]]. |
+| `ProjectFeature.tsx` + `feature/*` | The deep dive, carried only by the site entry. See [[Site Project (About this site)]]. |
+
+The styles are in `app/(site)/projects/projects.css` (`.pj-*`, `.cmp-*`, `.pj-flow-*`, the lightbox), `projects/walkthrough.css` (`.wt-*`, `.pj-links`) and `projects/feature.css`. The site layout imports all three after `glass-tile.css`, and the tile, dialog and body classes (`.project-*`, `.dlg-*`, `.pbody-*`) live in `glass-tile.css`'s projects, dialog and project-body sections.
+
+`lib/projects.ts` (`buildProofView`, `buildProjectViews`) assembles the `ProjectView` each entry starts from. `ownImages` is true when `images` is the project's own list rather than diagrams standing in.
+
+## What is published
+
+Six projects, in `order`:
+
+- **ICARUS-Lite**: six photographs, a `status` line, and a case study.
+- **ExtrusionStudio**: panel captures, a link to BulkSSH, the `walkthrough`, and the themed `deployment.svg`.
+- **BulkSSH**: text-only until its demo GIF lands. It has three `links` (the repository, the v1.0.0 release, and `#project-extrusionstudio`).
+- **RB's Auto App Updater**.
+- **Unified Ubiquiti Network**.
+- **Filament Innovations Projects**.
+
+The other six projects are `visible: false` drafts. All 17 proofs are also `visible: false`, so every case study is the project's own write-up. See [[Career Content]].
+
+## Related
+- [[Site Project (About this site)]]
+- [[Panel Walkthrough]]
+- [[Glass Tile Components (Home Page)]]
+- [[Career Content]]
+- [[Routes Overview]]
+- [[Design System (Glass Tile)]]
+- [[Home]]

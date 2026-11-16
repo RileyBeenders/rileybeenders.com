@@ -8,16 +8,16 @@
     "context": "When Proteor acquired Filament Innovations, my role as CTO carried forward as Lead R&D Engineer.",
     "bullets": [
       {
-        "text": "Led the design and development of the ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production with minimal customer setup. Owned its mechanical, electrical, and software design, including custom AC heaters.",
+        "text": "Led the design and development of the ICARUS-Lite, a compact industrial printer that automates prosthetic and orthotic production with minimal customer setup. Owned its mechanical, electrical, and software design.",
         "emphasis": [
           "design and development"
         ],
         "projectId": "icarus-lite"
       },
       {
-        "text": "Owned the ICARUS-Lite through commercialization against unit goals of 60 in 2025 and 100 in 2026.",
+        "text": "Owned the ICARUS-Lite and ICARUS-Pro through commercialization. Remain the top point of contact for customer support on both machines, resolving the issues that go beyond what the support team can answer.",
         "emphasis": [
-          "unit goals of 60 in 2025 and 100 in 2026"
+          "top point of contact for customer support"
         ]
       },
       {
@@ -28,6 +28,28 @@
           "up to 30% of paper waste"
         ],
         "projectId": "extrusionstudio"
+      },
+      {
+        "text": "Use AI tools including Claude Code, Cursor, and local models in LM Studio to accelerate software, simulation, and design work. Integrated new hardware into the ICARUS-Pro to conform to EU and CE requirements by defining the I/O, wiring and testing each device, then using AI to help write the scripts that coordinate them, with all code tested locally before deployment.",
+        "emphasis": [
+          "Claude Code, Cursor, and local models in LM Studio",
+          "ICARUS-Pro",
+          "tested locally before deployment"
+        ]
+      },
+      {
+        "text": "Used AI to rework a solid part with an organic structure, reducing its material use by 16.2% and its quoted price per part by 21.29%.",
+        "emphasis": [
+          "16.2%",
+          "21.29%"
+        ]
+      },
+      {
+        "text": "Optimizing the airflow of a high-pressure blower with AI-assisted CFD simulation in OpenFOAM and ParaView, iterating designs quickly to improve part cooling and raise print speeds.",
+        "emphasis": [
+          "AI-assisted CFD simulation",
+          "part cooling"
+        ]
       },
       {
         "text": "Serve as the technical subject-matter expert across the plant, from industrial electronics on the extrusion lines to low-voltage sensors, and the go-to contact for customer troubleshooting across mechanical faults, electrical faults, and user error.",
@@ -249,6 +271,7 @@
     "location": "Pennsylvania",
     "start": "2015",
     "end": "Present",
+    "homeDisplay": "more",
     "bullets": [
       {
         "text": "Deliver project-based engineering support for automotive clients and operate a small online store for 3D-printing heat inserts and other printer accessories.",

@@ -31,8 +31,8 @@
     "chartVisible": false,
     "tableVisible": true,
     "title": "Application Tracker",
-    "tableNote": "Gray rows were applied to before this site and its tailored resumes.",
     "statusKey": {
+      "all": "All",
       "received": "Application received",
       "interviewing": "Interviewing",
       "closed": "No longer in consideration"

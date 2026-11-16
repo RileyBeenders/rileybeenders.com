@@ -1,6 +1,6 @@
-// Captures the screenshots the About-this-site page shows — the site
-// documenting itself — in BOTH themes, because the page shows each capture
-// in the theme the visitor is *not* using. Run with the dev server (and
+// Captures the screenshots the site's own project page (/projects/rileybeenders-com,
+// the About-this-site entry) shows — the site documenting itself — in BOTH
+// themes, because the page shows each capture in the theme the visitor is *not* using. Run with the dev server (and
 // optionally the Studio) already up:
 //
 //   npm run dev            # :3000
@@ -129,19 +129,17 @@ await shootBoth("home-full", (file) => page.screenshot({ path: file, fullPage: t
 await page.goto(`${SITE}/projects`, { waitUntil: "networkidle" });
 await hideDevTools(page);
 await settle(page);
-// Scroll to the first entry twice — once to trigger lazy images, once more after they have sized the page — so its reveals fire in place.
-const first = page.locator(".pj-entry").first();
-await first.scrollIntoViewIfNeeded();
-await settle(page, 800);
-await first.evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 }));
+// The grid of cards at the top of the page; its reveals fire as the cards enter.
+await page.locator(".project-grid").first().scrollIntoViewIfNeeded();
 await settle(page, 1800);
 await shootBoth("projects", (file) => page.screenshot({ path: file, clip: CLIP }));
 
-// ---------------------------------------------------------- about page ---
-await page.goto(`${SITE}/about-this-site`, { waitUntil: "networkidle" });
+// ------------------------------------------------- the site's project page ---
+// About this site is the catalog's last entry (lib/catalog.ts); its page carries the deep dive.
+await page.goto(`${SITE}/projects/rileybeenders-com`, { waitUntil: "networkidle" });
 await hideDevTools(page);
 await settle(page);
-const timeline = page.locator(".as .tl");
+const timeline = page.locator(".pbody .tl");
 if (await timeline.count()) {
   await timeline.scrollIntoViewIfNeeded();
   await settle(page, 2600); // the track fill and dot stagger

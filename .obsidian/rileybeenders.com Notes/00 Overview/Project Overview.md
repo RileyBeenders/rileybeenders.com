@@ -6,37 +6,67 @@ tags: [overview]
 
 ## What it is
 
-`RileyBeenders.com` is a resume-shaped portfolio website designed to complement, not replace, a traditional ATS-friendly resume PDF. The PDF is the official application document; the website presents the same career data in an editorial layout and, on `/more-info`, exposes the live job search behind the site.
+`RileyBeenders.com` is a resume-shaped portfolio website designed to complement, not replace, a traditional ATS-friendly resume PDF. The PDF is the official application document. The website presents the same career data as an evidence layer. At rest it reads like the resume. One layer down are the project dialogs, case studies, walkthroughs, and the site's own deep dive, which includes the live job-search tracker behind the site.
 
-Since the **Blueprint Press** reskin (now on `main`), the site is a calm editorial piece: a blueprint-grid background, a light/dark palette picked in the Studio (the **Electric** preset today — Tesla-derived white with a `#3e6ae1` accent, Bugatti-derived black in dark mode; the Swiss navy/red/blue "Default" is the fallback), Instrument Serif display type, and a single continuous-stroke RB monogram. The earlier "evidence layer" concept — pointer-driven 3D tilt, hover proof previews, slide-in project drawers — was removed in the reskin. Motion is a small, one-hand system on a single easing curve: `Reveal` entrances, a spine that fills as you scroll, the hero ribbon's stroke draw, the relocation badge's hop and typewriter label, emphasis phrases that take the accent on hover, count-ups and a time-scaled timeline on the About page — all inside the `motion-design` skill's thresholds (see [[Design System (Blueprint Press)]]).
+Since the **Glass Tile** redesign (2026-11-09, branch `design/UI_Refresh`, see [[Glass Tile (2026-11 redesign)]]), everything on the site is a tile. White rounded tiles sit on a pale grey-blue ground under a frosted glass nav, with a soft blue bloom behind the top of the page. One cobalt runs from pale washes to a deep fill. Headings and body are Instrument Sans, with Azeret Mono for dates and small labels. The one-stroke RB monogram carries over from before. The palette is a Studio choice (the **Glass Tile** preset today). In dark mode the tiles go graphite on near-black, and every blue fill cuts deeper rather than brighter. Glass Tile replaced Blue Sheet, a drafting-sheet design that lasted one day (see [[Blue Sheet (2026-11-08, one day)]]).
+
+Motion is a small, one-hand system on a single easing curve:
+
+- Bento tiles that rise in once, 70ms apart, and `Reveal` entrances below them.
+- A floating nav whose active tint slides between links.
+- A slowly drifting bloom and a monogram chip that trails the pointer across the bento.
+- The contribution calendar's column pop-in, and project tiles that lift and morph into their dialog.
+- Emphasis phrases that take the accent on hover.
+- Inertial wheel scrolling that steps aside for touch, keys and reduced motion.
+- Count-ups and a time-scaled timeline in the site's own entry.
+
+All of it stays inside the `motion-design` skill's thresholds (see [[Design System (Glass Tile)]]). The previous design, Blueprint Press (2026-08-27 to 2026-11-08), is recorded in [[Blueprint Press (2026-08 to 2026-11)]].
 
 ## Owner / subject
 
-Riley Beenders — R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation. Currently Lead R&D Engineer at Proteor (see [[Career Content]] for full history).
+Riley Beenders is an R&D and electromechanical engineer focused on product development, manufacturing, automation and practical innovation. He is currently Lead R&D Engineer at Proteor (see [[Career Content]] for the full history).
 
 ## Core features
 
-1. **Home** (`/`) — a one-page editorial resume: hero (name, title, location, the current role as a fact line, the "Open to relocation" badge resting beside the rule, action buttons), then numbered sections `01 Summary`, `02 Experience`, `03 Skills`, `04 Education` down a scroll-filled spine, and a footer with the animated monogram and a drawing-style title block (Sheet · Rev. · Drawn in). Experience bullets carry accent-on-hover emphasis phrases and, where a bullet backs a published project, an inline "see ICARUS-Lite ↗" evidence link. Server component, no client resume logic. See [[Routes Overview]].
-2. **Projects** (`/projects`) — the published case studies, one full-height entry each: summary, bullets, a photo gallery with a lightbox, an optional date box, and the full case study behind a toggle. One project is published so far (**ICARUS-Lite**, since 2026-09-16); the other eight are `visible: false` drafts, and `BpComingSoon` is only the fallback when nothing is published. See [[Projects Route (BpComingSoon)]].
-3. **Contact** (`/contact`) — hero and copy from `data/contact/contact.json`, the shared `BpActions` button row, and the email address spelled out once in prose (the three link cards went on 2026-09-18).
-4. **More Info** (`/more-info`) — About Me / About the Site copy, a "Read the full story" link to `/about-this-site`, and the **job-application Gantt chart + tracker table** (client-side `mermaid`) — each switched separately (`ganttSection.chartVisible` / `tableVisible`). Right now the table is on and the chart is off, so section 03 shows only the table. See [[More Info and Gantt Data]].
-5. **About this site** (`/about-this-site`) — the site as its own case study: a running date bar, the story with a light/dark gallery, then stats, a time-scaled commit timeline with a self-playing tour, pillars, and live "Behind the site" demos of the resume builder, the Studio, and the skill router. Fed by `data/site/about-site.json` and kept current by the `site-timeline-sync` procedure. See [[About This Site Page]].
-6. **Main resume** — the Download PDF button opens a curated interactive HTML resume from `public/resume/` (`header.json`'s `resumeHtmlPath`) in a new tab, where its Print / PDF button saves the matching PDF. The pair (`RileyBeenders_Resume_<YY><DDD>`, also kept in `.DefaultResume/`) is built from `ResumeBuilder/main-resume/main-resume.html` and kept current by the `update-main-resume` skill; `/api/resume-pdf` redirects to the PDF. See [[Resume PDF Pipeline]].
+1. **Home** (`/`): a one-page resume in tiles.
+   - **The bento:** the hero tile (the "Open to relocation" chip, the name, the title, a location and current-role line, and the Download PDF / Email / LinkedIn / GitHub row), then tiles for Now, Based in and Education, the GitHub calendar, This site and Say hello.
+   - **The sections, in order:** "Who is Riley?" (the summary and fact tiles), Experience (one tile with a timeline rail), Projects (the catalog grid), Skills and Tools (four tiles of pills), Education, and Contact (the ways in plus a message form).
+   - **The footer** is a quiet mono line: Site, Updated, Based in.
+   - **Bullets** keep their accent-on-hover emphasis phrases. A bullet that backs a published project keeps its Read more link, which opens that project's dialog.
+
+   See [[Routes Overview]] and [[Glass Tile Components (Home Page)]].
+2. **Projects** (`/projects`): the catalog, with category filters (four shared categories). It holds every published project (six today) and the site itself as tiles. A tile morphs into its project's dialog (the URL hash names it). The dialog's "Open full page" goes to **`/projects/<id>`**, which shows the same body (gallery, summary, bullets, links, case study, walkthrough) with previous/next links. See [[Project Catalog and Dialog]].
+3. **The site's own entry** (`/projects/rileybeenders-com`): the site as its own case study. It has a summary, a light/dark gallery and the case study, then stats, a time-scaled commit timeline with a self-playing tour, pillars, and live "Behind the site" demos of the resume builder, the Studio and the skill router. At its foot is the **job-application tracker** (the table today; the Gantt chart has its own switch). It is fed by `data/site/about-site.json` and the tracker files, and kept current by `site-timeline-sync`. `/about-this-site` and `/more-info` redirect here. See [[Site Project (About this site)]].
+4. **Contact** (`/contact`): the headline, then the block the home page ends with. Email, LinkedIn, GitHub and location sit beside "Send me a message". The form posts to `/api/contact` (Resend). Until that inbox is configured, it opens the visitor's own mail app with the message filled in.
+5. **Main resume**: the Download PDF button opens a curated interactive HTML resume from `public/resume/` (`header.json`'s `resumeHtmlPath`) in a new tab, where its Print / PDF button saves the matching PDF. The pair (`RileyBeenders_Resume_<YY><DDD>`, also kept in `.DefaultResume/`) is built from `ResumeBuilder/main-resume/main-resume.html` and kept current by the `update-main-resume` skill. `/api/resume-pdf` redirects to the PDF. Each tailored application also has its own HTML resume beside its PDF in `1.ApplicationsUsed/`. See [[Resume PDF Pipeline]].
 
 ## Dead / dormant code
 
-`types/resume.ts` still declares `ResumeData.siteMode`, `ResumeData.comingSoon`, and the whole `ComingSoonContent` schema. On `main`:
+`types/resume.ts` still declares `ResumeData.siteMode`, `ResumeData.comingSoon` and the whole `ComingSoonContent` schema. In the current tree:
 
-- **`siteMode` / `comingSoon` / `ComingSoonContent`** are never read anywhere. Dead code, not a prepared feature.
-- **`visibility`** flags are live switches, not leftovers: `experienceProjectButtons: true` keeps bullet `projectId`s and renders the inline evidence link on the resume; `projectsSection: true` publishes `/projects` (and loads proofs for it); `openToRelocation: true` shows the badge. `experienceProofButtons` and `proofIndex` stay `false`, and every entry in `proofs.json` is additionally `visible: false`, so the proof layer is dormant data rather than dead code — `lib/projects.ts` would fold a visible proof into a project's case study.
+- **`siteMode` / `comingSoon` / `ComingSoonContent`** are never read anywhere. They are dead code, not a prepared feature.
+- **`visibility`** flags are live switches, not leftovers:
+  - `experienceProjectButtons: true` keeps bullet `projectId`s and renders the Read more link on the resume.
+  - `projectsSection: true` publishes the projects in the catalog and loads proofs for them. When it is off, the catalog is the site entry alone.
+  - `openToRelocation: true` shows the hero chip and the relocation lines.
+  - `experienceProofButtons` and `proofIndex` stay `false`, and every entry in `proofs.json` is additionally `visible: false`. So the proof layer is dormant data rather than dead code: `lib/projects.ts` would fold a visible proof into a project's case study.
+- **The Studio's `POST /api/photo-place`** endpoint has had no caller since Photo Mode was removed in the redesign.
 
 See [[Data Layer and Types]].
 
 ## Where this sits in the repo's workflow
 
-The repo also functions as the owner's personal job-search tracker: `2.JobsApplliedTo/` holds original job postings, `1.ApplicationsUsed/` and `output/pdf/` hold tailored resumes/cover letters actually submitted, and `README.md` / `data/more-info/gantt.md` track application status on a Gantt chart. A dedicated agent procedure (`create-custom-resume-pdf`, see [[Repository Agent Skills]]) generates those tailored PDFs from live site data plus a job posting.
+The repo also functions as the owner's personal job-search tracker:
+
+- `2.JobsApplliedTo/` holds the original job postings.
+- `1.ApplicationsUsed/` and `output/pdf/` hold the tailored resumes and cover letters actually submitted (since 2026-11-07, an interactive HTML resume beside each PDF).
+- `README.md` and `data/more-info/gantt.md` track application status on a Gantt chart and table.
+
+Dedicated agent procedures (`create-custom-resume-pdf` / `create-custom-resume-html`, see [[Repository Agent Skills]]) generate those tailored files from live site data plus a job posting.
 
 ## Related
 - [[Architecture and Data Flow]]
 - [[Repository Map]]
+- [[Glass Tile (2026-11 redesign)]]
+- [[Blue Sheet (2026-11-08, one day)]]
 - [[Home]]

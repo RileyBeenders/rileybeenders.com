@@ -1,0 +1,1461 @@
+/* ==========================================================================
+   Glass Tile — the site design (2026-11-09 redesign)
+
+   Everything is a tile. White, rounded tiles sit on a pale grey-blue ground
+   under a floating glass nav; one cobalt accent carries links, fills and the
+   active states; a soft blue bloom sits behind the top of the page. Headings
+   and body share one grotesque (Instrument Sans by default); dates, captions,
+   eyebrows and other small notes are set in a wide monospace (Azeret Mono).
+   Dark mode is the same tiles with the lights down: graphite tiles on
+   near-black, a lighter blue for text, and every blue FILL cut deeper rather
+   than brighter (lib/palette.ts derives --accent-fill that way).
+
+   Everything is scoped under .bp, which the kept component stylesheets
+   (bullet-link.css, skill-pills.css, projects/*.css) also key off. Token
+   names are unchanged from the earlier designs so those files follow the
+   palette untouched; the fallback values here are the Glass Tile preset,
+   overwritten at render by whichever palette the Studio has chosen
+   (app/(site)/layout.tsx).
+   ========================================================================== */
+
+html {
+  background: #f4f5f8;
+  color-scheme: light;
+  scroll-padding-top: 96px;
+  scrollbar-gutter: stable;
+}
+html[data-theme="dark"] {
+  background: #0f1115;
+  color-scheme: dark;
+}
+html[data-lock] { overflow: hidden; }
+
+.bp {
+  --paper: #f4f5f8;
+  --white: #ffffff;
+  --ink: #111318;
+  --ink-soft: #4a4c50;
+  --muted: #636469;
+  --faint: #838488;
+  --rule: #d6d8db;
+  --accent: #2457e6;
+  --blue: #173ea8;
+  --prose: #282a2e;
+  --pill-text: #535559;
+  --on-accent: #f4f5f8;
+  --tint: #edf2fd;
+  --accent-soft: #cfdafa;
+  --accent-fill: #2457e6;
+  --glow: #d3dcf5;
+
+  --bp-font-header: var(--font-instrument-sans), system-ui, sans-serif;
+  --bp-font-subheader: var(--font-instrument-sans), system-ui, sans-serif;
+  --bp-font-body: var(--font-instrument-sans), system-ui, sans-serif;
+  --bp-font-mono: var(--font-azeret-mono), "SF Mono", Menlo, monospace;
+  --mono: var(--bp-font-mono);
+
+  --ease: cubic-bezier(0.22, 0.9, 0.28, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --bullet-accent-stroke: 0.5px;
+  --shell: 1120px;
+  --pad: clamp(18px, 4vw, 40px);
+  --gap: clamp(12px, 1.6vw, 16px);
+  --r-sm: 10px;
+  --r: 14px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent), 0 8px 24px -14px color-mix(in srgb, var(--ink) 12%, transparent);
+  --shadow: 0 2px 6px color-mix(in srgb, var(--ink) 6%, transparent), 0 18px 40px -14px color-mix(in srgb, var(--ink) 16%, transparent);
+  --shadow-lg: 0 10px 30px color-mix(in srgb, var(--ink) 12%, transparent), 0 40px 90px color-mix(in srgb, var(--ink) 18%, transparent);
+  --line: color-mix(in srgb, var(--ink) 9%, transparent);
+
+  position: relative;
+  min-height: 100vh;
+  overflow-x: clip;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--bp-font-body), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* The bloom: two soft blue washes behind the top of the page, drifting
+   very slowly. The hint of warmth the tiles take from the Soft Bloom
+   direction; reduced motion holds it still. */
+.bp::before {
+  content: "";
+  position: absolute;
+  top: -22vh;
+  left: 50%;
+  z-index: 0;
+  width: min(1500px, 150vw);
+  height: 82vh;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    radial-gradient(42% 46% at 28% 32%, var(--accent-soft) 0%, transparent 70%),
+    radial-gradient(38% 42% at 74% 24%, var(--glow) 0%, transparent 70%),
+    radial-gradient(60% 50% at 50% 0%, var(--tint) 0%, transparent 70%);
+  opacity: 0.85;
+  animation: bloom-drift 22s ease-in-out infinite alternate;
+}
+@keyframes bloom-drift {
+  from { transform: translateX(-50%) translateY(0) scale(1); }
+  to { transform: translateX(-48%) translateY(2%) scale(1.04); }
+}
+html[data-theme="dark"] .bp::before { opacity: 0.6; }
+.bp > * { position: relative; z-index: 1; }
+
+/* The animated graph paper (components/glass-tile/PlotGrid.tsx): fixed to the
+   window, drawn over the bloom and under every tile, so it shows in the
+   gutters and on the open page. */
+.bp > .plot-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media print { .bp > .plot-grid { display: none; } }
+
+html[data-theme="dark"] .bp {
+  --paper: #0f1115;
+  --white: #181b22;
+  --ink: #eceef2;
+  --ink-soft: #b5b7bb;
+  --muted: #9c9ea2;
+  --faint: #7e8084;
+  --rule: #2c2e32;
+  --accent: #6a93ff;
+  --blue: #9db9ff;
+  --prose: #d6d8dc;
+  --pill-text: #acaeb2;
+  --on-accent: #eceef2;
+  --tint: #232c41;
+  --accent-soft: #313f64;
+  --accent-fill: #4a67b3;
+  --glow: #232e48;
+  --line: color-mix(in srgb, var(--ink) 11%, transparent);
+}
+
+.bp *, .bp *::before, .bp *::after { box-sizing: border-box; }
+
+.bp h1, .bp h2, .bp h3, .bp h4 { margin: 0; font-weight: 600; letter-spacing: -0.015em; }
+.bp h1 { font-family: var(--bp-font-header), system-ui, sans-serif; }
+.bp h2, .bp h3 { font-family: var(--bp-font-subheader), system-ui, sans-serif; }
+.bp p { margin: 0; }
+.bp a { color: inherit; text-decoration: none; }
+.bp button { font: inherit; color: inherit; }
+.bp img { display: block; max-width: 100%; }
+.bp ::selection { background: color-mix(in srgb, var(--accent) 22%, var(--paper)); color: var(--ink); }
+.bp { accent-color: var(--accent); caret-color: var(--accent); scrollbar-color: var(--faint) transparent; }
+.bp :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.bp-prose a, .bp-table a, .prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: text-decoration-color 0.3s ease;
+}
+.bp-prose a:hover, .bp-table a:hover, .prose a:hover { text-decoration-color: var(--accent); }
+
+/* Body text from the Studio: an empty line starts a new paragraph (Paragraphs.tsx marks each with data-para). */
+p[data-para] + p[data-para] { margin-top: 0.85em; }
+
+/* The small-label face: dates, captions, counts, eyebrows. */
+.mono, .eyebrow, .chip, .stat-label, .tile-label {
+  font-family: var(--mono), monospace;
+  font-feature-settings: "tnum" 1;
+}
+.eyebrow, .tile-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow { color: var(--accent); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ------------------------------------------------------------- layout --- */
+.shell, .bp-shell { max-width: var(--shell); margin: 0 auto; padding-inline: var(--pad); }
+.page { position: relative; padding-bottom: clamp(32px, 5vw, 56px); }
+
+/* Top padding only: the shorthand would wipe .shell's side gutter. */
+.sec { padding-top: clamp(40px, 6vw, 72px); }
+.sec--tight { padding-top: clamp(28px, 4vw, 44px); }
+.sec-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: clamp(16px, 2vw, 24px);
+}
+.sec-title {
+  font-size: clamp(28px, 3.2vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+/* Nothing sits loose on the ground: the graph paper and the pen run behind the
+   whole page, so text needs a tile under it. A heading above a grid of tiles
+   is a tile of its own (.card.sec-head); a section that is one block of
+   content is a single tile holding its heading and body (.card.panel). */
+.card.sec-head { align-items: center; padding: 14px clamp(18px, 2.4vw, 26px); }
+.panel { padding: clamp(20px, 2.8vw, 34px); }
+.panel > .sec-head { margin-bottom: clamp(14px, 1.8vw, 20px); }
+.panel .fact { background: var(--paper); }
+.sec-sub { font-size: 15px; color: var(--muted); max-width: 52ch; }
+.sec-aside { display: flex; align-items: center; gap: 10px; }
+/* A section of several tiles sits in one fainter box, so its heading and its
+   tiles read as one group (the hero bento and the summary stay on their own).
+   The box is --group-fill solid (Site Settings → Layout → Section box opacity).
+   Fills must not add up: a tile inside it takes --tile-fill-grouped, the lower
+   fill that over the box comes out at --tile-fill (worked out in layout.tsx).
+   No backdrop blur here, so the tiles inside still blur the real ground. */
+.sec-group {
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) + var(--gap));
+  background: color-mix(in srgb, var(--white) var(--group-fill, 50%), transparent);
+}
+.sec-group .card, .sec-group .project-empty { background: color-mix(in srgb, var(--white) var(--tile-fill-grouped, 44%), transparent); }
+.sec-group > :last-child { margin-bottom: 0; }
+/* The heading is a band across the top of the box, edge to edge, and the most
+   solid surface on the page (95%) so the section names stand out. Like the
+   tiles, its own fill is lowered (--head-fill-grouped, from layout.tsx) so that
+   over the box it comes out at 95%, not more. Its side padding is the box's
+   plus a tile's, so the title lines up with the text in the tiles below. */
+.sec-group .sec-head {
+  align-items: center;
+  margin: calc(-1 * var(--gap)) calc(-1 * var(--gap)) var(--gap);
+  padding: clamp(14px, 1.8vw, 18px) calc(var(--gap) + clamp(18px, 2.4vw, 26px));
+  border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) + var(--gap) - 1px) calc(var(--r-lg) + var(--gap) - 1px) 0 0;
+  background: color-mix(in srgb, var(--white) var(--head-fill-grouped, 90%), transparent);
+}
+
+/* ---------------------------------------------------------------- nav --- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  padding: 14px var(--pad) 0;
+  pointer-events: none;
+}
+.nav[data-condensed] { padding-top: 8px; }
+.nav-pill {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 6px 8px;
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 66%, transparent);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.4s ease, background-color 0.4s ease, transform 0.4s var(--ease), border-color 0.4s ease;
+}
+.nav[data-condensed] .nav-pill { box-shadow: var(--shadow); background: color-mix(in srgb, var(--white) 84%, transparent); }
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 3px 10px 3px 3px;
+  border-radius: 999px;
+  color: var(--ink);
+}
+.nav-brand .bp-mark { width: 30px; height: 30px; }
+.nav-brand-name {
+  font-family: var(--bp-font-subheader), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.nav-links { display: flex; align-items: center; gap: 2px; padding-inline: 4px; border-left: 1px solid var(--rule); }
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.nav-link:hover, .nav-link.is-active { color: var(--ink); }
+.nav-link-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 999px;
+  background: var(--tint);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.nav-link > span { position: relative; z-index: 1; }
+.nav .bp-theme-toggle { margin-left: 4px; }
+
+/* ------------------------------------------------------ theme toggle --- */
+.bp-theme-toggle {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--tint);
+  cursor: pointer;
+  transition: border-color 0.34s ease, background-color 0.34s ease;
+}
+.bp-theme-toggle:hover { border-color: var(--accent); }
+.bp-theme-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ink) 20%, transparent);
+  transition: transform 0.4s var(--ease), background-color 0.34s ease;
+}
+.bp-theme-toggle[aria-checked="true"] .bp-theme-toggle-thumb { transform: translateX(20px); }
+
+/* ------------------------------------------------------------ buttons --- */
+.btn, .bp-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s ease, border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+.btn:hover, .bp-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); box-shadow: var(--shadow); }
+.btn:active, .bp-btn:active { transform: translateY(0) scale(0.98); }
+.btn svg, .bp-btn svg { flex: none; }
+.btn .bp-arrow, .bp-btn .bp-arrow { transition: transform 0.4s var(--ease); }
+.btn:hover .bp-arrow, .bp-btn:hover .bp-arrow { transform: translateX(4px); }
+.btn--solid, .bp-btn--solid {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 8px 22px -6px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.btn--solid:hover, .bp-btn--solid:hover { background: color-mix(in srgb, var(--accent-fill) 88%, var(--ink)); border-color: transparent; color: var(--on-accent); box-shadow: 0 12px 28px -6px color-mix(in srgb, var(--accent) 50%, transparent); }
+/* The solid button's label is white in both themes. Scoped under .bp so it outranks `.bp a { color: inherit }`,
+   which was handing a linked solid button the page's ink. */
+.bp .btn--solid, .bp .btn--solid:hover { color: #fff; }
+.btn--solid:disabled { cursor: wait; opacity: 0.7; transform: none; }
+.btn--ghost { background: transparent; box-shadow: none; border-color: transparent; }
+.btn--ghost:hover { background: var(--tint); box-shadow: none; }
+.btn--icon { width: 42px; padding: 0; }
+.btn--sm { min-height: 36px; padding: 8px 14px; font-size: 13px; }
+
+@keyframes bp-sheen { from { transform: translateX(-260%); } to { transform: translateX(340%); } }
+.bp-sheen {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 34%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: bp-sheen 4s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+}
+
+.bp-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 14px;
+}
+.bp-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.44s var(--ease);
+}
+.bp-link:hover::after { transform: scaleX(1); transform-origin: left center; }
+.bp-link .bp-arrow { transition: transform 0.42s var(--ease); }
+.bp-link:hover .bp-arrow { transform: translate(3px, -3px); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 999px;
+  background: var(--tint);
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.chip-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
+.chip-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: bp-ring 2.2s ease-out infinite;
+}
+@keyframes bp-ring { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(3.4); opacity: 0; } }
+
+.bp-rule { height: 2px; background: var(--ink); transform-origin: left center; border-radius: 2px; }
+.bp-rule--hair { height: 1px; background: var(--rule); }
+
+/* --------------------------------------------------------------- tile --- */
+/* The one surface everything sits on. Frosted glass: the tile is --tile-fill solid
+   (Site Settings → Layout → Tile opacity), and what shows through, the grid and
+   the pen's glow, is blurred so it never competes with the text. */
+.card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent);
+  backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.4s ease;
+}
+.card--hover:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 28%, var(--line)); }
+
+/* A faint wash of accent follows the cursor across a tile (lib/useSpotlight.ts writes --sx/--sy). */
+.bp-spot { position: relative; }
+.bp-spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--sx, 50%) var(--sy, 50%), color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) { .bp-spot:hover::before { opacity: 1; } }
+
+/* -------------------------------------------------------------- bento --- */
+/* The bento under the nav: the hero tile and the small tiles beside it. */
+.hero { padding-top: clamp(18px, 3vw, 32px); }
+@keyframes tile-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.bento {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--gap);
+}
+.bento > * { min-width: 0; animation: tile-in 0.8s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
+/* A whole page body arriving (project pages): one entrance, no observer, so a page taller than the viewport still shows. */
+.page-in { animation: tile-in 0.7s var(--ease) both; }
+.tile { display: grid; align-content: start; gap: 6px; padding: clamp(18px, 2.2vw, 24px); min-width: 0; }
+.tile-label { display: flex; align-items: center; gap: 8px; }
+.tile-label svg { color: var(--accent); }
+.tile-value { font-size: clamp(18px, 1.7vw, 21px); line-height: 1.25; letter-spacing: -0.015em; }
+.tile-sub { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.tile-arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+  transition: transform 0.4s var(--ease), color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+.card--hover:hover .tile-arrow { transform: translate(2px, -2px); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: var(--tint); }
+a.tile { color: inherit; }
+
+/* A column, so the name and title sit at the top and the meta line and the
+   actions are pushed to the bottom (.hero-meta's auto margin). The tile is as
+   tall as the three tiles beside it, and this fills that height instead of
+   leaving it all under the buttons. */
+.tile-hero { grid-column: span 4; grid-row: span 3; display: flex; flex-direction: column; overflow: hidden; padding: clamp(22px, 3vw, 36px); gap: 0; }
+.tile-now, .tile-where, .tile-edu { grid-column: span 2; }
+/* The three tiles beside the hero set its height, so they are kept compact
+   (tighter padding than a plain tile) while the hero's name and title are set
+   large: the two sides meet in the middle and the hero has no slack to fill. */
+.tile-now, .tile-where, .tile-edu { padding-block: 16px; }
+.tile-value--sm { font-size: clamp(16px, 1.4vw, 18px); }
+.tile-activity { grid-column: 1 / -1; }
+.tile-site, .tile-contact { grid-column: span 3; }
+.tile-site { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); }
+
+/* The hero's own bloom, top right, so the tile reads as the brightest thing on the page. */
+.tile-hero::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -16%;
+  z-index: 0;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-soft), transparent);
+  opacity: 0.75;
+  pointer-events: none;
+}
+.tile-hero > * { position: relative; z-index: 1; }
+/* The relocation notice: a tab set into the tile's top-right corner (the tile
+   clips its outer corner). It is the one element on the page outside the
+   palette, so it carries its own two colours rather than the accent: one pair
+   per tone, picked in Site Settings → Layout → Relocation tab colour
+   (data-tone, amber when left out). */
+.tile-hero > .hero-flag {
+  --flag-bg: #f5a524;
+  --flag-ink: #231500;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px 11px 18px;
+  border-radius: 0 0 0 18px;
+  background: var(--flag-bg);
+  color: var(--flag-ink);
+  font-family: var(--bp-font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+html[data-theme="dark"] .tile-hero > .hero-flag { --flag-bg: #fbbf24; --flag-ink: #231500; }
+.tile-hero > .hero-flag[data-tone="green"] { --flag-bg: #15803d; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="green"] { --flag-bg: #34d399; --flag-ink: #052e1c; }
+.tile-hero > .hero-flag[data-tone="coral"] { --flag-bg: #e5484d; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="coral"] { --flag-bg: #ff8589; --flag-ink: #2b0507; }
+.tile-hero > .hero-flag[data-tone="violet"] { --flag-bg: #7c3aed; --flag-ink: #ffffff; }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="violet"] { --flag-bg: #b79cff; --flag-ink: #1c0b45; }
+.tile-hero > .hero-flag[data-tone="ink"] { --flag-bg: var(--ink); --flag-ink: var(--paper); }
+html[data-theme="dark"] .tile-hero > .hero-flag[data-tone="ink"] { --flag-bg: var(--ink); --flag-ink: var(--paper); }
+.hero-flag .chip-dot, .hero-flag .chip-dot::after { background: var(--flag-ink); }
+.hero-flag + .hero-name { margin-top: 30px; }
+.hero-name {
+  margin-top: clamp(18px, 2.4vw, 28px);
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.hero-role {
+  margin-top: 14px;
+  font-size: clamp(17px, 1.9vw, 24px);
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--accent);
+  /* One line where it fits, so it runs at least as wide as the name; it wraps only on a narrow tile. */
+  text-wrap: pretty;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  /* auto pins this and the actions to the bottom of the tile; the padding keeps a gap when the tile is no taller than its content. */
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.hero-meta > span { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 7px; }
+.hero-meta svg { color: var(--accent); }
+.hero-now-role { color: var(--ink); font-weight: 500; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(20px, 2.4vw, 28px); }
+.hero-error { color: var(--accent); font-size: 13px; align-self: center; }
+
+
+/* ----------------------------------------------------------- activity --- */
+.activity { padding: 18px clamp(16px, 2.4vw, 24px) 16px; overflow: hidden; }
+.activity-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.activity-title { font-size: 18px; letter-spacing: -0.01em; }
+.activity-total { font-size: 11.5px; color: var(--muted); letter-spacing: 0.02em; }
+.activity-scroll { overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding: 4px; }
+.activity-scroll::-webkit-scrollbar { display: none; }
+.activity-svg { display: block; min-width: 720px; width: 100%; height: auto; font-family: var(--mono), monospace; }
+.activity-month { font-size: 10px; fill: var(--muted); }
+.activity-day { font-size: 9px; fill: var(--faint); }
+.activity-cell { fill: var(--c); opacity: 0; transform: scale(0.6); transform-box: fill-box; transform-origin: center; transition: fill 0.3s ease; }
+.activity.is-in .activity-cell { animation: activity-in 0.5s var(--ease) both; animation-delay: calc(var(--i) * 11ms); }
+@keyframes activity-in { to { opacity: 1; transform: scale(1); } }
+.activity-cell:hover { stroke: var(--ink); stroke-width: 1; }
+.activity-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.activity-legend { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono), monospace; font-size: 10.5px; }
+.activity-legend i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+.activity-empty { padding: 32px 0; text-align: center; font-size: 14px; color: var(--muted); }
+.bp {
+  --lv0: color-mix(in srgb, var(--ink) 6%, var(--white));
+  --lv1: var(--accent-soft);
+  --lv2: color-mix(in srgb, var(--accent-fill) 55%, var(--accent-soft));
+  --lv3: var(--accent-fill);
+  --lv4: color-mix(in srgb, var(--accent-fill) 60%, var(--ink));
+}
+html[data-theme="dark"] .bp {
+  --lv0: color-mix(in srgb, var(--ink) 7%, var(--white));
+  --lv1: #1d2a4d;
+  --lv2: #27408f;
+  --lv3: var(--accent-fill);
+  --lv4: #6a93ff;
+}
+
+/* ------------------------------------------------------------ summary --- */
+.summary-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.prose, .bp-prose {
+  max-width: 68ch;
+  font-size: clamp(16.5px, 1.3vw, 18px);
+  line-height: 1.7;
+  color: var(--prose);
+  text-wrap: pretty;
+}
+.prose + .prose, .bp-prose + .bp-prose, p.prose[data-para] + p.prose[data-para] { margin-top: 18px; }
+.facts { display: grid; gap: 10px; margin: 0; }
+.fact {
+  display: grid;
+  gap: 3px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.fact-label { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.fact-value { margin: 0; font-size: 15px; color: var(--ink); font-weight: 500; }
+.fact-value a { color: var(--accent); }
+
+/* --------------------------------------------------------- experience --- */
+.roles { display: grid; gap: 0; padding: 0 clamp(18px, 2.6vw, 32px); }
+.role {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 20px 28px;
+  padding: clamp(22px, 2.6vw, 30px) 0;
+  border-top: 1px solid var(--rule);
+}
+.role:first-child { border-top: 0; }
+.role-when { position: relative; padding-top: 4px; }
+.role-dates {
+  font-family: var(--mono), monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.role-dates b { display: block; font-weight: 500; color: var(--ink); }
+.role-rail {
+  position: absolute;
+  right: -14px;
+  top: 10px;
+  bottom: calc(-1 * clamp(22px, 2.6vw, 30px));
+  width: 1px;
+  background: var(--rule);
+}
+.role-dot {
+  position: absolute;
+  right: -18px;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--accent);
+  transition: background-color 0.3s ease, transform 0.3s var(--ease);
+}
+.role:hover .role-dot { background: var(--accent); transform: scale(1.2); }
+.role-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; }
+.role h3 { font-size: clamp(20px, 1.9vw, 24px); line-height: 1.2; letter-spacing: -0.02em; }
+.role-org { font-size: 15px; color: var(--accent); font-weight: 500; margin-top: 4px; }
+.role-org span { color: var(--muted); font-weight: 400; }
+.role-context { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.role-bullets {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 9px;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+.role-bullets li::marker { color: var(--accent); }
+.role-bullets li { transition: color 0.28s var(--ease), transform 0.28s var(--ease); }
+.role-bullets li:hover, .role-bullets li:focus-within { color: var(--ink); transform: translateX(3px); }
+.bp-bullet-content { display: inline; }
+.bp-bullet-emphasis {
+  color: inherit;
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: 0;
+  transition: color 0.28s var(--ease), -webkit-text-stroke-color 0.28s var(--ease), -webkit-text-stroke-width 0.28s var(--ease);
+}
+.role-bullets li:hover .bp-bullet-emphasis, .role-bullets li:focus-within .bp-bullet-emphasis,
+.pbody-bullets li:hover .pj-bullet-emphasis, .pbody-bullets li:focus-within .pj-bullet-emphasis {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+  -webkit-text-stroke-width: var(--bullet-accent-stroke);
+}
+/* The Read more pill at the end of a bullet (bullet-link.css): a tinted chip on the tiles, not a solid block. */
+.bp .bp-bullet-link {
+  border-radius: 999px;
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  background: var(--tint);
+  color: var(--accent);
+  font-family: var(--mono), monospace;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+}
+.bp .bp-bullet-link:hover, .bp .bp-bullet-link:focus-visible { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
+.role-more {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--tint);
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s var(--ease);
+}
+.role-more:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
+.role-more svg { transition: transform 0.3s var(--ease); }
+.role-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+/* The older roles wait in .roles-rest until the button under the tile opens
+   them. The button is the one large control in the section: full width,
+   accent-tinted, well above the small "Show N more" pills inside the roles. */
+.bp .roles-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  width: 100%;
+  margin-top: var(--gap);
+  padding: clamp(16px, 2vw, 20px) 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--tint) 92%, transparent);
+  color: var(--accent);
+  font-family: var(--bp-font-subheader), system-ui, sans-serif;
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.4s ease, background-color 0.4s ease;
+}
+.roles-more:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--accent); background: var(--tint); }
+.roles-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.bp .roles-more-count { font-family: var(--mono), monospace; font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.roles-more svg { transition: transform 0.4s var(--ease); }
+.roles-more:hover svg { transform: translateY(2px); }
+.roles-more[aria-expanded="true"] svg, .roles-more[aria-expanded="true"]:hover svg { transform: rotate(180deg); }
+
+/* ----------------------------------------------------------- projects --- */
+
+/* Tiles are a third of the row (half under 980px, full under 760px) in a
+   centred, wrapping row, so a short last row, or a filter that leaves a
+   single project, sits in the middle under the heading instead of the left. */
+.project-grid {
+  --cols: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+.project-grid > * { flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols)); min-width: 0; }
+.project-tile { padding: 10px; }
+.project-card { display: flex; flex-direction: column; cursor: pointer; text-align: left; padding: 0; width: 100%; color: inherit; }
+.project-card--site { border-color: color-mix(in srgb, var(--accent) 34%, var(--line)); }
+.project-card-cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: calc(var(--r-lg) - 10px);
+  background: var(--tint);
+}
+.project-card-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--ease); }
+.project-card:hover .project-card-cover img { transform: scale(1.04); }
+.project-card-cover--contain img { object-fit: contain; padding: 14px; }
+.project-card-typo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(70% 70% at 70% 20%, var(--accent-soft), transparent 70%), var(--tint);
+}
+.project-card-typo .bp-mark { width: 54px; height: 54px; opacity: 0.9; }
+.project-card-tags { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
+.project-card-type {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 84%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  font-family: var(--mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* "View Fullscreen": over the cover's bottom-right corner (clear of the type tag), shown on hover or keyboard
+   focus; always shown on touch. The tile is a size container so the link can find the 16:10 cover's foot. */
+.project-tile { position: relative; container-type: inline-size; }
+.project-card-full {
+  position: absolute;
+  top: calc(10px + 100cqw * 0.625 - 36px);
+  right: 20px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 84%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  font-family: var(--mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.project-tile:hover .project-card-full,
+.project-card-full:focus-visible { opacity: 1; transform: none; }
+.project-card-full:hover { background: var(--accent-fill); color: var(--on-accent); border-color: transparent; }
+@media (hover: none) { .project-card-full { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .project-card-full { transform: none; } }
+.project-card-badge { background: var(--accent-fill); color: var(--on-accent); border-color: transparent; }
+.project-card-body { display: grid; gap: 6px; padding: 14px 10px 8px; flex: 1; }
+.project-card h3 { font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; }
+.project-card-summary {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.project-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.project-card-open { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); transition: transform 0.4s var(--ease); }
+.project-card:hover .project-card-open { transform: translateX(3px); }
+.project-empty { padding: 40px; text-align: center; color: var(--muted); border: 1px dashed var(--rule); border-radius: var(--r-lg); background: color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent); backdrop-filter: blur(var(--tile-blur, 1.5px)); }
+.project-grid-foot { display: flex; justify-content: flex-end; margin-top: 18px; }
+
+/* ------------------------------------------------------------- dialog --- */
+/* The tile a project opens into; it morphs out of its card (a shared layoutId). */
+.dlg-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  backdrop-filter: blur(6px);
+}
+.dlg-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 121;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 2vw, 28px);
+  pointer-events: none;
+}
+.dlg {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1040px, 100%);
+  max-height: min(92vh, 100%);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.dlg:focus-visible { outline: none; }
+.dlg-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 10px 18px;
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--white) 70%, transparent);
+  backdrop-filter: blur(10px);
+}
+.dlg-bar-title { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.dlg-bar-title b { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dlg-bar-title span { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.dlg-bar-actions { display: flex; align-items: center; gap: 6px; flex: none; }
+.dlg-body { overflow-y: auto; overscroll-behavior: contain; padding: clamp(18px, 3vw, 36px); scrollbar-gutter: stable; }
+
+/* ------------------------------------------------------- project body --- */
+/* One auto column would grow to its widest child (a gallery, the tracker table); pin it to the box. */
+.pbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(22px, 3vw, 32px); }
+.pbody > * { min-width: 0; }
+.pbody-head { display: grid; gap: 10px; }
+.pbody-title { font-size: clamp(32px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.03em; }
+.pbody-tagline { font-size: clamp(17px, 1.5vw, 20px); color: var(--ink-soft); max-width: 60ch; text-wrap: balance; }
+.pbody-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 4px; }
+.pbody-meta .pj-dates { margin-top: 0; }
+.pbody-count { font-family: var(--mono), monospace; font-size: 11.5px; letter-spacing: 0.04em; color: var(--muted); }
+.pbody-text { display: grid; gap: 16px; max-width: 76ch; }
+.pbody-summary { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--prose); }
+.pbody-bullets { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 15.5px; line-height: 1.62; color: var(--ink-soft); }
+.pbody-bullets li::marker { color: var(--accent); }
+.pbody-bullets li { transition: color 0.28s var(--ease); }
+.pbody-bullets li:hover { color: var(--ink); }
+.pbody-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.pbody-link-note { font-family: var(--mono), monospace; font-size: 11px; color: var(--muted); }
+.pbody-section { padding-top: 8px; }
+.pbody-tracker { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.pbody-tracker > * { min-width: 0; }
+/* The resume demo's connector label: a vertical layout box, so it fits its 56px column instead of overflowing it rotated. */
+.bp .dm-resume-flow-label { writing-mode: vertical-rl; transform: rotate(180deg); }
+.pbody-tracker h3 { font-size: 24px; }
+.pbody-tracker-note { font-size: 14px; color: var(--muted); }
+.page-back {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); margin-bottom: 14px;
+  padding: 7px 14px 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 84%, transparent); backdrop-filter: blur(10px);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.page-back:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.page-nav { display: flex; justify-content: space-between; gap: var(--gap); margin-top: var(--gap); }
+.page-nav a { display: grid; gap: 3px; max-width: calc(50% - var(--gap) / 2); padding: 14px 20px; }
+.page-nav a:last-child { text-align: right; }
+.page-nav small { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.page-nav b { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+
+/* Softening the kept project stylesheets to the tiles' radii. */
+.bp .pj-shot-btn, .bp .pj-shot, .bp .pj-shot-compare, .bp .pj-post-btn, .bp .pj-shot-btn img { border-radius: var(--r); }
+.bp .pj-case-study { border-radius: var(--r-lg); }
+.bp .pj-toggle { border-radius: 999px; }
+.bp .pj-tag, .bp .pj-dates { border-radius: 999px; }
+.bp .pj-code { border-radius: var(--r-sm); }
+.bp .ft-stat, .bp .ft-pillar, .bp .ft-backend-item, .bp .ft-shot, .bp .wt-main, .bp .wt-stop, .bp .pj-proof-assets figure, .bp .ft-demo { border-radius: var(--r); }
+
+/* -------------------------------------------------------------- stack --- */
+/* Skills and Tools (SkillPicker.tsx): one bar of mono tabs, each group with
+   its own colour (--grp-1 … --grp-7, set per tab and per pill as --grp), the
+   picked tab underlined in it, and one tile of the group's list under it.
+   Nothing is picked at first, so the panel holds a quiet hint instead. */
+.bp {
+  --grp-1: #0b7fb0; --grp-2: #b26a0a; --grp-3: #7247d1; --grp-4: #0c8a7f;
+  --grp-5: #c94f22; --grp-6: #3f8a2a; --grp-7: #b8367a;
+}
+html[data-theme="dark"] .bp {
+  --grp-1: #5cc4f0; --grp-2: #f0b24f; --grp-3: #b39bff; --grp-4: #4fd1c5;
+  --grp-5: #ff8d62; --grp-6: #86d46f; --grp-7: #f27ab8;
+}
+/* One tile: the solid header bar of tabs on top (a step darker than the tile
+   in light mode, a step lighter in dark), the pills or the hint under it. The
+   tabs wrap rather than scroll, so every group is always in sight. */
+.skills-box { padding: 0; }
+.skills-tabs {
+  --bar-ink: var(--ink);
+  --bar-muted: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 0;
+  padding: 7px clamp(8px, 1.4vw, 14px);
+  border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--r-lg) - 1px) calc(var(--r-lg) - 1px) 0 0;
+  background: color-mix(in srgb, var(--ink) 7%, var(--white));
+}
+.bp .skills-tab {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bar-muted);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.bp .skills-tab:hover, .bp .skills-tab.is-active { color: var(--bar-ink); }
+.bp .skills-tab.is-active { font-weight: 600; }
+.skills-tab:focus-visible { outline: 2px solid var(--grp); outline-offset: 1px; }
+.skills-tab > :not(.skills-tab-mark) { position: relative; }
+/* On /projects the bar has five tabs, not eight, so its words run larger. */
+.bp .project-box .skills-tab { font-size: 13px; gap: 8px; padding: 10px 12px; }
+.project-box .skills-tab-mark { left: 12px; right: 12px; }
+.project-box .skills-tab-dot { width: 8px; height: 8px; }
+.skills-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grp); flex: none; }
+.skills-tab--all .skills-tab-dot { background: none; border: 1.5px solid currentColor; }
+/* The picked tab: its name in full ink (black in light mode, white in dark)
+   over a line in its group's colour, which slides between tabs. */
+.skills-tab-mark {
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grp);
+}
+.skills-panel { overflow: visible; }
+.skills-panel.is-moving { overflow: hidden; }
+.skills-body { padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px); }
+/* The picked group as a plain list: three columns (two under 860px, one under
+   560px), every row left-aligned on a hairline, a short bar in the group's
+   colour before the name. A grid flowing by column (rows from SkillPicker's
+   --rows-3 / --rows-2) fills top to bottom; CSS multi-column was dropped
+   because Chrome stopped painting rows under an open hover card. */
+.skills-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows-3, 1), auto);
+  column-gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .skills-list { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(var(--rows-2, 1), auto); }
+}
+@media (max-width: 560px) {
+  .skills-list { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; }
+}
+.skills-list > li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.skills-mark { flex: none; width: 3px; height: 14px; border-radius: 2px; background: var(--grp); }
+.skills-item { font-size: 14px; line-height: 1.35; color: var(--ink-soft); }
+/* A linked skill keeps LinkedSkill (link icon, Read more, hover card) but
+   drops the pill: no border, fill, lift, or corner marks, just the name in ink. */
+.bp .skills-list .bp-pill--linked {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+  box-shadow: none;
+}
+.bp .skills-list .bp-pill--linked:is(:hover, :focus-within, [data-hover]) { transform: none; box-shadow: none; margin-right: 0; }
+.bp .skills-list .bp-pill--linked::after { display: none; }
+.bp .skills-list .bp-pill--linked { flex: 0 1 auto; min-width: 0; }
+.bp .skills-list .bp-pill-more { flex: none; }
+.skills-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  justify-content: center;
+  text-align: center;
+  /* About two and a half lines of air above and below, so the closed section holds some room. */
+  padding: clamp(40px, 5vw, 52px) clamp(18px, 2.4vw, 26px);
+  font-family: var(--mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+/* The "pick one" cue, on while .skills-box[data-cue] (nothing picked, on screen):
+   the double chevron climbs toward the bar, lower stroke then upper, and a
+   wave runs along the tab dots, each swelling in its own colour, then rests. */
+.skills-hint-arrow { flex: none; color: var(--accent); }
+.skills-hint-arrow path { opacity: 0.35; }
+.skills-box[data-cue] .skills-hint-arrow path { animation: skills-climb 2.2s var(--ease) infinite; }
+.skills-box[data-cue] .skills-hint-arrow path:first-child { animation-delay: 0.16s; }
+@keyframes skills-climb {
+  0% { opacity: 0.35; transform: translateY(3px); }
+  28% { opacity: 1; transform: translateY(-1px); }
+  60%, 100% { opacity: 0.35; transform: translateY(-3px); }
+}
+.skills-box[data-cue] .skills-tab-dot { animation: skills-dot 4.4s var(--ease) infinite; animation-delay: calc(0.5s + var(--i, 0) * 0.11s); }
+@keyframes skills-dot {
+  0%, 20%, 100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+  8% { transform: scale(1.6); box-shadow: 0 0 0 4px color-mix(in srgb, var(--grp) 22%, transparent); }
+}
+.skills-print { display: none; }
+.bp-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.bp .bp-pill {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--pill-text);
+  transition: transform 0.34s var(--ease), border-color 0.34s ease, color 0.34s ease, background-color 0.34s ease;
+}
+.bp .bp-pill:not(.bp-pill--linked):hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--tint); transform: translateY(-2px); }
+
+/* ---------------------------------------------------------- education --- */
+.edu-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr); gap: var(--gap); align-items: start; }
+.degree { padding: 22px 22px 24px; display: grid; gap: 8px; }
+.degree-school { font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; }
+.degree-name { font-size: 15px; color: var(--ink-soft); }
+.degree-when { font-family: var(--mono), monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.certs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.cert { display: grid; gap: 4px; padding: 14px 16px; border-radius: var(--r); }
+.cert h4 { font-family: var(--bp-font-subheader), system-ui, sans-serif; font-size: 16px; line-height: 1.25; letter-spacing: -0.01em; }
+.cert-issuer { font-size: 13.5px; color: var(--ink-soft); }
+.cert-date { font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.cert .bp-link { margin-top: 6px; font-size: 13px; justify-self: end; }
+
+/* ------------------------------------------------------------ contact --- */
+.contact-card { overflow: hidden; }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+.contact-copy { padding: clamp(24px, 3.4vw, 40px); display: grid; align-content: start; gap: 14px; background: var(--tint); border-right: 1px solid var(--line); }
+.contact-copy h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.05; letter-spacing: -0.03em; }
+.contact-tagline { font-size: 17px; font-weight: 500; color: var(--ink-soft); }
+.contact-copy .prose { font-size: 15.5px; }
+.contact-ways { display: grid; gap: 8px; margin-top: 8px; }
+.contact-way { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink); padding: 10px 12px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--white); transition: border-color 0.3s ease, transform 0.3s var(--ease); }
+.contact-way:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateX(3px); }
+.contact-way svg { color: var(--accent); flex: none; }
+.contact-way small { margin-left: auto; font-family: var(--mono), monospace; font-size: 10.5px; letter-spacing: 0.04em; color: var(--muted); }
+.form { padding: clamp(24px, 3.4vw, 40px); display: grid; gap: 14px; align-content: start; }
+.form h3 { font-size: 20px; letter-spacing: -0.015em; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 12.5px; font-weight: 500; color: var(--muted); }
+.field input, .field textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.field textarea { min-height: 150px; resize: vertical; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
+.field--trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-foot { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.form-note { font-size: 13.5px; color: var(--muted); }
+.form-note[data-tone="ok"] { color: var(--accent); }
+.form-note[data-tone="error"] { color: #c0392b; }
+/* contact.json form.comingSoon: the form shows dimmed under a label. */
+.form-soon { position: relative; display: grid; }
+.form-soon > .form { opacity: 0.3; user-select: none; pointer-events: none; }
+.form-soon-label { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+.soon { --seg: 72px; display: flex; align-items: center; gap: 14px; width: min(78%, 360px); container-type: inline-size; }
+.soon-text { font: 500 12px var(--mono), monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+/* Each hairline is a track. Both segments move in the label's own coordinates
+   (cqw of .soon): the left one is anchored to the left edge, the right one to
+   the right edge, with identical timing, so one segment appears to travel the
+   whole width at one speed and simply pass behind the text. */
+.soon-line { position: relative; flex: 1; height: 1px; overflow: hidden; background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.soon-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--seg);
+  background: linear-gradient(90deg, transparent, var(--accent) 35%, var(--accent) 65%, transparent);
+  transform: translateX(calc(-1 * var(--seg)));
+  animation: soon-sweep-l 2.4s infinite;
+}
+.soon-line + .soon-text + .soon-line::after {
+  left: auto;
+  right: 0;
+  transform: translateX(-100cqw);
+  animation-name: soon-sweep-r;
+}
+@keyframes soon-sweep-l {
+  0% { transform: translateX(calc(-1 * var(--seg))); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  82%, 100% { transform: translateX(100cqw); }
+}
+@keyframes soon-sweep-r {
+  0% { transform: translateX(-100cqw); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  82%, 100% { transform: translateX(var(--seg)); }
+}
+.form-soon:hover .soon-line::after { animation-play-state: paused; }
+
+/* ------------------------------------------------------------- footer --- */
+.footer { margin-top: clamp(40px, 6vw, 72px); }
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  padding: clamp(18px, 2.4vw, 26px);
+}
+.footer-mark { display: flex; align-items: center; gap: 16px; }
+.footer-mark .bp-mark { width: 44px; height: 44px; flex: none; }
+.footer-note { font-size: 15px; line-height: 1.55; color: var(--muted); }
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 0;
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.footer-meta > div { display: flex; align-items: center; gap: 8px; }
+.footer-meta dt { text-transform: uppercase; letter-spacing: 0.1em; color: var(--faint); }
+.footer-meta dd { margin: 0; color: var(--ink-soft); }
+.footer-meta dd a { color: var(--accent); }
+.bp-outro-lead { font-size: clamp(20px, 2.2vw, 26px); font-weight: 500; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink-soft); }
+.outro { display: grid; gap: 8px; max-width: 60ch; }
+.outro p:not(.bp-outro-lead) { font-size: 15px; color: var(--muted); }
+
+/* ------------------------------------------------------------- tables --- */
+.bp-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--white); }
+.bp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.bp-table th {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--tint);
+  font-family: var(--mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.bp-table td { padding: 11px 14px; border-bottom: 1px solid var(--rule); color: var(--ink-soft); vertical-align: top; }
+.bp-table tbody tr:last-child td { border-bottom: 0; }
+.bp-table tbody tr { transition: background 0.3s ease; }
+.bp-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+.bp-table a { display: inline-flex; align-items: center; gap: 5px; }
+.bp-table tr.is-with-site td { color: var(--ink); }
+.bp-table tr.is-before-site td { color: var(--faint); }
+.bp-table-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+/* The status key is also the table filter: a segmented pill, one pressed button. */
+.bp-table-filter { gap: 4px; padding: 4px; }
+.bp-table-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.bp-table-filter-btn:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); color: var(--ink); }
+.bp-table-filter-btn[aria-pressed="true"] { background: var(--tint); color: var(--accent); }
+.bp-table-filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bp-table-filter-count { font-family: var(--mono), monospace; font-size: 11px; color: var(--muted); }
+.bp-table-filter-btn[aria-pressed="true"] .bp-table-filter-count { color: inherit; }
+.bp-table--single-line th,.bp-table--single-line td { white-space: nowrap; padding-inline: 12px; }
+.bp-gantt-wrap { padding: 18px; border: 1px solid var(--line); border-radius: var(--r); background: var(--white); }
+.bp-gantt { height: 50vh; min-height: 220px; overflow: auto; scrollbar-gutter: stable; }
+.bp-gantt svg { display: block; }
+.bp-gantt-error { padding: 16px 18px; border: 1px solid var(--accent); border-radius: var(--r); background: var(--tint); color: var(--accent); font-size: 15px; line-height: 1.6; }
+
+/* -------------------------------------------------------------- marks --- */
+@keyframes bp-draw {
+  0% { stroke-dashoffset: var(--len); animation-timing-function: var(--ease); }
+  49.3% { stroke-dashoffset: 0; animation-timing-function: linear; }
+  66.4% { stroke-dashoffset: 0; animation-timing-function: linear; }
+  99.3% { stroke-dashoffset: var(--len); animation-timing-function: linear; }
+  100% { stroke-dashoffset: var(--len); }
+}
+@keyframes bp-draw-in { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+@keyframes bp-chase { to { stroke-dashoffset: -116; } }
+@keyframes bp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.bp-mark { display: block; overflow: visible; }
+.bp-mark--animated [data-draw] { stroke-dasharray: var(--len); animation: bp-draw 7.3s infinite; animation-delay: var(--delay, 0s); }
+.bp-mark--animated [data-chase] { stroke-dasharray: 29 87; animation: bp-chase 1.8s linear infinite; }
+.bp-mark--float { animation: bp-float 5s ease-in-out infinite; }
+
+/* ------------------------------------------------- floating controls --- */
+.bp-top, .bp-studio-link {
+  position: fixed;
+  bottom: clamp(14px, 2vw, 24px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  font-family: var(--mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s ease;
+}
+.bp-top { left: clamp(14px, 2vw, 24px); opacity: 0; transform: translateY(10px); pointer-events: none; }
+.bp-top.is-shown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.bp-top:hover, .bp-studio-link:hover { border-color: var(--accent); }
+.bp-studio-link { right: clamp(14px, 2vw, 24px); text-decoration: none; }
+.bp-studio-link svg { color: var(--accent); flex: none; }
+
+/* ------------------------------------------------------- responsive --- */
+@media (max-width: 980px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tile-hero { grid-column: 1 / -1; grid-row: auto; }
+  .tile-now, .tile-where, .tile-edu, .tile-site, .tile-contact { grid-column: span 1; }
+  .tile-edu { grid-column: 1 / -1; }
+  .project-grid { --cols: 2; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .edu-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .bento { grid-template-columns: 1fr; }
+  .tile-now, .tile-where, .tile-edu, .tile-site, .tile-contact { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .nav { padding-inline: 10px; }
+  .nav-brand-name { display: none; }
+  .nav-link { padding: 8px 11px; font-size: 13.5px; }
+  .role { grid-template-columns: 1fr; gap: 8px; }
+  .role-rail, .role-dot { display: none; }
+  .role-when { padding-top: 0; }
+  .role-dates b { display: inline; }
+  .role-dates b::after { content: " · "; color: var(--muted); font-weight: 400; }
+  .certs { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-copy { border-right: 0; border-bottom: 1px solid var(--line); }
+  .form-row { grid-template-columns: 1fr; }
+  .project-grid { --cols: 1; }
+  .dlg-wrap { padding: 0; align-items: end; }
+  .dlg { max-height: 96vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+  .footer-meta { flex-direction: column; gap: 6px; }
+}
+
+/* The home page prints as the document it imitates: ink on paper, no chrome. */
+@media print {
+  .bp { background: #fff !important; color: #000 !important; }
+  .bp::before, .nav, .bp-top, .bp-studio-link, .hero-actions, .bp-sheen, .activity, .tile-arrow { display: none !important; }
+  .card { box-shadow: none; border-color: #bbb; background: var(--white); backdrop-filter: none; }
+  .sec-group { padding: 0; border: 0; background: none; }
+  .sec-group .card { background: var(--white); }
+  .roles-rest[hidden] { display: block !important; }
+  .bp .roles-more { display: none; }
+  .sec-group .sec-head { margin: 0 0 12px; padding: 0; border: 0; background: none; }
+  .role, .cert, .degree { break-inside: avoid; }
+  .skills > .skills-box { display: none !important; }
+  .project-box .skills-tabs { display: none !important; }
+  .skills-print { display: grid; }
+  .skills-print > li { padding: 3px 0; }
+  .bp-bullet-link { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp, .bp *, .bp *::before, .bp *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .bp-mark--animated [data-draw] { stroke-dashoffset: 0 !important; }
+  .bp-mark--animated [data-chase] { stroke-dasharray: none !important; }
+  .activity-cell { opacity: 1; transform: none; }
+  .soon-line::after { display: none; }
+  .skills-hint-arrow path { opacity: 1; }
+}

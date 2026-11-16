@@ -1,451 +1,575 @@
 ---
-name: Blueprint Press
-description: A resume set on paper with ink, one accent, hairline rules, and a fixed blueprint grid showing through the page. Editorial serif type, square hairline cards, no labels above headings, and one easing curve shared by every transition.
+name: Glass Tile
+description: Everything is a tile. White rounded tiles on a pale grey-blue ground under a floating glass nav, one cobalt accent for links, fills and active states, a soft blue bloom behind the top of the page, one grotesque for headings and body with a wide monospace for small labels, and a project tile that morphs into its dialog. Dark mode is the same tiles with the lights down, where every blue fill cuts deeper rather than brighter.
 colors:
   # The live palette is a Studio-selected preset (data/header.json → theme.paletteId, seeds in lib/palettes.ts).
-  # Twelve roles per mode; the six secondary tones are a fixed tint ramp from ink toward paper (lib/palette.ts:
-  # prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87) and on-accent is whichever of
-  # paper or ink reads better on the accent. Values below are the ACTIVE preset, "Electric".
-  paper: "#ffffff"
-  white: "#f4f4f4"
-  ink: "#171a20"
-  prose: "#2e3136"
-  ink-soft: "#515358"
-  pill-text: "#5a5c61"
-  muted: "#6b6c70"
-  faint: "#8b8d90"
-  rule: "#e1e1e2"
-  accent: "#3e6ae1"
-  blue: "#3e6ae1"
-  on-accent: "#ffffff"
-  paper-dark: "#000000"
-  white-dark: "#141414"
-  ink-dark: "#ffffff"
-  prose-dark: "#e6e6e6"
-  ink-soft-dark: "#bfbfbf"
-  pill-text-dark: "#b5b5b5"
-  muted-dark: "#a3a3a3"
-  faint-dark: "#808080"
-  rule-dark: "#212121"
-  accent-dark: "#3e6ae1"
-  blue-dark: "#3e6ae1"
-  on-accent-dark: "#ffffff"
-  # Two semantic colors outside the ramp: the timeline's insertion green (paired with the accent for deletions)
-  # and the lightbox scrim.
+  # Sixteen roles per mode: six secondary tones are a fixed tint ramp from ink toward paper (lib/palette.ts:
+  # prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87); four surfaces come from the
+  # accent (tint, accent-soft, accent-fill, glow); on-accent is whichever of paper or ink reads better on the fill.
+  # Values below are the ACTIVE preset, "Glass Tile" (added 2026-11-09), as the fallbacks in app/(site)/glass-tile.css.
+  paper: "#f4f5f8"
+  white: "#ffffff"
+  ink: "#111318"
+  prose: "#282a2e"
+  ink-soft: "#4a4c50"
+  pill-text: "#535559"
+  muted: "#636469"
+  faint: "#838488"
+  rule: "#d6d8db"
+  accent: "#2457e6"
+  blue: "#173ea8"
+  tint: "#edf2fd"
+  accent-soft: "#cfdafa"
+  accent-fill: "#2457e6"
+  glow: "#d3dcf5"
+  on-accent: "#f4f5f8"
+  paper-dark: "#0f1115"
+  white-dark: "#181b22"
+  ink-dark: "#eceef2"
+  prose-dark: "#d6d8dc"
+  ink-soft-dark: "#b5b7bb"
+  pill-text-dark: "#acaeb2"
+  muted-dark: "#9c9ea2"
+  faint-dark: "#7e8084"
+  rule-dark: "#2c2e32"
+  accent-dark: "#6a93ff"
+  blue-dark: "#9db9ff"
+  tint-dark: "#232c41"
+  accent-soft-dark: "#313f64"
+  accent-fill-dark: "#4a67b3"
+  glow-dark: "#232e48"
+  on-accent-dark: "#eceef2"
+  # Tile and control borders use --line: ink at 9% (light) / 11% (dark), so they read on both paper and white.
+  # The contribution calendar's five steps, from no activity to the most (glass-tile.css --lv0…--lv4, sRGB mixes).
+  level-0: "#f1f1f1"
+  level-1: "#cfdafa"
+  level-2: "#7192ef"
+  level-3: "#2457e6"
+  level-4: "#1c3c94"
+  level-0-dark: "#272a31"
+  level-1-dark: "#1d2a4d"
+  level-2-dark: "#27408f"
+  level-3-dark: "#4a67b3"
+  level-4-dark: "#6a93ff"
+  # Semantic colors outside the ramp: the timeline's insertion green (paired with the accent for deletions),
+  # the lightbox scrim (portalled outside .bp, written as a literal) and the form's error note.
   insertion: "#2e7d4f"
   insertion-dark: "#6cc48e"
   scrim: "rgba(8, 16, 26, 0.93)"
-  # The hand-tuned "Default" preset is the no-JS fallback written literally in blueprint.css.
+  error: "#c0392b"
+  # The hand-tuned "Default" preset (Blueprint Press's original paper and ink, red accent) stays in the list; its
+  # surfaces are derived from its seeds the same way. "Blue Sheet" (2026-11-08) also stays as a preset.
   fallback-paper: "#fbfbf9"
-  fallback-white: "#ffffff"
   fallback-ink: "#0b1a2b"
-  fallback-prose: "#26333f"
-  fallback-ink-soft: "#46545f"
-  fallback-pill-text: "#4a5c6b"
-  fallback-muted: "#616b75"
-  fallback-faint: "#838b92"
-  fallback-rule: "#d9dee3"
   fallback-accent: "#e3342f"
-  fallback-blue: "#2f86c4"
-  fallback-on-accent: "#fbfbf9"
   fallback-paper-dark: "#0d1b2a"
-  fallback-white-dark: "#142a3d"
   fallback-ink-dark: "#eef3f7"
-  fallback-prose-dark: "#d7e0e8"
-  fallback-ink-soft-dark: "#b7c4d1"
-  fallback-pill-text-dark: "#a9b8c5"
-  fallback-muted-dark: "#9da5ad"
-  fallback-faint-dark: "#7e8791"
-  fallback-rule-dark: "#24384a"
   fallback-accent-dark: "#ff6b62"
-  fallback-blue-dark: "#5aa9e6"
-  fallback-on-accent-dark: "#0d1b2a"
 typography:
   display:
-    fontFamily: "Instrument Serif, Iowan Old Style, Georgia, serif"
-    fontSize: "clamp(58px, 12vw, 152px)"
-    fontWeight: 400
-    lineHeight: 0.86
-    letterSpacing: "-0.038em"
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(38px, 5.4vw, 62px)"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.035em"
   headline:
-    fontFamily: "Instrument Serif, Iowan Old Style, Georgia, serif"
-    fontSize: "clamp(48px, 9vw, 116px)"
-    fontWeight: 400
-    lineHeight: 0.9
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(32px, 4vw, 52px)"
+    fontWeight: 600
+    lineHeight: 1.02
     letterSpacing: "-0.03em"
-  tagline:
-    fontFamily: "Instrument Serif, Iowan Old Style, Georgia, serif"
-    fontSize: "clamp(23px, 3vw, 33px)"
-    fontWeight: 400
-    lineHeight: 1.22
-    letterSpacing: "0"
-    fontStyle: "italic"
-  title:
-    fontFamily: "Instrument Serif, Iowan Old Style, Georgia, serif"
+  section:
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
     fontSize: "clamp(28px, 3.2vw, 38px)"
-    fontWeight: 400
-    lineHeight: 1.12
-    letterSpacing: "-0.012em"
-  subtitle:
-    fontFamily: "Instrument Serif, Iowan Old Style, Georgia, serif"
-    fontSize: "21px"
-    fontWeight: 400
+    fontWeight: 600
+    lineHeight: 1.08
+    letterSpacing: "-0.025em"
+  tagline:
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(17px, 1.7vw, 21px)"
+    fontWeight: 500
+    lineHeight: 1.35
+    letterSpacing: "0"
+  title:
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(20px, 1.9vw, 24px)"
+    fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: "-0.01em"
+    letterSpacing: "-0.02em"
+  tile-value:
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(18px, 1.7vw, 21px)"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.015em"
+  subtitle:
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "18px"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "-0.015em"
   prose:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "clamp(18px, 1.55vw, 22px)"
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "clamp(16.5px, 1.3vw, 18px)"
     fontWeight: 400
-    lineHeight: 1.68
+    lineHeight: 1.7
     letterSpacing: "0"
   body:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "17px"
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "15.5px"
     fontWeight: 400
-    lineHeight: 1.66
+    lineHeight: 1.62
     letterSpacing: "0"
   ui:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "15px"
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "14px"
     fontWeight: 500
-    lineHeight: 1.4
+    lineHeight: 1
     letterSpacing: "0"
   small:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "14px"
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: "0"
-  index:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "16px"
+    fontFamily: "Instrument Sans, system-ui, sans-serif"
+    fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.3
-    letterSpacing: "0.26em"
-    textTransform: "uppercase"
+    letterSpacing: "0"
   label:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "13px"
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: "0.12em"
-    textTransform: "uppercase"
-  caption:
-    fontFamily: "Spectral, Georgia, serif"
-    fontSize: "12px"
+    fontFamily: "Azeret Mono, SF Mono, Menlo, monospace"
+    fontSize: "11px"
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: "0.1em"
     textTransform: "uppercase"
+  mono:
+    fontFamily: "Azeret Mono, SF Mono, Menlo, monospace"
+    fontSize: "11.5px"
+    fontWeight: 400
+    lineHeight: 1.6
+    letterSpacing: "0.04em"
+  # Every font-size app/(site)/glass-tile.css sets, in px (fixed values and clamp endpoints):
+  # 9, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 18, 19, 20, 21, 22, 24, 26, 28,
+  # 32, 38, 40, 52, 62.
 rounded:
-  none: "0"
+  # Every border-radius app/(site)/glass-tile.css sets: 2px (calendar legend squares, the rule), 4px (focus rings),
+  # 10px (--r-sm), 12px (a project cover inside its tile: --r-lg minus the tile's 10px padding), 14px (--r),
+  # 22px (--r-lg), 50% and 999px. --r-xl (28px) is defined for larger tiles and unused today.
+  xs: "2px"
+  focus: "4px"
+  sm: "10px"
+  cover: "12px"
+  md: "14px"
+  lg: "22px"
+  xl: "28px"
   pill: "999px"
   circle: "50%"
 spacing:
   xs: "4px"
-  sm: "9px"
+  sm: "8px"
   md: "12px"
-  lg: "24px"
-  xl: "40px"
-  grid-gap: "50px"
-  section: "clamp(36px, 5vw, 56px)"
-  hero-top: "clamp(48px, 8vw, 92px)"
-  pad: "clamp(20px, 5vw, 64px)"
-  index-column: "190px"
-  shell: "1240px"
+  lg: "18px"
+  xl: "28px"
+  gap: "clamp(12px, 1.6vw, 16px)"
+  tile: "clamp(18px, 2.2vw, 24px)"
+  tile-hero: "clamp(22px, 3vw, 36px)"
+  section: "clamp(40px, 6vw, 72px)"
+  pad: "clamp(18px, 4vw, 40px)"
+  shell: "1120px"
 components:
-  button-outline:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    typography: "{typography.ui}"
-    rounded: "{rounded.none}"
-    padding: "15px 28px"
-    height: "48px"
-  button-outline-hover:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.none}"
   button-solid:
-    backgroundColor: "{colors.accent}"
+    backgroundColor: "{colors.accent-fill}"
     textColor: "{colors.on-accent}"
     typography: "{typography.ui}"
-    rounded: "{rounded.none}"
-    padding: "15px 28px"
-    height: "48px"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
+    height: "42px"
   button-solid-hover:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.none}"
-  link-inline:
+    backgroundColor: "color-mix(in srgb, {colors.accent-fill} 88%, {colors.ink})"
+    textColor: "{colors.on-accent}"
+    rounded: "{rounded.pill}"
+  button-outline:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.ui}"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
+    height: "42px"
+  button-ghost:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    padding: "3px 0"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
+  link-inline:
+    backgroundColor: "transparent"
+    textColor: "{colors.accent}"
+    typography: "{typography.ui}"
+    padding: "2px 0"
+  nav-pill:
+    backgroundColor: "color-mix(in srgb, {colors.white} 66%, transparent)"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "6px 8px"
   nav-link:
     backgroundColor: "transparent"
     textColor: "{colors.muted}"
     typography: "{typography.ui}"
-    padding: "6px 2px"
+    rounded: "{rounded.pill}"
+    padding: "8px 14px"
   nav-link-active:
-    backgroundColor: "transparent"
+    backgroundColor: "{colors.tint}"
     textColor: "{colors.ink}"
     typography: "{typography.ui}"
-    padding: "6px 2px"
+    rounded: "{rounded.pill}"
+    padding: "8px 14px"
+  chip:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.accent}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "6px 12px"
   pill:
-    backgroundColor: "{colors.white}"
+    backgroundColor: "{colors.paper}"
     textColor: "{colors.pill-text}"
     typography: "{typography.small}"
-    rounded: "{rounded.none}"
-    padding: "8px 16px"
+    rounded: "{rounded.pill}"
+    padding: "7px 13px"
   pill-hover:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+  read-more:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.accent}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "3px 10px"
+  filter:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.muted}"
+    typography: "{typography.small}"
+    rounded: "{rounded.pill}"
+    padding: "7px 13px"
+  filter-active:
+    backgroundColor: "{colors.accent-fill}"
+    textColor: "{colors.on-accent}"
+    rounded: "{rounded.pill}"
+  tile:
     backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.none}"
-  card:
+    typography: "{typography.body}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.tile}"
+  tile-hero:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.tile-hero}"
+  tile-arrow:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.muted}"
+    rounded: "{rounded.circle}"
+    width: "30px"
+    height: "30px"
+  project-tile:
     backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
     typography: "{typography.subtitle}"
-    rounded: "{rounded.none}"
-    padding: "18px 20px"
-  section-index:
-    backgroundColor: "transparent"
-    textColor: "{colors.accent}"
-    typography: "{typography.index}"
-    padding: "12px 0 0"
-  bullet-link:
-    backgroundColor: "transparent"
-    textColor: "{colors.accent}"
-    typography: "{typography.ui}"
-    padding: "0 0 1px"
-  footer-block:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.ink-soft}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.none}"
-    padding: "7px 12px"
-  role-entry:
-    backgroundColor: "transparent"
+    rounded: "{rounded.lg}"
+    padding: "10px"
+  dialog:
+    backgroundColor: "{colors.paper}"
     textColor: "{colors.ink}"
-    typography: "{typography.title}"
-    padding: "26px 0 26px 30px"
-  floating-pill:
+    rounded: "{rounded.lg}"
+    padding: "clamp(18px, 3vw, 36px)"
+    width: "min(1040px, 100%)"
+  fact:
     backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.small}"
+    rounded: "{rounded.md}"
+    padding: "14px 16px"
+  input:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: "11px 13px"
+  table-header:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.muted}"
+    typography: "{typography.label}"
+    padding: "12px 14px"
+  floating-pill:
+    backgroundColor: "color-mix(in srgb, {colors.white} 88%, transparent)"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "11px 20px"
+    padding: "10px 15px"
   theme-toggle:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.on-accent}"
     rounded: "{rounded.pill}"
-    width: "44px"
-    height: "24px"
-  table-header:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.muted}"
-    typography: "{typography.caption}"
-    padding: "13px 16px"
+    width: "48px"
+    height: "28px"
 ---
 
-# Design System: Blueprint Press
+# Design System: Glass Tile
 
 ## Overview
 
-**Creative North Star: "The Blueprint Press"**
+**Creative North Star: "Everything is a tile"**
 
-A resume printed on paper, over the drafting grid it was laid out on. The page is set on paper with ink, a single accent, and hairline rules, and a fixed blueprint grid (a 16px fine ruling inside a 96px coarse one) shows through the whole page at a few percent of ink. Headings are Instrument Serif at regular weight, tight and large, with nothing above them: no kicker, no eyebrow, no category label. Running text is Spectral. Numbered section indexes sit in a narrow left column like the margin of an engineering drawing, every card is a square hairline box on a slightly whiter sheet, and the page ends in a drawing's title block (sheet, revision, typefaces, place). Nothing is rounded except small controls and dots.
+The site is a grid of rounded white tiles on a pale grey-blue ground. Under a floating glass nav, the home page opens on a bento: the hero tile (the relocation corner tab, the name, the title, location and current role, the actions), then small tiles for the current role, where Riley is based and the degree, the GitHub calendar across the full width, a tile for this site and one to say hello. A soft blue bloom drifts very slowly behind the top of the page. The tiles are lightly frosted glass: white at `--tile-fill` (72% by default, set in the Studio under Site Settings → Layout → Tile opacity) over a 1.5px backdrop blur, so the animated graph paper behind the tiles and the pen's glow show through softly.
 
-The voice is a document, not a campaign. At rest the home page reads top to bottom exactly like the PDF it complements (summary, experience, toolchain, education); the design's job is to make the reading feel considered and to surface evidence (project links, case studies, galleries) without ever turning into a marketing page. Density is generous: a 1240px shell, a 190px index column with a 50px gutter, and prose at 18 to 22px with a 1.68 line height.
+One cobalt accent carries every link, fill and active state. Headings and body share one grotesque, Instrument Sans, with headings at weight 600 and negative tracking. Dates, captions, eyebrows, counts and tags are set small in Azeret Mono.
 
-Every transition on the site uses one easing curve, `cubic-bezier(0.22, 0.9, 0.28, 1)`, so the motion reads as a single hand: rules draw from the left, sections rise 22px into place once, hover states lift by a few pixels, and the monogram draws itself on. Dark mode swaps paper and ink to black and white (or navy and pale on the Default preset) and changes nothing else. The palette itself is a Studio setting: five seed colors per mode run through a fixed tint ramp, so any preset inherits the same tonal rhythm.
+The voice is still a document at rest. Below the bento the resume reads top to bottom (who, experience, projects, stack, education, contact), and the depth opens on request: a project tile morphs into its dialog, with the full page behind it at `/projects/<id>`. Glass Tile replaced Blue Sheet on 2026-11-09 on the same data, the same wording and the same Studio-driven token system, so every palette preset still re-inks the whole site.
+
+Every CSS transition uses one easing curve, `cubic-bezier(0.22, 0.9, 0.28, 1)`. Tiles rise 16px into place once, 70ms apart; tiles lift 3px on hover; the nav's active tint slides between links on a spring; the calendar's cells pop in; a project tile grows into its dialog on a spring. Wheel scrolling glides.
+
+Dark mode turns the ground near-black and the tiles graphite. The accent lightens for text but every fill cuts deeper (`accent-fill` is the accent mixed 30% toward black).
 
 **Key Characteristics:**
 
-- Warm-neutral paper with one accent; the accent is used for indexes, the solid CTA, inline evidence links, link underlines, active nav, hover bars, and the badge dot, never for surfaces.
-- Instrument Serif display at weight 400 only (the face ships no bold), Spectral body, both loaded through `next/font`; the three roles (header, sub-header, body) are Studio choices among eight preloaded faces.
-- Square hairline cards on `white` (one step off `paper`), 1px `rule` borders, 2px ink rules under headings.
-- A visible blueprint grid on the page background, fixed to the viewport.
-- Uppercase, tracked labels in Spectral for indexes, dates, and captions, never as a label above a heading; the serif never appears in small caps.
-- One easing curve, one entrance pattern (`Reveal`), hover lifts of 2 to 5px, and a full `prefers-reduced-motion` opt-out that freezes every animation on its final frame.
+- Everything sits on a tile: frosted white (72% fill, 1.5px blur), a 22px radius, an ink hairline (`--line`), `--shadow-sm` at rest.
+- One blue, five jobs: `tint` (chips, the active nav link, table heads, the contact card's left column, the Read more chip), `accent-soft` (the bloom, the hero tile's own glow, the calendar's first step), `accent` (text, icons, markers, focus rings), `accent-fill` (solid buttons, active filters, the toggle thumb, the "This site" badge), `glow` (the bloom's second wash).
+- One grotesque, two voices: Instrument Sans for names and sentences, Azeret Mono for anything small that labels, dates or counts.
+- Rounded throughout: 10px inputs, 14px facts and certificates, 22px tiles and the dialog, pills for every control.
+- Three quiet shadow steps, all tinted with ink.
+- A frosted glass nav pill and frosted floating controls.
+- One easing curve, one tile entrance, hover lifts of 1 to 3px, and a full `prefers-reduced-motion` opt-out.
 
 ## Colors
 
-Paper and ink with a single accent, where every secondary tone is a fixed mix of the two.
+Paper and ink with one accent, where every secondary tone is a fixed mix of the two and every surface is a fixed mix of the accent.
 
 ### Primary
 
-- **Accent** (`{colors.accent}`, Electric Blue #3e6ae1 on the active preset; Signal Red #e3342f on Default): the one voltage on the page. Section index numerals, the solid Download button, the "see ICARUS-Lite" evidence link on a resume bullet, link underline wipes, the active nav underline, the role entry's hover bar, the cert card's wipe bar, the relocation badge's dot, drop caps, and inline links inside prose and tables.
-- **On Accent** (`{colors.on-accent}`): text set on the accent fill. Derived per preset as whichever of paper or ink reads better on the accent, so the solid button stays white on blue in dark mode.
-- **Blue** (`{colors.blue}`): a second hue for diagrams and data (the monogram's bowl, the gantt chart's secondary series, the coming-soon ring). On the Electric preset it equals the accent; on the other nine presets it is a distinct cooler tone.
+- **Accent** (`{colors.accent}` / `{colors.accent-dark}`): the blue as a line or a letter. The hero title, eyebrows, tile-label icons, link text, bullet markers, the role rail's dots, emphasis phrases on a hovered bullet, the chip's text and pulsing dot, focus rings. It lightens in the dark so text keeps contrast.
+- **Accent Fill** (`{colors.accent-fill}` / `{colors.accent-fill-dark}`): the same blue as a surface. Solid buttons, the active filter, the theme toggle's thumb, the "This site" badge, a hovered Read more chip, the calendar's fourth step. It deepens in the dark.
+- **On Accent** (`{colors.on-accent}`): text on the fill, whichever of paper or ink reads better on it.
+- **Blue** (`{colors.blue}` / `{colors.blue-dark}`): the deeper partner for drawn geometry and data: the monogram's bowl, the gantt's secondary series.
+
+### Surfaces
+
+- **Paper** (`{colors.paper}` / `{colors.paper-dark}`): the ground. Also painted on `<html>` so the overscroll gutter matches, and used for the dialog's floor, the tile arrow's circle and the skill pills.
+- **White** (`{colors.white}` / `{colors.white-dark}`): every tile and control. One step off the ground in light; graphite one step up from it in the dark.
+- **Tint** (`{colors.tint}` / `{colors.tint-dark}`): the faintest accent wash.
+- **Accent Soft** (`{colors.accent-soft}` / `{colors.accent-soft-dark}`): the bloom's main wash, the hero tile's glow, the calendar's first step.
+- **Glow** (`{colors.glow}` / `{colors.glow-dark}`): the bloom's second wash.
 
 ### Neutral
 
-- **Paper** (`{colors.paper}` / `{colors.paper-dark}`): the page floor. Also painted on `<html>` so the overscroll gutter matches.
-- **White** (`{colors.white}` / `{colors.white-dark}`): card and control surfaces (pills, cert cards, the table frame, the gantt frame, the theme toggle, the floating pills). One visible step off paper.
-- **Ink** (`{colors.ink}` / `{colors.ink-dark}`): headings, primary text, 2px rules, button borders and fills.
-- **Prose** (`{colors.prose}`): running text in `.bp-prose` (ink mixed 10% toward paper).
-- **Ink Soft** (`{colors.ink-soft}`): bullets, secondary copy, the hero tagline (25% toward paper).
+- **Ink** (`{colors.ink}` / `{colors.ink-dark}`): headings and primary text.
+- **Prose** (`{colors.prose}`): running text (ink mixed 10% toward paper).
+- **Ink Soft** (`{colors.ink-soft}`): bullets, card summaries, role context, issuers (25%).
 - **Pill Text** (`{colors.pill-text}`): skill pill labels (29%).
-- **Muted** (`{colors.muted}`): nav links at rest, the brand name, issuers, cert dates, the footer note and title-block values, table headers, timeline ticks (36%). The smallest tone any text may use.
-- **Faint** (`{colors.faint}`): rules, ticks, dots, scrollbar thumbs, and the title block's 11px keys (50%). Not for running text.
-- **Rule** (`{colors.rule}`): every hairline border (cards, tables, inputs) (87%). The section divider between sections uses faint instead, so it stays visible on paper in both themes.
+- **Muted** (`{colors.muted}`): nav links at rest, tile labels, dates, counts, the footer note (36%). The smallest tone any text may use.
+- **Faint** (`{colors.faint}`): the footer's keys, weekday labels, dots (50%). Not for running text.
+- **Rule** (`{colors.rule}`): hairlines between roles, under the dialog bar, between table rows (87%). Tile borders use `--line`.
 
 ### Semantic
 
 - **Insertion** (`{colors.insertion}` / `{colors.insertion-dark}`): the "+ lines" count on a timeline entry; deletions use the accent.
-- **Scrim** (`{colors.scrim}`): the lightbox backdrop, a near-ink navy at 93%.
+- **Scrim** (`{colors.scrim}`): the lightbox backdrop. The dialog's scrim is ink at 45% with a 6px blur.
+- **Error**: `#c0392b` on the form's failure note only.
 
 ### Named Rules
 
-**The One Accent Rule.** Color lives in the accent alone. Surfaces are paper and white; text is ink and its tints. A second hue (`blue`) appears only inside drawn geometry and data, never on type or chrome.
+**The One Blue Rule.** Colour is one hue in five jobs (tint, soft, accent, fill, glow) plus a deeper partner for drawn geometry and data. Surfaces are paper, white and tint; text is ink and its ramp. No second hue reaches type or chrome.
 
-**The Ramp Rule.** Never hand-pick a gray. Secondary tones come from `lib/palette.ts`'s ramp (prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87) so all ten presets and any custom palette share one tonal rhythm. muted is the floor for text (it clears 4.5:1 on paper and white in both themes on every preset); faint is for lines and dots.
+**The Bloom-Stays-Blue Rule.** The bloom behind the top of the page is built only from `accent-soft`, `glow` and `tint`, at low opacity (0.85 light, 0.6 dark), and drifts on a 22s cycle. It never takes a second hue, never sits behind body text further down the page, and holds still under reduced motion.
 
-**The Hard-Copy Rule.** Four places cannot read CSS variables and carry literal copies of the active preset: `components/GanttChart.tsx` (mermaid theme variables), `app/icon.svg` (the tab icon), `app/apple-icon.tsx`, and `app/opengraph-image.tsx`. A palette change must reach them by hand.
+**The Deeper-in-the-Dark Rule.** Dark mode lightens the accent for text and darkens the fill for surfaces. `lib/palette.ts` derives `accent-fill` as the accent mixed 30% toward black on a dark palette. Any new fill uses `--accent-fill`, never `--accent`.
+
+**The Ramp Rule.** Never hand-pick a gray or a wash. Secondary tones come from the ramp (prose 0.10, ink-soft 0.25, pill-text 0.29, muted 0.36, faint 0.50, rule 0.87) and surfaces from the accent, so every preset and any custom palette shares one rhythm. Muted is the floor for text; faint is for lines and dots.
+
+**The Portal Rule.** Tokens are scoped to `.bp`. Anything rendered through a portal must land inside it (`[data-glass-portal]` in the site layout, which the project dialog uses) or carry literal colours (the lightbox, which portals to `<body>`).
+
+**The Hard-Copy Rule.** Four places cannot read CSS variables and carry literal copies of the active preset (ink `#111318`, accent `#2457e6`): `components/GanttChart.tsx` (mermaid theme variables), `app/icon.svg`, `app/apple-icon.tsx` and `app/opengraph-image.tsx`. A palette change must reach them by hand.
 
 ## Typography
 
-**Display Font:** Instrument Serif (with Iowan Old Style, Georgia, serif)
-**Body Font:** Spectral (with Georgia, serif)
-**Label Font:** Spectral, uppercase and tracked. IBM Plex Mono appears only for data on `/about-this-site` (commit hashes, line counts, the demos' file paths), never as a costume.
+**Display and Body Font:** Instrument Sans (with system-ui, sans-serif), loaded at 400, 500, 600 and 700.
+**Label Font:** Azeret Mono (with SF Mono, Menlo, monospace), loaded at 400 and 500; uppercase and tracked for labels, plain with tabular figures for data.
 
-**Character:** An editorial pairing. Instrument Serif is high-contrast and narrow, set very large with tight negative tracking and a line height below 1, so the name and page titles read like a masthead. Spectral is a warm reading serif at generous size and line height, so the resume body reads like a printed document rather than a UI.
+**Character:** One clean grotesque does both jobs. Headings are weight 600 with tracking from -0.01em to -0.035em, so the name and the section titles read tight and confident; body text is weight 400 at a generous size and line height. Azeret Mono is wide and a little characterful, which is why it stays small: it marks the tiles' notes (a tile's label, a date, a photo count) without competing with the words.
 
 ### Hierarchy
 
-- **Display** (400, `clamp(58px, 12vw, 152px)`, 0.86, -0.038em): the home hero name, two lines, each revealed separately.
-- **Headline** (400, `clamp(48px, 9vw, 116px)`, 0.9): page titles on the other routes (`/projects`, `/contact`, `/more-info` at `clamp(44px, 8vw, 96px)`, `/about-this-site`).
-- **Tagline** (400 italic, `clamp(23px, 3vw, 33px)`, 1.22, ink-soft, max 24ch): the line under the hero rule.
-- **Title** (400, `clamp(28px, 3.2vw, 38px)`, 1.12, -0.012em): role titles in Experience, degree names in Education. Regular weight; the size carries the hierarchy.
-- **Subtitle** (400, 20–21px): skill group headings, cert card titles, contact card titles.
-- **Prose** (400, `clamp(18px, 1.55vw, 22px)`, 1.68, `text-wrap: pretty`): summary and page intros, with an accent drop cap on the summary.
-- **Body** (400, 17px, 1.6–1.66): bullets and role context (context in italic).
-- **UI** (500, 15px): buttons, nav links, the footer note.
-- **Small** (400, 14px): pills, table cells, issuers, the location line.
-- **Index** (400, 16px, 0.26em, uppercase, accent): "01  Summary" and its siblings, written as the section's `h2`.
-- **Label** (500, 11–13px, 0.1–0.2em, uppercase): dates, the brand name, "Read more", "Back to top", table headers, cert dates, the footer URL.
+- **Display** (600, `clamp(38px, 5.4vw, 62px)`, 1, -0.035em): the hero name.
+- **Headline** (600, `clamp(32px, 4vw, 52px)`, 1.02, -0.03em): a project's name in its dialog and on its page.
+- **Section** (600, `clamp(28px, 3.2vw, 38px)`, 1.08, -0.025em): section titles. The contact card's title runs `clamp(28px, 3.4vw, 40px)`; the outro lead `clamp(20px, 2.2vw, 26px)` at 500.
+- **Tagline** (500, `clamp(17px, 1.7vw, 21px)`, 1.35, accent): the title line under the hero name. A project's tagline is `clamp(17px, 1.5vw, 20px)` in ink-soft.
+- **Title** (600, `clamp(20px, 1.9vw, 24px)`, 1.2, -0.02em): role titles; the degree's school at 22px and the tracker heading at 24px.
+- **Tile value** (600, `clamp(18px, 1.7vw, 21px)`, 1.25): what a bento tile says; the education tile uses `clamp(16px, 1.4vw, 18px)`.
+- **Subtitle** (600, 16 to 20px): project tile names (19px), stack and activity headings and the page-nav names (18px), certificate names and the dialog bar (16px), the form title (20px).
+- **Prose** (400, `clamp(16.5px, 1.3vw, 18px)`, 1.7, `text-wrap: pretty`, max 68ch): the summary and the contact paragraph. A project's summary is `clamp(16px, 1.3vw, 18px)`.
+- **Body** (400, 15.5px, 1.62): bullets. Role context, fact values and footer notes at 15px; the hero meta line at 14.5px; card summaries and tile subs at 14px.
+- **UI** (500, 14px): buttons, nav links, inline links. The nav brand is 15px at 600.
+- **Small** (400 to 500, 13px): pills, filters, small buttons, the table key; table cells and issuers at 13.5px; field labels and the Show more pill at 12.5px.
+- **Label** (mono, 10 to 11px, 0.06 to 0.1em, uppercase): tile labels, eyebrows, chips, type tags on covers, table headers, fact labels, certificate dates, the floating controls, the Read more chip.
+- **Mono data** (mono, 11 to 12px, 0.02 to 0.04em): dates on the rail, photo counts, the calendar's total and footer, the footer meta line. Calendar month and day labels drop to 10px and 9px inside the SVG.
 
 ### Named Rules
 
-**The Regular Serif Rule.** Instrument Serif is loaded at weight 400 only. Emphasis in the serif comes from size, never from a synthesized bold.
+**The Mono-For-Small-Notes Rule.** Azeret Mono is for small things only: labels, dates, counts, tags and captions, never above 12px and never for a sentence a visitor has to read. Names and sentences are Instrument Sans.
 
-**The Tracked Label Rule.** Anything uppercase is Spectral, 11 to 16px, with 0.1 to 0.3em of tracking. The serif is never uppercased.
+**The Weight Rule.** Headings are 600 with negative tracking; emphasis inside a sentence is 500. Nothing on the tiles is set at 700, although the weight is loaded.
 
-**The No-Eyebrow Rule.** Nothing sits above a heading. A page title is the first line of its hero; a section's index is its heading; a card's title is its first line. The words a kicker would have carried go into a fact line beside or below the heading (the hero's "Lead, Research & Development Engineer, Proteor, since January 2025") or into the heading itself.
+**The Studio Roles Rule.** Four faces are Studio choices (Site Settings → Typography: header, sub-header, body, small labels) among the ten preloaded in `app/(site)/layout.tsx`, written as `--bp-font-header`, `--bp-font-subheader`, `--bp-font-body` and `--bp-font-mono`. Glass Tile ships with Instrument Sans for the first three and Azeret Mono for small labels.
 
-**The Measure Rule.** Prose runs at most 70 characters per line (`max-width: 70ch` on `.bp-prose`); dates and counts use tabular numerals.
+**The No-Eyebrow-Over-Sections Rule.** Section titles stand alone. Eyebrows (mono, accent) appear only where they name a category: a project's type over its name.
 
 ## Layout
 
-The page is a single centered column, `--shell: 1240px` wide, with `--pad: clamp(20px, 5vw, 64px)` of side padding, and every route is a stack of `<section class="bp-section">` blocks separated by a 1px faint hairline rule (`.bp-rule--hair`) that draws in from the left, lighter and thinner than the 2px ink rule under the page title. Inside a section, `.bp-section-grid` is a two-column grid: a fixed `190px` index column holding the uppercase accent-colored "01  Summary" label, then the content column, with a `50px` gutter. On the home page a 2px spine runs down the left gutter beside the sections and fills with the accent as the reader scrolls.
+A 1120px shell with `clamp(18px, 4vw, 40px)` side padding. The page wrapper is `.page`, with no frame around it. Sections stack with `clamp(40px, 6vw, 72px)` above each and open with a title row (title left, an aside right), followed by one tile, a grid of tiles or a list. Gaps between tiles are `--gap`, `clamp(12px, 1.6vw, 16px)`.
 
-The hero is the one section without the grid: the two-line display name, a 2px ink rule, then a meta row (italic tagline left; on the right the uppercase location over an italic fact line naming the current role, employer, and start date) and the action row (one solid button, three outline buttons). A decorative one-stroke ribbon sits behind the hero at 10% opacity, flush with the shell's right edge.
+- **Bento** (`.bento`): six columns. The hero tile spans 4 columns and 3 rows; Now, Based in and Education span 2 each; the activity tile spans the full width; This site and Say hello span 3 each. At 980px it becomes two columns with the hero and education full width; at 640px, one column.
+- **Summary**: prose beside a 300px column of fact tiles (one column below 980px).
+- **Experience**: every role in one `.card.roles` tile; each role has a 150px dated column with a rail and a dot beside it. One column below 760px, with the dates inline.
+- **Projects**: a centred, wrapping row of tiles a third wide (half below 980px, full below 760px), so a short row sits in the middle. On `/projects` the heading and the tile grid sit in one section box, the grid inside a tab-bar tile.
+- **Skills and Tools**: one tab-bar tile; the picked group is a left-aligned list in three columns that fill top to bottom (two below 860px, one below 560px), each row on a hairline with a 3px bar in its group hue.
+- **Education**: the degree tile beside a two-column grid of certificates (1.1fr : 2fr), one column below 980px.
+- **Contact**: one tile split 1 : 1.15 (the ways in on a tinted column, the form on white), stacked below 760px.
+- **Project dialog**: `min(1040px, 100%)` wide, `min(92vh, 100%)` tall, centred. On a phone it rises from the bottom edge with the top corners rounded.
+- **Project page**: the same body inside the shell with `.page-in`, a back link above and previous and next links below.
 
-Vertical rhythm: sections are `clamp(36px, 5vw, 56px)` tall in padding, the hero opens with `clamp(48px, 8vw, 92px)`, role entries stack with 26px of padding and a 4px gap, bullets sit 10px apart, skill groups 26px, cert cards on a 12px gap in an `auto-fill, minmax(260px, 1fr)` grid. The footer closes with a 2px ink rule, the monogram and one italic line on the left, and the title block on the right.
-
-One breakpoint, `max-width: 860px`: the section grid collapses to one column with the index above the content, the nav becomes two rows (brand and theme switch, then a horizontally scrolling link row whose edges fade), the hero location left-aligns, and the relocation badge docks in the corner from the start. Everything else scales fluidly through `clamp()`. There is no tablet step. A print stylesheet drops the chrome, the grid, the badge, and the ribbon so the home page prints as the document it imitates.
+**Breakpoints:** 980px (the bento goes to two columns, grids drop a column), 760px (everything one column, the nav drops its name, the dialog becomes a bottom sheet), 640px (the bento goes to one column).
 
 ## Elevation & Depth
 
-Flat by default. Depth is drawn, not lit: hairline borders in `rule`, 2px rules in ink, and the blueprint grid behind everything. Cards sit on `white`, one step off `paper`, with no shadow at rest. Shadows appear only as a response to hover (pills, cert cards, the bullet's project link) and on the two floating pills (the relocation badge and the back-to-top control), which need lift to read over the grid. The nav and the floating pills also blur what passes behind them (`backdrop-filter: blur(10–12px)`) over a translucent paper or white.
+Depth is quiet. A tile rests on `--shadow-sm`, lifts 3px onto `--shadow` on hover and tints its border toward the accent; the dialog floats on `--shadow-lg` over a blurred scrim. The nav pill is 66% white with an 18px blur and 1.4 saturation on `--shadow-sm`, and condenses onto `--shadow` at 84% once the page has scrolled 28px. Solid buttons carry an accent-tinted shadow rather than an ink one.
 
 ### Shadow Vocabulary
 
-- **Hover lift** (`0 6px 18px color-mix(ink 10%)`): skill pills on hover, with a 3px rise.
-- **Card lift** (`0 16px 34px color-mix(ink 13%)`): cert cards on hover, with a 5px rise.
-- **Floating pill** (`0 10px 28px color-mix(ink 10%)`): the relocation badge and the back-to-top control at rest.
-
-All three derive from `--ink`, so they exist on every paper, including black.
+- `--shadow-sm`: `0 1px 2px ink/5%, 0 8px 24px -14px ink/12%`. Resting tiles, the nav at the top, buttons.
+- `--shadow`: `0 2px 6px ink/6%, 0 18px 40px -14px ink/16%`. Hovered tiles and buttons, the condensed nav, the floating controls.
+- `--shadow-lg`: `0 10px 30px ink/12%, 0 40px 90px ink/18%`. The dialog.
+- Accent shadow: `0 8px 22px -6px accent/45%` on solid buttons, `0 12px 28px -6px accent/50%` on hover.
 
 ### Named Rules
 
-**The Drawn Depth Rule.** Rest states have no shadow. If an element needs separation at rest, it gets a hairline border or a whiter sheet, not a shadow.
+**The Lift Rule.** Hover lifts are 1px (filters, the Show more pill), 2px (buttons, skill pills) and 3px (tiles), never more; contact rows and hovered bullets nudge 3px sideways instead. The shadow grows one step with the lift.
+
+**The Glass Rule.** Anything that floats over content (the nav pill, the dialog bar, type tags over a cover, the floating controls) is translucent white with a backdrop blur, never opaque. Tiles carry a much lighter version of the same glass (`--tile-fill`, `--tile-blur`). Write `backdrop-filter` only, never the `-webkit-` twin: with both written the CSS build kept only the prefixed copy, which Chrome ignores, and given the unprefixed property alone it emits both.
 
 ## Shapes
 
-Square. Cards, buttons, pills, inputs, the table, and the gantt frame all have `border-radius: 0` and a 1px `rule` border (buttons use a 1px ink border). The only rounded forms are small controls and marks: the theme toggle, the relocation badge, the back-to-top control, and the bullet's project link are full pills (`999px`); dots, rings, and the badge's ping are circles. Rules are 2px in ink under headings and 1px in `rule` between sections. The blueprint grid is 1px hairlines at 4.5% ink (fine) and 8.5% ink (coarse).
+- **Rounded**: 10px inputs, contact rows and code blocks (`--r-sm`); 14px facts, certificates, tables and gallery frames (`--r`); 22px tiles, project tiles and the dialog (`--r-lg`). A project's cover sits 12px rounded inside its tile's 10px padding. `--r-xl` (28px) is defined but unused today.
+- **Pills**: every button, chip, filter, skill pill, nav link, tag, the Read more chip, the theme toggle, the floating controls.
+- **Circles**: the tile arrow, the rail dots, the chip's dot, the toggle thumb.
+- **Small radii**: 2px on the calendar's legend squares and the rule, 4px on focus rings. Nothing else goes below 10px.
+
+### Named Rules
+
+**The Everything-Is-A-Tile Rule.** A piece of content on the site is either a tile or inside one. New content gets a tile (`.card`, plus `.card--hover` when it is a link) on the shared radius, border and shadow. It never floats loose on the ground and never invents its own corner.
 
 ## Components
 
 ### Buttons
 
-- **Shape:** square, 1px border, 48px tall, `15px 28px` padding, 15px/500 label with a 16px stroke-icon arrow.
-- **Outline (`.bp-btn`):** transparent on ink border and ink text. On hover the fill wipes in from the left (`::before` scaleX 0→1 over 0.48s), text flips to paper, the button rises 2px, and the arrow nudges 5px.
-- **Solid (`.bp-btn--solid`):** accent fill, on-accent text, accent border; the wipe on hover is ink. `:disabled` shows `cursor: wait` at 75% opacity with the wipe held off. A looping diagonal sheen (`.bp-sheen`, 3.6s) runs across the solid button while idle.
-- **Focus:** 2px accent outline, 3px offset, on every control.
+- **Solid** (`.btn--solid`): accent fill, white text in both themes (`.bp .btn--solid`, scoped so it outranks `.bp a { color: inherit }`), pill, 42px, an accent shadow and a slow sheen on the primary one (Download PDF, Send message). Hover darkens the fill 12% toward ink.
+- **Outline** (`.btn`): white, ink text, an ink/12% border, `--shadow-sm`; hover lifts 2px and tints the border toward the accent.
+- **Ghost** (`.btn--ghost`): no fill or shadow; hover fills with tint. The dialog's close.
+- **Icon** (`.btn--icon`, 42px) and **Small** (`.btn--sm`, 36px, 13px type).
+- Kept aliases: `.bp-btn` and `.bp-btn--solid` resolve to the same styles for the project-body components that still use them.
 
 ### Links
 
-- **Inline (`.bp-link`):** ink text with a 1.6px accent underline that wipes in from the left on hover and a 13px diagonal arrow that moves up-right 3px.
-- **Read more (`.bp-readmore`):** the same link uppercased, 13px, 0.14em tracking, in the accent.
-- **Prose and table links:** accent-colored with a 1px underline at 55% accent, offset 0.18em, solid on hover.
-- **Evidence button (`.bp-bullet-link`, `app/(site)/bullet-link.css`):** at the end of a resume bullet that links to its project, a compact solid button: "READ MORE" in 12px/600 uppercase at 0.08em tracking plus an 11px diagonal arrow, on-accent on an accent fill with a 6px radius, sized to sit inside the bullet's line. Its accessible name names the project. How it moves on hover and focus is chosen in the Studio (Home page → Read more button) from seven variants, all drawn only in `--accent`, `--ink`, `--paper` and `--on-accent` so each follows the palette in both themes: ink sweep (the `.bp-btn--solid` wipe, the default), letter roll (each letter rolls up to a copy, 22ms apart, as the fill turns ink), arrow launch (the arrow leaves up-right and a second arrives from bottom-left), offset print (2px lift onto a hard 3px ink shadow, flat again on press), trace (a 1px ink ring 4px out draws clockwise over 0.9s), glint (a white sheen crosses every 6.5s, staggered per link, and the hover is the sweep) and still (the fill turns ink, nothing moves).
-- **Nav (`.bp-nav-link`):** 15px muted text, a 2px accent underline that scales in from the left on hover and stays on the active route (ink text). All five links are flat color.
+- **Inline** (`.bp-link`): accent text, 500, an underline that grows from the left on hover; the arrow nudges.
+- **Prose links** (`.prose a`): accent with a 45% underline that fills on hover.
+- **Read more** (`.bp-bullet-link`, overridden in glass-tile.css over `app/(site)/bullet-link.css`): a tinted mono chip at the end of a resume bullet that fills with the accent on hover.
 
-### Pills (`.bp-pill`, `app/(site)/skill-pills.css`)
+### Chips and pills
 
-- **Style:** white sheet, hairline border, 14px pill-text label, `8px 16px` padding, square corners.
-- **Hover:** border to ink, text to ink, 3px rise, hover-lift shadow.
-- **Linked (`.bp-pill--linked`):** a skill linked to a published project or proof. Its border is tinted 38% toward the accent, a 13px accent chain-link icon follows the label, and one of six border treatments marks it, chosen in the Studio (Home page → Linked skills): orbit (a 2px accent comet circling once every 6s), marching dashes (an accent hidden line creeping clockwise), ping (an accent ring leaving the border every 5s), registration marks (accent corner ticks easing between 4px and 1px out every 5s), signal (a 2px accent pulse running along the bottom edge every 5.5s) or steady (a solid accent border). Each pill keeps its own beat. On hover or focus the loop settles, the border turns accent, the pill rises 3px and the icon turns a quarter.
-- **Linked hover card (`.bp-skill-card`):** names what the skill links to (the project's name or proof's title in the subheader face at 19px, then "Project · category" or "Proof · project" in 12px muted) above the Read more button, which pops in 90ms after the card. Three layouts: a white card 12px above the pill with an ink hairline, a pointer and a soft ink shadow; a tab that unrolls under the pill in its accent border; or a callout, where an ink leader draws from a dot on the pill's corner up to a label underlined by its shoulder. It turns to stay inside the window, closes 120ms after the pointer leaves so the pointer can reach it, and opens from the keyboard when its Read more is focused.
+- **Chip** (`.chip`): tint, accent mono label, a pulsing dot for a live status. Not placed on any page at present; the relocation notice became the hero tile's corner tab, which reuses the dot.
+- **Pill** (`.bp-pill`, `app/(site)/skill-pills.css`): paper, pill-text, hairline; hover tints and lifts 2px. A linked pill keeps its Studio-chosen border and hover card.
+- **Tab bar** (`.skills-tabs` in a `.card.skills-box`, since 2026-11-15): the header of a tile, a solid band a step off the tile (`color-mix(in srgb, var(--ink) 7%, var(--white))`: darker in light mode, lighter in dark) of mono uppercase tabs, each a 7px dot in its group colour and a label in `--ink-soft`. The picked tab reads bold in full ink over a 2px line in its colour that slides between tabs (a `layoutId` spring); the tabs wrap and centre, never scroll. Skills and Tools uses it with nothing picked on load (a centred hint and a climbing double chevron under it, plus a wave across the dots, until a tab is picked) and All last; `/projects` uses it for the category filters at 13px with All first and picked. The old `.filter` chips are gone.
+- **Group hues** (`--grp-1` … `--grp-7`): seven colours for skill groups and project categories, by position (light `#0b7fb0 #b26a0a #7247d1 #0c8a7f #c94f22 #3f8a2a #b8367a`, dark `#5cc4f0 #f0b24f #b39bff #4fd1c5 #ff8d62 #86d46f #f27ab8`). They mark only the tab dots, the picked tab's line, and the bar before each skill row; never text or surfaces.
+- **Type tag** (`.project-card-type`): mono, uppercase, frosted white over the cover; on the site's own card the tag itself ("About this site") takes the accent fill with on-accent text (`.project-card-badge`), and there is no second tag.
 
-### Cards (`.bp-cert`, contact cards)
+### Tiles
 
-- **Corner Style:** square.
-- **Background:** white, 1px rule border, `18px 20px` padding.
-- **Content:** a 21px serif title, a 14px muted issuer, a 12px faint uppercase date, an optional inline link, and a 2px accent bar at the bottom that wipes in on hover.
-- **Hover:** border to ink, 5px rise, card-lift shadow.
+- **Tile** (`.card` + `.tile`): frosted glass, `color-mix(in srgb, var(--white) var(--tile-fill, 72%), transparent)` with `backdrop-filter: blur(var(--tile-blur, 1.5px)) saturate(1.2)`, so the graph paper and the pen's glow show through softly; `--line` border, 22px radius, `--shadow-sm`. `--tile-fill` is Studio-set (`layout.tileOpacity`, 40 to 100, default 72); print resets the tile to solid white with no filter. `.card--hover` lifts and tints its border; `.bp-spot` adds a faint accent spotlight under the cursor. A linked tile carries a `.tile-label` (mono, with an accent icon), a `.tile-value`, a `.tile-sub` and a 30px `.tile-arrow` circle top right that nudges on hover.
+- **Section box** (`.sec-group`): the fainter box around a home page section with several tiles (Experience, Projects, Skills, Education). `--group-fill` (Studio-set `layout.groupOpacity`, 0 to 90, default 50), `--line` border, radius `--r-lg` + `--gap`, `--gap` padding, no shadow, no blur. The section heading is a band across the top of the box, edge to edge, reading at 95% by default (Studio-set `layout.headingOpacity`, 40 to 100; `--head-fill-grouped`), the most solid surface on the page. Tiles inside take `--tile-fill-grouped` so box and tile never add up: a tile reads at `--tile-fill` everywhere. The hero bento, the summary and Contact are never boxed.
+- **Hero tile** (`.tile-hero`): its own accent-soft glow top right; the relocation notice as a corner tab (`.hero-flag`) set into the top-right corner, the one element outside the palette (Studio-set `layout.relocationColor`: amber `#f5a524` in light and `#fbbf24` in dark, both with `#231500` text by default, or a green, coral, violet or ink pair; mono label at weight 400); the name, the title, the meta line (location and current role) and the actions (`HeroActions`). Since 2026-11-14 the tile is a flex column: the name and the title (on one line where it fits, so it runs at least as wide as the name) sit at the top, and the meta line and the actions are pinned to the bottom (`.hero-meta { margin-top: auto }`), so the tile fills the height of the three tiles beside it. The two sides are scaled toward each other: the name is `clamp(40px, 6vw, 72px)` and the title `clamp(17px, 1.9vw, 24px)`, while the three tiles beside the hero (`.tile-now`, `.tile-where`, `.tile-edu`) take 16px of block padding instead of a tile's usual 18 to 24px, since their stack sets the hero's height.
+- **Activity tile** (`.tile-activity`, `GithubGraph`): the calendar as an SVG with month and weekday labels in mono, a total and a legend. It scrolls sideways inside its tile below 720px.
+- **Fact** (`.fact`): a mono label over a value, 14px radius.
+- **Roles** (`.card.roles`): the whole experience list in one tile. Each `.role` has a dated column with a rail and a dot that fills on hover, bullets with reactive emphasis, and a "Show N more" pill.
+- **See more of my past** (`.roles-more`): the one large control in the Experience box, a full-width button under the roles tile that opens the roles that ended more than `layout.experienceYears` years ago, plus any role set to sit behind it (`homeDisplay: "more"`) (`.roles-rest`; Studio-set, default 5). `--tint` fill, accent text at 16 to 18px in the subheader face at 600, an accent-mixed border, 22px radius, a mono count beside the label, a chevron that turns when open; hover lifts 2px. Deliberately bigger than the "Show N more" pills inside the roles. Hidden in print, where every role shows.
+- **Project tile** (`.project-card`): a 16:10 cover (photo, PDF page, video poster, or the monogram over an accent-soft wash), tags over it, name, two lines of summary, dates and photo count in mono, an arrow that nudges. The whole tile is a button; its id is the hash anchor.
+- **Degree, certificate, contact**: `.degree`, `.cert` and `.contact-card` are tiles on the same surface. (The four `.stack-card` skill tiles were replaced by the Skills and Tools tab-bar tile on 2026-11-15.)
+- **Section head and panel** (`.card.sec-head`, `.card.panel`): since 2026-11-14 nothing sits loose on the ground, because the graph paper and the pen run behind the whole page. A heading above a grid of tiles is a full-width tile of its own (14px by `clamp(18px, 2.4vw, 26px)` padding); a section that is one block of content (the summary, a project page body, the projects outro) is one `.panel` tile holding its heading and body (`clamp(20px, 2.8vw, 34px)` padding, facts inside it on `--paper`). The project page's `.page-back` is a glass pill and its `.page-nav` links are hover tiles.
 
-### Role entry (`.bp-role`)
+### Dialog (`.dlg`)
 
-A resume entry with a 2px rule down its left edge. Hover shifts the whole entry 7px right and wipes an accent bar down that rule. Inside: the serif title and an uppercase 13px date on one baseline row, the organization in 20px accent, italic 17px context, then a bullet list with accent markers. Each bullet's emphasized phrases take the accent (with a hairline text stroke) when the bullet is hovered, and a bullet can carry a small accent pill linking to its project.
+The signature interaction. A project tile's `motion.article` and the dialog panel share a framer-motion `layoutId` (`tileLayoutId(id)` in `components/glass-tile/ProjectCard.tsx`), so the tile grows into the dialog on one spring (`MORPH`: stiffness 380, damping 36, mass 0.8) while the page dims behind an ink/45% scrim with a 6px blur. The bar (name, type, Open full page, close) and the body fade in 0.18s after the morph starts.
 
-### Section index (`.bp-section-index`)
+It opens with `#project-<id>` in the URL (`-case-study` to expand the case study) and closes on Escape, the scrim or the back button, collapsing home into its tile. Focus is trapped and restored, and the page is locked beneath it. Under reduced motion it is a plain fade.
 
-The section's `h2`: the uppercase 16px accent label ("02  Experience") in the 190px column, 0.26em tracking, set in the body face, aligned to the content's top with 12px of padding. Each section carries an id (`#summary`, `#experience`, `#skills`, `#education`) so the index doubles as a jump target.
+### Navigation (`.nav`)
 
-### Title block (`.bp-footer-block`)
+A floating glass pill, centred and sticky: the monogram and name, three links (Home, Projects, Contact) with a tint that slides behind the active one on a spring (stiffness 420, damping 38, mass 0.6), and the theme toggle. It condenses after 28px of scroll and drops the name below 760px.
 
-A hairline-boxed `<dl>` on the footer's right: Sheet (the domain), Rev. (short commit and build date, read from Vercel's environment or git at build time), Set in (the header and body typefaces plus the palette name, from the Studio's choices), Drawn in (the location). 11px uppercase faint keys, 12px ink-soft values, tabular numerals.
+### Form (`.form`)
 
-### Navigation (`.bp-nav`)
+Name and email side by side, message below, a solid Send. Inputs are 10px-radius white with an accent focus ring at 16%, with a status line under the button and a hidden honeypot field.
 
-Sticky, 82% paper with a 12px backdrop blur and a hairline bottom rule. Brand at left (the 34px animated monogram plus the uppercase 13px muted name), links and the theme toggle at right. The toggle is a 44×24 white pill whose 18px ink thumb slides 20px and turns accent when dark is on. Under 860px the bar stacks and the links wrap.
+### Footer (`.footer`)
 
-### Floating pills (`.bp-badge`, `.bp-top`)
+The monogram and note, then a `.footer-meta` line in mono: Site, Updated (the commit the page was built from) and Based in. It sits on a tile (`.card.footer-inner`) like everything else.
 
-Fixed to the bottom corners: a white pill at 92% with blur, hairline border, floating-pill shadow. The relocation badge (right) carries a 9px accent dot with a pinging ring and a typewriter label that types, holds, and deletes on a loop; on the home page it rests beside the hero rule on wide screens and hops to the corner on scroll, and starts docked below 860px. Back to top (left) is 11px uppercase with an arrow and fades in after scrolling.
+### Floating controls (`.bp-top`, `.bp-studio-link`)
 
-### Table (`.bp-table`)
-
-White frame with hairline border, `overflow-x: auto`. 11px uppercase muted headers over a 2px ink rule, 14px cells with hairline row dividers, rows tint 3% ink on hover. Inline links in the accent.
+Pill, mono label, frosted white, `--shadow`. Back to top sits bottom-left; Edit in Studio sits bottom-right in development only.
 
 ### Monogram (`BpMark`)
 
-The site's "B" drawn as strokes: a `[data-draw]` set that draws on and off over 7.3s, a `[data-chase]` dash that circulates, and an optional 5px float. The bowl uses `blue`; the stem uses ink.
+Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to-blue gradient, the ring chases. It appears in the nav at 30px, a typographic cover at 54px and the footer at 44px.
+
+### Named Rules
+
+**The Morph-Not-Modal Rule.** A project never appears from nowhere. It grows out of the tile the visitor touched and collapses back into it, so the dialog reads as the tile opened up. New expandable content on the tiles follows the same shared-layout pattern, with a plain fade as the reduced-motion fallback.
+
+**The Resume-At-Rest Rule.** With every tile closed, the home page is the resume: the bento, then who, experience, projects, stack, education and contact, in that order. Nothing on the surface depends on a hover, a click or an animation to be read.
+
+## Motion
+
+- `bloom-drift`: the bloom moves 2% and scales to 1.04 over 22s, alternating.
+- `tile-in`: each bento tile rises 16px and fades in over 0.8s, staggered 70ms by `--i`. `.page-in` gives a project page one 0.7s entrance with no observer, so a page taller than the viewport still shows.
+- Section content below the bento enters once through `Reveal` (`components/blueprint/Reveal.tsx`); project tiles rise over 0.6s, 0.06s apart.
+- The calendar's cells pop in at 11ms per cell once the tile is in view.
+- Hovers: tiles 3px over 0.5s, buttons 2px over 0.4s; the tile arrow nudges 2px up and right.
+- `SmoothScroll` eases wheel scrolling (0.11 per frame) and steps aside for touch, keys, reduced motion and inner scrollers.
+- `prefers-reduced-motion: reduce` collapses every animation and transition to its final frame, holds the bloom still and turns the morph into a fade.
+
+## History
+
+- **Blueprint Press** (2026-08 to 2026-11): a resume printed on paper over a fixed drafting grid; it lives on as the "Default" palette.
+- **Blue Sheet** (2026-11-08, one day): a drafting sheet inside a dashed cut line with a drawn construction-line hero; it lives on as the `blue-sheet` palette preset. The site's Versions block counts it as the start of Glass Tile, not a design of its own.
+- **Glass Tile** (2026-11-09 to today): this design. It was named **Clean Bench** until 2026-11-15, when it was renamed everywhere: `bench.css` became `glass-tile.css`, `components/bench/` became `components/glass-tile/`, the `clean-bench` preset became `glass-tile` (`lib/palettes.ts` still accepts the old id), and `data-bench-portal` became `data-glass-portal`.
 
 ## Do's and Don'ts
 
 ### Do
 
-- **Do** put color only in the accent: indexes, the solid CTA, evidence links, underlines, hover bars, the badge dot. Surfaces stay paper and white.
-- **Do** derive every gray from the ramp in `lib/palette.ts` and every palette from five seeds, so all presets and dark mode keep the same rhythm.
-- **Do** keep cards, buttons, and frames square with 1px `rule` borders; reserve `999px` for small floating controls and `50%` for dots.
-- **Do** run every transition on `--ease` (`cubic-bezier(0.22, 0.9, 0.28, 1)`) and every entrance through `Reveal`; keep hover lifts between 2 and 5px.
-- **Do** honor `prefers-reduced-motion` by freezing on the final frame, never by hiding content.
-- **Do** keep the index column, the hairline section rules, and the 2px ink rule under every page title; they are the page's structure.
-- **Do** put `suppressHydrationWarning` on every `<a>` and `<Link>`.
-- **Do** write section indexes as `h2` and keep the heading outline unbroken (h1 title, h2 index, h3 entry, h4 detail).
-- **Do** theme the browser's own surfaces: `::selection`, `caret-color`, `accent-color`, underline offset, scrollbars, tabular numerals.
+- Put every piece of content on a tile and every control in a pill; the ground stays empty apart from the bloom. Headings included: a section heading is a `.card.sec-head` tile or sits inside its `.panel`.
+- Use `--accent-fill` for anything painted and `--accent` for anything drawn or written.
+- Set labels, dates, counts and tags small in the mono; names and sentences in Instrument Sans.
+- Keep the home page readable as the resume at rest.
+- Open a project by morphing its tile, offer the page behind it (Open full page), and keep `#project-<id>` as the address of a project.
+- Lift 1 to 3px on hover, grow the shadow one step, and use the one easing curve.
+- Render portals inside `[data-glass-portal]` so tokens resolve.
+- Derive new colours from the seeds in `lib/palette.ts`; add new copy as a Studio field, never a string in a component.
 
 ### Don't
 
-- **Don't** synthesize a bold Instrument Serif; the face has none. Go larger instead.
-- **Don't** put a kicker, eyebrow, or category label above any heading, on any page, in any card.
-- **Don't** set text in `faint` or below 11px; the miniature Studio preview on `/about-this-site` is the one decorative exception (`aria-hidden`, 9px).
-- **Don't** draw gradient text; emphasis is size, weight, or the accent.
-- **Don't** add a second surface color, a colored band, or a gradient surface; paper, white, and ink are the whole material.
-- **Don't** add shadows at rest to cards or controls that are not floating over the page.
-- **Don't** hand-write a gray or an accent tint; use the ramp or `color-mix()` from a token.
-- **Don't** introduce a second breakpoint or a mobile-only layout; scale with `clamp()` and collapse at 860px.
-- **Don't** change the palette in `blueprint.css` alone; the active preset lives in `data/header.json` and is injected by `app/(site)/layout.tsx`, and three files carry hard copies of it.
+- Don't introduce a second hue on type, chrome or the bloom; the deeper `blue` is for geometry and data only.
+- Don't paint a fill with `--accent` (it goes brighter, not deeper, in the dark).
+- Don't square a corner, drop a tile's border or zero its shadow.
+- Don't set a sentence in the mono or let the mono grow past 12px.
+- Don't bring back the drafting grid, the dashed frame or the construction-line cover; they belong to the history.
+- Don't open a dialog with a scale or slide that ignores the tile it came from.
+- Don't pin, scroll-jack or trap the wheel.
+- Don't hand-pick a gray, a wash or a shadow colour.
+- Don't render the dialog, a tooltip or a menu into `<body>` and expect `var(--ink)` to resolve.
+- Don't add a hero video, a marketing voice or a metric the data files cannot back.

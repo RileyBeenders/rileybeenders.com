@@ -1,35 +1,54 @@
 import type { Metadata } from "next";
 import {
+  Azeret_Mono,
   Fraunces,
   IBM_Plex_Mono,
   Inter,
+  Instrument_Sans,
   Instrument_Serif,
   Playfair_Display,
   Source_Serif_4,
   Space_Grotesk,
   Spectral
 } from "next/font/google";
-import resumeData from "@/data/resumeData";
-import { BpNav } from "@/components/blueprint/BpNav";
 import dynamic from "next/dynamic";
-import { BpFixedRelocationBadge } from "@/components/blueprint/BpRelocationBadge";
+import resumeData from "@/data/resumeData";
+import { SiteNav } from "@/components/glass-tile/SiteNav";
+import { SmoothScroll } from "@/components/glass-tile/SmoothScroll";
 import { ThemeProvider } from "@/components/blueprint/ThemeProvider";
 import { AnimationSync } from "@/components/blueprint/AnimationSync";
 import { fontVarExpression } from "@/lib/fonts";
 import { tokensToCssVars } from "@/lib/palette";
 import { resolveThemeTokens } from "@/lib/theme";
-import "./blueprint.css";
+import { PlotGrid } from "@/components/glass-tile/PlotGrid";
+import "./glass-tile.css";
 import "./bullet-link.css";
 import "./skill-pills.css";
+import "./projects/projects.css";
+import "./projects/feature.css";
+import "./projects/walkthrough.css";
 import homePage from "@/data/home/page.json";
 
 // Every font Studio can assign to a role is preloaded here as a CSS variable;
-// picking a font just points --bp-font-header/subheader/body at one of these.
+// picking a font just points --bp-font-header/subheader/body/mono at one of these.
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
   variable: "--font-instrument-serif",
+  display: "swap"
+});
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-instrument-sans",
+  display: "swap"
+});
+const azeretMono = Azeret_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-azeret-mono",
   display: "swap"
 });
 const spectral = Spectral({
@@ -91,6 +110,8 @@ const StudioLink =
 
 const FONT_VARIABLES = [
   instrumentSerif.variable,
+  instrumentSans.variable,
+  azeretMono.variable,
   spectral.variable,
   playfairDisplay.variable,
   fraunces.variable,
@@ -111,10 +132,25 @@ function cssBlock(vars: Record<string, string>): string {
     .join("\n");
 }
 
+/**
+ * The site shell: the palette and font tokens from Site Settings written as
+ * CSS variables, the floating nav, the page the routes render into, and the
+ * motion switches (synced animations, smooth scrolling).
+ */
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   const tokens = resolveThemeTokens(resumeData.theme);
-  // Site Settings → Motion: every repeating animation on one shared beat (components/blueprint/AnimationSync.tsx).
-  const syncAnimations = resumeData.motion?.syncAnimations === true;
+  const motion = resumeData.motion ?? {};
+  // Site Settings → Layout → Tile opacity: how solid the glass tiles are (.card in glass-tile.css).
+  const tileFill = Math.min(100, Math.max(40, Number(resumeData.layout?.tileOpacity) || 72));
+  // Site Settings → Layout → Section box opacity: the fainter box around a section's tiles (.sec-group).
+  const groupRaw = Number(resumeData.layout?.groupOpacity);
+  const groupFill = Math.min(90, Math.max(0, Number.isFinite(groupRaw) && resumeData.layout?.groupOpacity != null ? groupRaw : 50));
+  // A tile over the box must still come out at tileFill, not tileFill plus the box:
+  // 1 - (1 - a)(1 - g) = t, so a = 1 - (1 - t) / (1 - g).
+  const tileFillGrouped = Math.max(0, Math.round((1 - (1 - tileFill / 100) / (1 - groupFill / 100)) * 1000) / 10);
+  // Site Settings → Layout → Section heading opacity: the band across the top of the box; same compensation.
+  const headFill = Math.min(100, Math.max(40, Number(resumeData.layout?.headingOpacity) || 95));
+  const headFillGrouped = Math.max(0, Math.round((1 - (1 - headFill / 100) / (1 - groupFill / 100)) * 1000) / 10);
 
   const overrideCss = `
 .bp[data-theme-id] {
@@ -122,27 +158,38 @@ ${cssBlock({
   ...tokensToCssVars(tokens.light),
   "--bp-font-header": fontVarExpression(resumeData.fonts.header),
   "--bp-font-subheader": fontVarExpression(resumeData.fonts.subheader),
-  "--bp-font-body": fontVarExpression(resumeData.fonts.body)
+  "--bp-font-body": fontVarExpression(resumeData.fonts.body),
+  "--bp-font-mono": fontVarExpression(resumeData.fonts.mono),
+  "--tile-fill": `${tileFill}%`,
+  "--group-fill": `${groupFill}%`,
+  "--tile-fill-grouped": `${tileFillGrouped}%`,
+  "--head-fill-grouped": `${headFillGrouped}%`
 })}
 }
 html[data-theme="dark"] .bp[data-theme-id] {
 ${cssBlock(tokensToCssVars(tokens.dark))}
 }
-/* The overscroll gutter is painted on <html>, outside .bp's scope, so it needs the resolved color rather than a var().
-   [lang] is redundant (root layout always sets it) but bumps specificity above blueprint.css's own html rules
-   without depending on this tag rendering after that stylesheet in the document. */
+/* The overscroll gutter is painted on <html>, outside .bp's scope, so it needs the resolved color rather than a var(). */
 html[lang] { background: ${tokens.light.paper}; }
 html[lang][data-theme="dark"] { background: ${tokens.dark.paper}; }`;
 
   return (
     <ThemeProvider>
-      <div className={`bp ${FONT_VARIABLES}`} data-theme-id={resumeData.theme.paletteId} data-intro-align={resumeData.layout.introAlign} data-motion-sync={syncAnimations ? "" : undefined}>
+      <div
+        className={`bp ${FONT_VARIABLES}`}
+        data-theme-id={resumeData.theme.paletteId}
+        data-motion-sync={motion.syncAnimations ? "" : undefined}
+      >
         {/* Palette/font tokens picked in Studio's Site Settings tab — see lib/theme.ts */}
         <style dangerouslySetInnerHTML={{ __html: overrideCss }} />
-        <BpNav name={resumeData.person.name} />
-        {children}
-        <BpFixedRelocationBadge />
-        {syncAnimations ? <AnimationSync /> : null}
+        {/* The animated graph paper behind the tiles. Site Settings → Motion sets its speed and whether the mouse pulls on it. */}
+        {motion.grid !== false && <PlotGrid loopSeconds={motion.gridLoopSeconds ?? 8} pointer={motion.gridPointer !== false} trailSeconds={motion.gridTrailSeconds ?? 4} />}
+        <SiteNav name={resumeData.person.name} />
+        <div className="page">{children}</div>
+        {/* Dialogs portal here rather than to <body>, so the palette tokens scoped to .bp reach them. */}
+        <div data-glass-portal="" />
+        {motion.syncAnimations && <AnimationSync />}
+        {motion.smoothScroll && <SmoothScroll />}
         <StudioLink />
       </div>
     </ThemeProvider>

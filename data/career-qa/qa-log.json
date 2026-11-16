@@ -757,6 +757,213 @@
       "answer": null,
       "notes": "Disney postings ask for a B.S. from an ABET-accredited engineering program in Electrical Engineering or equivalent. Resumes do not mention ABET until this is answered.",
       "usedIn": []
+    },
+    {
+      "id": "2026-11-14-01",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "answered",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "AI tools",
+        "LLMs",
+        "local models"
+      ],
+      "question": "Which AI models and tools do you use in your work?",
+      "answer": "Claude, Claude Code, Copilot, Grok, and local models in LM Studio (Nemotron, Qwen, Gemma, and Hermes). I also work in WSL and in Cursor, where I use Grok.",
+      "notes": "Copilot means both products; see 2026-11-14-09. GitHub Copilot is personal-project use, so keep it out of Proteor bullets.",
+      "usedIn": [
+        "data/home/experience.json",
+        "data/home/skills.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-02",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "AI-assisted development",
+        "hardware integration",
+        "controls"
+      ],
+      "question": "What have you built or set up with AI in the last two weeks?",
+      "answer": "I used AI to speed up bringing new hardware into an existing ecosystem. I defined the I/O, wired everything, and tested each item myself, then used AI to help build the scripts that make the devices work together. The hardware went into the ICARUS-Pro, a newer model we recently released, and the update was made to conform to EU/CE regulations.",
+      "notes": "Riley described three areas: software, product simulation (2026-11-14-03), and material optimization (2026-11-14-04). The scripting language and whether the update is running on shipped machines are still open in 2026-11-14-10. CE testing is in progress (2026-10-20-16): never write that the machine is CE marked.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-03",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "simulation",
+        "CFD",
+        "airflow",
+        "R&D"
+      ],
+      "question": "What is the product simulation work?",
+      "answer": "I am using AI and simulation software to optimize the airflow of a high-pressure blower, narrowing down where the air goes so parts cool better and the printers can run faster. Simulation lets me move through design iterations quickly to find the next one. It is early R&D, so there is no print speed or print time data yet. The tools are Python scripts, OpenFOAM simulations (through Symscape OpenFlow, a native Windows port of OpenFOAM), and ParaView.",
+      "notes": "In progress with no measured result: describe it as ongoing and never state a speed gain. Riley confirmed the solver is OpenFOAM on 2026-11-14; list the skill as OpenFOAM.",
+      "usedIn": [
+        "data/home/experience.json",
+        "data/home/skills.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-04",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "answered",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "material optimization",
+        "cost reduction",
+        "generative design"
+      ],
+      "question": "Is there a measurable result from the AI work so far?",
+      "answer": "Yes. I used AI to help turn a solid part into one with an organic structure, which reduced its material use by 16.2% and its price per part by 21.29% when ordered at scale. The 16.2% is the reduction in the part's overall material and the 21.29% is the reduction in overall cost per part. The part is made by MJF, and the price is a vendor quote for 200 units that is ready to purchase.",
+      "notes": "Riley planned to place the order on Monday, 2026-11-16. Until the order is confirmed, call the price quoted. The part name and the AI tool that produced the structure are not recorded.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-05",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "ExtrusionStudio",
+        "server hardware",
+        "roadmap",
+        "quality control"
+      ],
+      "question": "Who uses the system, and is it in daily use or a pilot?",
+      "answer": "ExtrusionStudio is currently being deployed on enterprise server hardware. Future versions are planned to bring in machine manufacturing, giving statistics and reports on QC progress and build time for each machine that moves through the facility. The aim is faster manufacturing, real data for the products we ship, and a user-credited log of how each machine performed before it goes to a customer.",
+      "notes": "The server move is in progress and the machine-manufacturing features are planned, so both stay off the site until running (see 2026-11-06-04). The question about user count was not answered.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-14-06",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "validation",
+        "testing",
+        "CI/CD"
+      ],
+      "question": "How do you check that AI-assisted output is right, and does anyone approve it?",
+      "answer": "Almost everything I do goes through validation or a test. Code is checked before deployment to see how it behaves, and it goes through a CI/CD pipeline. Physical parts and AI-generated or AI-optimized 3D files go through a similar staged process that is not automated: human checks at each step before the design moves on. Physical items get a visual inspection, and 3D models are imported into existing slicers and other software to verify they are watertight. No one else in the company approves this work; I develop and test locally on my own devices before deploying anything. Much of my recent work is local development and 3D modeling that modern CAD software cannot handle.",
+      "notes": "For physical parts and 3D files, describe this as staged human review, not CI/CD. Which CI/CD system the code uses is not recorded. Riley answered the human-in-the-loop question as a question about approvals; see 2026-11-14-12.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-07",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "answered",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "requirements",
+        "product discovery",
+        "operators"
+      ],
+      "question": "Do you decide what to build and gather requirements from the users?",
+      "answer": "Yes. I do not start a project without a goal, whether it is a model, a UI layout, a software feature, or an operational change. Operational changes have to make sense to the technicians and operators, built around how they actually work even when that differs from how I think they should work.",
+      "notes": null,
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-14-08",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "answered",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "publication",
+        "confidentiality"
+      ],
+      "question": "What can be public, and what about Proteor must stay off the site and resumes?",
+      "answer": "Anything that carries the Proteor name must be reviewed by me first.",
+      "notes": "Standing rule: show Riley the exact wording of any new Proteor-related copy before it is committed or sent.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-14-09",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "answered",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "AI tools"
+      ],
+      "question": "When you say Copilot, do you mean GitHub Copilot, Microsoft 365 Copilot, or both?",
+      "answer": "Both. I use GitHub Copilot on my personal projects. At work, our IT department has added Microsoft Copilot to Outlook, and Claude is planned for Teams meetings.",
+      "notes": "Claude in Teams is planned, not in place. GitHub Copilot added to data/home/skills.json on 2026-11-14.",
+      "usedIn": [
+        "data/home/skills.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-10",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "hardware integration",
+        "controls"
+      ],
+      "question": "Which hardware did you integrate with AI-assisted scripts, into which system (for example ExtrusionStudio or a machine controller), and what language are the scripts in? Is it running in production?",
+      "answer": "The hardware was added to the ICARUS-Pro, a newer model we recently released. The update was made to conform to EU/CE regulations.",
+      "notes": "The scripting language and whether the update is running on shipped machines are not recorded.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-11",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "material optimization",
+        "cost reduction"
+      ],
+      "question": "For the 16.2% material and 21.29% price-per-part reduction: which part is it, what process makes it, at what quantity, and is the price a vendor quote or a placed order? Which AI tool produced the organic structure?",
+      "answer": "The 16.2% is the reduction in the part's overall material from the organic structures, and the 21.29% is the reduction in overall cost per part. The part is made by MJF at a quantity of 200 units. The price is a vendor quote, ready to purchase, with the order planned for Monday, 2026-11-16.",
+      "notes": "Which part it is and which AI tool produced the organic structure are not recorded. Confirm the order was placed before dropping the word quoted.",
+      "usedIn": [
+        "data/home/experience.json"
+      ]
+    },
+    {
+      "id": "2026-11-14-12",
+      "asked": "2026-11-14",
+      "answered": "2026-11-14",
+      "status": "partial",
+      "source": "AI work interview, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "LLM products",
+        "RAG",
+        "agents"
+      ],
+      "question": "Have you built anything where an LLM is part of the product itself and other people use it, for example a tool that answers questions from company documents, an agent that calls tools, or a model call inside ExtrusionStudio or ProteorPrintOS?",
+      "answer": "I am working on that now in the new branch of ExtrusionStudio, the one that adds manufacturing to the software.",
+      "notes": "In development, not shipped, so it stays off the site and resumes as a shipped feature. What the LLM does in that branch (retrieval, agents, a model API call) and who will use it are not recorded. Asked because the 028 posting wants hands-on experience with LLM-powered products.",
+      "usedIn": []
     }
   ]
 }

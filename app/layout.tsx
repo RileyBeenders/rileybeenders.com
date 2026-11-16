@@ -6,9 +6,14 @@ import homePage from "@/data/home/page.json";
 import header from "@/data/header.json";
 import "./base.css";
 
+// The mode a first-time visitor sees (Studio: Site Settings → Overall theme →
+// Default mode). "system" follows the device; a saved toggle always wins.
+const rawDefaultMode = (header.theme as { defaultMode?: string }).defaultMode;
+const DEFAULT_MODE = rawDefaultMode === "light" || rawDefaultMode === "system" ? rawDefaultMode : "dark";
+
 // Runs before hydration so the correct theme is on <html> for first paint —
-// otherwise the page would flash light before React mounts and applies it.
-const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
+// otherwise the page would flash the wrong mode before React mounts and applies it.
+const THEME_INIT_SCRIPT = `(function(){var t="${DEFAULT_MODE}";try{var s=localStorage.getItem("theme");if(s==="light"||s==="dark"){t=s;}else if(t==="system"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}}catch(e){if(t==="system")t="dark";}document.documentElement.setAttribute("data-theme",t);})();`;
 
 // The home page's tab title, description and share title, edited in the Studio (Home page → Browser tab).
 const TITLE = homePage.meta.title;

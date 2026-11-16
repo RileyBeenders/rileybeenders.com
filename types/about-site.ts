@@ -3,8 +3,7 @@ import type {
   ProjectDates,
   ProjectFeature,
   ProjectImage,
-  ResumeBullet
-} from "@/types/resume";
+  ResumeBullet, Project } from "@/types/resume";
 import type { PageMeta } from "@/types/pages";
 
 export type AboutSiteHero = {
@@ -23,6 +22,8 @@ export type AboutSiteData = {
   hero: AboutSiteHero;
   /** Start is the first commit; `ongoing` keeps the date bar running. */
   dates: ProjectDates;
+  /** The shared categories the site's own project card sits in (lib/categories.ts). */
+  categories?: Project["categories"];
   /** The index heading of the story section ("01  The site"). */
   storyHeading: string;
   summary: string;

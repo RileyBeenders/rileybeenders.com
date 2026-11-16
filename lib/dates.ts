@@ -32,3 +32,20 @@ export function formatDate(value: string, style: "long" | "month" | "month-only"
 export function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
+
+/**
+ * Whether a role's end ("Present", "January 2025", "2019") falls within the
+ * last `years` years of `today` (ISO). A role still running counts, and so
+ * does an end that cannot be read, so nothing is hidden by mistake. A bare
+ * year counts as that December; a month counts to its last day.
+ */
+export function endedWithinYears(end: string, years: number, today: string): boolean {
+  const year = /\b(\d{4})\b/.exec(end);
+  if (!year) return true;
+  const month = /[A-Za-z]{3,}/.exec(end);
+  const monthIndex = month ? new Date(`${month[0]} 1, 2000`).getMonth() : 11;
+  const ended = new Date(Date.UTC(Number(year[1]), (Number.isNaN(monthIndex) ? 11 : monthIndex) + 1, 0));
+  const now = parseIsoDate(today);
+  const cutoff = new Date(Date.UTC(now.getUTCFullYear() - years, now.getUTCMonth(), now.getUTCDate()));
+  return ended.getTime() >= cutoff.getTime();
+}

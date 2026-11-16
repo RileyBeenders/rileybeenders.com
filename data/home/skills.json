@@ -1,43 +1,32 @@
 [
   {
-    "category": "Engineering",
+    "category": "Hardware",
     "items": [
-      "Design for Manufacturing (DFM)",
-      "Design for Assembly (DFA)",
+      "Allen Bradley PLCs",
+      "Siemens PLCs",
+      "Duet3D Controllers",
+      "Mean Well Power Supplies",
       "Electrical Layout and Schematic Design",
-      "Engineering Documentation and BOM Control",
-      "FDM, FGF, MJF, and SLS Design",
+      "Automation Equipment Development",
       "Fixture and Tooling Design",
-      "Geometric Dimensioning & Tolerancing (GD&T)",
-      "Lean Manufacturing",
-      "Lean Six Sigma",
-      "Product Development and Commercialization",
-      "Product Safety and Regulatory Compliance",
-      "Production Workflow Optimization",
-      "R&D Prototyping & Validation",
-      "Technical Writing and Documentation",
-      "Vendor Communication and Cost Negotiation",
-      "Worldwide Project Collaboration",
-      "Process Development"
+      "Rapid Prototyping",
+      "R&D Prototyping & Validation"
     ]
   },
   {
-    "category": "Design & Software",
+    "category": "Software",
     "items": [
-      "Autodesk Inventor",
-      "CATIA",
-      "Fusion 360",
-      "GitHub",
-      "LabVIEW",
-      "LM Studio",
-      "Macros",
-      "MATLAB",
-      "oMLX",
-      "Python",
-      "Rapid Prototyping",
-      "Siemens NX",
       "SolidWorks",
-      "Visual Studio Code"
+      "Siemens NX",
+      "CATIA",
+      "Autodesk Inventor",
+      "Fusion 360",
+      "MATLAB",
+      "LabVIEW",
+      "OpenFOAM",
+      "ParaView",
+      "Visual Studio Code",
+      "GitHub"
     ],
     "links": [
       {
@@ -47,31 +36,84 @@
     ]
   },
   {
+    "category": "Coding & AI",
+    "items": [
+      "Python",
+      "Claude Code",
+      "Cursor",
+      "GitHub Copilot",
+      "LM Studio",
+      "oMLX",
+      "GitHub",
+      "Git Version Control",
+      "Visual Studio Code",
+      "Macros",
+      "Workflow Automation"
+    ],
+    "links": [
+      {
+        "skill": "GitHub",
+        "projectId": "auto-app-updater"
+      }
+    ]
+  },
+  {
+    "category": "Engineering",
+    "items": [
+      "Product Development and Commercialization",
+      "R&D Prototyping & Validation",
+      "Design for Manufacturing (DFM)",
+      "Design for Assembly (DFA)",
+      "Geometric Dimensioning & Tolerancing (GD&T)",
+      "Electrical Layout and Schematic Design",
+      "Fixture and Tooling Design",
+      "Engineering Documentation and BOM Control",
+      "Technical Writing and Documentation",
+      "Product Safety and Regulatory Compliance",
+      "Vendor Communication and Cost Negotiation",
+      "Worldwide Project Collaboration"
+    ]
+  },
+  {
+    "category": "Manufacturing",
+    "items": [
+      "Design for Manufacturing (DFM)",
+      "Design for Assembly (DFA)",
+      "FDM, FGF, MJF, and SLS Design",
+      "Process Development",
+      "Production Workflow Optimization",
+      "Lean Manufacturing",
+      "Lean Six Sigma",
+      "Fixture and Tooling Design",
+      "Engineering Documentation and BOM Control"
+    ]
+  },
+  {
     "category": "Controls & Automation",
     "items": [
       "Allen Bradley PLCs",
       "Siemens PLCs",
       "Duet3D Controllers",
-      "Mean Well Power Supplies",
+      "LabVIEW",
+      "Automation Equipment Development",
       "Data Logging and Process Analysis",
-      "Git Version Control",
       "Workflow Automation",
+      "Python",
       "Windows Applications"
     ]
   },
   {
-    "category": "Infrastructure & Systems",
+    "category": "Networks & Servers",
     "items": [
-      "Automation Equipment Development",
-      "Domain-Based Application Access",
-      "DNS and Subdomain Configuration",
-      "Docker and Containerized Applications",
-      "Proxmox Virtualization",
-      "Reverse Proxy and Firewall Routing",
+      "Ubiquiti UniFi Network Administration",
       "Server Network and VLAN Configuration",
+      "Proxmox Virtualization",
+      "Docker and Containerized Applications",
       "Virtual Machine and Container Management",
       "Windows/Linux Systems Administration",
-      "Ubiquiti UniFi Network Administration",
+      "Reverse Proxy and Firewall Routing",
+      "DNS and Subdomain Configuration",
+      "Domain-Based Application Access",
       "DHCP and IP Address Management",
       "Multi-Site Network Management",
       "Network Monitoring and Troubleshooting",
@@ -81,11 +123,7 @@
     ],
     "links": [
       {
-        "skill": "DNS and Subdomain Configuration",
-        "projectId": "unifi-network"
-      },
-      {
-        "skill": "Reverse Proxy and Firewall Routing",
+        "skill": "Ubiquiti UniFi Network Administration",
         "projectId": "unifi-network"
       },
       {
@@ -93,7 +131,11 @@
         "projectId": "unifi-network"
       },
       {
-        "skill": "Ubiquiti UniFi Network Administration",
+        "skill": "Reverse Proxy and Firewall Routing",
+        "projectId": "unifi-network"
+      },
+      {
+        "skill": "DNS and Subdomain Configuration",
         "projectId": "unifi-network"
       },
       {

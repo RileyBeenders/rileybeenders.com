@@ -56,9 +56,10 @@ Standard Disney benefits package; bonus and/or long-term incentive units dependi
 - **Genuine skill gaps too:** no Java or Scala evidence, and no SQL/relational-database or big-data (Spark/Kafka/Databricks/Snowflake) experience on record — the actual data-engineering stack this role uses.
 - The tracker shows this one moved to "No longer in consideration" on Aug 20, 2026, six days after applying — consistent with the level mismatch above.
 
-### Now — Aug 22, 2026
+### Now — Nov 14, 2026
 
-No material change — nothing Java/Scala/SQL/big-data-specific has been added since application, and this application is already closed.
+- **AI-assisted development is now on the record (Nov 14, 2026):** Claude Code, Cursor, and GitHub Copilot are now named skills, and a new Proteor bullet states that Riley uses AI tools including Claude Code, Cursor, and local models in LM Studio to accelerate software, simulation, and design work, which matches the posting's use of AI-assisted development tools. The Java/Scala/SQL/big-data gaps are unchanged, and this application is already closed.
+- *Earlier (Aug 22, 2026):* No material change — nothing Java/Scala/SQL/big-data-specific has been added since application, and this application is already closed.
 
 ---
 

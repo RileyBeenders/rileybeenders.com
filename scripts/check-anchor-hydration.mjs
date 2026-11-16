@@ -11,7 +11,7 @@
 import { chromium } from "playwright-core";
 
 const SITE = process.env.SITE_URL ?? "http://localhost:3000";
-const routes = process.argv.slice(2).length ? process.argv.slice(2) : ["/", "/projects", "/contact", "/more-info", "/about-this-site"];
+const routes = process.argv.slice(2).length ? process.argv.slice(2) : ["/", "/projects", "/projects/rileybeenders-com", "/projects/icarus-lite", "/contact"];
 
 async function launch() {
   for (const channel of ["chrome", "msedge"]) {

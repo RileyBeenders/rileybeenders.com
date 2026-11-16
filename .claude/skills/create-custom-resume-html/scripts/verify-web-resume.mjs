@@ -5,7 +5,7 @@
 // Fails (exit 1) unless:
 //   - the page loads with no console or script errors, at desktop and phone width, light and dark;
 //   - nothing scrolls sideways at 390px;
-//   - the skill highlight works (a pill dims other lines, Escape clears it) when any pill is clickable;
+//   - the skill highlight works (a pill, or a row of the Skills picker, dims other lines, Escape clears it) when any pill is clickable;
 //   - with JavaScript off, every bullet is visible and the toolbar's print button is the only casualty;
 //   - printing the page yields the same page count and the same text on every page as <delivered.pdf>,
 //     the PDF create-custom-resume-pdf validated at the user's chosen page count.
@@ -64,8 +64,8 @@ async function open(opts) {
 {
   const { ctx, page, errors } = await open({ viewport: { width: 1280, height: 900 }, colorScheme: "light" });
   const info = await page.evaluate(() => ({
-    pills: document.querySelectorAll("button.pill").length,
-    plain: document.querySelectorAll("span.pill").length,
+    pills: document.querySelectorAll("button.pill, button.skills-item").length,
+    plain: document.querySelectorAll("span.pill, span.skills-item").length,
     metrics: document.querySelectorAll(".metric").length,
     details: document.querySelectorAll("details.more").length,
   }));
@@ -102,14 +102,14 @@ async function open(opts) {
   await page.waitForTimeout(800);
 
   if (info.pills) {
-    const pill = page.locator("button.pill").first();
+    const pill = page.locator("button.pill, button.skills-item").first();
     await pill.scrollIntoViewIfNeeded();
     await pill.click();
     await page.waitForTimeout(900);
     const on = await page.evaluate(() => ({
       filtering: document.body.classList.contains("filtering"),
       hits: document.querySelectorAll(".hit").length,
-      dimmed: [...document.querySelectorAll("main ul:not(.cert-list) li:not(.hit)")].some((li) => +getComputedStyle(li).opacity < 0.5),
+      dimmed: [...document.querySelectorAll("main ul:not(.cert-list):not(.skills-list) li:not(.hit)")].some((li) => +getComputedStyle(li).opacity < 0.5),
     }));
     await page.screenshot({ path: path.join(shots, "highlight.png") });
     check(on.filtering && on.hits > 0 && on.dimmed, `skill highlight marks ${on.hits} line(s) and dims the rest`);

@@ -119,6 +119,13 @@ export type Experience = {
   start: string;
   end: string;
   context?: string;
+  /**
+   * Where the role sits on the home page's Experience section. "auto" (or left
+   * out) goes by its end date and Site Settings → Layout → Experience shown
+   * (years); "always" shows it at rest whatever its dates; "more" keeps it
+   * behind the "See more of my past" button even while it is current.
+   */
+  homeDisplay?: "auto" | "always" | "more";
   bullets: ResumeBullet[];
 };
 
@@ -245,8 +252,34 @@ export type FeaturePillar = {
   screenshotId?: string;
 };
 
+/**
+ * One version of the site's design, for the Versions block of the site's own
+ * project. The current one comes first; an older one links to its frozen
+ * snapshot under /versions/<slug>/ (scripts/snapshot-version.mjs).
+ */
+export type SiteVersion = {
+  name: string;
+  /** e.g. "Aug 27 to Nov 7, 2026". */
+  dates: string;
+  /** The design live today. Shown first and largest; it has no snapshot. */
+  current?: boolean;
+  summary: string;
+  /** What this version brought, one line each. */
+  changes?: string[];
+  /** Captures of the version, light theme: home first. */
+  images?: { src: string; alt: string }[];
+  /** The frozen snapshot, e.g. "/versions/blueprint-press/index.html". */
+  snapshotHref?: string;
+  /** The commit the snapshot was built from. */
+  commit?: string;
+};
+
 /** The deep-dive layer of the About-this-site page: stats, a commit timeline, thematic pillars, and annotated screenshots. */
 export type ProjectFeature = {
+  /** Every design the site has had, current first. */
+  versionsTitle?: string;
+  versionsNote?: string;
+  versions?: SiteVersion[];
   intro?: string;
   /** The repository button beside the intro. */
   repoLabel?: string;
@@ -319,10 +352,19 @@ export type ProjectWalkthrough = {
   samples?: WalkthroughSample[];
 };
 
+/** A shared project category: a filter chip on /projects. The list and its order live in lib/categories.ts. */
+export type ProjectCategory = "productDesign" | "software" | "automationControls" | "networkInfrastructure";
+
 export type Project = {
   id: string;
   name: string;
+  /** The specific tag on the card ("Windows Desktop App / TypeScript, Electron"). Free text; the filters do not read it. */
   type: string;
+  /**
+   * The shared categories the project sits in, which the filter chips on
+   * /projects sort by (lib/categories.ts). More than one can be on.
+   */
+  categories?: Partial<Record<ProjectCategory, boolean>>;
   summary: string;
   bullets: ResumeBullet[];
   order?: number;
@@ -438,13 +480,16 @@ export type PaletteSeeds = {
 export type ThemeSetting = {
   /** One of the preset ids in lib/palettes.ts, or "custom" to use the seeds below. */
   paletteId: string;
+  /** Mode a first-time visitor sees before they use the toggle. "system" follows the device. Defaults to "dark". */
+  defaultMode?: "dark" | "light" | "system";
   custom: {
     light: PaletteSeeds;
     dark: PaletteSeeds;
   };
 };
 
-export type FontRole = "header" | "subheader" | "body";
+/** `mono` is the small-label face: dates, captions, eyebrows and other minor notes. */
+export type FontRole = "header" | "subheader" | "body" | "mono";
 
 /** Values are ids from lib/fonts.ts. */
 export type FontSettings = Record<FontRole, string>;
@@ -458,7 +503,39 @@ export type IntroAlign = "left" | "center" | "right" | "full";
 
 export type LayoutSettings = {
   introAlign: IntroAlign;
+  /**
+   * How solid the tiles are, as a percentage (40 to 100). Below 100 they are
+   * frosted glass: the animated grid and the pen's glow show through, softened
+   * (.card in glass-tile.css, --tile-fill). 72 when left out.
+   */
+  tileOpacity?: number;
+  /**
+   * How solid the box around a home page section's tiles is, as a percentage
+   * (0 to 90; .sec-group in glass-tile.css, --group-fill). The tiles inside keep
+   * their own tileOpacity: the two fills do not add up. 50 when left out.
+   */
+  groupOpacity?: number;
+  /**
+   * How solid the heading band across the top of a section box reads, as a
+   * percentage (40 to 100; .sec-group .sec-head in glass-tile.css,
+   * --head-fill-grouped). 95 when left out.
+   */
+  headingOpacity?: number;
+  /**
+   * How many years of experience the home page shows at rest. A role that
+   * ended longer ago than this waits behind the "See more of my past" button;
+   * a role still running always shows. 5 when left out; 0 shows every role.
+   */
+  experienceYears?: number;
+  /**
+   * The colour of the "Open to relocation" corner tab on the home page's hero
+   * tile (.hero-flag in glass-tile.css, data-tone). Each tone has its own light and
+   * dark pair, deliberately outside the palette. Amber when left out.
+   */
+  relocationColor?: RelocationColor;
 };
+
+export type RelocationColor = "amber" | "green" | "coral" | "violet" | "ink";
 
 /**
  * Site-wide motion. `syncAnimations` puts every repeating animation (the Read
@@ -467,6 +544,16 @@ export type LayoutSettings = {
  */
 export type MotionSettings = {
   syncAnimations?: boolean;
+  /** Wheel scrolling eases toward its target instead of jumping (components/glass-tile/SmoothScroll.tsx). Off when left out. */
+  smoothScroll?: boolean;
+  /** The animated graph paper behind the tiles (components/glass-tile/PlotGrid.tsx). On when left out. */
+  grid?: boolean;
+  /** Seconds a typical ripple takes to cross the window on that grid. 8 when left out. */
+  gridLoopSeconds?: number;
+  /** The pen: whether the mouse etches a glowing line along the grid lines. On when left out. */
+  gridPointer?: boolean;
+  /** Seconds before a piece of that line has faded away. 4 when left out. */
+  gridTrailSeconds?: number;
 };
 
 export type ResumeData = {

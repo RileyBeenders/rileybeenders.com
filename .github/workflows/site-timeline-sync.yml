@@ -119,7 +119,7 @@ jobs:
                recaptures them.
             4. Run `node scripts/check-about-site.mjs` and fix anything it reports.
             5. If you added, changed, or re-dated timeline entries, update the sentence in
-               ".obsidian/rileybeenders.com Notes/02 Components/About This Site Page.md" that
+               ".obsidian/rileybeenders.com Notes/02 Components/Site Project (About this site).md" that
                states the entry counts and the six stats (the vault-sync procedure).
 
             Do not commit or push — the workflow commits what you changed. Edit only

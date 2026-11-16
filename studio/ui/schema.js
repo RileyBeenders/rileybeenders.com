@@ -41,6 +41,14 @@ const COUNTED_FIELDS = [
 ];
 
 /** Repeatable bullet rows, shared by projects and experience. */
+/** One switch per shared project category. Mirrors PROJECT_CATEGORIES in lib/categories.ts: keep the two in step. */
+const PROJECT_CATEGORY_FIELDS = [
+  { name: "productDesign", type: "boolean", label: "Product Design", default: false, omitWhenDefault: true, span: "half" },
+  { name: "software", type: "boolean", label: "Software", default: false, omitWhenDefault: true, span: "half" },
+  { name: "automationControls", type: "boolean", label: "Automation & Controls", default: false, omitWhenDefault: true, span: "half" },
+  { name: "networkInfrastructure", type: "boolean", label: "Network Infrastructure", default: false, omitWhenDefault: true, span: "half" }
+];
+
 const BULLET_FIELDS = [
   {
     name: "text",
@@ -117,6 +125,18 @@ const PALETTE_OPTIONS = [
     description: "The site's original paper-and-ink palette with a red accent.",
     swatch: { paper: "#fbfbf9", white: "#ffffff", ink: "#0b1a2b", accent: "#e3342f", blue: "#2f86c4" },
     swatchDark: { paper: "#0d1b2a", white: "#142a3d", ink: "#eef3f7", accent: "#ff6b62", blue: "#5aa9e6" }
+  },
+  {
+    id: "glass-tile", name: "Glass Tile",
+    description: "The 2026-11-09 redesign's own palette: cool white tiles on a pale grey-blue ground with one cobalt accent in light; graphite tiles on near-black with a lighter blue in dark, where fills cut deeper instead of brighter.",
+    swatch: { paper: "#f4f5f8", white: "#ffffff", ink: "#111318", accent: "#2457e6", blue: "#173ea8" },
+    swatchDark: { paper: "#0f1115", white: "#181b22", ink: "#eceef2", accent: "#6a93ff", blue: "#9db9ff" }
+  },
+  {
+    id: "blue-sheet", name: "Blue Sheet",
+    description: "The 2026-11-08 drafting-sheet look's palette: cool blue-white paper and deep navy ink in light, a near-black navy sheet with a lighter blue in dark.",
+    swatch: { paper: "#f4f7fd", white: "#ffffff", ink: "#0d182c", accent: "#2457e6", blue: "#173ea8" },
+    swatchDark: { paper: "#070b15", white: "#0e1627", ink: "#e8eefb", accent: "#6a93ff", blue: "#9db9ff" }
   },
   {
     id: "electric", name: "Electric",
@@ -271,6 +291,8 @@ const SKILL_REVEALS = [
 
 /** Every option next/font/google preloads in app/(site)/layout.tsx — see lib/fonts.ts. */
 const FONT_OPTIONS = [
+  { value: "instrument-sans", label: "Instrument Sans — clean grotesque, the Glass Tile face" },
+  { value: "azeret-mono", label: "Azeret Mono — wide monospace for small labels" },
   { value: "instrument-serif", label: "Instrument Serif — editorial display serif" },
   { value: "spectral", label: "Spectral — warm reading serif" },
   { value: "playfair-display", label: "Playfair Display — high-contrast formal serif" },
@@ -287,6 +309,21 @@ const SCREENSHOT_FIELDS = [
   { name: "srcDark", type: "image", label: "Dark-theme capture", help: "Shown when the visitor is in light mode. Falls back to the light capture if empty." },
   { name: "alt", type: "text", label: "Alt text", required: true },
   { name: "caption", type: "text", label: "Caption" }
+];
+
+/** One design of the site (about-site.json feature.versions). Mirrors SiteVersion in types/resume.ts. */
+const VERSION_FIELDS = [
+  { name: "name", type: "text", label: "Name", required: true, span: "half" },
+  { name: "dates", type: "text", label: "Dates", required: true, span: "half", placeholder: "Aug 27 to Nov 7, 2026" },
+  { name: "current", type: "boolean", label: "Live now", default: false, omitWhenDefault: true, help: "The design the site wears today: shown first and largest, with no snapshot link. Only one should be on." },
+  { name: "summary", type: "textarea", label: "Summary", rows: 2, required: true },
+  { name: "changes", type: "stringList", label: "What it brought", help: "One short line each." },
+  { name: "images", type: "objectList", label: "Captures", itemLabel: "Capture", fields: [
+    { name: "src", type: "image", label: "Capture", required: true },
+    { name: "alt", type: "text", label: "Alt text", required: true }
+  ], help: "Light theme, home first. The live design shows two; an older one shows the first." },
+  { name: "snapshotHref", type: "text", label: "Snapshot link", placeholder: "/versions/blueprint-press/index.html", help: "The frozen copy made by scripts/snapshot-version.mjs. Blank on the live design." },
+  { name: "commit", type: "text", label: "Commit", span: "third", help: "The commit the snapshot was built from." }
 ];
 
 const BACKEND_MATCH_FIELDS = [
@@ -407,7 +444,7 @@ export const SCHEMAS = {
       { name: "name", type: "text", label: "Name", required: true, span: "half" },
       { name: "id", type: "slug", label: "ID", required: true, span: "half", help: "Used in links and to match a proof. Lowercase, no spaces." },
       { name: "order", type: "number", label: "Order", span: "third", help: "Low numbers come first on the projects page." },
-      { name: "type", type: "text", label: "Category", span: "half", placeholder: "Motion Control / Product Platform" },
+      { name: "type", type: "text", label: "Tag on the card", span: "half", placeholder: "Motion Control / Product Platform", help: "The specific tag over the card's cover. Free text; the filter chips use Categories below." },
       { name: "visible", type: "boolean", label: "Show on the site", default: true, omitWhenDefault: true, help: "Turn off to keep the write-up here but hide it from visitors." },
       { name: "summary", type: "textarea", label: "Summary", rows: 3 },
       { name: "status", type: "text", label: "Status note", help: "A short note on the state of the write-up, shown in small type under the summary. Leave blank when it is finished." },
@@ -431,6 +468,13 @@ export const SCHEMAS = {
           { name: "tools", type: "stringList", label: "Tools" },
           { name: "assets", type: "objectList", label: "Diagrams", itemLabel: "Diagram", fields: ASSET_FIELDS }
         ]
+      },
+      {
+        name: "categories",
+        type: "group",
+        label: "Categories",
+        help: "The shared categories this project sits in. The filter chips on the projects page sort by these, and a project can be in more than one.",
+        fields: PROJECT_CATEGORY_FIELDS
       },
       {
         name: "dates",
@@ -472,15 +516,15 @@ export const SCHEMAS = {
     fields: [
       META_GROUP,
       { name: "title", type: "text", label: "Headline", required: true },
-      { name: "intro", type: "group", label: "Intro", help: "Under the headline.", fields: COUNTED_FIELDS },
+      { name: "intro", type: "group", label: "Intro", help: "Beside the headline. Leave one blank to show nothing for that count.", fields: COUNTED_FIELDS.map((field) => ({ ...field, required: false })) },
       {
         name: "outro",
         type: "group",
         label: "Closing note",
-        help: "At the foot of the page, after the last project.",
+        help: "At the foot of the page, after the last project. Leave a line blank to drop it; with both blank the tile goes too.",
         fields: [
-          { name: "lead", type: "text", label: "Lead", required: true },
-          { name: "body", type: "group", label: "Note", fields: COUNTED_FIELDS }
+          { name: "lead", type: "text", label: "Lead" },
+          { name: "body", type: "group", label: "Note", fields: COUNTED_FIELDS.map((field) => ({ ...field, required: false })) }
         ]
       },
       {
@@ -530,6 +574,18 @@ export const SCHEMAS = {
       { name: "start", type: "text", label: "Start", placeholder: "Jan 2024" },
       { name: "end", type: "text", label: "End", placeholder: "Present" },
       { name: "context", type: "textarea", label: "Context", rows: 3 },
+      {
+        name: "homeDisplay",
+        type: "choice",
+        label: "Home page",
+        default: "auto",
+        help: "Where this role sits in the home page's Experience section.",
+        options: [
+          { value: "auto", label: "By date", help: "Shown if it ended within Site Settings → Layout → Experience shown (years), or is still running." },
+          { value: "always", label: "Always shown", help: "Shown at rest whatever its dates." },
+          { value: "more", label: "Behind See more", help: "Kept behind the See more of my past button, even while it is current." }
+        ]
+      },
       { name: "bullets", type: "objectList", label: "Bullets", itemLabel: "Bullet", fields: BULLET_FIELDS, always: true }
     ]
   },
@@ -549,7 +605,7 @@ export const SCHEMAS = {
         always: true,
         // Each row's link picker writes `links` beside `items`: [{ skill, projectId | proofId }].
         linksName: "links",
-        help: "Link a skill to the project or proof that shows it, and on the home page it gets a link icon, a marked border and a card that opens on hover (Home page → Linked skills). A draft target is kept but not shown until it's published."
+        help: "Each group is a tab in the home page's Skills and Tools section. An item can sit in more than one group: type it the same way in each. Link a skill to the project or proof that shows it, and on the home page it gets a link icon, a marked border and a card that opens on hover (Home page → Linked skills); a link set in one group follows the item into every group it's in. A draft target is kept but not shown until it's published."
       }
     ]
   },
@@ -610,6 +666,16 @@ export const SCHEMAS = {
         ]
       },
       {
+        name: "bento",
+        type: "group",
+        label: "Bento tiles",
+        help: "The small labels on the tiles beside the hero. The other tiles take their labels from Section headings, Navigation & labels (This site) and the Contact page.",
+        fields: [
+          { name: "now", type: "text", label: "Current role tile", required: true, span: "half", help: "Over the first Experience entry." },
+          { name: "location", type: "text", label: "Location tile", required: true, span: "half", help: "Over Site Settings → Location." }
+        ]
+      },
+      {
         name: "summaryLink",
         type: "group",
         label: "Summary link",
@@ -623,12 +689,14 @@ export const SCHEMAS = {
         name: "headings",
         type: "group",
         label: "Section headings",
-        help: "The numbers in front of them are added by the site.",
+        help: "The home page's sections, top to bottom after the bento: summary, experience, projects, stack, education. Activity names the GitHub tile in the bento.",
         fields: [
           { name: "summary", type: "text", label: "Summary", required: true, span: "half" },
           { name: "experience", type: "text", label: "Experience", required: true, span: "half" },
-          { name: "skills", type: "text", label: "Skills", required: true, span: "half" },
-          { name: "education", type: "text", label: "Education", required: true, span: "half" }
+          { name: "skills", type: "text", label: "Skills and Tools", required: true, span: "half", help: "The skill groups, as a row of tabs that each open their pills." },
+          { name: "education", type: "text", label: "Education", required: true, span: "half" },
+          { name: "activity", type: "text", label: "GitHub activity", required: true, span: "half", help: "The GitHub tile in the bento, read from the GitHub profile in Site Settings → Person." },
+          { name: "projects", type: "text", label: "Projects", required: true, span: "half", help: "The project grid on the home page." }
         ]
       },
       {
@@ -649,6 +717,27 @@ export const SCHEMAS = {
             options: READ_MORE_MOTIONS,
             help: "Hover or focus a card to play it. The previews use the site's palette, in the Studio's light or dark mode."
           }
+        ]
+      },
+      {
+        name: "experience",
+        type: "group",
+        label: "Experience",
+        help: "The words on the large button at the bottom of the Experience box, which opens the older roles. How far back the section shows before it is Site Settings → Layout → Experience shown (years).",
+        fields: [
+          { name: "moreLabel", type: "text", label: "Button, older roles hidden", span: "half", placeholder: "See more of my past", help: "The count of earlier roles is added after it." },
+          { name: "lessLabel", type: "text", label: "Button, older roles shown", span: "half", placeholder: "Show less" }
+        ]
+      },
+      {
+        name: "skillPicker",
+        type: "group",
+        label: "Skills and Tools tabs",
+        help: "The Skills section shows one tab per group in Skills, plus an All tab that lists every item once. Nothing is open when the page loads: the hint sits under the tabs until a visitor picks one, and picking the open tab again closes it. Print lists every item once instead.",
+        fields: [
+          { name: "allLabel", type: "text", label: "All tab", span: "third", placeholder: "All" },
+          { name: "label", type: "text", label: "Tab row name (screen readers)", span: "third", placeholder: "Skill groups" },
+          { name: "hint", type: "text", label: "Hint before a tab is picked", placeholder: "Pick a group above to see the skills and tools in it." }
         ]
       },
       {
@@ -697,9 +786,9 @@ export const SCHEMAS = {
         label: "Footer",
         fields: [
           { name: "note", type: "textarea", label: "Note beside the mark", rows: 2, required: true },
-          { name: "sheetLabel", type: "text", label: "Site label", required: true, span: "third" },
+          { name: "siteLabel", type: "text", label: "Site label", required: true, span: "third" },
           {
-            name: "sheetLink",
+            name: "siteLink",
             type: "group",
             label: "Site link",
             fields: [
@@ -707,8 +796,8 @@ export const SCHEMAS = {
               { name: "href", type: "text", label: "URL", required: true, span: "half" }
             ]
           },
-          { name: "revisionLabel", type: "text", label: "Revision label", required: true, span: "third", help: "Beside the latest commit." },
-          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "Beside Site Settings → Location." }
+          { name: "updatedLabel", type: "text", label: "Updated label", required: true, span: "third", help: "Beside the commit and date the page was built from." },
+          { name: "locationLabel", type: "text", label: "Location label", required: true, span: "third", help: "In the footer, beside Site Settings → Location. The location tile and the summary fact use Bento tiles → Location instead." }
         ]
       }
     ]
@@ -745,14 +834,32 @@ export const SCHEMAS = {
           { name: "title", type: "text", label: "Section title", required: true, span: "half" },
           { name: "description", type: "stringList", label: "Paragraphs", multiline: true, always: true }
         ]
+      },
+      {
+        name: "form",
+        type: "group",
+        label: "Message form",
+        help: "\"Send me a message\", on the contact page and at the foot of the home page. Messages go to the inbox named by CONTACT_TO on the server (see .env.example); until that is set, the form opens the visitor's own mail app instead.",
+        fields: [
+          { name: "title", type: "text", label: "Form title", required: true, span: "half" },
+          { name: "nameLabel", type: "text", label: "Name field", required: true, span: "third" },
+          { name: "emailLabel", type: "text", label: "Email field", required: true, span: "third" },
+          { name: "messageLabel", type: "text", label: "Message field", required: true, span: "third" },
+          { name: "send", type: "text", label: "Send button", required: true, span: "half" },
+          { name: "sending", type: "text", label: "While sending", required: true, span: "half" },
+          { name: "sent", type: "text", label: "After it sent", required: true },
+          { name: "failed", type: "text", label: "When it failed", required: true },
+          { name: "fallback", type: "text", label: "When the mail app opens instead", required: true },
+          { name: "comingSoon", type: "text", label: "Coming soon label", help: "While this has text, the form shows dimmed and switched off with this label over it. Clear it to turn the form on." }
+        ]
       }
     ]
   },
 
   moreInfo: {
-    label: "More Info",
+    label: "Application tracker",
     shape: "object",
-    description: "The About page: who you are, why this site exists, and the application tracker.",
+    description: "The application tracker, now a section at the foot of the site's own project page (/projects/rileybeenders-com). The About header and the About me / About this site paragraphs here are kept from the retired More Info page and are not shown.",
     fields: [
       META_GROUP,
       {
@@ -818,13 +925,14 @@ export const SCHEMAS = {
           },
           { name: "title", type: "text", label: "Section title", required: true },
           { name: "intro", type: "textarea", label: "Intro", rows: 3, help: "Optional lead-in above the chart." },
-          { name: "tableNote", type: "text", label: "Table note", required: true, help: "Above the table: what the gray rows mean." },
+          { name: "tableNote", type: "text", label: "Table note", help: "Optional line above the table." },
           {
             name: "statusKey",
             type: "group",
             label: "Status key",
-            help: "The words beside each circle. The circles themselves match the rows in gantt.md.",
+            help: "The words on each filter button above the table. The circles themselves match the rows in gantt.md. The table opens filtered to 🟢.",
             fields: [
+              { name: "all", type: "text", label: "All", required: true },
               { name: "received", type: "text", label: "🟢", required: true, span: "third" },
               { name: "interviewing", type: "text", label: "🟠", required: true, span: "third" },
               { name: "closed", type: "text", label: "🔴", required: true, span: "third" }
@@ -849,6 +957,13 @@ export const SCHEMAS = {
           { name: "title", type: "text", label: "Headline", required: true },
           { name: "tagline", type: "text", label: "Tagline", required: true }
         ]
+      },
+      {
+        name: "categories",
+        type: "group",
+        label: "Categories",
+        help: "The shared categories the site's own project card sits in, which the filter chips on the projects page sort by.",
+        fields: PROJECT_CATEGORY_FIELDS
       },
       {
         name: "dates",
@@ -894,6 +1009,9 @@ export const SCHEMAS = {
           { name: "intro", type: "textarea", label: "Intro", rows: 3 },
           { name: "repoLabel", type: "text", label: "Repository button", span: "half", placeholder: "GitHub", help: "Beside the intro." },
           { name: "stats", type: "objectList", label: "Stats", itemLabel: "Stat", fields: STAT_FIELDS },
+          { name: "versionsTitle", type: "text", label: "Versions heading", span: "half", help: "Blank hides the heading." },
+          { name: "versionsNote", type: "textarea", label: "Versions note", rows: 2, help: "Under the heading." },
+          { name: "versions", type: "objectList", label: "Versions", itemLabel: "Version", fields: VERSION_FIELDS, help: "Every design the site has had. The one marked Live now shows first; the rest follow in this order, each linking to its snapshot." },
           { name: "timelineTitle", type: "text", label: "Timeline heading", span: "half", help: "Blank hides the heading." },
           { name: "timelineNote", type: "textarea", label: "Timeline note", rows: 2, help: "How to use the timeline, under its heading." },
           { name: "timeline", type: "objectList", label: "Timeline", itemLabel: "Entry", fields: TIMELINE_FIELDS },
@@ -938,9 +1056,7 @@ export const SCHEMAS = {
         fields: [
           { name: "home", type: "text", label: "Home", required: true, span: "third" },
           { name: "projects", type: "text", label: "Projects", required: true, span: "third" },
-          { name: "contact", type: "text", label: "Contact", required: true, span: "third" },
-          { name: "moreInfo", type: "text", label: "More Info", required: true, span: "third" },
-          { name: "aboutSite", type: "text", label: "About this site", required: true, span: "third" }
+          { name: "contact", type: "text", label: "Contact", required: true, span: "third" }
         ]
       },
       {
@@ -960,6 +1076,46 @@ export const SCHEMAS = {
       { name: "openToRelocation", type: "text", label: "Relocation badge", required: true, span: "half", help: "Shown while Site Settings → Visibility has it on." },
       { name: "bulletReadMore", type: "text", label: "Resume bullet link", required: true, span: "half", help: "On a bullet that links to its project." },
       { name: "showCredential", type: "text", label: "Certificate link", required: true, span: "half", help: "When a certificate doesn't name its own." },
+      {
+        name: "projects",
+        type: "group",
+        label: "Project cards & dialog",
+        help: "The grid of project cards and the box a card opens into.",
+        fields: [
+          { name: "openFull", type: "text", label: "Open full page", required: true, span: "third", help: "The dialog's link to the project's own page." },
+          { name: "viewFullscreen", type: "text", label: "View fullscreen", required: true, span: "third", help: "The button over a card's cover on hover; it opens the project's own page instead of the dialog." },
+          { name: "close", type: "text", label: "Close", required: true, span: "third" },
+          { name: "viewAll", type: "text", label: "View all (home page)", required: true, span: "third" },
+          { name: "all", type: "text", label: "First filter chip", required: true, span: "third" },
+          { name: "siteBadge", type: "text", label: "Label on the home page's site tile", required: true, span: "third", help: "The small label on the tiles tile that links to this site's project. The site's project card shows its own tag, in the accent fill." },
+          {
+            name: "categories",
+            type: "group",
+            label: "Category filter chips",
+            help: "The words on the filter chips on the projects page, one per shared category. A chip only shows while a published project sits in its category.",
+            fields: [
+              { name: "productDesign", type: "text", label: "Product Design", span: "half", placeholder: "Product Design" },
+              { name: "software", type: "text", label: "Software", span: "half", placeholder: "Software" },
+              { name: "automationControls", type: "text", label: "Automation & Controls", span: "half", placeholder: "Automation & Controls" },
+              { name: "networkInfrastructure", type: "text", label: "Network Infrastructure", span: "half", placeholder: "Network Infrastructure" }
+            ]
+          },
+          { name: "photos", type: "text", label: "Photo count", required: true, span: "third", help: "{count} is the number of photographs." },
+          { name: "onePhoto", type: "text", label: "…with one photo", required: true, span: "third" }
+        ]
+      },
+      {
+        name: "activity",
+        type: "group",
+        label: "GitHub activity",
+        fields: [
+          { name: "total", type: "text", label: "Total line", required: true, span: "half", help: "{count} is the number of contributions." },
+          { name: "profile", type: "text", label: "Profile link", required: true, span: "half" },
+          { name: "less", type: "text", label: "Legend: less", required: true, span: "third" },
+          { name: "more", type: "text", label: "Legend: more", required: true, span: "third" },
+          { name: "unavailable", type: "text", label: "When GitHub can't be read", required: true }
+        ]
+      },
       {
         name: "caseStudy",
         type: "group",
@@ -1090,6 +1246,19 @@ export const SCHEMAS = {
         fields: [
           { name: "paletteId", type: "palette", label: "Palette", options: PALETTE_OPTIONS, always: true },
           {
+            name: "defaultMode",
+            type: "choice",
+            label: "Default mode for new visitors",
+            default: "dark",
+            always: true,
+            help: "What someone sees the first time they open the site. Once they use the light/dark toggle, their choice is remembered and wins.",
+            options: [
+              { value: "dark", label: "Dark", help: "Every first visit opens in dark mode." },
+              { value: "light", label: "Light", help: "Every first visit opens in light mode." },
+              { value: "system", label: "Match device", help: "Follows the visitor's operating system setting." }
+            ]
+          },
+          {
             name: "custom",
             type: "group",
             label: "Customization colors",
@@ -1109,7 +1278,8 @@ export const SCHEMAS = {
         fields: [
           { name: "header", type: "select", label: "Headers (H1)", span: "third", options: FONT_OPTIONS, always: true },
           { name: "subheader", type: "select", label: "Sub-headers (H2/H3)", span: "third", options: FONT_OPTIONS, always: true },
-          { name: "body", type: "select", label: "Body copy", span: "third", options: FONT_OPTIONS, always: true }
+          { name: "body", type: "select", label: "Body copy", span: "third", options: FONT_OPTIONS, always: true },
+          { name: "mono", type: "select", label: "Small labels", span: "third", options: FONT_OPTIONS, always: true, help: "Dates, captions, eyebrows and other minor notes." }
         ]
       },
       {
@@ -1131,6 +1301,57 @@ export const SCHEMAS = {
               { value: "right", label: "Right", help: "Against the right edge." },
               { value: "full", label: "Full width", help: "Across the whole page." }
             ]
+          },
+          {
+            name: "tileOpacity",
+            type: "number",
+            label: "Tile opacity (%)",
+            span: "half",
+            default: 72,
+            placeholder: "72",
+            help: "How solid the tiles are. 100 is a solid tile; lower turns them into frosted glass, so the animated grid and the pen's glow show through, softened. 40 to 100, and 72 when left blank."
+          },
+          {
+            name: "groupOpacity",
+            type: "number",
+            label: "Section box opacity (%)",
+            span: "half",
+            default: 50,
+            placeholder: "50",
+            help: "How solid the box around each home page section (Experience, Projects, Skills, Education) is. The tiles inside keep the tile opacity above: the two do not add up. 0 to 90, and 50 when left blank."
+          },
+          {
+            name: "headingOpacity",
+            type: "number",
+            label: "Section heading opacity (%)",
+            span: "half",
+            default: 95,
+            placeholder: "95",
+            help: "How solid the heading band across the top of each section box is. Higher than the tile opacity makes the section names stand out. 40 to 100, and 95 when left blank."
+          },
+          {
+            name: "experienceYears",
+            type: "number",
+            label: "Experience shown (years)",
+            span: "half",
+            default: 5,
+            placeholder: "5",
+            help: "The home page shows roles from the last this-many years, by end date; a role you still hold always shows. Older roles wait behind the See more button at the bottom of the Experience box (its words are Home page → Experience). 5 when left blank, and 0 shows every role."
+          },
+          {
+            name: "relocationColor",
+            type: "choice",
+            label: "Relocation tab colour",
+            default: "amber",
+            always: true,
+            help: "The \"Open to relocation\" tab in the corner of the home page's first tile. It sits outside the theme's palette on purpose, so it is the first thing a visitor sees. Shown while Visibility has the badge on.",
+            options: [
+              { value: "amber", label: "Amber", help: "Opposite the site's blue, the loudest." },
+              { value: "green", label: "Green", help: "The familiar available colour." },
+              { value: "coral", label: "Coral", help: "Warm and friendly." },
+              { value: "violet", label: "Violet", help: "A calm neighbour of the blue." },
+              { value: "ink", label: "Ink", help: "Black on light, white on dark." }
+            ]
           }
         ]
       },
@@ -1148,6 +1369,48 @@ export const SCHEMAS = {
             default: false,
             omitWhenDefault: true,
             help: "On: every repeating animation runs on one shared beat, so all the Read more glints sweep together and all the skill pills' borders move together. Off: each runs on its own offset, as the site does now."
+          },
+          {
+            name: "smoothScroll",
+            type: "boolean",
+            label: "Smooth scrolling",
+            default: false,
+            omitWhenDefault: true,
+            help: "On: mouse-wheel scrolling glides to a stop instead of stepping. Touch, keyboard and reduced-motion visitors always get the browser's own scrolling."
+          },
+          {
+            name: "grid",
+            type: "boolean",
+            label: "Animated grid",
+            default: true,
+            omitWhenDefault: true,
+            help: "On: graph paper behind the tiles, drawn as plus marks that close into squares as ripples cross. Off: the plain page with only the bloom."
+          },
+          {
+            name: "gridLoopSeconds",
+            type: "number",
+            label: "Grid loop (seconds)",
+            span: "half",
+            default: 8,
+            placeholder: "8",
+            help: "How long a ripple takes to cross the window. Lower is faster; new ripples start in proportion. 2 to 30, and 8 when left blank."
+          },
+          {
+            name: "gridPointer",
+            type: "boolean",
+            label: "Pen (mouse draws on the grid)",
+            default: true,
+            omitWhenDefault: true,
+            help: "On: the mouse snaps to the grid and etches a glowing line along the grid lines as it moves. Off: only the ripples move the grid. Mouse only."
+          },
+          {
+            name: "gridTrailSeconds",
+            type: "number",
+            label: "Pen trail (seconds)",
+            span: "half",
+            default: 4,
+            placeholder: "4",
+            help: "How long a piece of the pen's line stays before it has faded away, so the line shortens from its tail. 0.5 to 30, and 4 when left blank."
           }
         ]
       },
@@ -1166,8 +1429,8 @@ export const SCHEMAS = {
 export const RAIL = [
   { page: "Home", path: "/", keys: ["homePage", "summary", "experience", "skills", "education"] },
   { page: "Projects", path: "/projects", keys: ["projectsPage", "projects", "proofs"] },
+  // The site's own entry in the catalog: its page is /projects/rileybeenders-com, with the tracker at its foot.
+  { page: "About this site", path: "/projects/rileybeenders-com", keys: ["aboutSite", "moreInfo"] },
   { page: "Contact", path: "/contact", keys: ["contact"] },
-  { page: "More Info", path: "/more-info", keys: ["moreInfo"] },
-  { page: "About this site", path: "/about-this-site", keys: ["aboutSite"] },
   { page: "Site settings", path: "/", keys: ["header", "interface"] }
 ];

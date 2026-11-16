@@ -30,9 +30,11 @@ export type MoreInfoGanttSection = {
   /** Optional lead-in above the chart; omitted when there is nothing to say. */
   intro?: string;
   /** Above the table: what the gray (pre-site) rows mean. */
-  tableNote: string;
-  /** The words beside each status circle in the table key. */
+  tableNote?: string;
+  /** The words beside each status circle in the table key, which doubles as the table filter. */
   statusKey: {
+    /** The filter option that shows every row. */
+    all: string;
     received: string;
     interviewing: string;
     closed: string;

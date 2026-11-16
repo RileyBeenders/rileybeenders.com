@@ -11,6 +11,7 @@ import { FeatureStats } from "@/components/projects/feature/FeatureStats";
 import { FeatureTimeline } from "@/components/projects/feature/FeatureTimeline";
 import { FeaturePillars } from "@/components/projects/feature/FeaturePillars";
 import { FeatureBackend } from "@/components/projects/feature/FeatureBackend";
+import { FeatureVersions } from "@/components/projects/feature/FeatureVersions";
 import { Paragraphs, splitParagraphs } from "@/components/content/Paragraphs";
 import { ui } from "@/lib/copy";
 
@@ -59,6 +60,7 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
   };
 
   const hasStats = (feature.stats?.length ?? 0) > 0;
+  const hasVersions = (feature.versions?.length ?? 0) > 0;
   const hasTimeline = (feature.timeline?.length ?? 0) > 0;
   const hasPillars = (feature.pillars?.length ?? 0) > 0;
   const hasBackend = (feature.backend?.items.length ?? 0) > 0;
@@ -81,6 +83,16 @@ export function ProjectFeature({ feature, projectName, today, paletteId }: Proje
       {hasStats && (
         <div className="ft-block">
           <FeatureStats stats={feature.stats!} />
+        </div>
+      )}
+
+      {/* Right under the stats: the site as it is today first, then every design before it.
+          A snapshot's "Back to the current site" lands here (#versions). */}
+      {hasVersions && (
+        <div className="ft-block" id="versions">
+          {feature.versionsTitle && <Reveal><h2 className="ft-block-title">{feature.versionsTitle}</h2></Reveal>}
+          {feature.versionsNote && <Reveal delay={0.06}><Paragraphs className="ft-block-note" text={feature.versionsNote} /></Reveal>}
+          <FeatureVersions versions={feature.versions!} />
         </div>
       )}
 

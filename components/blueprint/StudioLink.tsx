@@ -14,10 +14,10 @@ const STUDIO_URL = process.env.NEXT_PUBLIC_STUDIO_URL;
 const STUDIO_FILE_FOR_PAGE: Record<string, string> = {
   "/": "summary",
   "/projects": "projects",
-  "/contact": "contact",
-  "/more-info": "moreInfo",
-  "/about-this-site": "aboutSite"
+  "/contact": "contact"
 };
+/** The site's own entry in the catalog (lib/catalog.ts) is edited as About this site. */
+const SITE_PROJECT_ID = "rileybeenders-com";
 
 const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
@@ -37,11 +37,21 @@ export function StudioLink() {
     function update() {
       // The Studio answers this machine only, so the control is pointless on a phone.
       if (!LOOPBACK_HOSTS.has(window.location.hostname)) return setHref(null);
+      // A project's own page (/projects/<id>) edits that entry; the site's own entry is the About this site file.
+      const page = pathname.match(/^\/projects\/([^/]+)$/);
+      if (page) {
+        const id = decodeURIComponent(page[1]);
+        setHref(`${STUDIO_URL}/#${id === SITE_PROJECT_ID ? "aboutSite" : `projects/${encodeURIComponent(id)}`}`);
+        return;
+      }
       const key = STUDIO_FILE_FOR_PAGE[pathname];
       if (!key) return setHref(null);
       let hash = `#${key}`;
-      const anchor = window.location.hash.match(/^#project-(.+)$/);
-      if (key === "projects" && anchor) hash += `/${encodeURIComponent(decodeURIComponent(anchor[1]))}`;
+      const anchor = window.location.hash.match(/^#project-(.+?)(?:-case-study)?$/);
+      if (key === "projects" && anchor) {
+        const id = decodeURIComponent(anchor[1]);
+        hash = id === SITE_PROJECT_ID ? "#aboutSite" : `#projects/${encodeURIComponent(id)}`;
+      }
       setHref(`${STUDIO_URL}/${hash}`);
     }
 

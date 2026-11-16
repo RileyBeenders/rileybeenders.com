@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Riley Beenders | R&D, Electromechanical and Automation Engineer",
-    "description": "R&D and electromechanical engineer focused on product development, manufacturing, automation, and practical innovation.",
+    "title": "Riley Beenders | R&D, Electro-Mechanical and Automation Engineer",
+    "description": "Electro-mechanical engineer and leader. I design, build, and automate reliable products and systems, and I'm quick to pick up and apply new technologies.",
     "shareTitle": "Riley's Professional Portfolio"
   },
   "hero": {
@@ -11,35 +11,50 @@
     ],
     "currentRole": "{company}, since {start}"
   },
+  "bento": {
+    "now": "Now",
+    "location": "Based in"
+  },
   "summaryLink": {
     "text": "RileyBeenders.com",
     "href": "https://www.rileybeenders.com"
   },
   "headings": {
-    "summary": "Summary",
+    "summary": "Who is Riley?",
     "experience": "Experience",
-    "skills": "Skills",
-    "education": "Education"
+    "skills": "Skills and Tools",
+    "education": "Education",
+    "activity": "GitHub activity",
+    "projects": "Projects"
   },
   "readMore": {
     "animation": "glint"
   },
+  "experience": {
+    "moreLabel": "See more of my past",
+    "lessLabel": "Show less"
+  },
+  "skillPicker": {
+    "allLabel": "All",
+    "hint": "Pick a group above to see the skills and tools in it.",
+    "label": "Skill groups"
+  },
   "linkedSkills": {
-    "border": "signal",
-    "reveal": "callout",
+    "border": "marks",
+    "reveal": "tab",
     "labels": {
       "project": "Project",
       "proof": "Proof"
     }
   },
   "footer": {
-    "note": "A website built to house my experience, compiled into one place for the next challenge.",
-    "sheetLabel": "Sheet",
-    "sheetLink": {
+    "note": "A website built to house my experience, projects and skills. Building it out over time...",
+    "siteLabel": "Site",
+    "siteLink": {
       "text": "rileybeenders.com",
       "href": "https://rileybeenders.com"
     },
-    "revisionLabel": "Rev.",
-    "locationLabel": "Drawn in"
+    "updatedLabel": "Updated",
+    "locationLabel": "Actively loading in"
   }
 }
