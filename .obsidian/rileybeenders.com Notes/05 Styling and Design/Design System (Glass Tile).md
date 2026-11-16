@@ -44,6 +44,7 @@ Its named rules, for quick reference:
 - **The Glass Rule**: anything floating is translucent white with a backdrop blur. Write `backdrop-filter` only, never the `-webkit-` twin (see `.card` below).
 - **The Everything-Is-A-Tile Rule**: content is a tile or inside one, on the shared radius, border and shadow.
 - **The Morph-Not-Modal Rule**: a project grows out of the tile the visitor touched and collapses back into it.
+- **The Box Action Rule** (2026-11-15): a button inside a tile or box sits right-aligned in its bottom-right corner unless a box is named as an exception (hero actions, "See more of my past", the contact form's Send, the dialog bar, disclosures that open content below them, the walkthrough pager, a code block's copy button, and tabs/chips/swatches/image buttons). Applied to "Open this version" (`.ver-open`), the project links row (`.pbody-links`, now full width and right-aligned under the 76ch prose), the feature pillars' Read more (`.ft-pillar-toggle`), and the resume demo's Generate PDF (`.dm-resume-foot`).
 - **The Resume-At-Rest Rule**: with every tile closed, the home page is the resume in order.
 
 ## Palette presets and derivation

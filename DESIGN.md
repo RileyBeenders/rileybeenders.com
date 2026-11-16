@@ -530,6 +530,8 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 
 **The Morph-Not-Modal Rule.** A project never appears from nowhere. It grows out of the tile the visitor touched and collapses back into it, so the dialog reads as the tile opened up. New expandable content on the tiles follows the same shared-layout pattern, with a plain fade as the reduced-motion fallback.
 
+**The Box Action Rule.** A button inside a tile or box sits in its bottom-right corner, right-aligned, after the content it acts on (since 2026-11-15; first applied to the Versions block's "Open this version", `.ver-open`). Make the content column a flex column that fills the box and give the action `margin-top: auto; align-self: flex-end`, so the button holds the corner even beside a taller image. Several actions sit together in one right-aligned row. Where the box holds more than one block (a project body), the row sits right at the end of the block it belongs to: the project links (`.pbody-links`) run the full width under the prose and align right. Applied so far: "Open this version" (`.ver-open`), the project links, the feature pillars' Read more (`.ft-pillar-toggle`), and the resume demo's Generate PDF (`.dm-resume-foot`, with its checks to its left). Exceptions are set deliberately and named: the hero tile's actions (`HeroActions`), the full-width "See more of my past" control, the Send button under the contact form, the dialog bar's controls, disclosures that open content directly below them ("View the full case study" `.pj-toggle`, a role's "Show N more"), the walkthrough's Previous / Next pager, a code block's copy button, and controls that are content rather than actions (tabs, chips, swatches, timeline dots, image buttons).
+
 **The Resume-At-Rest Rule.** With every tile closed, the home page is the resume: the bento, then who, experience, projects, stack, education and contact, in that order. Nothing on the surface depends on a hover, a click or an animation to be read.
 
 ## Motion
@@ -557,6 +559,7 @@ Unchanged since Blueprint Press: the stem draws, the bowl draws in the accent-to
 - Set labels, dates, counts and tags small in the mono; names and sentences in Instrument Sans.
 - Keep the home page readable as the resume at rest.
 - Open a project by morphing its tile, offer the page behind it (Open full page), and keep `#project-<id>` as the address of a project.
+- Put a box's buttons in its bottom-right corner, right-aligned (the Box Action Rule), unless the design says otherwise for that box.
 - Lift 1 to 3px on hover, grow the shadow one step, and use the one easing curve.
 - Render portals inside `[data-glass-portal]` so tokens resolve.
 - Derive new colours from the seeds in `lib/palette.ts`; add new copy as a Studio field, never a string in a component.

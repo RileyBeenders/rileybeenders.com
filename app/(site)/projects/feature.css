@@ -564,7 +564,8 @@ html[data-theme="dark"] .tl-size-add { color: #6cc48e; }
 .ft-pillar-shot:hover img { transform: scale(1.03); }
 .ft-pillar-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
-.ft-pillar-body { padding: 18px 20px 20px; }
+/* Box Action Rule: the body fills the pillar so Read more holds its bottom-right corner. */
+.ft-pillar-body { flex: 1; display: flex; flex-direction: column; padding: 18px 20px 20px; }
 .ft-pillar-title {
   margin-top: 0;
   margin-bottom: 2px;
@@ -579,8 +580,9 @@ html[data-theme="dark"] .tl-size-add { color: #6cc48e; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
-  padding: 0;
+  align-self: flex-end;
+  margin-top: auto;
+  padding: 14px 0 0;
   border: 0;
   background: none;
   font-size: 12px;
@@ -771,7 +773,9 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 .dm-page-lines li.is-lit { color: var(--ink); }
 .dm-page-lines li.is-lit::before { background: var(--accent); transform: scale(1.5); }
 
-.dm-resume-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 12px; }
+/* Box Action Rule: Generate PDF sits right; the checks it produces line up to its left. */
+.dm-resume-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 18px; margin-top: 12px; }
+.dm-resume-foot .dm-generate { order: 2; }
 .dm-generate { padding: 9px 14px; font-size: 12px; letter-spacing: 0.12em; }
 .dm-checks { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 0; list-style: none; }
 .dm-checks li {
@@ -1104,7 +1108,11 @@ html[data-theme="dark"] .ft-themed img[data-shows="light"] { display: block; }
 
 .ver-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap, 16px); }
 .ver-item { display: grid; grid-template-columns: minmax(200px, 300px) minmax(0, 1fr); gap: clamp(16px, 2.4vw, 26px); align-items: start; padding: clamp(14px, 2vw, 18px); }
-.ver-open { margin-top: 14px; }
+/* Box Action Rule (DESIGN.md): the text column fills the tile's height so the
+   button sits in the bottom-right corner, even beside a taller capture. */
+.ver-item-text { align-self: stretch; display: flex; flex-direction: column; }
+.ver-open { margin-top: auto; align-self: flex-end; }
+.ver-item-text > :has(+ .ver-open) { margin-bottom: 14px; }
 
 @media (max-width: 860px) {
   .ver-current, .ver-item { grid-template-columns: 1fr; }
