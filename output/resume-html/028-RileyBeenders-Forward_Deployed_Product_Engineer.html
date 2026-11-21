@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Riley Beenders - Disney Forward Deployed Product Engineer Resume</title>
+  <style>
+    /* Source for 1.ApplicationsUsed/028-RileyBeenders-Forward_Deployed_Product_Engineer.pdf (application 028). Delivered at --m 1.5 and --mp 1.4.
+       Print with .claude/skills/create-custom-resume-pdf/scripts/print-resume.mjs; --m scales every gap on the
+       two core pages, --mp every gap on the Selected Projects page (page 3, forced break). */
+    :root { --m: 1.5; --mp: 1.4; }
+    @page { size: Letter portrait; margin: 0.46in 0.50in 0.42in; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #ffffff; }
+    body {
+      color: #171717;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9.55pt;
+      line-height: 1.19;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    a {
+      color: #0b57d0;
+      text-decoration: underline;
+      text-decoration-thickness: 0.6pt;
+      text-underline-offset: 1.1pt;
+    }
+    header { margin: 0 0 calc(8.5pt * var(--m)); }
+    h1 { margin: 0; color: #102a43; font-size: 24pt; line-height: 1; letter-spacing: 0.15pt; }
+    .tagline {
+      margin-top: 3.5pt; color: #334e68; font-size: 10pt; font-weight: 700;
+      letter-spacing: 0.4pt; text-transform: uppercase;
+    }
+    .contact {
+      display: flex; flex-wrap: wrap; gap: 2pt 3.5pt; margin-top: 5pt;
+      color: #3f4852; font-size: 7.9pt; line-height: 1.1;
+    }
+    .contact span:not(:last-child)::after { content: "|"; margin-left: 3.5pt; color: #9aa5b1; }
+    h2 {
+      margin: calc(8.7pt * var(--m)) 0 calc(4.2pt * var(--m));
+      padding-bottom: 2pt;
+      border-bottom: 0.65pt solid #8ea3b5;
+      color: #102a43; font-size: 10pt; line-height: 1; letter-spacing: 0.5pt;
+      text-transform: uppercase;
+      break-after: avoid;
+    }
+    p { margin: 0; }
+    .summary { line-height: 1.22; }
+    .skill-line { margin: calc(2.2pt * var(--m)) 0; line-height: 1.19; }
+    .skill-line strong { color: #243b53; }
+    .prior-job {
+      margin-top: calc(6pt * var(--m));
+      padding-top: calc(5pt * var(--m));
+      border-top: 0.5pt solid #d3dde5;
+    }
+    .job-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12pt;
+      color: #111111; font-size: 9.85pt; line-height: 1.08;
+      break-after: avoid;
+    }
+    .job-head .company { font-weight: 700; }
+    .job-head .location { color: #52606d; font-weight: 400; }
+    .job-head .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
+    .role-line {
+      display: flex; justify-content: space-between; gap: 12pt;
+      margin-top: calc(2.2pt * var(--m));
+      color: #334e68; font-size: 8.9pt; font-style: italic; line-height: 1.14;
+      break-after: avoid;
+    }
+    .role-line .dates { color: #52606d; font-style: normal; font-size: 8.85pt; white-space: nowrap; }
+    .role-line.sub { margin-top: calc(4pt * var(--m)); }
+    .context { margin-top: calc(1.5pt * var(--m)); color: #52606d; font-size: 8.6pt; line-height: 1.14; break-after: avoid; }
+    ul { margin: calc(4pt * var(--m)) 0 0 14pt; padding: 0; }
+    li { margin: 0 0 calc(2.8pt * var(--m)) 0; padding-left: 1.2pt; line-height: 1.17; break-inside: avoid; }
+    .compact-role { margin: 0 0 calc(3pt * var(--m)); font-size: 9.1pt; line-height: 1.19; break-inside: avoid; }
+    .compact-role strong { color: #1f2933; }
+    .compact-role .dates { color: #52606d; white-space: nowrap; }
+    .education-row { display: flex; justify-content: space-between; gap: 12pt; line-height: 1.16; }
+    .education-row .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
+    .cert-list { margin: calc(3pt * var(--m)) 0 0 0; padding: 0; list-style: none; }
+    .cert-list li { display: flex; justify-content: space-between; gap: 12pt; margin: 0 0 calc(1.6pt * var(--m)); padding: 0; font-size: 9pt; line-height: 1.18; }
+    .cert-list .dates { color: #52606d; font-size: 8.85pt; white-space: nowrap; }
+    .keep { break-inside: avoid; }
+
+    /* Page 3: Selected Projects, on its own page with its own gap multiplier. */
+    .projects { break-before: page; }
+    .projects h2 { margin-top: 0; margin-bottom: calc(4.2pt * var(--mp)); }
+    .projects .lede { margin-bottom: calc(2pt * var(--mp)); color: #52606d; font-size: 8.6pt; line-height: 1.16; }
+    .project { break-inside: avoid; }
+    .project + .project {
+      margin-top: calc(6pt * var(--mp));
+      padding-top: calc(5pt * var(--mp));
+      border-top: 0.5pt solid #d3dde5;
+    }
+    .project .role-line { margin-top: calc(2.2pt * var(--mp)); }
+    .project .problem { margin-top: calc(2.4pt * var(--mp)); line-height: 1.19; }
+    .project .problem strong { color: #243b53; }
+    .project ul { margin-top: calc(3pt * var(--mp)); }
+    .project li { margin-bottom: calc(2.6pt * var(--mp)); }
+
+    /* Screen-only extras for the interactive HTML resume; never printed. */
+    .web-only { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Riley Beenders</h1>
+    <div class="tagline">Technical Product Ownership | AI-Assisted Development | Production Data Systems</div>
+    <div class="contact" aria-label="Contact information">
+      <span>Bethlehem, PA</span>
+      <span>Open to relocation (Glendale, CA)</span>
+      <span><a href="tel:+14845234431">(484) 523-4431</a></span>
+      <span><a href="mailto:rileybeenders@gmail.com">rileybeenders@gmail.com</a></span>
+      <span><a href="https://rileybeenders.com">rileybeenders.com</a></span>
+      <span><a href="https://linkedin.com/in/riley-beenders">linkedin.com/in/riley-beenders</a></span>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Professional Summary</h2>
+      <p class="summary">Engineer and builder who takes products from a user's problem to production adoption, and who builds with AI every day to get there faster. Starts from a defined goal and the people who will use the result, validates every AI-assisted output before it ships, and explains tradeoffs, risks, and budgets plainly to engineers, operators, and global leadership.</p>
+    </section>
+
+    <section>
+      <h2>Core Expertise</h2>
+      <p class="skill-line"><strong>AI &amp; Agentic Workflows:</strong> Claude Code; Cursor; Claude; GitHub Copilot; local LLMs in LM Studio (Nemotron, Qwen, Gemma, Hermes); prompt design as repository agent skills; agentic workflows in CI; automated evaluation of agent output; human-in-the-loop review of AI-generated designs; AI-assisted code, simulation, and design</p>
+      <p class="skill-line"><strong>Product Development:</strong> Product discovery with operators and end users; requirements and success criteria before build; pilots and proofs of concept to production; MVP scoping and iteration; roadmap milestones and dependencies; risk analysis to EU and U.S. standards; commercialization against unit goals; project budgets, BOMs, and unit cost; stakeholder reviews with global leadership</p>
+      <p class="skill-line"><strong>Software &amp; Data:</strong> Python (asyncio, Starlette); SQLite and SQL; real-time streaming with Server-Sent Events; data migration and reconciliation; Microsoft Dynamics 365 Business Central; SimplyPrint; TypeScript, React, Next.js, and Electron; Git and GitHub Actions CI/CD; Kubernetes and Docker; Modbus TCP</p>
+      <p class="skill-line"><strong>Engineering &amp; Operations:</strong> Electro-mechanical product design; CFD simulation in OpenFOAM and ParaView; Siemens PLCs and Duet3D controls; root cause analysis; incident reports for leadership; technical writing and user guides; vendor coordination; hiring and technical interviews; Lean Six Sigma</p>
+    </section>
+
+    <section>
+      <h2>Professional Experience</h2>
+      <article class="job">
+        <div class="job-head">
+          <div><span class="company">Proteor / Proteor Printing Solutions</span> <span class="location">| Coplay, PA</span></div>
+          <div class="dates">January 2025 - Present</div>
+        </div>
+        <p class="role-line"><span>Lead, Research &amp; Development Engineer</span></p>
+        <p class="context">Proteor acquired Filament Innovations in January 2025, and the CTO role below continued as Lead R&amp;D Engineer for the same product line, now Proteor Print.</p>
+        <ul>
+          <li>Took ExtrusionStudio, the plant's production data service, from a LabVIEW pilot to a Python service live on all three filament extrusion lines since October 2026, with no unplanned outage during production, so every spool's diameter is captured instead of written down by hand. Built it around how the operators and packing bench actually work rather than how I assumed they should.<details class="web-only more"><summary>Details</summary><p>The pilot proved the gauge communication but was one program compiled once per line, so a line could not be added without a rebuild and nothing it measured was tied to a spool. The rebuild kept what worked and fixed those two limits first.</p></details></li>
+          <li>Use AI tools including Claude Code, Cursor, and local models in LM Studio to accelerate software, simulation, and design work. Integrated new hardware into the ICARUS-Pro to conform to EU and CE requirements by defining the I/O, wiring and testing each device, then using AI to help write the scripts that coordinate them, with all code tested locally before deployment.<details class="web-only more"><summary>Details</summary><p>Code is checked for how it behaves before deployment and goes through a CI/CD pipeline. Physical parts get a visual inspection at each stage instead, since that process is not automated.</p></details></li>
+          <li>Used AI to rework a solid part with an organic structure, reducing its material use by 16.2% and its quoted price per part by 21.29%, with every AI-generated model passing staged human-in-the-loop checks, including a watertight check in existing slicers, before it moved on.</li>
+          <li>Optimizing the airflow of a high-pressure blower with AI-assisted CFD simulation in OpenFOAM and ParaView, iterating designs quickly to improve part cooling and raise print speeds.<details class="web-only more"><summary>Details</summary><p>The work runs on Python scripts, OpenFOAM simulations through Symscape OpenFlow on Windows, and ParaView. It is early R&amp;D, so there is no measured print-speed result yet.</p></details></li>
+          <li>Contributed the machine requirements and integration for ProteorPrintOS, built with an external software partner on SimplyPrint, giving users remote operation, live video, AI-assisted failure alerts, and material, waste, and outcome metrics.</li>
+          <li>Took the Coplay location's Microsoft Dynamics 365 Business Central, Microsoft's SaaS ERP hosted on Azure, from evaluation to live production in five weeks, migrating more than 2,000 items and 150+ products, reconciling inventory counts on the floor, and syncing SKUs with Proteor's global locations. The whole facility of 10 to 15 people works in it, and 10 to 30 more at Proteor locations worldwide reference it.</li>
+          <li>Traced the discrepancies in the 2026 Business Central inventory count, which I led across every item, to production orders processed without verification that never took items out of inventory, and helped move the plant to a more warehouse-focused workflow.</li>
+          <li>Owned the ICARUS-Lite, a compact industrial printer for prosthetic and orthotic production, from design and development through commercialization against unit goals of 60 in 2025 and 100 in 2026.</li>
+          <li>Present project status, constraints, and budgets at Proteor's monthly USA review with leadership from its global locations, and write incident reports for leadership.</li>
+          <li>Estimate and track the budget of every engineering project, build its BOMs, and maintain each product's unit cost in Business Central.</li>
+          <li>Use ExtrusionStudio's production history to estimate how many spools of each material the plant can complete in a week, and keep a running history of the schedule and material parameters.</li>
+          <li>Developing an offline version of the ICARUS-Lite and ICARUS-Pro control screen with over-the-air automated updates, so customers can run without a Wi-Fi or Ethernet connection.</li>
+          <li>Performed risk analysis and mitigations to EU and U.S. standards across ProteorPrint hardware and cloud products.</li>
+          <li>Serve as the plant's technical subject-matter expert and the escalation point for customer issues that go beyond what support can resolve, across mechanical faults, electrical faults, and user error.</li>
+          <li>Replaced full-sheet label printing with print-on-demand thermal labels, removing up to about 30% of label waste per run.</li>
+          <li>Managed and expanded the division's IT infrastructure after the acquisition, standardizing software and internal processes to align with Proteor's company-wide systems.</li>
+          <li>Act as Hiring Manager for engineering roles, conducting technical interviews and owning final hiring decisions.</li>
+        </ul>
+      </article>
+
+      <article class="job prior-job">
+        <div class="job-head">
+          <div><span class="company">Filament Innovations</span> <span class="location">| Whitehall, PA</span></div>
+          <div class="dates">May 2020 - January 2025</div>
+        </div>
+        <p class="context">Across these roles, wrote customer proposals, scopes of work, and estimates, and began tracking project budgets.</p>
+        <p class="role-line sub"><span>Chief Technology Officer</span><span class="dates">January 2023 - January 2025</span></p>
+        <ul>
+          <li>Oversaw the product-development pipeline, internal IT infrastructure, and technology strategy while keeping hands-on responsibility for mechanical, electrical, firmware, and software systems, and gave the CEO and the company regular updates as designs and software iterated.</li>
+          <li>Led the design and launch of Gen3 POSEIDON, the flagship's production redesign, combining a 1 m³ build volume, filament-and-pellet dual extrusion, and braked Z drives that prevent uncontrolled motion during power loss.</li>
+        </ul>
+        <p class="role-line sub"><span>Lead Electro-Mechanical Engineer</span><span class="dates">June 2022 - January 2023</span></p>
+        <ul>
+          <li>Removed a manufacturing bottleneck with independently testable electronics enclosures that installed in minutes, coordinating custom harnesses, cut panels, and hardware improvements with vendors.</li>
+          <li>Integrated a multi-board CAN-bus control architecture that simplified wiring and debugging on larger, modular machines.</li>
+        </ul>
+        <p class="role-line sub"><span>Industrial Engineer</span><span class="dates">April 2021 - June 2022</span></p>
+        <ul>
+          <li>Delivered THE KRAKEN, a 1 x 2 x 1.5 m hybrid pellet-and-filament gantry machine for a client producing the world's largest 3D-printed statue, carrying it from CAD, BOM, and sourcing through fabrication, assembly, and firmware tuning to customer support and operator training.</li>
+          <li>Designed and released Kratos, a machine engineered to print high-strength above-knee and below-knee prosthetic sockets.</li>
+        </ul>
+        <p class="role-line sub"><span>Engineering Technician</span><span class="dates">May 2020 - April 2021</span></p>
+        <ul>
+          <li>Diagnosed mechanical and electrical problems during assembly and operation, improving early product reliability.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section>
+      <h2>Additional Relevant Experience</h2>
+      <p class="compact-role"><strong>Northampton Area School District - Computer / Network Technician</strong> <span class="dates">| June 2016 - August 2019</span> | Built network infrastructure and deployed more than 750 wireless access points across six school buildings; accelerated deployment of more than 2,500 Chromebooks with an Arduino-based tool that automated setup-data entry, and coordinated final device distribution with school administrators.</p>
+      <p class="compact-role"><strong>Blue Mountain Ski Resort - Ski Lift Operator (seasonal)</strong> <span class="dates">| November 2019 - January 2021</span> | Operated lifts and assisted thousands of guests with ticketing, weather, and slope information; performed motor and control safety checks and supported the maintenance team during lift breakdowns.</p>
+    </section>
+
+    <section class="keep">
+      <h2>Education &amp; Certifications</h2>
+      <div class="education-row">
+        <p><strong>Penn State University</strong> | B.S., Electro-Mechanical Engineering</p>
+        <p class="dates">December 2024</p>
+      </div>
+      <ul class="cert-list">
+        <li><span>Machine Learning Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>MATLAB Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Simulink Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Simscape Onramp, MathWorks</span><span class="dates">2026</span></li>
+        <li><span>Lean Six Sigma Yellow Belt, Educate 360</span><span class="dates">2025</span></li>
+        <li><span>Lean Six Sigma White Belt, Educate 360</span><span class="dates">2025</span></li>
+        <li><span>Certificate in Engineering Design and Tools, Penn State University</span><span class="dates">2023</span></li>
+        <li><span>Mechanical Engineering Certificate, Lafayette College</span><span class="dates">2019</span></li>
+      </ul>
+    </section>
+
+    <section class="projects">
+      <h2>Selected Projects</h2>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">RileyBeenders.com</span> <span class="location">| Portfolio and agent workbench,</span> <a href="https://rileybeenders.com/projects/rileybeenders-com">rileybeenders.com/projects/rileybeenders-com</a></div>
+          <div class="dates">June 2026 - Present</div>
+        </div>
+        <p class="role-line"><span>Claude Code, agent skills, Next.js, React, TypeScript, Vercel, GitHub Actions, Playwright</span></p>
+        <p class="problem"><strong>Problem:</strong> A PDF resume flattens every project into two lines. The goal was a site that reads like that resume at rest, opens into the evidence behind each line, and keeps every claim traceable to real work in its data files.</p>
+        <ul>
+          <li>Wrote 12 repository agent skills, plain-markdown instructions any coding agent can follow, that tailor a resume to a job posting, apply a review to it, keep the site's documentation vault in sync with the code, and decide its motion, and run them beside 36 more from open-source skill libraries.</li>
+          <li>Wrote a router script that scores each request against a registry of the skills, their triggers, and the repo's rules, and returns an ordered plan, so an agent picks the right procedures before it starts work.</li>
+          <li>A GitHub Actions workflow runs Claude Code unattended on every push to main to refresh the site's statistics and timeline from git, keeping the site's own record current without manual upkeep.</li>
+          <li>Built an automated evaluation step for agent output: each tailored resume is scored by scripts for page count and size, link styling, heading spacing for ATS parsing, and any eight-word phrase that appears twice, and fails before it can be sent.</li>
+          <li>Split one resume JSON into focused data files merged at build time, with one source feeding the site, its job-application tracker, and every tailored resume; content changes from a local schema-driven Studio without touching code.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">ExtrusionStudio</span> <span class="location">| Plant measurement and production data system, Proteor</span></div>
+          <div class="dates">September 2025 - Present</div>
+        </div>
+        <p class="role-line"><span>Python, asyncio, Modbus TCP, Starlette, SQLite, Server-Sent Events, Raspberry Pi</span></p>
+        <p class="problem"><strong>Problem:</strong> Each of three extrusion lines had a tri-axial laser gauge, and the only record of a spool's diameter was whatever an operator wrote down. Production was speeding up, and the plant needed every reading captured, every spool judged against its tolerance, and the result visible to the operator, the packing bench, and management at once.</p>
+        <ul>
+          <li>Runs one asyncio poller and Modbus TCP session per line, reading every line concurrently at 20 Hz so a powered-down line never stalls a healthy one.</li>
+          <li>Added a calibration phase that times the filament from the laser to the spool, a delay of one to two minutes through the accumulator, so each reading and alarm lands on the spool it is actually wound on.</li>
+          <li>Logs every spool to a SQLite run table with a serial; the packing bench approves, inspects, or rejects each spool with the reasons recorded, and an approved spool gets an HTML certificate.</li>
+          <li>Split the interface into a view per audience (a projector view for the floor, a touch screen per line, the packing bench, and a production statistics TV for management), streamed live over Server-Sent Events.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">Engineering Operations Platform</span> <span class="location">| Internal ERP/CRM, Filament Innovations (as CTO)</span></div>
+        </div>
+        <p class="role-line"><span>Kubernetes, ERP/CRM development, BOM automation, workflow mapping</span></p>
+        <ul>
+          <li>Designed and hosted a redundant Kubernetes cluster running a self-developed ERP/CRM that brought orders, inventory, tasks, projects, and customer interactions out of separate manual workflows, generated BOMs dynamically, and linked design data directly to purchasing.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">BulkSSH</span> <span class="location">| Windows desktop app,</span> <a href="https://github.com/RileyBeenders/BulkSSH">github.com/RileyBeenders/BulkSSH</a></div>
+          <div class="dates">October 2026 - Present</div>
+        </div>
+        <p class="role-line"><span>TypeScript, Electron, Node.js, SSH</span></p>
+        <ul>
+          <li>Built to stop testing ExtrusionStudio's Pi kiosks one SSH window at a time: opens many devices in a grid of live terminals, mirrors keystrokes or broadcasts one command and collects each exit code, and asks before a risky command reaches several devices.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">Unified UniFi Network</span> <span class="location">| Network infrastructure, Proteor plus two residential sites</span></div>
+          <div class="dates">March 2024 - Present</div>
+        </div>
+        <p class="role-line"><span>Ubiquiti UniFi cloud gateways, VLANs, DHCP, DNS, network monitoring</span></p>
+        <p class="problem"><strong>Problem:</strong> As production grew, the plant's consumer mesh network assigned the same IP address to machines that came online together and never reliably detected or resolved the conflicts.</p>
+        <ul>
+          <li>Replaced it with a centrally managed UniFi network, using VLANs to separate production equipment, work devices, and IoT devices, which reduced IP conflicts and network-related downtime; all three sites are configured and monitored remotely from one interface.</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="job-head">
+          <div><span class="company">RB's Auto App Updater</span> <span class="location">| Windows utility</span></div>
+          <div class="dates">September 2026</div>
+        </div>
+        <p class="role-line"><span>PowerShell, WinGet, Windows Task Scheduler, SHA-256 verification</span></p>
+        <ul>
+          <li>Updates every WinGet-managed application with one double-click and no UAC prompt after a one-time setup, upgrading each package on its own so a single failure never stops the rest, and translating exit codes into plain-language statuses.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

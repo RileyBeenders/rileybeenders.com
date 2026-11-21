@@ -964,6 +964,36 @@
       "answer": "I am working on that now in the new branch of ExtrusionStudio, the one that adds manufacturing to the software.",
       "notes": "In development, not shipped, so it stays off the site and resumes as a shipped feature. What the LLM does in that branch (retrieval, agents, a model API call) and who will use it are not recorded. Asked because the 028 posting wants hands-on experience with LLM-powered products.",
       "usedIn": []
+    },
+    {
+      "id": "2026-11-20-01",
+      "asked": "2026-11-20",
+      "answered": null,
+      "status": "open",
+      "source": "Resume review, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "ExtrusionStudio",
+        "adoption"
+      ],
+      "question": "How many people use ExtrusionStudio on a normal production day (operators, packing bench, management)?",
+      "answer": null,
+      "notes": "Follow-up to the unanswered user-count part of 2026-11-14-05. Adoption figures are what the 028 posting scores.",
+      "usedIn": []
+    },
+    {
+      "id": "2026-11-20-02",
+      "asked": "2026-11-20",
+      "answered": null,
+      "status": "open",
+      "source": "Resume review, application 028 (Disney Forward Deployed Product Engineer)",
+      "topics": [
+        "LLM products",
+        "ExtrusionStudio"
+      ],
+      "question": "In the ExtrusionStudio manufacturing branch, what does the LLM do (answer questions from records, call tools as an agent, summarize QC data), which model or API does it use, and who will use it?",
+      "answer": null,
+      "notes": "Follow-up to 2026-11-14-12. Stays off resumes as a shipped feature until it runs in production.",
+      "usedIn": []
     }
   ]
 }
